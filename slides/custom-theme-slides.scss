@@ -1,0 +1,165 @@
+/*-- scss:defaults --*/
+// Base document colors
+//$body-bg: #181818;
+
+$magenta-color:       #cc0164 !default;
+
+$link-color: #cc0164;
+$link-decoration: none;
+$presentation-heading-color: #cc0164;
+$right-arrow: "\2192"; // Unicode character for right arrow
+
+
+// Font-sizes
+$presentation-h2-font-size: 1.4em;
+$presentation-h3-font-size: 0.95em;
+$presentation-h4-font-size: 1.0em;
+
+$presentation-font-smaller: 0.75;
+
+$code-block-font-size: 0.77em;
+
+
+.math.inline .katex  {
+  font-size: 104% !important;
+}
+
+.math.display .katex  {
+  font-size: 104% !important;
+  //color: #b22222;
+}
+
+
+/*-- scss:rules --*/
+
+
+
+//.reveal a {
+  //line-height: 1em;
+//}
+
+
+.reveal p {
+  // font-weight: 300;
+  font-weight: lighter;
+  margin-top: 1.0em;
+}
+
+
+// Headers
+
+//.reveal h2 {
+  // font-weight: 350;
+  //font-weight: lighter;
+  //font-size: 1.4em;
+//}
+
+.reveal h3 {
+  color: black;
+  //font-style: italic;
+  // font-weight: 350;
+  //font-weight: lighter;
+  //font-size: 0.95em;
+}
+
+.reveal h4 {
+  color: black;
+  // font-weight: 350;
+  font-weight: normal;
+  margin-top: 1.25em;
+}
+
+// Title slide
+
+#title-slide {
+  
+    .title {
+      font-size: 2.5em;
+      // font-weight: 350;
+      font-weight: lighter;
+    }
+  
+    .subtitle {
+      color: black;
+      font-size: 1.8em;
+      margin-top: 0.5em;
+      font-weight: lighter;
+    }
+  
+    .institute,
+    .quarto-title-affiliation,
+    .quarto-title-author-email {
+      font-size: 75%;
+      margin-top: 0.6em;
+      color: #7F7F7F;
+    }
+  
+    .author,
+    .quarto-title-author-name {
+      margin-top: 2.3em;
+      font-size: 90%;
+      color: black;
+    }
+  
+    .quarto-title-authors {
+      display: flex;
+      justify-content: left;
+  
+      .quarto-title-author {
+        padding-left: 0em;
+        padding-right: 0em;
+        width: 100%;
+      }
+    }
+  
+  }
+  
+
+
+
+
+  // Slide number   
+  
+  .slide-number {
+  color: #cc0164 !important;
+  }
+
+
+  // Unordered lists
+
+.reveal ul {
+    // font-weight: 300;
+    font-weight: lighter;
+    padding-left: 15px;
+  
+    li::marker {
+      color: mix(#cc0164, white, 90%);
+    }
+  }
+  
+  .reveal ul ul {
+    list-style: none;
+  
+    li:before {
+      content: $right-arrow;
+      color: mix(#cc0164, white, 70%);
+      display: inline-block;
+      width: 1em;
+      margin-left: -1em;
+      margin-right: 0em;
+    }
+  }
+  
+
+  // Ordered lists
+  
+  .reveal ol {
+    // font-weight: 300;
+    font-weight: lighter;
+    padding-left: 15px;
+  
+    li::marker {
+      color: #cc0164;
+    }
+  }
+

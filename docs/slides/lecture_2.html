@@ -1,0 +1,2710 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<link href="../favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-contrib/foldbox/foldbox.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.5.57">
+
+  <meta name="author" content="Dr.&nbsp;Silvio Fanzon">
+  <title>Statistical Models</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+  .Proof {
+    --color1: #f1f1f2;
+    --color2: #c0c0c1;
+  }
+  .DONE {
+    --color1: #cce7b1;
+    --color2: #86b754;
+  }
+  .Warning {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Important {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Theorem {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Corollary {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Notation {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
+  .TODO {
+    --color1: #e7b1b4;
+    --color2: #8c3236;
+  }
+  .Lemma {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Definition {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
+  .Question {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Conjecture {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Remark {
+    --color1: #bce5de;
+    --color2: #21aa93;
+  }
+  .Problem {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Axiom {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Proposition {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Idea {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Example {
+    --color1: #bce5de;
+    --color2: #21aa93;
+  }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Statistical Models</h1>
+  <p class="subtitle">Lecture 2</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+<a href="https://www.silviofanzon.com">Dr.&nbsp;Silvio Fanzon</a> 
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:S.Fanzon@hull.ac.uk">S.Fanzon@hull.ac.uk</a>
+</div>
+        <p class="quarto-title-affiliation">
+            University of Hull
+          </p>
+    </div>
+</div>
+
+</section>
+<section>
+<section id="lecture-2-random-samples" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Lecture 2: <br>Random samples<br></h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="outline-of-lecture-2" class="slide level2">
+<h2>Outline of Lecture 2</h2>
+<ol type="1">
+<li>Probability revision III</li>
+<li>Multivariate random vectors</li>
+<li>Random samples</li>
+<li>Unbiased estimators</li>
+<li>Chi-squared distribution</li>
+<li>Sampling from normal distribution</li>
+<li>t-distribution</li>
+</ol>
+</section></section>
+<section>
+<section id="part-1-probability-revision-iii" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 1: <br>Probability revision III</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="probability-revision-iii" class="slide level2 smaller">
+<h2>Probability revision III</h2>
+<ul>
+<li><p>You are expected to be familiar with the main concepts from Y1 module<br>
+<strong>Introduction to Probability &amp; Statistics</strong></p></li>
+<li><p>Self-contained revision material available in <a href="../slides/appendix_A.html">Appendix A</a></p></li>
+</ul>
+<p><strong>Topics to review</strong>: Sections 6–7 of <a href="../slides/appendix_A.html">Appendix A</a></p>
+<div class="column" style="width:38%;">
+<ul>
+<li>Independence of random variables</li>
+<li>Covariance and correlation</li>
+</ul>
+</div><div class="column" style="width:58%;">
+
+</div></section>
+<section id="independence-of-random-variables" class="slide level2 smaller">
+<h2>Independence of random variables</h2>
+<div id="independence" class="Definition" title="Independence">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition: </strong>Independence</summary><div><span class="math inline">(X,Y)</span> random vector with joint pdf or pmf <span class="math inline">f_{X,Y}</span> and marginal pdfs or pmfs <span class="math inline">f_X,f_Y</span>. We say that <span class="math inline">X</span> and <span class="math inline">Y</span> are <strong>independent</strong> random variables if <span class="math display">
+f_{X,Y}(x,y)  =  f_X(x)f_Y(y) \,, \quad \forall \, (x,y) \in \mathbb{R}^2
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="independence-of-random-variables-1" class="slide level2 smaller">
+<h2>Independence of random variables</h2>
+<h3 id="conditional-distributions-and-probabilities">Conditional distributions and probabilities</h3>
+<p>If <span class="math inline">X</span> and <span class="math inline">Y</span> are <strong>independent</strong> then <span class="math inline">X</span> gives no information on <span class="math inline">Y</span> (and vice-versa):</p>
+<ul>
+<li><p>Conditional distribution: <span class="math inline">Y|X</span> is same as <span class="math inline">Y</span> <span class="math display">
+f(y|x) = \frac{f_{X,Y}(x,y)}{f_X(x)} = \frac{f_X(x)f_Y(y)}{f_X(x)} = f_Y(y)
+</span></p></li>
+<li><p>Conditional probabilities: From the above we also obtain <span class="math display">\begin{align*}
+P(Y \in A | x) &amp; = \sum_{y \in A} f(y|x) = \sum_{y \in A} f_Y(y) = P(Y \in A)  &amp; \, \text{ discrete rv} \\
+P(Y \in A | x) &amp; = \int_{y \in A} f(y|x) \, dy = \int_{y \in A} f_Y(y) \, dy = P(Y \in A)  &amp;  \, \text{ continuous rv}
+\end{align*}</span></p></li>
+</ul>
+</section>
+<section id="independence-of-random-variables-2" class="slide level2 smaller">
+<h2>Independence of random variables</h2>
+<h3 id="characterization-of-independence---densities">Characterization of independence - Densities</h3>
+<div id="Theorem*-2.2" class="Theorem">
+<details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>
+<p><span class="math inline">(X,Y)</span> random vector with joint pdf or pmf <span class="math inline">f_{X,Y}</span>. They are equivalent:</p>
+<ul>
+<li><span class="math inline">X</span> and <span class="math inline">Y</span> are independent random variables</li>
+<li>There exist functions <span class="math inline">g(x)</span> and <span class="math inline">h(y)</span> such that <span class="math display">
+f_{X,Y}(x,y) = g(x)h(y) \,, \quad \forall \, (x,y) \in \mathbb{R}^2
+</span></li>
+</ul>
+</div></details>
+</div>
+<p><strong>Note:</strong></p>
+<ul>
+<li><span class="math inline">g(x)</span> and <span class="math inline">h(y)</span> are not necessarily the pdfs or pmfs of <span class="math inline">X</span> and <span class="math inline">Y</span></li>
+<li>However they coincide with <span class="math inline">f_X</span> and <span class="math inline">f_Y</span>, up to rescaling by a constant</li>
+</ul>
+</section>
+<section id="exercise" class="slide level2 smaller">
+<h2>Exercise</h2>
+<p>A student leaves for class between 8 AM and 8:30 AM and takes between 40 and 50 minutes to get there</p>
+<ul>
+<li><p>Denote by <span class="math inline">X</span> the time of departure</p>
+<ul>
+<li><span class="math inline">X = 0</span> corresponds to 8 AM</li>
+<li><span class="math inline">X = 30</span> corresponds to 8:30 AM</li>
+</ul></li>
+<li><p>Denote by <span class="math inline">Y</span> the travel time</p></li>
+<li><p>Assume that <span class="math inline">X</span> and <span class="math inline">Y</span> are independent and uniformly distributed</p></li>
+</ul>
+<p><strong>Question:</strong> Find the probability that the student arrives to class before 9 AM</p>
+</section>
+<section id="solution" class="slide level2 smaller">
+<h2>Solution</h2>
+<ul>
+<li><p>By assumption <span class="math inline">X</span> is uniform on <span class="math inline">(0,30)</span>. Therefore <span class="math display">
+f_X(x)  =
+\begin{cases}
+\frac{1}{30} &amp; \text{ if } \, x \in (0,30)  \\
+0 &amp; \text{ otherwise }
+\end{cases}
+</span></p></li>
+<li><p>By assumption <span class="math inline">Y</span> is uniform on <span class="math inline">(40,50)</span>. Therefore <span class="math display">
+f_Y(y) =
+\begin{cases}
+\frac{1}{10} &amp; \text{ if } \, y \in (40,50)  \\
+0 &amp; \text{ otherwise }
+\end{cases}
+</span> where we used that <span class="math inline">50 - 40 = 10</span></p></li>
+</ul>
+</section>
+<section id="solution-1" class="slide level2 smaller">
+<h2>Solution</h2>
+<ul>
+<li><p>Define the rectangle <span class="math display">
+R = (0,30) \times (40,50)
+</span></p></li>
+<li><p>Since <span class="math inline">X</span> and <span class="math inline">Y</span> are independent, we get</p></li>
+</ul>
+<p><span class="math display">
+f_{X,Y}(x,y) = f_X(x)f_Y(y) =
+\begin{cases}
+\frac{1}{300} &amp; \text{ if } \, (x,y) \in R  \\
+0 &amp; \text{ otherwise }
+\end{cases}
+</span></p>
+</section>
+<section id="solution-2" class="slide level2 smaller">
+<h2>Solution</h2>
+<ul>
+<li><p>The arrival time is given by <span class="math inline">X + Y</span></p></li>
+<li><p>Therefore, the student arrives to class before 9 AM iff <span class="math inline">X + Y &lt; 60</span></p></li>
+<li><p>Notice that <span class="math display">
+\{X + Y &lt; 60 \}  = \{ (x,y) \in \mathbb{R}^2 \, \colon \, 0 \leq x &lt; 60 - y,  40 \leq y &lt; 50 \}
+</span></p></li>
+</ul>
+</section>
+<section id="solution-3" class="slide level2 smaller">
+<h2>Solution</h2>
+<p>Therefore, the probability of arriving before 9 AM is</p>
+<p><span class="math display">\begin{align*}
+P(\text{arrives before 9 AM}) &amp; = P(X + Y &lt; 60) \\
+                              &amp; = \int_{\{X+Y &lt; 60\}} f_{X,Y} (x,y) \, dxdy  \\
+                              &amp; = \int_{40}^{50} \left( \int_0^{60-y} \frac{1}{300} \, dx
+                              \right) \, dy  \\
+                              &amp; = \frac{1}{300}  \int_{40}^{50} (60 - y) \, dy \\
+                              &amp; = \frac{1}{300} \ y \left(  60 - \frac{y}{2} \right) \Bigg|_{y=40}^{y=50} \\
+                              &amp; = \frac{1}{300} \cdot (1750 - 1600) = \frac12
+\end{align*}</span></p>
+</section>
+<section id="consequences-of-independence" class="slide level2 smaller">
+<h2>Consequences of independence</h2>
+<div id="Theorem*-2.3" class="Theorem">
+<details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>
+<p>Suppose <span class="math inline">X</span> and <span class="math inline">Y</span> are independent random variables. Then</p>
+<ul>
+<li><p>For any <span class="math inline">A,B \subset \mathbb{R}</span> we have <span class="math display">
+P(X \in A, Y \in B) = P(X \in A) P(Y \in B)
+</span></p></li>
+<li><p>Suppose <span class="math inline">g(x)</span> is a function of (only) <span class="math inline">x</span>, <span class="math inline">h(y)</span> is a function of (only) <span class="math inline">y</span>. Then <span class="math display">
+{\rm I\kern-.3em E}[g(X)h(Y)] = {\rm I\kern-.3em E}[g(X)]{\rm I\kern-.3em E}[h(Y)]  
+</span></p></li>
+</ul>
+</div></details>
+</div>
+</section>
+<section id="application-mgf-of-sums" class="slide level2 smaller">
+<h2>Application: MGF of sums</h2>
+<div id="Theorem*-2.4" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Suppose <span class="math inline">X</span> and <span class="math inline">Y</span> are independent random variables and denote by <span class="math inline">M_X</span> and <span class="math inline">M_Y</span> their MGFs. Then <span class="math display">
+M_{X + Y} (t) = M_X(t) M_Y(t)
+</span><p></p>
+</div></details>
+</div>
+<p><strong>Proof</strong>: Follows by previous Theorem <span class="math display">\begin{align*}
+M_{X + Y} (t) &amp; = {\rm I\kern-.3em E}[e^{t(X+Y)}] = {\rm I\kern-.3em E}[e^{tX}e^{tY}] \\
+              &amp; = {\rm I\kern-.3em E}[e^{tX}] {\rm I\kern-.3em E}[e^{tY}] \\
+              &amp; = M_X(t) M_Y(t)
+\end{align*}</span></p>
+</section>
+<section id="example---sum-of-independent-normals" class="slide level2 smaller">
+<h2>Example - Sum of independent normals</h2>
+<ul>
+<li><p>Suppose <span class="math inline">X \sim N (\mu_1, \sigma_1^2)</span> and <span class="math inline">Y \sim N (\mu_2, \sigma_2^2)</span> are independent normal random variables</p></li>
+<li><p>We have seen in Lecture 1 that for normal distributions <span class="math display">
+M_X(t) = \exp \left( \mu_1 t + \frac{t^2 \sigma_1^2}{2} \right) \,, \qquad
+M_Y(t) = \exp \left( \mu_2 t + \frac{t^2 \sigma_2^2}{2} \right)
+</span></p></li>
+<li><p>Since <span class="math inline">X</span> and <span class="math inline">Y</span> are independent, from previous Theorem we get <span class="math display">\begin{align*}
+M_{X+Y}(t) &amp; =  M_{X}(t) M_{Y}(t) =
+\exp \left( \mu_1 t + \frac{t^2 \sigma_1^2}{2} \right)
+\exp \left( \mu_2 t + \frac{t^2 \sigma_2^2}{2} \right)   \\
+&amp; = \exp \left( (\mu_1 + \mu_2) t + \frac{t^2 (\sigma_1^2 + \sigma_2^2)}{2} \right)
+\end{align*}</span></p></li>
+</ul>
+</section>
+<section id="example---sum-of-independent-normals-1" class="slide level2 smaller">
+<h2>Example - Sum of independent normals</h2>
+<ul>
+<li><p>Therefore <span class="math inline">Z := X + Y</span> has moment generating function <span class="math display">
+M_{Z}(t) = M_{X+Y}(t) = \exp \left( (\mu_1 + \mu_2) t + \frac{t^2 (\sigma_1^2 + \sigma_2^2)}{2} \right)
+</span></p></li>
+<li><p>The above is the mgf of a <strong>normal distribution</strong> with <span class="math display">
+\text{mean }\quad \mu_1 + \mu_2 \quad \text{ and variance} \quad  \sigma_1^2 + \sigma_2^2
+</span></p></li>
+<li><p>By the Theorem in Slide 68 of Lecture 1 we have <span class="math display">
+Z \sim N(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)
+</span></p></li>
+<li><p><strong>Sum of independent normals is normal</strong></p></li>
+</ul>
+</section>
+<section id="covariance-correlation" class="slide level2 smaller">
+<h2>Covariance &amp; Correlation</h2>
+<h3 id="relationship-between-rv">Relationship between RV</h3>
+<p>Given two random variables <span class="math inline">X</span> and <span class="math inline">Y</span> we said that</p>
+<ul>
+<li><p><span class="math inline">X</span> and <span class="math inline">Y</span> are <strong>independent</strong> if <span class="math display">
+f_{X,Y}(x,y) = f_X(x) g_Y(y)
+</span></p></li>
+<li><p>In this case there is no relationship between <span class="math inline">X</span> and <span class="math inline">Y</span></p></li>
+<li><p>This is reflected in the conditional distributions: <span class="math display">
+X|Y \sim X \qquad \qquad Y|X \sim Y
+</span></p></li>
+</ul>
+</section>
+<section id="covariance-correlation-1" class="slide level2 smaller">
+<h2>Covariance &amp; Correlation</h2>
+<h3 id="relationship-between-rv-1">Relationship between RV</h3>
+<p>If <span class="math inline">X</span> and <span class="math inline">Y</span> are <strong>not independent</strong> then there is a <strong>relationship</strong> between them</p>
+<div id="Question*-2.5" class="Question">
+<p></p><details class="Question fbx-simplebox fbx-default" open=""><summary><strong>Question</strong></summary><div>How do we measure the strength of such dependence?<p></p>
+</div></details>
+</div>
+<p><strong>Answer</strong>: By introducing the notions of</p>
+<ul>
+<li>Covariance</li>
+<li>Correlation</li>
+</ul>
+</section>
+<section id="covariance" class="slide level2 smaller">
+<h2>Covariance</h2>
+<h3 id="definition">Definition</h3>
+<p><strong>Notation</strong>: Given two rv <span class="math inline">X</span> and <span class="math inline">Y</span> we denote <span class="math display">\begin{align*}
+&amp; \mu_X := {\rm I\kern-.3em E}[X]   \qquad &amp; \mu_Y &amp; := {\rm I\kern-.3em E}[Y] \\
+&amp; \sigma^2_X := {\rm Var}[X] \qquad  &amp; \sigma^2_Y &amp; := {\rm Var}[Y]
+\end{align*}</span></p>
+<div id="Definition*-2.6" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>covariance</strong> of <span class="math inline">X</span> and <span class="math inline">Y</span> is the number <span class="math display">
+{\rm Cov}(X,Y) := {\rm I\kern-.3em E}[  (X - \mu_X) (Y - \mu_Y)  ]
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="covariance-1" class="slide level2 smaller">
+<h2>Covariance</h2>
+<h3 id="alternative-formula">Alternative Formula</h3>
+<div id="Theorem*-2.7" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>The covariance of <span class="math inline">X</span> and <span class="math inline">Y</span> can be computed via <span class="math display">
+{\rm Cov}(X,Y) = {\rm I\kern-.3em E}[XY] - {\rm I\kern-.3em E}[X]{\rm I\kern-.3em E}[Y]
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="correlation" class="slide level2 smaller">
+<h2>Correlation</h2>
+<p><strong>Remark</strong>:</p>
+<ul>
+<li><p><span class="math inline">{\rm Cov}(X,Y)</span> encodes only <strong>qualitative</strong> information about the relationship between <span class="math inline">X</span> and <span class="math inline">Y</span></p></li>
+<li><p>To obtain <strong>quantitative</strong> information we introduce the <strong>correlation</strong></p></li>
+</ul>
+<div id="Definition*-2.8" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>correlation</strong> of <span class="math inline">X</span> and <span class="math inline">Y</span> is the number <span class="math display">
+\rho_{XY} := \frac{{\rm Cov}(X,Y)}{\sigma_X \sigma_Y}
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="correlation-detects-linear-relationships" class="slide level2 smaller">
+<h2>Correlation detects linear relationships</h2>
+<div id="Theorem*-2.9" class="Theorem">
+<details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>
+<p>For any random variables <span class="math inline">X</span> and <span class="math inline">Y</span> we have</p>
+<ul>
+<li><span class="math inline">- 1\leq \rho_{XY} \leq 1</span></li>
+<li><span class="math inline">|\rho_{XY}|=1</span> if and only if there exist <span class="math inline">a,b \in \mathbb{R}</span> such that <span class="math display">
+P(Y = aX + b) = 1
+</span>
+<ul>
+<li>If <span class="math inline">\rho_{XY}=1</span> then <span class="math inline">a&gt;0</span> <span class="math inline">\qquad \qquad \quad</span> (positive linear correlation)</li>
+<li>If <span class="math inline">\rho_{XY}=-1</span> then <span class="math inline">a&lt;0</span> <span class="math inline">\qquad \qquad</span> (negative linear correlation)</li>
+</ul></li>
+</ul>
+</div></details>
+</div>
+<p><strong>Proof</strong>: Omitted, see page 172 of <span class="citation" data-cites="casella-berger">[<a href="#/references" role="doc-biblioref" onclick="">1</a>]</span></p>
+</section>
+<section id="correlation-covariance" class="slide level2 smaller">
+<h2>Correlation &amp; Covariance</h2>
+<h3 id="independent-random-variables">Independent random variables</h3>
+<div id="Theorem*-2.10" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>If <span class="math inline">X</span> and <span class="math inline">Y</span> are independent random variables then <span class="math display">
+{\rm Cov}(X,Y) = 0 \,, \qquad \rho_{XY}=0
+</span><p></p>
+</div></details>
+</div>
+<p><strong>Proof</strong>:</p>
+<ul>
+<li>If <span class="math inline">X</span> and <span class="math inline">Y</span> are independent then <span class="math inline">{\rm I\kern-.3em E}[XY]={\rm I\kern-.3em E}[X]{\rm I\kern-.3em E}[Y]</span></li>
+<li>Therefore <span class="math inline">{\rm Cov}(X,Y)= {\rm I\kern-.3em E}[XY]-{\rm I\kern-.3em E}[X]{\rm I\kern-.3em E}[Y] = 0</span></li>
+<li>Moreover <span class="math inline">\rho_{XY}=0</span> by definition</li>
+</ul>
+</section>
+<section id="formula-for-variance" class="slide level2 smaller">
+<h2>Formula for Variance</h2>
+<h3 id="variance-is-quadratic">Variance is quadratic</h3>
+<div id="Theorem*-2.11" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>For any two random variables <span class="math inline">X</span> and <span class="math inline">Y</span> and <span class="math inline">a,b \in \mathbb{R}</span> <span class="math display">
+{\rm Var}[aX + bY] = a^2 {\rm Var}[X] + b^2 {\rm Var}[Y] + 2 {\rm Cov}(X,Y)
+</span> If <span class="math inline">X</span> and <span class="math inline">Y</span> are independent then <span class="math display">
+{\rm Var}[aX + bY] = a^2 {\rm Var}[X] + b^2 {\rm Var}[Y]
+</span><p></p>
+</div></details>
+</div>
+<p><strong>Proof</strong>: Exercise</p>
+</section>
+<section id="example-1" class="slide level2 smaller">
+<h2>Example 1</h2>
+<ul>
+<li><p>Assume <span class="math inline">X</span> and <span class="math inline">Z</span> are independent, and <span class="math display">
+X  \sim {\rm uniform} \left( 0,1 \right)  \,, \qquad
+Z  \sim {\rm uniform} \left( 0, \frac{1}{10} \right)
+</span></p></li>
+<li><p>Consider the random variable <span class="math display">
+Y = X + Z
+</span></p></li>
+<li><p>Since <span class="math inline">X</span> and <span class="math inline">Z</span> are independent, and <span class="math inline">Z</span> is uniform, we have that <span class="math display">
+Y | X = x  \, \sim \,  {\rm uniform} \left( x, x + \frac{1}{10} \right)
+</span> (adding <span class="math inline">x</span> to <span class="math inline">Z</span> simply shifts the uniform distribution of <span class="math inline">Z</span> by <span class="math inline">x</span>)</p></li>
+<li><p><strong>Question:</strong> Is the correlation <span class="math inline">\rho_{XY}</span> between <span class="math inline">X</span> and <span class="math inline">Y</span> high or low?</p></li>
+</ul>
+</section>
+<section id="example-1-1" class="slide level2 smaller">
+<h2>Example 1</h2>
+<ul>
+<li><p>As <span class="math inline">Y | X  \, \sim \,  {\rm uniform} \left( X, X + \frac{1}{10} \right)</span>, the conditional pdf of <span class="math inline">Y</span> given <span class="math inline">X = x</span> is <span class="math display">
+f(y|x) =
+\begin{cases}
+10 &amp; \text{ if } \, y \in \left( x , x + \frac{1}{10} \right) \\
+0  &amp; \text{ otherwise}
+\end{cases}
+</span></p></li>
+<li><p>As <span class="math inline">X  \sim {\rm uniform} (0,1)</span>, its pdf is <span class="math display">
+f_X(x) =
+\begin{cases}
+1 &amp; \text{ if } \, x \in \left( 0 , 1  \right) \\
+0  &amp; \text{ otherwise}
+\end{cases}
+</span></p></li>
+<li><p>Therefore, the joint distribution of <span class="math inline">(X,Y)</span> is <span class="math display">
+f_{X,Y}(x,y) = f(y|x)f_X(x) = \begin{cases}
+10 &amp; \text{ if } \, x \in (0,1) \, \text{ and } \, y \in \left( x , x + \frac{1}{10} \right) \\
+0  &amp; \text{ otherwise}
+\end{cases}
+</span></p></li>
+</ul>
+</section>
+<section id="example-1-2" class="slide level2 smaller">
+<h2>Example 1</h2>
+<p>In gray: the region where <span class="math inline">f_{X,Y}(x,y)&gt;0</span></p>
+<ul>
+<li>When <span class="math inline">X</span> increases, <span class="math inline">Y</span> increases linearly (not surprising, since <span class="math inline">Y = X + Z</span>)</li>
+<li>We expect the correlation <span class="math inline">\rho_{XY}</span> to be close to <span class="math inline">1</span></li>
+</ul>
+
+<img data-src="lecture_2_files/figure-revealjs/unnamed-chunk-1-1.png" width="960" class="r-stretch"></section>
+<section id="example-1-computing-rho_xy" class="slide level2 smaller">
+<h2>Example 1 – Computing <span class="math inline">\rho_{XY}</span></h2>
+<ul>
+<li><p>For a random variable <span class="math inline">W \sim {\rm uniform} (a,b)</span>, we have <span class="math display">
+{\rm I\kern-.3em E}[W] = \frac{a+b}{2} \,, \qquad
+{\rm Var}[W] = \frac{(b-a)^2}{12}
+</span></p></li>
+<li><p>Since <span class="math inline">X \sim {\rm uniform} (0,1)</span> and <span class="math inline">Z \sim {\rm uniform} (0,1/10)</span>, we have <span class="math display">
+{\rm I\kern-.3em E}[X] = \frac12 \,, \qquad
+{\rm Var}[X] = \frac{1}{12} \,, \qquad
+{\rm I\kern-.3em E}[Z] = \frac{1}{20} \,, \qquad
+{\rm Var}[Z] = \frac{1}{1200}
+</span></p></li>
+<li><p>Since <span class="math inline">X</span> and <span class="math inline">Z</span> are independent, we also have <span class="math display">
+{\rm Var}[Y] = {\rm Var}[X + Z] =  {\rm Var}[X] + {\rm Var}[Z] = \frac{1}{12} + \frac{1}{1200}
+</span></p></li>
+</ul>
+</section>
+<section id="example-1-computing-rho_xy-1" class="slide level2 smaller">
+<h2>Example 1 – Computing <span class="math inline">\rho_{XY}</span></h2>
+<ul>
+<li><p>Since <span class="math inline">X</span> and <span class="math inline">Z</span> are independent, we have <span class="math display">
+{\rm I\kern-.3em E}[XZ] = {\rm I\kern-.3em E}[X]{\rm I\kern-.3em E}[Z]
+</span></p></li>
+<li><p>We conclude that <span class="math display">\begin{align*}
+{\rm Cov}(X,Y) &amp; = {\rm I\kern-.3em E}[XY] -  {\rm I\kern-.3em E}[X] {\rm I\kern-.3em E}[Y] \\
+        &amp; = {\rm I\kern-.3em E}[X(X + Z)] -  {\rm I\kern-.3em E}[X] {\rm I\kern-.3em E}[X + Z] \\
+        &amp; = {\rm I\kern-.3em E}[X^2] - {\rm I\kern-.3em E}[X]^2 + {\rm I\kern-.3em E}[XZ] - {\rm I\kern-.3em E}[X]{\rm I\kern-.3em E}[Z] \\
+        &amp; = {\rm Var}[X] = \frac{1}{12}
+\end{align*}</span></p></li>
+</ul>
+</section>
+<section id="example-1-computing-rho_xy-2" class="slide level2 smaller">
+<h2>Example 1 – Computing <span class="math inline">\rho_{XY}</span></h2>
+<ul>
+<li><p>The correlation between <span class="math inline">X</span> and <span class="math inline">Y</span> is <span class="math display">\begin{align*}
+\rho_{XY} &amp; = \frac{{\rm Cov}(X,Y)}{\sqrt{{\rm Var}[X]}\sqrt{{\rm Var}[Y]}} \\
+        &amp; = \frac{\frac{1}{12}}{\sqrt{\frac{1}{12}}  \sqrt{ \frac{1}{12} + \frac{1}{1200}} } = \sqrt{\frac{100}{101}}
+\end{align*}</span></p></li>
+<li><p>As expected, we have very high correlation <span class="math inline">\rho_{XY} \approx 1</span></p></li>
+<li><p>This confirms a very strong <strong>linear</strong> relationship between <span class="math inline">X</span> and <span class="math inline">Y</span></p></li>
+</ul>
+</section>
+<section id="example-2" class="slide level2 smaller">
+<h2>Example 2</h2>
+<ul>
+<li><p>Assume <span class="math inline">X</span> and <span class="math inline">Z</span> are independent, and <span class="math display">
+X  \sim {\rm uniform} \left( -1,1 \right)  \,, \qquad
+Z  \sim {\rm uniform} \left( 0, \frac{1}{10} \right)
+</span></p></li>
+<li><p>Define the random variable <span class="math display">
+Y = X^2 + Z
+</span></p></li>
+<li><p>Since <span class="math inline">X</span> and <span class="math inline">Z</span> are independent, and <span class="math inline">Z</span> is uniform, we have that <span class="math display">
+Y | X = x  \, \sim \,  {\rm uniform} \left( x^2, x^2 + \frac{1}{10} \right)
+</span> (adding <span class="math inline">x^2</span> to <span class="math inline">Z</span> simply shifts the uniform distribution of <span class="math inline">Z</span> by <span class="math inline">x^2</span>)</p></li>
+<li><p><strong>Question:</strong> Is the correlation <span class="math inline">\rho_{XY}</span> between <span class="math inline">X</span> and <span class="math inline">Y</span> high or low?</p></li>
+</ul>
+</section>
+<section id="example-2-1" class="slide level2 smaller">
+<h2>Example 2</h2>
+<ul>
+<li><p>As <span class="math inline">Y | X  \, \sim \,  {\rm uniform} \left( X^2, X^2 + \frac{1}{10} \right)</span>, the conditional pdf of <span class="math inline">Y</span> given <span class="math inline">X = x</span> is <span class="math display">
+f(y|x) =
+\begin{cases}
+10 &amp; \text{ if } \, y \in \left( x^2 , x^2 + \frac{1}{10} \right) \\
+0  &amp; \text{ otherwise}
+\end{cases}
+</span></p></li>
+<li><p>As <span class="math inline">X  \sim {\rm uniform} (-1,1)</span>, its pdf is <span class="math display">
+f_X(x) =
+\begin{cases}
+\frac12 &amp; \text{ if } \, x \in \left( -1 , 1  \right) \\
+0  &amp; \text{ otherwise}
+\end{cases}
+</span></p></li>
+<li><p>Therefore, the joint distribution of <span class="math inline">(X,Y)</span> is <span class="math display">
+f_{X,Y}(x,y) = f(y|x)f_X(x) = \begin{cases}
+10 &amp; \text{ if } \, x \in (-1,1) \, \text{ and } \, y \in \left( x^2 , x^2 + \frac{1}{10} \right) \\
+0  &amp; \text{ otherwise}
+\end{cases}
+</span></p></li>
+</ul>
+</section>
+<section id="example-2-2" class="slide level2 smaller">
+<h2>Example 2</h2>
+<p>In gray: the region where <span class="math inline">f_{X,Y}(x,y)&gt;0</span></p>
+<ul>
+<li>When <span class="math inline">X</span> increases, <span class="math inline">Y</span> increases quadratically (not surprising, as <span class="math inline">Y = X^2 + Z</span>)</li>
+<li>There is no linear relationship between <span class="math inline">X</span> and <span class="math inline">Y</span> <span class="math inline">\,\, \implies \,\,</span> we expect <span class="math inline">\, \rho_{XY} \approx 0</span></li>
+</ul>
+
+<img data-src="lecture_2_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
+<section id="example-2-computing-rho_xy" class="slide level2 smaller">
+<h2>Example 2 – Computing <span class="math inline">\rho_{XY}</span></h2>
+<ul>
+<li><p>Since <span class="math inline">X \sim {\rm uniform} (-1,1)</span>, we can compute that <span class="math display">
+{\rm I\kern-.3em E}[X] = {\rm I\kern-.3em E}[X^3] = 0
+</span></p></li>
+<li><p>Since <span class="math inline">X</span> and <span class="math inline">Z</span> are independent, we have <span class="math display">
+{\rm I\kern-.3em E}[XZ] = {\rm I\kern-.3em E}[X]{\rm I\kern-.3em E}[Z] = 0
+</span></p></li>
+</ul>
+</section>
+<section id="example-2-computing-rho_xy-1" class="slide level2 smaller">
+<h2>Example 2 – Computing <span class="math inline">\rho_{XY}</span></h2>
+<ul>
+<li><p>Compute the covariance <span class="math display">\begin{align*}
+{\rm Cov}(X,Y) &amp; = {\rm I\kern-.3em E}[XY] -  {\rm I\kern-.3em E}[X] {\rm I\kern-.3em E}[Y] \\
+        &amp; = {\rm I\kern-.3em E}[XY] \\
+        &amp; = {\rm I\kern-.3em E}[X(X^2 + Z)]  \\
+        &amp; = {\rm I\kern-.3em E}[X^3] + {\rm I\kern-.3em E}[XZ] = 0
+\end{align*}</span></p></li>
+<li><p>The correlation between <span class="math inline">X</span> and <span class="math inline">Y</span> is <span class="math display">
+\rho_{XY}  = \frac{{\rm Cov}(X,Y)}{\sqrt{{\rm Var}[X]}\sqrt{{\rm Var}[Y]}} = 0
+</span></p></li>
+<li><p>This confirms there is <strong>no linear</strong> relationship between <span class="math inline">X</span> and <span class="math inline">Y</span></p></li>
+</ul>
+</section></section>
+<section>
+<section id="part-2-multivariate-random-vectors" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 2: <br>Multivariate random vectors</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="multivariate-random-vectors" class="slide level2 smaller">
+<h2>Multivariate Random Vectors</h2>
+<h3 id="recall">Recall</h3>
+<ul>
+<li>A <strong>Random vector</strong> is a function <span class="math display">
+\mathbf{X}\colon \Omega \to \mathbb{R}^n
+</span></li>
+<li><span class="math inline">\mathbf{X}</span> is a <strong>multivariate</strong> random vector if <span class="math inline">n \geq 3</span></li>
+<li>We denote the components of <span class="math inline">\mathbf{X}</span> by <span class="math display">
+\mathbf{X}= (X_1,\ldots,X_n) \,, \qquad X_i \colon \Omega \to \mathbb{R}
+</span></li>
+<li>We denote the components of a point <span class="math inline">\mathbf{x}\in \mathbb{R}^n</span> by <span class="math display">
+\mathbf{x}= (x_1,\ldots,x_n)
+</span></li>
+</ul>
+</section>
+<section id="discrete-and-continuous-multivariate-random-vectors" class="slide level2 smaller">
+<h2>Discrete and Continuous Multivariate Random Vectors</h2>
+<p>Everything we defined for <strong>bivariate</strong> vectors extends to <strong>multivariate</strong> vectors</p>
+<div id="Definition*-3.1" class="Definition">
+<details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>
+<p>The random vector <span class="math inline">\mathbf{X}\colon \Omega \to \mathbb{R}^n</span> is:</p>
+<ul>
+<li><strong>continuous</strong> if components <span class="math inline">X_i</span>s are continuous</li>
+<li><strong>discrete</strong> if components <span class="math inline">X_i</span> are discrete</li>
+</ul>
+</div></details>
+</div>
+</section>
+<section id="joint-pmf" class="slide level2 smaller">
+<h2>Joint pmf</h2>
+<div id="Definition*-3.2" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>joint pmf</strong> of a continuous random vector <span class="math inline">\mathbf{X}</span> is <span class="math inline">f_{\mathbf{X}} \colon \mathbb{R}^n \to \mathbb{R}</span> defined by <span class="math display">
+f_{\mathbf{X}} (\mathbf{x}) = f_{\mathbf{X}}(x_1,\ldots,x_n) := P(X_1 = x_1 , \ldots , X_n = x_n ) \,, \qquad \forall \, \mathbf{x}\in \mathbb{R}^n
+</span><p></p>
+</div></details>
+</div>
+<p><strong>Note:</strong> For all <span class="math inline">A \subset \mathbb{R}^n</span> it holds <span class="math display">
+P(\mathbf{X}\in A) = \sum_{\mathbf{x}\in A} f_{\mathbf{X}}(\mathbf{x})
+</span></p>
+</section>
+<section id="joint-pdf" class="slide level2 smaller">
+<h2>Joint pdf</h2>
+<div id="Definition*-3.3" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>joint pdf</strong> of a continuous random vector <span class="math inline">\mathbf{X}</span> is a function <span class="math inline">f_{\mathbf{X}} \colon \mathbb{R}^n \to \mathbb{R}</span> such that <span class="math display">
+P (\mathbf{X}\in A) := \int_A f_{\mathbf{X}}(x_1 ,\ldots, x_n) \, dx_1 \ldots dx_n = \int_{A} f_{\mathbf{X}}(\mathbf{x}) \, d\mathbf{x}\,, \quad \forall \, A \subset \mathbb{R}^n
+</span><p></p>
+</div></details>
+</div>
+<p><strong>Note</strong>: <span class="math inline">\int_A</span> denotes an <span class="math inline">n</span>-fold intergral over all points <span class="math inline">\mathbf{x}\in A</span></p>
+</section>
+<section id="expected-value" class="slide level2 smaller">
+<h2>Expected Value</h2>
+<div id="Definition*-3.4" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div><span class="math inline">\mathbf{X}\colon \Omega \to \mathbb{R}^n</span> random vector and <span class="math inline">g \colon \mathbb{R}^n \to \mathbb{R}</span> function. The <strong>expected value</strong> of the random variable <span class="math inline">g(X)</span> is <span class="math display">\begin{align*}
+{\rm I\kern-.3em E}[g(\mathbf{X})] &amp; := \sum_{x \in \mathbb{R}^n} g(\mathbf{x}) f_{\mathbf{X}} (\mathbf{x})  \qquad &amp; (\mathbf{X}\text{ discrete}) \\
+{\rm I\kern-.3em E}[g(\mathbf{X})] &amp; := \int_{\mathbb{R}^n} g(\mathbf{x}) f_{\mathbf{X}} (\mathbf{x}) \, d\mathbf{x}\qquad &amp; \qquad  (\mathbf{X}\text{ continuous})
+\end{align*}</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="marginal-distributions" class="slide level2 smaller">
+<h2>Marginal distributions</h2>
+<ul>
+<li><p><strong>Marginal pmf or pdf</strong> of any <strong>subset</strong> of the coordinates <span class="math inline">(X_1,\ldots,X_n)</span> can be computed by integrating or summing the remaining coordinates</p></li>
+<li><p>To ease notations, we only define maginals wrt the first <span class="math inline">k</span> coordinates</p></li>
+</ul>
+<div id="Definition*-3.5" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>marginal pmf</strong> or <strong>marginal pdf</strong> of the random vector <span class="math inline">\mathbf{X}</span> with respect to the first <span class="math inline">k</span> coordinates is the function <span class="math inline">f \colon \mathbb{R}^k \to \mathbb{R}</span> defined by <span class="math display">\begin{align*}
+f(x_1,\ldots,x_k) &amp; := \sum_{ (x_{k+1}, \ldots, x_n) \in \mathbb{R}^{n-k} }  
+f_{\mathbf{X}} (x_1 , \ldots , x_n)  \quad &amp; (\mathbf{X}\text{ discrete}) \\
+f(x_1,\ldots,x_k) &amp; := \int_{\mathbb{R}^{n-k}}f_{\mathbf{X}} (x_1 , \ldots, x_n ) \, dx_{k+1} \ldots dx_{n} \quad &amp; \quad  (\mathbf{X}\text{ continuous})
+\end{align*}</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="marginal-distributions-1" class="slide level2 smaller">
+<h2>Marginal distributions</h2>
+<p>We use a special notation for <strong>marginal pmf or pdf</strong> wrt a single coordinate</p>
+<div id="Definition*-3.6" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>marginal pmf</strong> or <strong>pdf</strong> of the random vector <span class="math inline">\mathbf{X}</span> with respect to the <span class="math inline">i</span>-th coordinate is the function <span class="math inline">f_{X_i} \colon \mathbb{R}\to \mathbb{R}</span> defined by <span class="math display">\begin{align*}
+f_{X_i}(x_i) &amp; := \sum_{ \tilde{x} \in \mathbb{R}^{n-1} }  
+f_{\mathbf{X}} (x_1, \ldots, x_n)  \quad &amp; (\mathbf{X}\text{ discrete}) \\
+f_{X_i}(x_i) &amp; := \int_{\mathbb{R}^{n-1}}f_{\mathbf{X}} (x_1, \ldots, x_n) \, d\tilde{x} \quad &amp; \quad  (\mathbf{X}\text{ continuous})
+\end{align*}</span> where <span class="math inline">\tilde{x} \in \mathbb{R}^{n-1}</span> denotes the vector <span class="math inline">\mathbf{x}</span> with <span class="math inline">i</span>-th component removed <span class="math display">
+\tilde{x} := (x_1, \ldots, x_{i-1}, x_{i+1},\ldots, x_n)
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="conditional-distributions" class="slide level2 smaller">
+<h2>Conditional distributions</h2>
+<p>We now define conditional distributions given the first <span class="math inline">k</span> coordinates</p>
+<div id="Definition*-3.7" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>Let <span class="math inline">\mathbf{X}</span> be a random vector and suppose that the marginal pmf or pdf wrt the first <span class="math inline">k</span> coordinates satisfies <span class="math display">
+f(x_1,\ldots,x_k) &gt; 0 \,, \quad \forall \, (x_1,\ldots,x_k ) \in \mathbb{R}^k
+</span> The <strong>conditional pmf</strong> or <strong>pdf</strong> of <span class="math inline">(X_{k+1},\ldots,X_n)</span> given <span class="math inline">X_1 = x_1, \ldots , X_k = x_k</span> is the function of <span class="math inline">(x_{k+1},\ldots,x_{n})</span> defined by <span class="math display">
+f(x_{k+1},\ldots,x_n | x_1 , \ldots , x_k) := \frac{f_{\mathbf{X}}(x_1,\ldots,x_n)}{f(x_1,\ldots,x_k)}
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="conditional-distributions-1" class="slide level2 smaller">
+<h2>Conditional distributions</h2>
+<p>Similarly, we can define the conditional distribution given the <span class="math inline">i</span>-th coordinate</p>
+<div id="Definition*-3.8" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>Let <span class="math inline">\mathbf{X}</span> be a random vector and suppose that for a given <span class="math inline">x_i \in \mathbb{R}</span> <span class="math display">
+f_{X_i}(x_i) &gt; 0
+</span> The <strong>conditional pmf or pdf</strong> of <span class="math inline">\tilde{X}</span> given <span class="math inline">X_i = x_i</span> is the function of <span class="math inline">\tilde{x}</span> defined by <span class="math display">
+f(\tilde{x} | x_i ) := \frac{f_{\mathbf{X}}(x_1,\ldots,x_n)}{f_{X_i}(x_i)}
+</span> where we denote <span class="math display">
+\tilde{X} := (X_1, \ldots, X_{i-1}, X_{i+1},\ldots, X_n) \,, \quad
+\tilde{x} := (x_1, \ldots, x_{i-1}, x_{i+1},\ldots, x_n)
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="independence-1" class="slide level2 smaller">
+<h2>Independence</h2>
+<div id="Definition*-3.9" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div><span class="math inline">\mathbf{X}=(X_1,\ldots,X_n)</span> random vector with joint pmf or pdf <span class="math inline">f_{\mathbf{X}}</span> and marginals <span class="math inline">f_{X_i}</span>. We say that the random variables <span class="math inline">X_1,\ldots,X_n</span> are <strong>mutually independent</strong> if <span class="math display">
+f_{\mathbf{X}}(x_1,\ldots,x_n) = f_{X_1}(x_1) \cdot \ldots \cdot f_{X_n}(x_n) = \prod_{i=1}^n f_{X_i}(x_i)
+</span><p></p>
+</div></details>
+</div>
+<div id="Proposition*-3.10" class="Proposition">
+<p></p><details class="Proposition fbx-simplebox fbx-default" open=""><summary><strong>Proposition</strong></summary><div>If <span class="math inline">X_1,\ldots,X_n</span> are mutually independent then for all <span class="math inline">A_i \subset \mathbb{R}</span> <span class="math display">
+P(X_1 \in A_1 , \ldots , X_n \in A_n) = \prod_{i=1}^n P(X_i \in A_i)
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="independence-2" class="slide level2 smaller">
+<h2>Independence</h2>
+<h3 id="characterization-result">Characterization result</h3>
+<div id="Theorem*-3.11" class="Theorem">
+<details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>
+<p><span class="math inline">\mathbf{X}=(X_1,\ldots,X_n)</span> random vector with joint pmf or pdf <span class="math inline">f_{\mathbf{X}}</span>. They are equivalent:</p>
+<ul>
+<li>The random variables <span class="math inline">X_1,\ldots,X_n</span> are <strong>mutually independent</strong></li>
+<li>There exist functions <span class="math inline">g_i(x_i)</span> such that <span class="math display">
+f_{\mathbf{X}}(x_1,\ldots,x_n) =  \prod_{i=1}^n g_{i}(x_i)
+</span></li>
+</ul>
+</div></details>
+</div>
+</section>
+<section id="independence-3" class="slide level2 smaller">
+<h2>Independence</h2>
+<h3 id="a-very-useful-theorem">A very useful theorem</h3>
+<div id="Theorem*-3.12" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Let <span class="math inline">X_1,\ldots,X_n</span> be mutually independent random variables and <span class="math inline">g_i(x_i)</span> function only of <span class="math inline">x_i</span>. Then the random variables <span class="math display">
+g_1(X_1) \,, \ldots \,, g_n(X_n)
+</span> are mutually independent<p></p>
+</div></details>
+</div>
+<p><strong>Proof</strong>: Omitted. See <span class="citation" data-cites="casella-berger">[<a href="#/references" role="doc-biblioref" onclick="">1</a>]</span> page 184</p>
+<p><strong>Example</strong>: <span class="math inline">X_1,\ldots,X_n \,</span> independent <span class="math inline">\,\, \implies \,\, X_1^2, \ldots, X_n^2 \,</span> independent</p>
+</section>
+<section id="independence-4" class="slide level2 smaller">
+<h2>Independence</h2>
+<h3 id="expectation-of-product">Expectation of product</h3>
+<div id="Theorem*-3.13" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Let <span class="math inline">X_1,\ldots,X_n</span> be mutually independent random variables and <span class="math inline">g_i(x_i)</span> functions. Then <span class="math display">
+{\rm I\kern-.3em E}[ g_1(X_1) \cdot \ldots \cdot g_n(X_n) ] = \prod_{i=1}^n {\rm I\kern-.3em E}[g_i(X_i)]
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="application-mgf-of-sums-1" class="slide level2 smaller">
+<h2>Application: MGF of sums</h2>
+<div id="Theorem*-3.14" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Let <span class="math inline">X_1,\ldots,X_n</span> be mutually independent random variables, with mgfs <span class="math inline">M_{X_1}(t),\ldots, M_{X_n}(t)</span>. Define the random variable <span class="math display">
+Z := X_1 + \ldots + X_n
+</span> The mgf of <span class="math inline">Z</span> satisfies <span class="math display">
+M_Z(t) = \prod_{i=1}^n M_{X_i}(t)
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="application-mgf-of-sums-2" class="slide level2 smaller">
+<h2>Application: MGF of sums</h2>
+<h3 id="proof-of-theorem">Proof of Theorem</h3>
+<p>Follows by the previous Theorem</p>
+<p><span class="math display">\begin{align*}
+M_{Z} (t) &amp; = {\rm I\kern-.3em E}[e^{tZ}] \\
+          &amp; = {\rm I\kern-.3em E}[\exp( t X_1 + \ldots + tX_n)] \\
+          &amp; = {\rm I\kern-.3em E}\left[  e^{t X_1} \cdot \ldots \cdot e^{ t X_n} \right] \\
+          &amp; = \prod_{i=1}^n {\rm I\kern-.3em E}[e^{tX_i}] \\
+          &amp; = \prod_{i=1}^n M_{X_i}(t)
+\end{align*}</span></p>
+</section>
+<section id="example-sum-of-independent-normals" class="slide level2 smaller">
+<h2>Example – Sum of independent Normals</h2>
+<div id="Theorem*-3.15" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Let <span class="math inline">X_1,\ldots,X_n</span> be mutually independent random variables with normal distribution <span class="math inline">X_i \sim N (\mu_i,\sigma_i^2)</span>. Define <span class="math display">
+Z := X_1 + \ldots + X_n
+</span> and <span class="math display">
+\mu :=\mu_1 + \ldots + \mu_n    \,, \quad \sigma^2 := \sigma_1^2 + \ldots + \sigma_n^2
+</span> Then <span class="math inline">Z</span> is normally distributed with <span class="math display">
+Z \sim N(\mu,\sigma^2)
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="example-sum-of-independent-normals-1" class="slide level2 smaller">
+<h2>Example – Sum of independent Normals</h2>
+<h3 id="proof-of-theorem-1">Proof of Theorem</h3>
+<ul>
+<li><p>We have seen in Lecture 1 that <span class="math display">
+X_i \sim N(\mu_i,\sigma_i^2) \quad \implies \quad
+M_{X_i}(t) = \exp \left( \mu_i t + \frac{t^2 \sigma_i^2}{2} \right)
+</span></p></li>
+<li><p>As <span class="math inline">X_1,\ldots,X_n</span> are mutually independent, from the Theorem in Slide 47, we get <span class="math display">\begin{align*}
+M_{Z}(t) &amp; = \prod_{i=1}^n M_{X_i}(t) =
+\prod_{i=1}^n \exp \left( \mu_i t + \frac{t^2 \sigma_i^2}{2} \right) \\
+&amp; = \exp \left( (\mu_1 + \ldots + \mu_n) t + \frac{t^2 (\sigma_1^2 + \ldots +\sigma_n^2)}{2} \right) \\
+&amp; =  \exp \left( \mu t + \frac{t^2 \sigma^2 }{2} \right)
+\end{align*}</span></p></li>
+</ul>
+</section>
+<section id="example-sum-of-independent-normals-2" class="slide level2 smaller">
+<h2>Example – Sum of independent Normals</h2>
+<h3 id="proof-of-theorem-2">Proof of Theorem</h3>
+<ul>
+<li><p>Therefore <span class="math inline">Z</span> has moment generating function <span class="math display">
+M_{Z}(t) = \exp \left( \mu t + \frac{t^2 \sigma^2 }{2} \right)
+</span></p></li>
+<li><p>The above is the mgf of a <strong>normal distribution</strong> with <span class="math display">
+\text{mean }\quad \mu  \quad \text{ and variance} \quad  \sigma^2
+</span></p></li>
+<li><p>Since mgfs characterize distributions (see Theorem in Slide 71 of Lecture 1), we conclude <span class="math display">
+Z \sim N(\mu, \sigma^2 )
+</span></p></li>
+</ul>
+</section>
+<section id="example-sum-of-independent-gammas" class="slide level2 smaller">
+<h2>Example – Sum of independent Gammas</h2>
+<div id="Theorem*-3.16" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Let <span class="math inline">X_1,\ldots,X_n</span> be mutually independent random variables with Gamma distribution <span class="math inline">X_i \sim \Gamma (\alpha_i,\beta)</span>. Define <span class="math display">
+Z := X_1 + \ldots + X_n
+</span> and <span class="math display">
+\alpha :=\alpha_1 + \ldots + \alpha_n
+</span> Then <span class="math inline">Z</span> has Gamma distribution <span class="math display">
+Z \sim \Gamma(\alpha,\beta)
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="example-sum-of-independent-gammas-1" class="slide level2 smaller">
+<h2>Example – Sum of independent Gammas</h2>
+<h3 id="proof-of-theorem-3">Proof of Theorem</h3>
+<ul>
+<li><p>We have seen in Lecture 1 that <span class="math display">
+X_i \sim \Gamma(\alpha_i,\beta)
+\qquad \implies \qquad
+M_{X_i}(t) = \frac{\beta^{\alpha_i}}{(\beta-t)^{\alpha_i}}
+</span></p></li>
+<li><p>As <span class="math inline">X_1,\ldots,X_n</span> are mutually independent, from the Theorem in Slide 47, we get <span class="math display">\begin{align*}
+M_{Z}(t) &amp; = \prod_{i=1}^n M_{X_i}(t) =
+\prod_{i=1}^n \frac{\beta^{\alpha_i}}{(\beta-t)^{\alpha_i}} \\
+&amp; = \frac{\beta^{(\alpha_1 + \ldots + \alpha_n)}}{(\beta-t)^{(\alpha_1 + \ldots + \alpha_n)}} \\
+&amp; = \frac{\beta^{\alpha}}{(\beta-t)^{\alpha}}
+\end{align*}</span></p></li>
+</ul>
+</section>
+<section id="example-sum-of-independent-gammas-2" class="slide level2 smaller">
+<h2>Example – Sum of independent Gammas</h2>
+<h3 id="proof-of-theorem-4">Proof of Theorem</h3>
+<ul>
+<li><p>Therefore <span class="math inline">Z</span> has moment generating function <span class="math display">
+M_{Z}(t) = \frac{\beta^{\alpha}}{(\beta-t)^{\alpha}}
+</span></p></li>
+<li><p>The above is the mgf of a <strong>Gamma distribution</strong> with parameters <span class="math inline">\alpha</span> and <span class="math inline">\beta</span></p></li>
+<li><p>Since mgfs characterize distributions (see Theorem in Slide 71 of Lecture 1), we conclude <span class="math display">
+Z \sim \Gamma(\alpha, \beta )
+</span></p></li>
+</ul>
+</section>
+<section id="expectation-of-sums" class="slide level2 smaller">
+<h2>Expectation of sums</h2>
+<h3 id="expectation-is-linear">Expectation is linear</h3>
+<div id="Theorem*-3.17" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>For random variables <span class="math inline">X_1,\ldots,X_n</span> and scalars <span class="math inline">a_1,\ldots,a_n</span> we have <span class="math display">
+{\rm I\kern-.3em E}[a_1X_1 + \ldots + a_nX_n] = a_1 {\rm I\kern-.3em E}[X_1] + \ldots + a_n {\rm I\kern-.3em E}[X_n]
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="variance-of-sums" class="slide level2 smaller">
+<h2>Variance of sums</h2>
+<h3 id="variance-is-quadratic-1">Variance is quadratic</h3>
+<div id="Theorem*-3.18" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>For random variables <span class="math inline">X_1,\ldots,X_n</span> and scalars <span class="math inline">a_1,\ldots,a_n</span> we have <span class="math display">\begin{align*}
+{\rm Var}[a_1X_1 + \ldots + a_nX_n] = a_1^2 {\rm Var}[X_1] &amp; + \ldots + a^2_n {\rm Var}[X_n] \\
+                                                 &amp; + 2 \sum_{i \neq j} {\rm Cov}(X_i,X_j)
+\end{align*}</span> If <span class="math inline">X_1,\ldots,X_n</span> are mutually independent then <span class="math display">
+{\rm Var}[a_1X_1 + \ldots + a_nX_n] = a_1^2 {\rm Var}[X_1] + \ldots + a^2_n {\rm Var}[X_n]
+</span><p></p>
+</div></details>
+</div>
+</section></section>
+<section>
+<section id="part-3-random-samples" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 3: <br>Random samples</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="iid-random-variables" class="slide level2 smaller">
+<h2>iid random variables</h2>
+<div id="Definition*-4.1" class="Definition">
+<details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>
+<p>The random variables <span class="math inline">X_1,\ldots,X_n</span> are <strong>independent identically distributed</strong> or <strong>iid</strong> with pdf or pmf <span class="math inline">f(x)</span> if</p>
+<ul>
+<li><span class="math inline">X_1,\ldots,X_n</span> are mutually independent</li>
+<li>The marginal pdf or pmf of each <span class="math inline">X_i</span> satisfies <span class="math display">
+f_{X_i}(x) = f(x) \,, \quad \forall \, x \in \mathbb{R}
+</span></li>
+</ul>
+</div></details>
+</div>
+</section>
+<section id="random-sample" class="slide level2 smaller">
+<h2>Random sample</h2>
+<ul>
+<li>Suppose the data in an experiment consists of <strong>observations</strong> on a <strong>population</strong></li>
+<li>Suppose the <strong>population</strong> has distribution <span class="math inline">f(x)</span></li>
+<li>Each observation is labelled <span class="math inline">X_i</span></li>
+<li>We always assume that the population is <strong>infinite</strong></li>
+<li>Therefore each <span class="math inline">X_i</span> has distribution <span class="math inline">f(x)</span></li>
+<li>We also assume the observations are <strong>independent</strong></li>
+</ul>
+<div id="Definition*-4.2" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The random variables <span class="math inline">X_1,\ldots,X_n</span> are a <strong>random sample</strong> of size <span class="math inline">n</span> from the population <span class="math inline">f(x)</span> if <span class="math inline">X_1,\ldots,X_n</span> are iid with pdf or pmf <span class="math inline">f(x)</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="random-sample-1" class="slide level2 smaller">
+<h2>Random sample</h2>
+<p><strong>Remark</strong>: Let <span class="math inline">X_1,\ldots,X_n</span> be a random sample of size <span class="math inline">n</span> from the population <span class="math inline">f(x)</span>. The joint distribution of <span class="math inline">\mathbf{X}= (X_1,\ldots,X_n)</span> is <span class="math display">
+f_{\mathbf{X}}(x_1,\ldots,x_n) = f(x_1) \cdot \ldots \cdot f(x_n) = \prod_{i=1}^n f(x_i)
+</span> (since the <span class="math inline">X_is</span> are mutually independent with distribution <span class="math inline">f</span>)</p>
+<div id="Definition*-4.3" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>We call <span class="math inline">f_{\mathbf{X}}</span> the <strong>joint sample distribution</strong><p></p>
+</div></details>
+</div>
+</section>
+<section id="random-sample-2" class="slide level2 smaller">
+<h2>Random sample</h2>
+<p><strong>Notation</strong>:</p>
+<ul>
+<li><p>When the population distribution <span class="math inline">f(x)</span> depends on a parameter <span class="math inline">\theta</span> we write <span class="math display">
+f = f(x|\theta)
+</span></p></li>
+<li><p>In this case the joint sample distribution is <span class="math display">
+f_{\mathbf{X}}(x_1,\ldots,x_n | \theta) =  \prod_{i=1}^n f(x_i | \theta)
+</span></p></li>
+</ul>
+</section>
+<section id="example" class="slide level2 smaller">
+<h2>Example</h2>
+<ul>
+<li>Suppose a population has <span class="math inline">\mathop{\mathrm{Exponential}}(\beta)</span> distribution <span class="math display">
+f(x|\beta) = \frac{1}{\beta} e^{-x/\beta} \,, \qquad \text{ if } \,\, x &gt; 0
+</span></li>
+<li>Suppose <span class="math inline">X_1,\ldots,X_n</span> is random sample from the population <span class="math inline">f(x|\beta)</span></li>
+<li>The joint sample distribution is then <span class="math display">\begin{align*}
+f_{\mathbf{X}}(x_1,\ldots,x_n | \beta) &amp; = \prod_{i=1}^n f(x_i|\beta) \\
+                              &amp; = \prod_{i=1}^n \frac{1}{\beta} e^{-x_i/\beta} \\
+                              &amp; = \frac{1}{\beta^n} e^{-(x_1 + \ldots + x_n)/\beta}
+\end{align*}</span></li>
+</ul>
+</section>
+<section id="example-3" class="slide level2 smaller">
+<h2>Example</h2>
+<ul>
+<li><p>We have <span class="math display">
+P(X_1 &gt; 2) = \int_{2}^\infty f(x|\beta) \, dx
+         = \int_{2}^\infty \frac{1}{\beta} e^{-x/\beta} \, dx = e^{-2/\beta}
+</span></p></li>
+<li><p>Thanks to iid assumption we can easily compute <span class="math display">\begin{align*}
+P(X_1 &gt; 2 , \ldots, X_n &gt; 2) &amp; = \prod_{i=1}^n P(X_i &gt; 2) \\
+                           &amp; = \prod_{i=1}^n P(X_1 &gt; 2) \\
+                           &amp; = P(X_1 &gt; 2)^n \\
+                           &amp; = e^{-2n/\beta}
+\end{align*}</span></p></li>
+</ul>
+</section></section>
+<section>
+<section id="part-4-unbiased-estimators" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 4: <br>Unbiased estimators</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="point-estimation" class="slide level2 smaller">
+<h2>Point estimation</h2>
+<p><strong>Usual situation</strong>: Suppose a population has distribution <span class="math display">
+f(x|\theta)
+</span></p>
+<ul>
+<li>In general, the parameter <span class="math inline">\theta</span> is <strong>unknown</strong></li>
+<li>Suppose that knowing <span class="math inline">\theta</span> is sufficient to characterize <span class="math inline">f(x|\theta)</span></li>
+</ul>
+<p><strong>Example</strong>: A population could be normally distributed <span class="math display">
+f(x|\mu,\sigma^2)  = \frac{1}{\sqrt{2\pi\sigma}} \, \exp\left( -\frac{(x-\mu)^2}{2\sigma^2}\right) \,, \quad x \in \mathbb{R}
+</span></p>
+<ul>
+<li>Here <span class="math inline">\mu</span> is the mean and <span class="math inline">\sigma^2</span> the variance</li>
+<li>Knowing <span class="math inline">\mu</span> and <span class="math inline">\sigma^2</span> completely characterizes the normal distribution</li>
+</ul>
+</section>
+<section id="point-estimation-1" class="slide level2 smaller">
+<h2>Point estimation</h2>
+<p><strong>Goal:</strong> We want to make predictions about the population</p>
+<ul>
+<li><p>In order to do that, we need to know the population distribution <span class="math display">
+f(x|\theta)
+</span></p></li>
+<li><p>It is therefore desirable to determine <span class="math inline">\theta</span>, with reasonable certainty</p></li>
+</ul>
+<p><strong>Definitions:</strong></p>
+<ul>
+<li><p><strong>Point estimation</strong> is the procedure of estimating <span class="math inline">\theta</span> from random sample</p></li>
+<li><p>A <strong>point estimator</strong> is any function of a random sample <span class="math display">
+W(X_1,\ldots,X_n)
+</span></p></li>
+<li><p>Point estimators are also called <strong>statistics</strong></p></li>
+</ul>
+</section>
+<section id="unbiased-estimator" class="slide level2 smaller">
+<h2>Unbiased estimator</h2>
+<div id="Definition*-5.1" class="Definition">
+<details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>
+<p>Suppose <span class="math inline">W</span> is a point estimator of a parameter <span class="math inline">\theta</span></p>
+<ul>
+<li><p>The <strong>bias</strong> of <span class="math inline">W</span> is the quantity <span class="math inline">\rm{Bias}_{\theta} := {\rm I\kern-.3em E}[W] - \theta</span></p></li>
+<li><p><span class="math inline">W</span> is an <strong>unbiased estimator</strong> if <span class="math inline">\rm{Bias}_{\theta} = 0</span>, that is, <span class="math display">
+{\rm I\kern-.3em E}[W] = \theta
+</span></p></li>
+</ul>
+</div></details>
+</div>
+<p><strong>Note</strong>: A point estimator <span class="math display">
+W = W(X_1, \ldots, X_n)
+</span> is itself a random variable. Thus <span class="math inline">{\rm I\kern-.3em E}[W]</span> is the mean of such random variable</p>
+</section>
+<section id="next-goal" class="slide level2 smaller">
+<h2>Next goal</h2>
+<ul>
+<li><p>We want to estimate mean and variance of a population</p></li>
+<li><p>Unbiased estimators for such quantities are:</p>
+<ul>
+<li>Sample mean</li>
+<li>Sample variance</li>
+</ul></li>
+</ul>
+</section>
+<section id="estimating-the-population-mean" class="slide level2 smaller">
+<h2>Estimating the population mean</h2>
+<div id="Problem*-5.2" class="Problem">
+<p></p><details class="Problem fbx-simplebox fbx-default" open=""><summary><strong>Problem</strong></summary><div>Suppose to have a population with distribution <span class="math display">
+f(x|\theta)
+</span> We want to estimate the <strong>population mean</strong> <span class="math display">
+\mu := \int_{\mathbb{R}} x f(x|\theta) \, dx
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="sample-mean" class="slide level2 smaller">
+<h2>Sample mean</h2>
+<div id="Definition*-5.3" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>sample mean</strong> of a random sample <span class="math inline">X_1,\ldots,X_n</span> is the statistic <span class="math display">
+W(X_1,\ldots,X_n) := \overline{X} := \frac{1}{n} \sum_{i=1}^n X_i
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="sample-mean-1" class="slide level2 smaller">
+<h2>Sample mean</h2>
+<h3 id="sample-mean-is-unbiased-estimator-of-mean">Sample mean is unbiased estimator of mean</h3>
+<div id="Theorem*-5.4" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>The sample mean <span class="math inline">\overline{X}</span> is an unbiased estimator of the population mean <span class="math inline">\mu</span>, that is, <span class="math display">
+{\rm I\kern-.3em E}[\overline{X}] = \mu
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="sample-mean-2" class="slide level2 smaller">
+<h2>Sample mean</h2>
+<h3 id="proof-of-theorem-5">Proof of theorem</h3>
+<ul>
+<li><p><span class="math inline">X_1,\ldots,X_n</span> is a random sample from <span class="math inline">f(x|\theta)</span></p></li>
+<li><p>Therefore <span class="math inline">X_i \sim f(x|\theta)</span> and <span class="math display">
+{\rm I\kern-.3em E}[X_i] = \int_{\mathbb{R}} x f(x|\theta) \, dx = \mu
+</span></p></li>
+<li><p>By linearity of expectation we have <span class="math display">
+{\rm I\kern-.3em E}[\overline{X}] = \frac{1}{n} \sum_{i=1}^n {\rm I\kern-.3em E}[X_i]
+                    = \frac{1}{n} \sum_{i=1}^n \mu
+                    = \mu
+</span></p></li>
+<li><p>This shows <span class="math inline">\overline{X}</span> is an unbiased estimator of <span class="math inline">\mu</span></p></li>
+</ul>
+</section>
+<section id="variance-of-sample-mean" class="slide level2 smaller">
+<h2>Variance of Sample mean</h2>
+<p>For reasons clear later, it is useful to compute the variance of the sample mean <span class="math inline">\overline{X}</span></p>
+<div id="Lemma*-5.5" class="Lemma">
+<p></p><details class="Lemma fbx-simplebox fbx-default" open=""><summary><strong>Lemma</strong></summary><div><span class="math inline">X_1,\ldots,X_n</span> random sample from population with mean <span class="math inline">\mu</span> and variance <span class="math inline">\sigma^2</span>. Then <span class="math display">
+{\rm Var}[\overline{X}] = \frac{\sigma^2}{n}
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="variance-of-sample-mean-1" class="slide level2 smaller">
+<h2>Variance of Sample mean</h2>
+<h3 id="proof-of-lemma">Proof of Lemma</h3>
+<ul>
+<li><p>By assumption,the population has mean <span class="math inline">\mu</span> and variance <span class="math inline">\sigma^2</span></p></li>
+<li><p>Since <span class="math inline">X_i</span> is sampled from the population, we have <span class="math display">
+{\rm I\kern-.3em E}[X_i] = \mu \,, \quad {\rm Var}[X_i] = \sigma^2
+</span></p></li>
+<li><p>Since the variance is quadratic, and the <span class="math inline">X_is</span> are independent, <span class="math display">\begin{align*}
+{\rm Var}[\overline{X}] &amp; = {\rm Var}\left[ \frac{1}{n} \sum_{i=1}^n X_i \right]
+                   = \frac{1}{n^2} \sum_{i=1}^n {\rm Var}[X_i] \\
+                 &amp; = \frac{1}{n^2} \cdot n \sigma^2
+                   = \frac{\sigma^2}{n}
+\end{align*}</span></p></li>
+</ul>
+</section>
+<section id="estimating-the-population-variance" class="slide level2 smaller">
+<h2>Estimating the population variance</h2>
+<div id="Problem*-5.6" class="Problem">
+<p></p><details class="Problem fbx-simplebox fbx-default" open=""><summary><strong>Problem</strong></summary><div>Suppose to have a population <span class="math display">
+f(x|\theta)
+</span> with mean <span class="math inline">\mu</span> and variance <span class="math inline">\sigma^2</span>. We want to estimate the <strong>population variance</strong><p></p>
+</div></details>
+</div>
+</section>
+<section id="sample-variance" class="slide level2 smaller">
+<h2>Sample variance</h2>
+<div id="Definition*-5.7" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>sample variance</strong> of a random sample <span class="math inline">X_1,\ldots,X_n</span> is the statistic <span class="math display">
+S^2 := \frac{1}{n-1} \sum_{i=1}^n \left( X_i - \overline{X}  \right)^2
+</span> where <span class="math inline">\overline{X}</span> is the sample mean <span class="math display">
+\overline{X} := \frac{1}{n} \sum_{i=1}^n X_i
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="sample-variance-1" class="slide level2 smaller">
+<h2>Sample variance</h2>
+<h3 id="equivalent-formulation">Equivalent formulation</h3>
+<div id="Proposition*-5.8" class="Proposition">
+<p></p><details class="Proposition fbx-simplebox fbx-default" open=""><summary><strong>Proposition</strong></summary><div>It holds that <span class="math display">
+S^2 := \frac{ \sum_{i=1}^n \left( X_i - \overline{X}  \right)^2}{n-1}  =
+\frac{ \sum_{i=1}^n  X_i^2  - n\overline{X}^2  }{n-1}
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="sample-variance-2" class="slide level2 smaller">
+<h2>Sample variance</h2>
+<h3 id="proof-of-proposition">Proof of Proposition</h3>
+<ul>
+<li><p>We have <span class="math display">\begin{align*}
+\sum_{i=1}^n \left( X_i - \overline{X}  \right)^2  &amp; =
+\sum_{i=1}^n \left(X_i^2 + \overline{X}^2 - 2 X_i \overline{X}  \right)
+= \sum_{i=1}^n X_i^2 + n\overline{X}^2 - 2  \overline{X}  \sum_{i=1}^n X_i \\
+&amp; = \sum_{i=1}^n X_i^2 + n\overline{X}^2 - 2 n \overline{X}^2
+= \sum_{i=1}^n X_i^2 -n \overline{X}^2
+\end{align*}</span></p></li>
+<li><p>Dividing by <span class="math inline">n-1</span> yields the desired identity <span class="math display">
+S^2 = \frac{ \sum_{i=1}^n X_i^2 -n \overline{X}^2 }{n-1}
+</span></p></li>
+</ul>
+</section>
+<section id="sample-variance-3" class="slide level2 smaller">
+<h2>Sample variance</h2>
+<h3 id="sample-variance-is-unbiased-estimator-of-variance">Sample variance is unbiased estimator of variance</h3>
+<div id="Theorem*-5.9" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>The sample variance <span class="math inline">S^2</span> is an unbiased estimator of the population variance <span class="math inline">\sigma^2</span>, that is, <span class="math display">
+{\rm I\kern-.3em E}[S^2] = \sigma^2
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="sample-variance-4" class="slide level2 smaller">
+<h2>Sample variance</h2>
+<h3 id="proof-of-theorem-6">Proof of theorem</h3>
+<ul>
+<li><p>By linearity of expectation we infer <span class="math display">
+{\rm I\kern-.3em E}[(n-1)S^2]  = {\rm I\kern-.3em E}\left[  \sum_{i=1}^n X_i^2 - n\overline{X}^2  \right]
+                 = \sum_{i=1}^n {\rm I\kern-.3em E}[X_i^2] - n {\rm I\kern-.3em E}[\overline{X}^2]
+</span></p></li>
+<li><p>Since <span class="math inline">X_i \sim f(x|\theta)</span>, we have <span class="math display">
+{\rm I\kern-.3em E}[X_i] = \mu \,, \quad {\rm Var}[X_i] = \sigma^2
+</span></p></li>
+<li><p>Therefore by definition of variance, we infer <span class="math display">
+{\rm I\kern-.3em E}[X_i^2] = {\rm Var}[X_i] + {\rm I\kern-.3em E}[X]^2 = \sigma^2 + \mu^2
+</span></p></li>
+</ul>
+</section>
+<section id="sample-variance-5" class="slide level2 smaller">
+<h2>Sample variance</h2>
+<h3 id="proof-of-theorem-7">Proof of theorem</h3>
+<ul>
+<li><p>Also recall that <span class="math display">
+{\rm I\kern-.3em E}[\overline{X}] = \mu \,, \quad {\rm Var}[\overline{X}] = \frac{\sigma^2}{n}
+</span></p></li>
+<li><p>By definition of variance, we get <span class="math display">
+{\rm I\kern-.3em E}[\overline{X}^2] = {\rm Var}[\overline{X}] + {\rm I\kern-.3em E}[\overline{X}]^2
+                      = \frac{\sigma^2}{n} + \mu^2
+</span></p></li>
+</ul>
+</section>
+<section id="sample-variance-6" class="slide level2 smaller">
+<h2>Sample variance</h2>
+<h3 id="proof-of-theorem-8">Proof of theorem</h3>
+<ul>
+<li><p>Hence <span class="math display">\begin{align*}
+{\rm I\kern-.3em E}[(n-1)S^2] &amp; = \sum_{i=1}^n {\rm I\kern-.3em E}[X_i^2] - n {\rm I\kern-.3em E}[\overline{X}^2] \\
+                &amp; = \sum_{i=1}^n \left( \mu^2 + \sigma^2 \right) -
+                    n \left(  \mu^2 + \frac{\sigma^2}{n}  \right)  \\
+                &amp; = n\mu^2 + n\sigma^2 -
+                    n \mu^2 - \sigma^2   \\
+                &amp; = (n-1) \sigma^2
+\end{align*}</span></p></li>
+<li><p>Dividing both sides by <span class="math inline">(n-1)</span> yields the thesis <span class="math display">
+{\rm I\kern-.3em E}[S^2] = \sigma^2
+</span></p></li>
+</ul>
+</section>
+<section id="additional-note" class="slide level2 smaller">
+<h2>Additional note</h2>
+<ul>
+<li><p>The sample variance is defined by <span class="math display">
+S^2=\frac{\sum_{i=1}^{n} (X_i-\overline{X})^2}{n-1}=\frac{\sum_{i=1}^n X_i^2-n{\overline{X}^2}}{n-1}
+</span></p></li>
+<li><p>Where does the <span class="math inline">n-1</span> factor in the denominator come from?<br>
+(It would look more natural to divide by <span class="math inline">n</span>, instead that by <span class="math inline">n-1</span>)</p></li>
+<li><p>The <span class="math inline">n-1</span> factor is caused by a loss of precision:</p>
+<ul>
+<li>Ideally, the sample variance <span class="math inline">S^2</span> should contain the population mean <span class="math inline">\mu</span></li>
+<li>Since <span class="math inline">\mu</span> is not available, we estimate it with the sample mean <span class="math inline">\overline{X}</span></li>
+<li>This leads to the loss of 1 degree of freedom</li>
+</ul></li>
+</ul>
+</section>
+<section id="additional-note-1" class="slide level2 smaller">
+<h2>Additional note</h2>
+<ul>
+<li><p>General statistical rule: <span class="math display">
+\text{Lose 1 degree of freedom for each parameter estimated}
+</span></p></li>
+<li><p>In the case of the sample variance <span class="math inline">S^2</span>, we have to estimate one parameter (the population mean <span class="math inline">\mu</span>). Hence <span class="math display">\begin{align*}
+\text{degrees of freedom} &amp; = \text{Sample size}-\text{No. of estimated parameters} \\
+                        &amp; = n-1
+\end{align*}</span></p></li>
+<li><p>This is where the <span class="math inline">n-1</span> factor comes from!</p></li>
+</ul>
+</section>
+<section id="notation" class="slide level2 smaller">
+<h2>Notation</h2>
+<ul>
+<li><p>The realization of a random sample <span class="math inline">X_1,\ldots,X_n</span> is denoted by <span class="math display">
+x_1, \ldots, x_n
+</span></p></li>
+<li><p>The realization of the sample mean <span class="math inline">\overline{X}</span> is denoted <span class="math display">
+\overline{x} := \frac{1}{n} \sum_{i=1}^n x_i
+</span></p></li>
+<li><p>The realization of the sample variance <span class="math inline">S^2</span> is denoted <span class="math display">
+s^2=\frac{\sum_{i=1}^{n}(x_i-\overline{x})^2}{n-1}=\frac{\sum_{i=1}^n x_i^2-n{\overline{x}^2}}{n-1}
+</span></p></li>
+<li><p><strong>Capital letters denote random variables, while lowercase letters denote specific values (realizations) of those variables</strong></p></li>
+</ul>
+</section>
+<section id="exercise-1" class="slide level2 smaller">
+<h2>Exercise</h2>
+<p>Wage data on 10 Mathematicians</p>
+<p><br></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><strong>Mathematician</strong></th>
+<th style="text-align: center;"><span class="math inline">x_1</span></th>
+<th style="text-align: center;"><span class="math inline">x_2</span></th>
+<th style="text-align: center;"><span class="math inline">x_3</span></th>
+<th style="text-align: center;"><span class="math inline">x_4</span></th>
+<th style="text-align: center;"><span class="math inline">x_5</span></th>
+<th style="text-align: center;"><span class="math inline">x_6</span></th>
+<th style="text-align: center;"><span class="math inline">x_7</span></th>
+<th style="text-align: center;"><span class="math inline">x_8</span></th>
+<th style="text-align: center;"><span class="math inline">x_9</span></th>
+<th style="text-align: center;"><span class="math inline">x_{10}</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Wage</strong></td>
+<td style="text-align: center;">36</td>
+<td style="text-align: center;">40</td>
+<td style="text-align: center;">46</td>
+<td style="text-align: center;">54</td>
+<td style="text-align: center;">57</td>
+<td style="text-align: center;">58</td>
+<td style="text-align: center;">59</td>
+<td style="text-align: center;">60</td>
+<td style="text-align: center;">62</td>
+<td style="text-align: center;">63</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Question</strong>: Estimate <strong>population mean</strong> and <strong>variance</strong></p>
+</section>
+<section id="solution-to-the-exercise" class="slide level2 smaller">
+<h2>Solution to the Exercise</h2>
+<ul>
+<li><p><strong>Number</strong> of advertising professionals <span class="math inline">n=10</span></p></li>
+<li><p><strong>Sample Mean:</strong> <span class="math display">
+\overline{x} = \frac{1}{n} \sum_{i=1}^n x_i = \frac{36+40+46+{\dots}+62+63}{10}=\frac{535}{10}=53.5
+</span></p></li>
+<li><p><strong>Sample Variance</strong>: <span class="math display">\begin{align*}
+s^2 &amp;  = \frac{\sum_{i=1}^n  x_{i}^2 - n \overline{x}^2}{n-1} \\
+\sum_{i=1}^n x_i^2 &amp; = 36^2+40^2+46^2+{\ldots}+62^2+63^2 = 29435 \\
+s^2 &amp; = \frac{29435-10(53.5)^2}{9} = 90.2778
+\end{align*}</span></p></li>
+</ul>
+</section></section>
+<section>
+<section id="part-5-chi-squared-distribution" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 5: <br>Chi-squared distribution</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="overview" class="slide level2 smaller">
+<h2>Overview</h2>
+<p>Chi-squared distribution:</p>
+<ul>
+<li>defined in terms of squares of <span class="math inline">N(0, 1)</span> random variables</li>
+<li>designed to describe variance estimation</li>
+<li>used to define other members of the normal family
+<ul>
+<li>Student t-distribution</li>
+<li>F-distribution</li>
+</ul></li>
+</ul>
+</section>
+<section id="why-the-normal-family-is-important" class="slide level2 smaller">
+<h2>Why the normal family is important</h2>
+<ul>
+<li>Classical hypothesis testing and regression problems</li>
+<li>The same maths solves apparently unrelated problems</li>
+<li>Easy to compute
+<ul>
+<li>Statistics tables</li>
+<li>Software</li>
+</ul></li>
+<li>Enables the development of approximate methods in more complex (and interesting) problems</li>
+</ul>
+</section>
+<section id="reminder-normal-distribution" class="slide level2 smaller">
+<h2>Reminder: Normal distribution</h2>
+<ul>
+<li><p><span class="math inline">X</span> has <strong>normal distribution</strong> with mean <span class="math inline">\mu</span> and variance <span class="math inline">\sigma^2</span> if pdf is <span class="math display">
+f(x) := \frac{1}{\sqrt{2\pi\sigma^2}} \, \exp\left( -\frac{(x-\mu)^2}{2\sigma^2}\right) \,, \quad x \in \mathbb{R}
+</span></p></li>
+<li><p>In this case we write <span class="math display">
+X \sim N(\mu,\sigma^2)
+</span></p></li>
+<li><p>The <strong>standard normal distribution</strong> is denoted <span class="math inline">N(0,1)</span></p></li>
+</ul>
+</section>
+<section id="chi-squared-distribution" class="slide level2 smaller">
+<h2>Chi-squared distribution</h2>
+<h3 id="definition-1">Definition</h3>
+<div id="Definition*-6.1" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>Let <span class="math inline">Z_1,\ldots,Z_r</span> be iid <span class="math inline">N(0, 1)</span> random variables. The <strong>chi-squared distribution</strong> with <strong><span class="math inline">r</span> degrees of freedom</strong> is the distribution <span class="math display">
+\chi^2_r \sim  Z^2_1+...+Z^2_r
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="chi-squared-distribution-1" class="slide level2 smaller">
+<h2>Chi-squared distribution</h2>
+<h3 id="pdf-characterization">Pdf characterization</h3>
+<div id="Theorem*-6.2" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>The <span class="math inline">\chi^2_r</span> distribution is equivalent to a Gamma distribution <span class="math display">
+\chi^2_r \sim \Gamma(r/2, 1/2)
+</span> Therefore the pdf of <span class="math inline">\chi^2_r</span> can be written in closed form as <span class="math display">
+f_{\chi^2_r}(x)=\frac{x^{(r/2)-1} \, e^{-x/2}}{\Gamma(r/2) 2^{r/2}} \,, \quad x&gt;0
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="chi-squared-distribution-2" class="slide level2 smaller">
+<h2>Chi-squared distribution</h2>
+<h3 id="plots-of-chi-squared-pdf-for-different-choices-of-r">Plots of chi-squared pdf for different choices of r</h3>
+
+<img data-src="lecture_2_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
+<section id="proof-of-theorem-case-r-1" class="slide level2 smaller">
+<h2>Proof of Theorem – Case <span class="math inline">r =1</span></h2>
+<ul>
+<li>We start with the case <span class="math inline">r=1</span></li>
+<li>Need to prove that <span class="math display">
+\chi^2_1 \sim \Gamma(1/2, 1/2)
+</span></li>
+<li>Therefore we need to show that the pdf of <span class="math inline">\chi^2_1</span> is <span class="math display">
+f_{\chi^2_1}(x)=\frac{x^{-1/2} \, e^{-x/2}}{\Gamma(1/2) 2^{1/2}} \,, \quad x&gt;0
+</span></li>
+</ul>
+</section>
+<section id="proof-of-theorem-case-r-1-1" class="slide level2 smaller">
+<h2>Proof of Theorem – Case <span class="math inline">r =1</span></h2>
+<ul>
+<li>To this end, notice that by definition <span class="math display">
+\chi^2_1 \sim Z^2 \,, \qquad Z \sim N(0,1)
+</span></li>
+<li>Hence, for <span class="math inline">x&gt;0</span> we can compute <strong>cdf</strong> via <span class="math display">\begin{align*}
+F_{\chi^2_1}(x) &amp; = P(\chi^2_1 \leq x) \\
+              &amp; = P(Z^2 \leq x ) \\
+              &amp; = P(- \sqrt{x} \leq Z  \leq \sqrt{x} ) \\
+              &amp; = 2 P (0 \leq Z \leq \sqrt{x})
+\end{align*}</span> where in the last equality we used symmetry of <span class="math inline">Z</span> around <span class="math inline">x=0</span></li>
+</ul>
+</section>
+<section id="proof-of-theorem-case-r-1-2" class="slide level2 smaller">
+<h2>Proof of Theorem – Case <span class="math inline">r =1</span></h2>
+<ul>
+<li>Recalling the definition of <strong>standard normal pdf</strong> we get <span class="math display">\begin{align*}
+F_{\chi^2_1}(x) &amp; = 2 P (0 \leq Z \leq \sqrt{x}) \\
+              &amp; = 2 \frac{1}{\sqrt{2\pi}}
+                  \int_0^{\sqrt{x}} e^{-t^2/2} \, dt \\
+              &amp; = 2 \frac{1}{\sqrt{2\pi}} G( \sqrt{x} )
+\end{align*}</span> where we set <span class="math display">
+G(x) := \int_0^{x} e^{-t^2/2} \, dt
+</span></li>
+</ul>
+</section>
+<section id="proof-of-theorem-case-r-1-3" class="slide level2 smaller">
+<h2>Proof of Theorem – Case <span class="math inline">r =1</span></h2>
+<ul>
+<li><p>We can now compute pdf of <span class="math inline">\chi_1^2</span> by differentiating the cdf</p></li>
+<li><p>By the Fundamental Theorem of Calculus we have <span class="math display">
+G'(x) = \frac{d}{dx} \left( \int_0^{x} e^{-t^2/2} \, dt \right) = e^{-x^2/2} \quad \implies \quad
+G'(\sqrt{x}) = e^{-x/2}
+</span></p></li>
+<li><p>Chain rule yields <span class="math display">\begin{align*}
+f_{\chi^2_1}(x) &amp; = \frac{d}{dx} F_{\chi^2_1}(x) =
+\frac{d}{dx} \left(  2 \frac{1}{\sqrt{2\pi}} G( \sqrt{x} )  \right)  \\
+&amp; = 2 \frac{1}{\sqrt{2\pi}} G'( \sqrt{x} ) \frac{x^{-1/2}}{2}
+= \frac{x^{-1/2} e^{-x/2}}{2^{1/2} \sqrt{\pi}}
+\end{align*}</span></p></li>
+</ul>
+</section>
+<section id="proof-of-theorem-case-r-1-4" class="slide level2 smaller">
+<h2>Proof of Theorem – Case <span class="math inline">r =1</span></h2>
+<ul>
+<li>It is well known that <span class="math display">
+\Gamma(1/2) = \sqrt{\pi}
+</span></li>
+<li>Hence, we conclude <span class="math display">
+f_{\chi^2_1}(x) = \frac{x^{-1/2} e^{-x/2}}{2^{1/2} \sqrt{\pi}} = \frac{x^{-1/2} e^{-x/2}}{2^{1/2} \Gamma(1/2)}
+</span></li>
+<li>This shows <span class="math display">
+\chi_1^2 \sim \Gamma(1/2,1/2)
+</span></li>
+</ul>
+</section>
+<section id="proof-of-theorem-case-r-geq-2" class="slide level2 smaller">
+<h2>Proof of Theorem – Case <span class="math inline">r \geq 2</span></h2>
+<ul>
+<li><p>We need to prove that <span class="math inline">\chi^2_r \sim \Gamma(r/2, 1/2)</span></p></li>
+<li><p>By definition <span class="math display">
+\chi^2_r \sim Z^2_1 + \ldots + Z^2_r \,, \qquad
+Z_i \sim N(0,1) \quad \text{iid}
+</span></p></li>
+<li><p>By the Theorem in Slide 46, we have <span class="math display">
+Z_1,\ldots,Z_r \,\,\, \text{iid} \quad \implies \quad
+Z_1^2,\ldots,Z_r^2 \,\,\, \text{iid}
+</span></p></li>
+<li><p>Moreover, by definition, <span class="math inline">Z_i^2 \sim \chi_1^2</span></p></li>
+<li><p>Therefore, we have <span class="math display">
+\chi^2_r = \sum_{i=1}^r X_i, \qquad X_i \sim \chi^2_1 \quad \text{iid}
+</span></p></li>
+</ul>
+</section>
+<section id="proof-of-theorem-case-r-geq-2-1" class="slide level2 smaller">
+<h2>Proof of Theorem – Case <span class="math inline">r \geq 2</span></h2>
+<ul>
+<li><p>We have just proven that <span class="math display">
+\chi_1^2 \sim \Gamma (1/2,1/2)
+</span></p></li>
+<li><p>Moreover, the Theorem in Slide 53 guarantees that <span class="math display">
+Y_i \sim \Gamma(\alpha_i, \beta) \quad \text{independent} \quad \implies \quad
+Y_1 + \ldots + Y_n \sim \Gamma(\alpha,\beta)
+</span> where <span class="math inline">\alpha = \alpha_1 + \ldots + \alpha_n</span></p></li>
+<li><p>Therefore, we conclude that <span class="math display">
+\chi^2_r = \sum_{i=1}^r X_i, \qquad X_i \sim \Gamma(1/2,1/2) \quad \text{iid} \quad \implies \quad
+\chi^2_r \sim \Gamma(r/2,1/2)
+</span></p></li>
+</ul>
+</section></section>
+<section>
+<section id="part-6-sampling-from-normal-distribution" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 6: <br>Sampling from normal distribution</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="sampling-from-normal-distribution" class="slide level2 smaller">
+<h2>Sampling from Normal distribution</h2>
+<p><strong>Sample mean and variance</strong>: For a random sample <span class="math inline">X_1,\ldots,X_n</span> defined by <span class="math display">
+S^2 := \frac{1}{n-1} \sum_{i=1}^n \left( X_i - \overline{X}  \right)^2 \,, \qquad
+\overline{X} := \frac{1}{n} \sum_{i=1}^n X_i
+</span></p>
+<div id="Question*-7.1" class="Question">
+<p></p><details class="Question fbx-simplebox fbx-default" open=""><summary><strong>Question</strong></summary><div>Assume the sample is normal <span class="math display">
+X_i \sim N(\mu,\sigma^2) \,, \quad \forall \, i = 1 , \ldots, n
+</span> What are the distributions of <span class="math inline">\overline{X}</span> and <span class="math inline">S^2</span>?<p></p>
+</div></details>
+</div>
+</section>
+<section id="properties-of-sample-mean-and-variance" class="slide level2 smaller">
+<h2>Properties of Sample Mean and Variance</h2>
+<div id="Theorem*-7.2" class="Theorem">
+<details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>
+<p>Let <span class="math inline">X_1,\ldots,X_n</span> be a random sample from <span class="math inline">N(\mu,\sigma^2)</span>. Then</p>
+<ul>
+<li><span class="math inline">\overline{X}</span> and <span class="math inline">S^2</span> are independent random variables</li>
+<li><span class="math inline">\overline{X}</span> and <span class="math inline">S^2</span> are distributed as follows <span class="math display">
+\overline{X} \sim  N(\mu,\sigma^2/n) \,, \qquad
+\frac{(n-1)S^2}{\sigma^2} \sim \chi_{n-1}^2
+</span></li>
+</ul>
+</div></details>
+</div>
+</section>
+<section id="properties-of-sample-mean-and-variance-1" class="slide level2 smaller">
+<h2>Properties of Sample Mean and Variance</h2>
+<h3 id="proof-of-theorem-9">Proof of Theorem</h3>
+<ul>
+<li>To prove independence of <span class="math inline">\overline{X}</span> and <span class="math inline">S^2</span> we make use of the following Lemma</li>
+<li>Proof of this Lemma is technical and omitted</li>
+<li>For a proof see Lemma 5.3.3 in <span class="citation" data-cites="casella-berger">[<a href="#/references" role="doc-biblioref" onclick="">1</a>]</span></li>
+</ul>
+<div id="Lemma*-7.3" class="Lemma">
+<p></p><details class="Lemma fbx-simplebox fbx-default" open=""><summary><strong>Lemma</strong></summary><div>Let <span class="math inline">X</span> and <span class="math inline">Y</span> be normal random variables. Then <span class="math display">
+X \text{ and } Y \text{ independent } \quad \iff \quad
+{\rm Cov}(X,Y) = 0
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="properties-of-sample-mean-and-variance-2" class="slide level2 smaller">
+<h2>Properties of Sample Mean and Variance</h2>
+<h3 id="proof-of-theorem-10">Proof of Theorem</h3>
+<ul>
+<li><p>Note that <span class="math inline">X_i - \overline{X}</span> and <span class="math inline">\overline{X}</span> are normally distributed, being sums of iid normals</p></li>
+<li><p>Therefore, we can apply the Lemma to <span class="math inline">X_i - \overline X</span> and <span class="math inline">\overline{X}</span></p></li>
+<li><p>To this end, recall that <span class="math inline">{\rm Var}[\overline X] = \sigma^2/n</span></p></li>
+<li><p>Also note that, by independence of <span class="math inline">X_1,\ldots,X_n</span> <span class="math display">
+{\rm Cov}(X_i,X_j) =
+\begin{cases}
+{\rm Var}[X_i] &amp; \text{ if } \, i = j \\
+0         &amp; \text{ if } \, i \neq j \\
+\end{cases}
+</span></p></li>
+</ul>
+</section>
+<section id="properties-of-sample-mean-and-variance-3" class="slide level2 smaller">
+<h2>Properties of Sample Mean and Variance</h2>
+<h3 id="proof-of-theorem-11">Proof of Theorem</h3>
+<ul>
+<li><p>Using bilinearity of covariance (i.e.&nbsp;linearity in both arguments) <span class="math display">\begin{align*}
+{\rm Cov}(X_i - \overline X, \overline X) &amp; = {\rm Cov}(X_i,\overline{X}) - {\rm Cov}(\overline X,\overline{X}) \\
+&amp; = \frac{1}{n} \sum_{j=1}^n {\rm Cov}(X_i,X_j) - {\rm Var}[\overline X] \\
+&amp; = \frac{1}{n} {\rm Var}[X_i] - {\rm Var}[\overline X] \\
+&amp; = \frac{1}{n} \sigma^2 - \frac{\sigma^2}{n} = 0
+\end{align*}</span></p></li>
+<li><p>By the Lemma, we infer independence of <span class="math inline">X_i - \overline X</span> and <span class="math inline">\overline X</span></p></li>
+</ul>
+</section>
+<section id="properties-of-sample-mean-and-variance-4" class="slide level2 smaller">
+<h2>Properties of Sample Mean and Variance</h2>
+<h3 id="proof-of-theorem-12">Proof of Theorem</h3>
+<ul>
+<li><p>We have shown <span class="math display">
+X_i - \overline X \quad \text{and} \quad  \overline X \quad
+\text{independent}
+</span></p></li>
+<li><p>By the Theorem in Slide 46, we hence have <span class="math display">
+(X_i - \overline X)^2 \quad \text{and} \quad  \overline X \quad
+\text{independent}
+</span></p></li>
+<li><p>By the same Theorem we also get <span class="math display">
+\sum_{i=1}^n (X_i - \overline X)^2 = (n-1)S^2 \quad \text{and} \quad  \overline X \quad
+\text{independent}
+</span></p></li>
+<li><p>Again the same Theorem, finally implies independence of <span class="math inline">S^2</span> and <span class="math inline">\overline X</span></p></li>
+</ul>
+</section>
+<section id="properties-of-sample-mean-and-variance-5" class="slide level2 smaller">
+<h2>Properties of Sample Mean and Variance</h2>
+<h3 id="proof-of-theorem-13">Proof of Theorem</h3>
+<ul>
+<li><p>We now want to show that <span class="math inline">\overline{X} \sim  N(\mu,\sigma^2/n)</span></p></li>
+<li><p>We are assuming that <span class="math inline">X_1,\ldots,X_n</span> are iid with <span class="math display">
+{\rm I\kern-.3em E}[X_i] = \mu \,, \qquad {\rm Var}[X_i] = \sigma^2
+</span></p></li>
+<li><p>We have already seen in Slides 70 and 72 that, in this case, <span class="math display">
+{\rm I\kern-.3em E}[\overline X] = \mu \,, \quad {\rm Var}[\overline{X}] = \frac{\sigma^2}{n}
+</span></p></li>
+<li><p>Sum of independent normals is normal (see the Theorem in slide 50)</p></li>
+<li><p>Therefore <span class="math inline">\overline{X}</span> is normal, with mean <span class="math inline">\mu</span> and variance <span class="math inline">\sigma^2/n</span></p></li>
+</ul>
+</section>
+<section id="properties-of-sample-mean-and-variance-6" class="slide level2 smaller">
+<h2>Properties of Sample Mean and Variance</h2>
+<h3 id="proof-of-theorem-14">Proof of Theorem</h3>
+<ul>
+<li>We are left to prove that <span class="math display">
+\frac{(n-1)S^2}{\sigma^2} \sim \chi_{n-1}^2
+</span>
+<ul>
+<li>This is somewhat technical and we don’t actually prove it</li>
+<li>For a proof see Theorem 5.3.1 in <span class="citation" data-cites="casella-berger">[<a href="#/references" role="doc-biblioref" onclick="">1</a>]</span></li>
+<li>We however want to provide some intuition on why it holds</li>
+</ul></li>
+<li>Recall that the chi-squared distribution with <span class="math inline">r</span> degrees of freedom is <span class="math display">
+\chi_r^2 \sim Z_1^2 + \ldots + Z_r^2
+</span> with <span class="math inline">Z_i</span> iid and <span class="math inline">N(0,1)</span></li>
+</ul>
+</section>
+<section id="properties-of-sample-mean-and-variance-7" class="slide level2 smaller">
+<h2>Properties of Sample Mean and Variance</h2>
+<h3 id="proof-of-theorem-15">Proof of Theorem</h3>
+<ul>
+<li><p>By definition of <span class="math inline">S^2</span> we have <span class="math display">
+\frac{(n-1)S^2}{\sigma^2}  =
+\sum_{i=1}^n \frac{(X_i - \overline X)^2}{\sigma^2}
+</span></p></li>
+<li><p>If we replace the sample mean <span class="math inline">\overline X</span> with the actual mean <span class="math inline">\mu</span> we get the approximation <span class="math display">
+\frac{(n-1)S^2}{\sigma^2}  =
+\sum_{i=1}^n \frac{(X_i - \overline X)^2}{\sigma^2} \approx
+\sum_{i=1}^n \frac{(X_i - \mu)^2}{\sigma^2}
+</span></p></li>
+</ul>
+</section>
+<section id="properties-of-sample-mean-and-variance-8" class="slide level2 smaller">
+<h2>Properties of Sample Mean and Variance</h2>
+<h3 id="proof-of-theorem-16">Proof of Theorem</h3>
+<ul>
+<li><p>Since <span class="math inline">X_i \sim N(\mu,\sigma^2)</span>, we have that <span class="math display">
+Z_i := \frac{X_i - \mu}{\sigma} \sim N(0,1)
+</span></p></li>
+<li><p>Therefore <span class="math display">
+\frac{(n-1)S^2}{\sigma^2}   \approx \sum_{i=1}^n \frac{(X_i - \mu)^2}{\sigma^2} = \sum_{i=1}^n Z_i^2 \sim \chi_n^2
+</span></p></li>
+<li><p>The above is just an approximation:<br>
+When replacing <span class="math inline">\mu</span> with <span class="math inline">\overline X</span>, we <strong>lose 1 degree of freedom</strong> <span class="math display">
+\frac{(n-1)S^2}{\sigma^2} \sim \chi_{n-1}^2
+</span></p></li>
+</ul>
+</section></section>
+<section>
+<section id="part-7-t-distribution" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 7: <br>t-distribution</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="estimating-the-mean" class="slide level2 smaller">
+<h2>Estimating the Mean</h2>
+<div id="Problem*-8.1" class="Problem">
+<p></p><details class="Problem fbx-simplebox fbx-default" open=""><summary><strong>Problem</strong></summary><div>Estimate the mean <span class="math inline">\mu</span> of a <strong>normal population</strong><p></p>
+</div></details>
+</div>
+<p><strong>What to do?</strong></p>
+<ul>
+<li><p>We can collect normal samples <span class="math inline">X_1, \ldots, X_n</span> with <span class="math inline">X_i \sim N(\mu,\sigma^2)</span></p></li>
+<li><p>We then compute the sample mean <span class="math display">
+\overline X := \frac{1}{n} \sum_{i=1}^n X_i
+</span></p></li>
+<li><p>We know that <span class="math inline">{\rm I\kern-.3em E}[\overline X] = \mu</span></p></li>
+</ul>
+</section>
+<section id="overline-x-approximates-mu" class="slide level2 smaller">
+<h2><span class="math inline">\overline X</span> approximates <span class="math inline">\mu</span></h2>
+<div id="Question*-8.2" class="Question">
+<p></p><details class="Question fbx-simplebox fbx-default" open=""><summary><strong>Question</strong></summary><div>How good is this approximation? How to quantify it?<p></p>
+</div></details>
+</div>
+<p><strong>Answer</strong>: We consider the <strong>Test Statistic</strong> <span class="math display">
+T := \frac{\overline{X}-\mu}{\sigma/\sqrt{n}} \, \sim \,N(0,1)
+</span></p>
+<ul>
+<li><p>This is because <span class="math inline">\overline X \sim N(\mu,\sigma^2/n)</span> – see Slide 101</p></li>
+<li><p>If <span class="math inline">\sigma</span> is known, then the only unknown in <span class="math inline">T</span> is <span class="math inline">\mu</span></p></li>
+</ul>
+<p><strong><span class="math inline">T</span> can be used to estimate <span class="math inline">\mu</span> <span class="math inline">\quad \implies \quad</span> Hypothesis Testing</strong></p>
+</section>
+<section id="hypothesis-testing" class="slide level2 smaller">
+<h2>Hypothesis testing</h2>
+<ul>
+<li><p>Suppose that <span class="math inline">\mu=\mu_0</span> (this is called the <strong>null hypothesis</strong>)</p></li>
+<li><p>Using the data collected <span class="math inline">\mathbf{x}= (x_1,\ldots,x_n)</span>, we compute <span class="math display">
+t := \frac{\overline{x}-\mu_0}{\sigma/\sqrt{n}} \,, \qquad
+\overline{x} = \frac{1}{n} \sum_{i=1}^n x_i
+</span></p></li>
+<li><p>When <span class="math inline">\mu = \mu_0</span>, the number <span class="math inline">t</span> is a realization of the test statistic (random variable) <span class="math display">
+T = \frac{\overline{X}-\mu_0}{\sigma/\sqrt{n}} \, \sim \,N(0,1)
+</span></p></li>
+<li><p>Therefore, we can compute the probability of <span class="math inline">T</span> being close to <span class="math inline">t</span> <span class="math display">
+p := P(T \approx t)
+</span></p></li>
+</ul>
+</section>
+<section id="hypothesis-testing-1" class="slide level2 smaller">
+<h2>Hypothesis testing</h2>
+<p>Given the value <span class="math inline">p := P(T \approx t)</span> we have 2 cases:</p>
+<ul>
+<li><span class="math inline">p</span> is small <span class="math inline">\quad \implies \quad</span> <strong>reject the null hypothesis</strong> <span class="math inline">\mu = \mu_0</span>
+<ul>
+<li><span class="math inline">p</span> small means it is unlikely to observe such value of <span class="math inline">t</span></li>
+<li>Recall that <span class="math inline">t</span> depends only on the data <span class="math inline">\mathbf{x}</span>, and on our guess <span class="math inline">\mu_0</span></li>
+<li>We conclude that our guess must be wrong <span class="math inline">\quad \implies \quad \mu \neq \mu_0</span></li>
+</ul></li>
+<li><span class="math inline">p</span> is large <span class="math inline">\quad \implies \quad</span> <strong>do not reject the null hypothesis</strong> <span class="math inline">\mu = \mu_0</span>
+<ul>
+<li><span class="math inline">p</span> large means that <span class="math inline">t</span> occurs with reasonably high probability</li>
+<li>There is no reason to believe our guess <span class="math inline">\mu_0</span> was wrong</li>
+<li>But we also do not have sufficient reason to believe <span class="math inline">\mu_0</span> was correct</li>
+</ul></li>
+</ul>
+</section>
+<section id="important-remark" class="slide level2 smaller">
+<h2>Important Remark</h2>
+<ul>
+<li><p>The key step in <strong>Hypothesis Testing</strong> is computing <span class="math display">
+p = P(T \approx t)
+</span></p></li>
+<li><p>This is only possible if we know the distribution of <span class="math display">
+T = \frac{\overline{X}-\mu}{\sigma/\sqrt{n}}
+</span></p></li>
+<li><p>If we assume that the variance <span class="math inline">\sigma^2</span> is known, then <span class="math display">
+T \sim N(0,1)
+</span> and <span class="math inline">p</span> is easily computed</p></li>
+</ul>
+</section>
+<section id="unknown-variance" class="slide level2 smaller">
+<h2>Unknown variance</h2>
+<div id="Problem*-8.3" class="Problem">
+<p></p><details class="Problem fbx-simplebox fbx-default" open=""><summary><strong>Problem</strong></summary><div>In general, the population variance <span class="math inline">\sigma^2</span> is unknown. What to do?<p></p>
+</div></details>
+</div>
+<p><strong>Idea</strong>: We can replace <span class="math inline">\sigma^2</span> with the <strong>sample variance</strong> <span class="math display">
+S^2 = \frac{\sum_{i=1}^n X_i^2 - n \overline{X}^2}{n-1}
+</span> The new test statistic is hence <span class="math display">
+T := \frac{\overline{X}-\mu}{S/\sqrt{n}}
+</span></p>
+</section>
+<section id="distribution-of-the-test-statistic" class="slide level2 smaller">
+<h2>Distribution of the test statistic</h2>
+<div id="Question*-8.4" class="Question">
+<p></p><details class="Question fbx-simplebox fbx-default" open=""><summary><strong>Question</strong></summary><div>What is the distribution of<p></p>
+<p><span class="math display">
+T := \frac{\overline{X}-\mu}{S/\sqrt{n}} \qquad ?
+</span></p>
+</div></details>
+</div>
+<p><strong>Answer</strong>: <span class="math inline">T</span> has t-distribution with <span class="math inline">n-1</span> degrees of freedom</p>
+<ul>
+<li>This is also known as <strong>Student’s t-distribution</strong></li>
+<li><strong>Student</strong> was the pen name under which <strong>W.S. Gosset</strong> was publishing his research</li>
+<li>He was <strong>head brewer</strong> at Guinness, at the time the largest brewery in the world!</li>
+<li>Used t-distribution to study chemical properties of barley from <strong>low samples</strong> <span class="citation" data-cites="student">[<a href="#/references" role="doc-biblioref" onclick="">2</a>]</span> (see original <a href="https://www.york.ac.uk/depts/maths/histstat/student.pdf">paper</a> )</li>
+</ul>
+</section>
+<section id="t-distribution" class="slide level2 smaller">
+<h2>t-distribution</h2>
+<div id="Definition*-8.5" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>A random variable <span class="math inline">T</span> has <strong>Student’s t-distribution</strong> with <strong>p degrees of freedom</strong>, denoted by <span class="math display">
+T \sim t_p \,,
+</span> if the pdf of <span class="math inline">T</span> is <span class="math display">
+f_T(t) = \frac{\Gamma \left( \frac{p+1}{2} \right) }{\Gamma \left( \frac{p}{2} \right)} \, \frac{1}{(p\pi)^{1/2}} \,
+\frac{ 1  }{ (1 + t^2/p)^{(p+1)/2} } \,, \qquad
+t \in \mathbb{R}
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="characterization-of-the-t-distribution" class="slide level2 smaller">
+<h2>Characterization of the t-distribution</h2>
+<div id="Theorem*-8.6" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Let <span class="math inline">U \sim N(0,1)</span> and <span class="math inline">V \sim \chi_p^2</span> be independent random variables. Then <span class="math display">
+T := \frac{U}{\sqrt{V/p}}  \, \sim  \, t_p \,,
+</span> that is, <span class="math inline">T</span> has t-distribution with <span class="math inline">p</span> degrees of freedom.<p></p>
+</div></details>
+</div>
+<p><strong>Proof</strong>: Given as exercise in Homework assignments</p>
+</section>
+<section id="distribution-of-t-statistic" class="slide level2 smaller">
+<h2>Distribution of t-statistic</h2>
+<p>As a consequence of the Theorem in previous slide we obtain:</p>
+<div id="Theorem*-8.7" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Let <span class="math inline">X_1,\ldots,X_n</span> be a random sample from <span class="math inline">N(\mu,\sigma^2)</span>. Then the random variable <span class="math display">
+T = \frac{\overline{X}-\mu}{S/\sqrt{n}}
+</span> has <strong>t-distribution</strong> with <span class="math inline">n-1</span> degrees of freedom, that is, <span class="math display">
+T \sim t_{n-1}
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="distribution-of-t-statistic-1" class="slide level2 smaller">
+<h2>Distribution of t-statistic</h2>
+<h3 id="proof-of-theorem-17">Proof of Theorem</h3>
+<ul>
+<li><p>Since <span class="math inline">X_1,\ldots,X_n</span> is random sample from <span class="math inline">N(\mu,\sigma^2)</span>, we have that (see Slide 101) <span class="math display">
+\overline{X} \sim N(\mu, \sigma^2/n)
+</span></p></li>
+<li><p>Therefore, we can renormalize and obtain <span class="math display">
+U := \frac{ \overline{X} - \mu }{ \sigma/\sqrt{n} } \sim N(0,1)
+</span></p></li>
+</ul>
+</section>
+<section id="distribution-of-t-statistic-2" class="slide level2 smaller">
+<h2>Distribution of t-statistic</h2>
+<h3 id="proof-of-theorem-18">Proof of Theorem</h3>
+<ul>
+<li><p>We have also shown that <span class="math display">
+V := \frac{ (n-1) S^2 }{ \sigma^2 } \sim \chi_{n-1}^2
+</span></p></li>
+<li><p>Finally, we can rewrite <span class="math inline">T</span> as <span class="math display">
+T = \frac{\overline{X}-\mu}{S/\sqrt{n}} = \frac{U}{ \sqrt{V/(n-1)} }
+</span></p></li>
+<li><p>By the Theorem in Slide 118, we conclude that <span class="math inline">T \sim t_{n-1}</span></p></li>
+</ul>
+</section>
+<section id="properties-of-t-distribution" class="slide level2 smaller">
+<h2>Properties of t-distribution</h2>
+<div id="expectation-and-variance-of-t-distribution" class="Proposition" title="Expectation and Variance of t-distribution">
+<details class="Proposition fbx-simplebox fbx-default" open=""><summary><strong>Proposition: </strong>Expectation and Variance of t-distribution</summary><div>
+<p>Suppose that <span class="math inline">T \sim t_p</span>. We have:</p>
+<ul>
+<li>If <span class="math inline">p&gt;1</span> then <span class="math inline">{\rm I\kern-.3em E}[T] = 0</span></li>
+<li>If <span class="math inline">p&gt;2</span> then <span class="math inline">{\rm Var}[T] = \frac{p}{p-2}</span></li>
+</ul>
+</div></details>
+</div>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>We have to assume <span class="math inline">p&gt;1</span>, otherwise <span class="math inline">{\rm I\kern-.3em E}[T] = \infty</span> for <span class="math inline">p=1</span></li>
+<li>We have to assume <span class="math inline">p&gt;2</span>, otherwise <span class="math inline">{\rm Var}[T] = \infty</span> for <span class="math inline">p=1,2</span></li>
+<li><span class="math inline">{\rm I\kern-.3em E}[T] = 0</span> follows trivially from symmetry of the pdf <span class="math inline">f_T(t)</span> around <span class="math inline">t=0</span></li>
+<li>Computing <span class="math inline">{\rm Var}[T]</span> is quite involved, and we skip it</li>
+</ul>
+</section>
+<section id="t-distribution-1" class="slide level2 smaller">
+<h2>t-distribution</h2>
+<h3 id="comparison-with-standard-normal">Comparison with Standard Normal</h3>
+<p>The <span class="math inline">t_p</span> distribution <strong>approximates</strong> the standard normal <span class="math inline">N(0,1)</span>:</p>
+<ul>
+<li><span class="math inline">t_p</span> it is symmetric around zero and bell-shaped, like <span class="math inline">N(0,1)</span></li>
+<li><span class="math inline">t_p</span> has <strong>heavier tails</strong> compared to <span class="math inline">N(0,1)</span></li>
+<li>While the variance of <span class="math inline">N(0,1)</span> is <span class="math inline">1</span>, the variance of <span class="math inline">t_p</span> is <span class="math inline">\frac{p}{p-2}</span></li>
+<li>We have that <span class="math display">
+t_p \to N(0,1) \quad \text{as} \quad p \to \infty
+</span></li>
+</ul>
+</section>
+<section id="plot-comparison-with-standard-normal" class="slide level2 smaller">
+<h2>Plot: Comparison with Standard Normal</h2>
+
+<img data-src="lecture_2_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>References</h2>
+
+<div class="quarto-auto-generated-content">
+<div class="footer footer-default">
+<p><a href="../index.html">Homepage</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href="../license.html">License</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href="https://www.silviofanzon.com/contact">Contact</a></p>
+</div>
+</div>
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-casella-berger" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">Casella, George, Berger, Roger L., Statistical inference, second edition, Brooks/Cole, 2002.</div>
+</div>
+<div id="ref-student" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">Gosset (Student), W.S., The probable error of a mean, Biometrika. 6 (1908) 1–25.</div>
+</div>
+</div>
+</section></section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>

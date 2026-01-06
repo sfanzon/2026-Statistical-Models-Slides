@@ -1,0 +1,6 @@
+\providecommand{\Pageref}[1]{\hfill p.\pageref{#1}}
+ [**Definition**](#Definition*-2.1)\Pageref{Definition*-2.1}
+
+ [**Definition**](#Definition*-2.2)\Pageref{Definition*-2.2}
+
+ [**Proposition**](#Proposition*-2.3)\Pageref{Proposition*-2.3}

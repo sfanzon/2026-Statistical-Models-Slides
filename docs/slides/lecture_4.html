@@ -1,0 +1,3810 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<link href="../favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-contrib/foldbox/foldbox.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.5.57">
+
+  <meta name="author" content="Dr.&nbsp;Silvio Fanzon">
+  <title>Statistical Models</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+  .DONE {
+    --color1: #cce7b1;
+    --color2: #86b754;
+  }
+  .Corollary {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Important {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Notation {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
+  .Remark {
+    --color1: #bce5de;
+    --color2: #21aa93;
+  }
+  .Proof {
+    --color1: #f1f1f2;
+    --color2: #c0c0c1;
+  }
+  .Idea {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Definition {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
+  .Warning {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Axiom {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Question {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Example {
+    --color1: #bce5de;
+    --color2: #21aa93;
+  }
+  .Proposition {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Problem {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Conjecture {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .TODO {
+    --color1: #e7b1b4;
+    --color2: #8c3236;
+  }
+  .Lemma {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Theorem {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Statistical Models</h1>
+  <p class="subtitle">Lecture 4</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+<a href="https://www.silviofanzon.com">Dr.&nbsp;Silvio Fanzon</a> 
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:S.Fanzon@hull.ac.uk">S.Fanzon@hull.ac.uk</a>
+</div>
+        <p class="quarto-title-affiliation">
+            University of Hull
+          </p>
+    </div>
+</div>
+
+</section>
+<section>
+<section id="lecture-4-the-variance-ratio-two-sample-t-tests" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Lecture 4: <br>The variance ratio &amp; <br> Two-sample t-tests</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="outline-of-lecture-4" class="slide level2">
+<h2>Outline of Lecture 4</h2>
+<ol type="1">
+<li>One-sample variance ratio test</li>
+<li>Worked example</li>
+<li>One-sample variance ratio test in R</li>
+<li>Two-sample hypothesis tests</li>
+<li>Two-sample t-test</li>
+<li>Two-sample t-test: Example</li>
+<li>The Welch t-test</li>
+<li>The t-test for paired samples</li>
+</ol>
+</section></section>
+<section>
+<section id="part-1-one-sample-variance-ratio-test" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 1: <br>One-sample variance <br> ratio test</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="task-estimating-mean-and-variance" class="slide level2 smaller">
+<h2>Task: Estimating mean and variance</h2>
+<ul>
+<li>Assume the population has normal distribution <span class="math inline">N(\mu,\sigma^2)</span>
+<ul>
+<li>Mean <span class="math inline">\mu</span> and variance <span class="math inline">\sigma^2</span> are <strong>unknown</strong></li>
+</ul></li>
+<li><strong>Questions</strong> about <span class="math inline">\mu</span> and <span class="math inline">\sigma^2</span>
+<ol type="1">
+<li>What is my best guess of the value?</li>
+<li>How far away from the true value am I likely to be?</li>
+</ol></li>
+<li><strong>Answers:</strong>
+<ul>
+<li>The one-sample <strong>t-test</strong> answers questions about <span class="math inline">\mu</span> (seen in Lecture 3)</li>
+<li>The one-sample <strong>variance ratio test</strong> answers questions about <span class="math inline">\sigma^2</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="reminder" class="slide level2 smaller">
+<h2>Reminder</h2>
+<ul>
+<li><p>The-one sample variance test uses <strong>chi-squared distribution</strong></p></li>
+<li><p><strong>Recall:</strong> Chi-squared distribution with <span class="math inline">p</span> degrees of freedom is <span class="math display">
+\chi_p^2 = Z_1^2 + \ldots + Z_p^2
+</span> where <span class="math inline">Z_1, \ldots, Z_p</span> are iid <span class="math inline">N(0, 1)</span></p></li>
+</ul>
+</section>
+<section id="one-sample-one-sided-variance-ratio-test" class="slide level2 smaller">
+<h2>One-sample one-sided variance ratio test</h2>
+<p><strong>Assumption:</strong> Suppose given sample <span class="math inline">X_1,\ldots, X_n</span> iid from <span class="math inline">N(\mu,\sigma^2)</span></p>
+<p><strong>Goal:</strong> Estimate variance <span class="math inline">\sigma^2</span> of population</p>
+<p><strong>Test:</strong></p>
+<ul>
+<li><p>Suppose <span class="math inline">\sigma_0</span> is guess for <span class="math inline">\sigma</span></p></li>
+<li><p>The one-sided hypothesis test for <span class="math inline">\sigma</span> is <span class="math display">
+H_0 \colon \sigma = \sigma_0 \qquad H_1 \colon \sigma &gt; \sigma_0
+</span></p></li>
+</ul>
+</section>
+<section id="what-to-do" class="slide level2 smaller">
+<h2>What to do?</h2>
+<ul>
+<li><p>Consider the sample variance <span class="math display">
+S^2 = \frac{ \sum_{i=1}^n  X_i^2 - n \overline{X}^2 }{n-1}
+</span></p></li>
+<li><p>Since we believe <span class="math inline">H_0</span>, the variance is <span class="math display">
+\sigma = \sigma_0
+</span></p></li>
+<li><p><span class="math inline">S^2</span> cannot be too far from the true variance <span class="math inline">\sigma</span></p></li>
+<li><p>Therefore we <strong>cannot</strong> have that <span class="math display">
+S^2 \gg \sigma^2 = \sigma_0^2
+</span></p></li>
+</ul>
+</section>
+<section id="what-to-do-1" class="slide level2 smaller">
+<h2>What to do?</h2>
+<ul>
+<li><p>If we observe <span class="math inline">S^2 \gg \sigma_0^2</span> then our guess <span class="math inline">\sigma_0</span> is probably wrong</p></li>
+<li><p>Therefore we <strong>reject</strong> <span class="math inline">H_0</span> if <span class="math display">
+S^2 \gg \sigma_0^2
+</span></p></li>
+<li><p>The <strong>rejection</strong> condition <span class="math inline">S^2 \gg \sigma_0^2</span> is equivalent to <span class="math display">
+\frac{(n-1)S^2}{\sigma_0^2}  \gg 1
+</span> where <span class="math inline">n</span> is the sample size</p></li>
+</ul>
+</section>
+<section id="what-to-do-2" class="slide level2 smaller">
+<h2>What to do?</h2>
+<ul>
+<li><p>We define our <strong>test statistic</strong> as <span class="math display">
+\chi^2 := \frac{(n-1)S^2}{\sigma_0^2}
+</span></p></li>
+<li><p>The <strong>rejection</strong> condition is hence <span class="math display">
+\chi^2 \gg 1
+</span></p></li>
+</ul>
+</section>
+<section id="what-to-do-3" class="slide level2 smaller">
+<h2>What to do?</h2>
+<ul>
+<li><p>In Lecture 2, we have proven that <span class="math display">
+\frac{(n-1)S^2}{\sigma^2} \sim \chi_{n-1}^2
+</span></p></li>
+<li><p>Assuming <span class="math inline">\sigma=\sigma_0</span>, we therefore have <span class="math display">
+\chi^2 = \frac{(n-1)S^2}{\sigma_0^2} = \frac{(n-1)S^2}{\sigma^2} \sim \chi_{n-1}^2
+</span></p></li>
+</ul>
+</section>
+<section id="summary-rejection-condition" class="slide level2 smaller">
+<h2>Summary: Rejection condition</h2>
+<ul>
+<li><p>We <strong>reject</strong> <span class="math inline">H_0</span> if <span class="math display">
+\chi^2 = \frac{(n-1)S^2}{\sigma_0^2} \gg 1
+</span></p></li>
+<li><p>This means we do not want <span class="math inline">\chi^2</span> to be too extreme to the right</p></li>
+<li><p>As <span class="math inline">\chi^2 \sim \chi_{n-1}^2</span>, we decide to rejct <span class="math inline">H_0</span> if <span class="math display">
+\chi^2 &gt; \chi_{n-1}^2(0.05)   
+</span></p></li>
+<li><p>By definition, the <strong>critical value</strong> <span class="math inline">\chi_{n-1}^2(0.05)</span> is such that <span class="math display">
+P(\chi_{n-1}^2 &gt; \chi_{n-1}^2(0.05) ) = 0.05
+</span></p></li>
+</ul>
+</section>
+<section id="critical-values-of-chi-squared" class="slide level2 smaller">
+<h2>Critical values of chi-squared</h2>
+<ul>
+<li><p><span class="math inline">x^* := \chi_{n-1}^2(0.05)</span> is point on <span class="math inline">x</span>-axis such that <span class="math inline">P(\chi_{n-1}^2 &gt; x^* ) = 0.05</span></p></li>
+<li><p>Therefore, the semi-open interval <span class="math inline">(x^*,+\infty)</span> is the <em>rejection region</em></p></li>
+<li><p>In the picture we have <span class="math inline">n = 12</span> and <span class="math inline">\chi_{11}^2(0.05) = 19.68</span></p></li>
+</ul>
+
+<img data-src="lecture_4_files/figure-revealjs/unnamed-chunk-1-1.png" width="960" class="r-stretch"></section>
+<section id="critical-values-of-chi-squared-tables" class="slide level2 smaller">
+<h2>Critical values of chi-squared – Tables</h2>
+<ul>
+<li>Find Table 2 in this <a href="files/Statistics_Tables.pdf">file</a></li>
+<li>Look at the row with Degree of Freedom <span class="math inline">n-1</span> (or its closest value)</li>
+<li>Find <strong>critical value</strong> <span class="math inline">\chi^2_{n-1}(0.05)</span> in column <span class="math inline">\alpha = 0.05</span></li>
+<li><strong>Example</strong>: <span class="math inline">n=12</span>, DF <span class="math inline">=11</span>, <span class="math inline">\chi^2_{11}(0.05) = 19.68</span></li>
+</ul>
+
+<img data-src="images/chi_squared_test_statistic_table.png" style="width:82.0%" class="r-stretch"></section>
+<section id="the-p-value" class="slide level2 smaller">
+<h2>The p-value</h2>
+<ul>
+<li><p>Given the test statistic <span class="math inline">\chi^2</span>, the <strong>p-value</strong> is defined as <span class="math display">
+p := P( \chi_{n-1}^2 &gt; \chi^2 )
+</span></p></li>
+<li><p>Notice that <span class="math display">
+p &lt; 0.05 \qquad \iff \qquad  \chi^2 &gt; \chi_{n-1}^2(0.05)
+</span></p></li>
+</ul>
+<blockquote>
+<p>This is because <span class="math inline">\chi^2 &gt; \chi_{n-1}^2(0.05)</span> iff <span class="math display">
+p = P(\chi_{n-1}^2 &gt; \chi^2)
+&lt; P(\chi_{n-1}^2 &gt; \chi_{n-1}^2(0.05) )
+= 0.05
+</span></p>
+</blockquote>
+</section>
+<section id="one-sample-one-sided-variance-ratio-test-1" class="slide level2 smaller">
+<h2>One-sample one-sided variance ratio test</h2>
+<p>Suppose given</p>
+<ul>
+<li>Sample <span class="math inline">x_1, \ldots, x_n</span> of size <span class="math inline">n</span> from <span class="math inline">N(\mu,\sigma^2)</span></li>
+<li>Guess <span class="math inline">\sigma_0</span> for <span class="math inline">\sigma</span></li>
+</ul>
+<p>The one-sided hypothesis test is <span class="math display">
+H_0 \colon \sigma = \sigma_0 \qquad H_1 \colon \sigma &gt; \sigma_0
+</span></p>
+</section>
+<section id="procedure-3-steps" class="slide level2 smaller">
+<h2>Procedure: 3 steps</h2>
+<ol type="1">
+<li><strong>Calculation</strong>: Compute the chi-squared statistic <span class="math display">
+\chi^2 = \frac{(n-1) s^2}{\sigma_0^2}
+</span> where sample mean and variance are <span class="math display">
+\overline{x} = \frac{1}{n} \sum_{i=1}^n x_i \,, \qquad
+s^2 = \frac{\sum_{i=1}^n x_i^2 - n \overline{x}^2}{n-1}
+</span></li>
+</ol>
+</section>
+<section id="section" class="slide level2 smaller">
+<h2></h2>
+<ol start="2" type="1">
+<li><strong>Statistical Tables or R</strong>: Find either
+<ul>
+<li>Critical value in <a href="files/Statistics_Tables.pdf">Table 2</a> <span class="math display">
+\chi_{n-1}^2(0.05)
+</span></li>
+<li>p-value in R <span class="math display">
+p := P( \chi_{n-1}^2 &gt; \chi^2 )
+</span> (more on this later)</li>
+</ul></li>
+</ol>
+<p><br></p>
+<ol start="3" type="1">
+<li><strong>Interpretation</strong>: Reject <span class="math inline">H_0</span> if either <span class="math display">
+\chi^2 &gt; \chi_{n-1}^2(0.05)  \qquad \text{ or } \qquad p &lt; 0.05
+</span></li>
+</ol>
+</section></section>
+<section>
+<section id="part-2-worked-example" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 2: <br>Worked example</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="one-sample-variance-ratio-test-example" class="slide level2 smaller">
+<h2>One-sample variance ratio test: Example</h2>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Month</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">F</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">S</th>
+<th style="text-align: center;">O</th>
+<th style="text-align: center;">N</th>
+<th style="text-align: center;">D</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Cons. Expectation</td>
+<td style="text-align: center;">66</td>
+<td style="text-align: center;">53</td>
+<td style="text-align: center;">62</td>
+<td style="text-align: center;">61</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">72</td>
+<td style="text-align: center;">65</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">61</td>
+<td style="text-align: center;">50</td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;">51</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cons. Spending</td>
+<td style="text-align: center;">72</td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;">69</td>
+<td style="text-align: center;">65</td>
+<td style="text-align: center;">82</td>
+<td style="text-align: center;">77</td>
+<td style="text-align: center;">72</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">77</td>
+<td style="text-align: center;">75</td>
+<td style="text-align: center;">77</td>
+<td style="text-align: center;">77</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Difference</td>
+<td style="text-align: center;">-6</td>
+<td style="text-align: center;">-2</td>
+<td style="text-align: center;">-7</td>
+<td style="text-align: center;">-4</td>
+<td style="text-align: center;">-4</td>
+<td style="text-align: center;">-5</td>
+<td style="text-align: center;">-7</td>
+<td style="text-align: center;">-14</td>
+<td style="text-align: center;">-16</td>
+<td style="text-align: center;">-25</td>
+<td style="text-align: center;">-22</td>
+<td style="text-align: center;">-26</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<ul>
+<li><strong>Data:</strong> <em>Consumer Expectation</em> (CE) and <em>Consumer Spending</em> (CS) in 2011</li>
+<li><strong>Assumption:</strong> CE and CS are normally distributed</li>
+</ul>
+</section>
+<section id="one-sample-variance-ratio-test-example-1" class="slide level2 smaller">
+<h2>One-sample variance ratio test: Example</h2>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Month</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">F</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">S</th>
+<th style="text-align: center;">O</th>
+<th style="text-align: center;">N</th>
+<th style="text-align: center;">D</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Cons. Expectation</td>
+<td style="text-align: center;">66</td>
+<td style="text-align: center;">53</td>
+<td style="text-align: center;">62</td>
+<td style="text-align: center;">61</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">72</td>
+<td style="text-align: center;">65</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">61</td>
+<td style="text-align: center;">50</td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;">51</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cons. Spending</td>
+<td style="text-align: center;">72</td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;">69</td>
+<td style="text-align: center;">65</td>
+<td style="text-align: center;">82</td>
+<td style="text-align: center;">77</td>
+<td style="text-align: center;">72</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">77</td>
+<td style="text-align: center;">75</td>
+<td style="text-align: center;">77</td>
+<td style="text-align: center;">77</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Difference</td>
+<td style="text-align: center;">-6</td>
+<td style="text-align: center;">-2</td>
+<td style="text-align: center;">-7</td>
+<td style="text-align: center;">-4</td>
+<td style="text-align: center;">-4</td>
+<td style="text-align: center;">-5</td>
+<td style="text-align: center;">-7</td>
+<td style="text-align: center;">-14</td>
+<td style="text-align: center;">-16</td>
+<td style="text-align: center;">-25</td>
+<td style="text-align: center;">-22</td>
+<td style="text-align: center;">-26</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<ul>
+<li><strong>Remark</strong>: Monthly data on CE and CS can be matched
+<ul>
+<li>Hence consider: <span class="math inline">\quad</span> Difference <span class="math inline">=</span> CE <span class="math inline">-</span> CS</li>
+<li>CE and CS normal <span class="math inline">\quad \implies \quad</span> Difference <span class="math inline">\sim N(\mu,\sigma^2)</span></li>
+</ul></li>
+<li><strong>Question:</strong> Test the following hypothesis: <span class="math display">
+H_0 \colon \sigma = 1 \qquad
+H_1 \colon \sigma &gt; 1
+</span></li>
+</ul>
+</section>
+<section id="motivation-of-test" class="slide level2 smaller">
+<h2>Motivation of test</h2>
+<ul>
+<li><p>If <span class="math inline">X \sim N(\mu,\sigma^2)</span> then <span class="math display">
+P( \mu - 2 \sigma \leq X \leq \mu + 2\sigma ) \approx 0.95
+</span></p></li>
+<li><p>Recall: <span class="math inline">\quad</span> Difference <span class="math inline">=</span> (CE <span class="math inline">-</span> CS) <span class="math inline">\sim N(\mu,\sigma^2)</span></p></li>
+<li><p>Hence if <span class="math inline">\sigma = 1</span> <span class="math display">
+P( \mu - 2 \leq {\rm CE} - {\rm CS} \leq \mu + 2 ) \approx 0.95
+</span></p></li>
+<li><p><strong>Meaning of variance ratio test:</strong> <span class="math display">
+\sigma=1
+\quad \implies \quad
+\text{CS index is within } \pm{2} \text{ of CE index with probability } 0.95  
+</span></p></li>
+</ul>
+</section>
+<section id="the-variance-ratio-test-by-hand" class="slide level2 smaller">
+<h2>The variance ratio test by hand</h2>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Month</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">F</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">S</th>
+<th style="text-align: center;">O</th>
+<th style="text-align: center;">N</th>
+<th style="text-align: center;">D</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Difference</td>
+<td style="text-align: center;">-6</td>
+<td style="text-align: center;">-2</td>
+<td style="text-align: center;">-7</td>
+<td style="text-align: center;">-4</td>
+<td style="text-align: center;">-4</td>
+<td style="text-align: center;">-5</td>
+<td style="text-align: center;">-7</td>
+<td style="text-align: center;">-14</td>
+<td style="text-align: center;">-16</td>
+<td style="text-align: center;">-25</td>
+<td style="text-align: center;">-22</td>
+<td style="text-align: center;">-26</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<ol type="1">
+<li><strong>Calculations</strong>: Using the above data, compute</li>
+</ol>
+<ul>
+<li>Sample mean: <span class="math display">
+\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n} =  \frac{-6-2-7-4- \ldots -22-26}{12} = -\frac{138}{12} = -11.5
+</span></li>
+</ul>
+</section>
+<section id="the-variance-ratio-test-by-hand-1" class="slide level2 smaller">
+<h2>The variance ratio test by hand</h2>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Month</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">F</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">S</th>
+<th style="text-align: center;">O</th>
+<th style="text-align: center;">N</th>
+<th style="text-align: center;">D</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Difference</td>
+<td style="text-align: center;">-6</td>
+<td style="text-align: center;">-2</td>
+<td style="text-align: center;">-7</td>
+<td style="text-align: center;">-4</td>
+<td style="text-align: center;">-4</td>
+<td style="text-align: center;">-5</td>
+<td style="text-align: center;">-7</td>
+<td style="text-align: center;">-14</td>
+<td style="text-align: center;">-16</td>
+<td style="text-align: center;">-25</td>
+<td style="text-align: center;">-22</td>
+<td style="text-align: center;">-26</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<ol type="1">
+<li><strong>Calculations</strong>: Using the above data, compute</li>
+</ol>
+<ul>
+<li>Sample variance: <span class="math display">\begin{align*}
+\sum_{i=1}^{n} x_i^2 &amp; = (-6)^2 + (-2)^2 + (-7)^2 + \ldots + (-22)^2 + (-26)^2 = 2432 \\
+s^2 &amp; = \frac{\sum_{i=1}^n x^2_i- n \bar{x}^2}{n-1}
+    = \frac{2432-12(-11.5)^2}{11} = \frac{845}{11} = 76.8182
+\end{align*}</span></li>
+</ul>
+</section>
+<section id="the-variance-ratio-test-by-hand-2" class="slide level2 smaller">
+<h2>The variance ratio test by hand</h2>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Month</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">F</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">S</th>
+<th style="text-align: center;">O</th>
+<th style="text-align: center;">N</th>
+<th style="text-align: center;">D</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Difference</td>
+<td style="text-align: center;">-6</td>
+<td style="text-align: center;">-2</td>
+<td style="text-align: center;">-7</td>
+<td style="text-align: center;">-4</td>
+<td style="text-align: center;">-4</td>
+<td style="text-align: center;">-5</td>
+<td style="text-align: center;">-7</td>
+<td style="text-align: center;">-14</td>
+<td style="text-align: center;">-16</td>
+<td style="text-align: center;">-25</td>
+<td style="text-align: center;">-22</td>
+<td style="text-align: center;">-26</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<ol type="1">
+<li><strong>Calculations</strong>: Using the above data, compute</li>
+</ol>
+<ul>
+<li>Chi-squared statistic: <span class="math display">
+\chi^2 = \frac{(n-1)s^2}{\sigma_0^2}
+     = \frac{11 \left(\frac{845}{11}\right) }{1}
+     = 845
+</span></li>
+</ul>
+</section>
+<section id="the-variance-ratio-test-by-hand-3" class="slide level2 smaller">
+<h2>The variance ratio test by hand</h2>
+<ol start="2" type="1">
+<li><strong>Statistical Tables</strong>:
+<ul>
+<li>Sample size is <span class="math inline">n = 12</span></li>
+<li>Degrees of freedom are <span class="math inline">{\rm df} = n-1 = 11</span></li>
+<li>In <a href="files/Statistics_Tables.pdf">Table 2</a> find <span class="math display">
+\chi_{11}^2(0.05) = 19.68
+</span></li>
+</ul></li>
+<li><strong>Interpretation</strong>:
+<ul>
+<li>Test statistic is <span class="math inline">\chi^2 = 845</span></li>
+<li>This falls in the <em>rejection region</em> <span class="math display">
+\chi^2 = 845 &gt; 19.68 = \chi_{11}^2(0.05)
+</span></li>
+<li>We <strong>reject</strong> <span class="math inline">H_0</span></li>
+</ul></li>
+</ol>
+</section>
+<section id="the-variance-ratio-test-by-hand-4" class="slide level2 smaller">
+<h2>The variance ratio test by hand</h2>
+<ol start="4" type="1">
+<li><strong>Conclusion</strong>:
+<ul>
+<li>We reject <span class="math inline">H_0</span>: The standard deviation satisfies <span class="math inline">\sigma &gt; 1</span></li>
+<li>A better estimate for <span class="math inline">\sigma</span> could be sample standard deviation <span class="math display">
+s=\sqrt{\frac{845}{11}}=8.765
+</span></li>
+<li>This suggests: With probability <span class="math inline">0.95</span> <span class="math display">
+\text{CS index is within } \pm{2 \times 8.765 = \pm 17.53 } \text{ of CE index}  
+</span></li>
+</ul></li>
+</ol>
+</section></section>
+<section>
+<section id="part-3-one-sample-variance-ratio-test-in-r" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 3: <br>One-sample variance <br> ratio test in R</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="the-variance-ratio-test-in-r" class="slide level2 smaller">
+<h2>The variance ratio test in R</h2>
+<p><strong>Goal</strong>: Perform chi-squared variance ratio test in R</p>
+<ul>
+<li><p>For this, we need to compute p-value <span class="math display">
+p = P(\chi_{n-1}^2 &gt; \chi^2)
+</span></p></li>
+<li><p>Thus, we need to compute probabilities for chi-squared distribution in R</p></li>
+</ul>
+</section>
+<section id="probability-distributions-in-r" class="slide level2 smaller">
+<h2>Probability Distributions in R</h2>
+<ul>
+<li>R can natively do calculations with known probability distrubutions</li>
+<li>Example: Let <span class="math inline">X</span> be r.v. with <span class="math inline">N(\mu,\sigma^2)</span> distribution</li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>R command</strong></th>
+<th style="text-align: left;"><strong>Computes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>pnorm(x, mean = mu, sd = sig)</code></td>
+<td style="text-align: left;"><span class="math inline">P(X \leq x)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>qnorm(p, mean = mu, sd = sig)</code></td>
+<td style="text-align: left;"><span class="math inline">q</span> such that <span class="math inline">P(X \leq q) = p</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>dnorm(x, mean = mu, sd = sig)</code></td>
+<td style="text-align: left;"><span class="math inline">f(x)</span>, where <span class="math inline">f</span> is pdf of <span class="math inline">X</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>rnorm(n, mean = mu, sd = sig)</code></td>
+<td style="text-align: left;"><span class="math inline">n</span> random samples from distr. of <span class="math inline">X</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note</strong>: Syntax of commands</p>
+<p><strong>norm</strong> <span class="math inline">=</span> normal <span class="math inline">\qquad</span> <strong>p</strong> <span class="math inline">=</span> probability <span class="math inline">\qquad</span> <strong>q</strong> <span class="math inline">=</span> quantile</p>
+<p><strong>d</strong> <span class="math inline">=</span> density <span class="math inline">\qquad \quad \,\,\,\,</span> <strong>r</strong> <span class="math inline">=</span> random</p>
+</section>
+<section id="example" class="slide level2 smaller">
+<h2>Example</h2>
+<ul>
+<li>Suppose average height of women is normally distributed <span class="math inline">N(\mu,\sigma^2)</span></li>
+<li>Assume mean <span class="math inline">\mu = 163</span> cm and standard deviation <span class="math inline">\sigma = 8</span> cm</li>
+</ul>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Probability woman exceeds 180cm in height</span></span>
+<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># P(X &gt; 180) = 1 - P(X &lt;= 180)</span></span>
+<span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="dv">180</span>, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01679331</code></pre>
+</div>
+</div>
+</section>
+<section id="section-1" class="slide level2 smaller">
+<h2></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># The upper 10th percentile for women height, that is,</span></span>
+<span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># height q such that P(X &lt;= q) = 0.9</span></span>
+<span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fl">0.90</span>, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 173.2524</code></pre>
+</div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Value of pdf at 163</span></span>
+<span id="cb5-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">dnorm</span>(<span class="dv">163</span>, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.04986779</code></pre>
+</div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Generate random sample of size 5</span></span>
+<span id="cb7-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 153.4341 167.3172 163.6030 163.4807 184.0452</code></pre>
+</div>
+</div>
+</section>
+<section id="section-2" class="slide level2 smaller">
+<h2></h2>
+<p><strong>Question:</strong> What is the height of the tallest woman, according to the model?</p>
+<ul>
+<li>The tallest woman could be found using quantiles</li>
+<li>There are roughly 3.5 billion women</li>
+<li>The tallest would be in the top 1/(3.5 billion) quantile</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Find the top 1/(3.5 billion) quantile</span></span>
+<span id="cb9-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="fl">3.5e9</span>)</span>
+<span id="cb9-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(p, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 212.5849</code></pre>
+</div>
+</div>
+<ul>
+<li>The current (living) tallest woman is Rumeysa Gelci at <span class="math inline">215</span> cm (<a href="https://en.m.wikipedia.org/wiki/Rumeysa_Gelgi">Wikipedia Page</a>)</li>
+</ul>
+</section>
+<section id="probability-distributions-in-r-1" class="slide level2 smaller">
+<h2>Probability Distributions in R</h2>
+<h3 id="chi-squared-distribution">Chi-squared distribution</h3>
+<ul>
+<li>Commands for chi-squared distrubution are similar</li>
+<li><code>df = n</code> denotes <span class="math inline">n</span> degrees of feedom</li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 60%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>R command</strong></th>
+<th style="text-align: left;"><strong>Computes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>pchisq(x, df = n)</code></td>
+<td style="text-align: left;"><span class="math inline">P(X \leq x)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>qchisq(p, df = n)</code></td>
+<td style="text-align: left;"><span class="math inline">q</span> such that <span class="math inline">P(X \leq q) = p</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>dchisq(x, df = n)</code></td>
+<td style="text-align: left;"><span class="math inline">f(x)</span>, where <span class="math inline">f</span> is pdf of <span class="math inline">X</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>rchisq(m, df = n)</code></td>
+<td style="text-align: left;"><span class="math inline">m</span> random samples from distr. of <span class="math inline">X</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="example-1" class="slide level2 smaller">
+<h2>Example 1</h2>
+<ul>
+<li>From Tables we found quantile <span class="math inline">\chi_{11}^2 (0.05) = 19.68</span></li>
+<li><strong>Question:</strong> Compute such quantile in R</li>
+</ul>
+</section>
+<section id="example-1-solution" class="slide level2 smaller">
+<h2>Example 1 – Solution</h2>
+<ul>
+<li>From Tables we found quantile <span class="math inline">\chi_{11}^2 (0.05) = 19.68</span></li>
+<li><strong>Question:</strong> Compute such quantile in R</li>
+</ul>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute 0.95 quantile for chi-squared with 11 degrees of freedom</span></span>
+<span id="cb11-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a aria-hidden="true" tabindex="-1"></a>quantile <span class="ot">&lt;-</span> <span class="fu">qchisq</span>(<span class="fl">0.95</span>, <span class="at">df =</span> <span class="dv">11</span>)</span>
+<span id="cb11-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"The 0.95 quantile for chi-squared with df = 11 is"</span>, quantile)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The 0.95 quantile for chi-squared with df = 11 is 19.67514</code></pre>
+</div>
+</div>
+</section>
+<section id="example-2" class="slide level2 smaller">
+<h2>Example 2</h2>
+<ul>
+<li><p>The <span class="math inline">\chi^2</span> statistic for variance ratio test has distribution <span class="math inline">\chi_{n-1}^2</span></p></li>
+<li><p><strong>Question:</strong> Compute the p-value <span class="math display">
+p := P(\chi_{n-1}^2 &gt; \chi^2)
+</span></p></li>
+</ul>
+</section>
+<section id="example-2-solution" class="slide level2 smaller">
+<h2>Example 2 – Solution</h2>
+<ul>
+<li><p>The <span class="math inline">\chi^2</span> statistic for variance ratio test has distribution <span class="math inline">\chi_{n-1}^2</span></p></li>
+<li><p><strong>Question:</strong> Compute the p-value <span class="math display">
+p := P(\chi_{n-1}^2 &gt; \chi^2)
+</span></p></li>
+<li><p>Observe that <span class="math display">
+p := P(\chi_{n-1}^2 &gt; \chi^2) = 1 - P(\chi_{n-1}^2  \leq  \chi^2)
+</span></p></li>
+<li><p>The code is therefore</p></li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute p-value for chi^2 = chi_squared and df = n</span></span>
+<span id="cb13-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a aria-hidden="true" tabindex="-1"></a>p_value <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(chi_squared, <span class="at">df =</span> n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="the-variance-ratio-test-in-r-1" class="slide level2 smaller">
+<h2>The variance ratio test in R</h2>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Month</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">F</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">S</th>
+<th style="text-align: center;">O</th>
+<th style="text-align: center;">N</th>
+<th style="text-align: center;">D</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Cons. Expectation</td>
+<td style="text-align: center;">66</td>
+<td style="text-align: center;">53</td>
+<td style="text-align: center;">62</td>
+<td style="text-align: center;">61</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">72</td>
+<td style="text-align: center;">65</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">61</td>
+<td style="text-align: center;">50</td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;">51</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cons. Spending</td>
+<td style="text-align: center;">72</td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;">69</td>
+<td style="text-align: center;">65</td>
+<td style="text-align: center;">82</td>
+<td style="text-align: center;">77</td>
+<td style="text-align: center;">72</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">77</td>
+<td style="text-align: center;">75</td>
+<td style="text-align: center;">77</td>
+<td style="text-align: center;">77</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Difference</td>
+<td style="text-align: center;">-6</td>
+<td style="text-align: center;">-2</td>
+<td style="text-align: center;">-7</td>
+<td style="text-align: center;">-4</td>
+<td style="text-align: center;">-4</td>
+<td style="text-align: center;">-5</td>
+<td style="text-align: center;">-7</td>
+<td style="text-align: center;">-14</td>
+<td style="text-align: center;">-16</td>
+<td style="text-align: center;">-25</td>
+<td style="text-align: center;">-22</td>
+<td style="text-align: center;">-26</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<ul>
+<li><p><strong>Back to the Worked Example:</strong> Monthly data on CE and CS</p></li>
+<li><p><strong>Question:</strong> Test the following hypothesis: <span class="math display">
+H_0 \colon \sigma = 1 \qquad
+H_1 \colon \sigma &gt; 1
+</span></p></li>
+</ul>
+</section>
+<section id="the-variance-ratio-test-in-r-2" class="slide level2 smaller">
+<h2>The variance ratio test in R</h2>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Month</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">F</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">S</th>
+<th style="text-align: center;">O</th>
+<th style="text-align: center;">N</th>
+<th style="text-align: center;">D</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Cons. Expectation</td>
+<td style="text-align: center;">66</td>
+<td style="text-align: center;">53</td>
+<td style="text-align: center;">62</td>
+<td style="text-align: center;">61</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">72</td>
+<td style="text-align: center;">65</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">61</td>
+<td style="text-align: center;">50</td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;">51</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cons. Spending</td>
+<td style="text-align: center;">72</td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;">69</td>
+<td style="text-align: center;">65</td>
+<td style="text-align: center;">82</td>
+<td style="text-align: center;">77</td>
+<td style="text-align: center;">72</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">77</td>
+<td style="text-align: center;">75</td>
+<td style="text-align: center;">77</td>
+<td style="text-align: center;">77</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Difference</td>
+<td style="text-align: center;">-6</td>
+<td style="text-align: center;">-2</td>
+<td style="text-align: center;">-7</td>
+<td style="text-align: center;">-4</td>
+<td style="text-align: center;">-4</td>
+<td style="text-align: center;">-5</td>
+<td style="text-align: center;">-7</td>
+<td style="text-align: center;">-14</td>
+<td style="text-align: center;">-16</td>
+<td style="text-align: center;">-25</td>
+<td style="text-align: center;">-22</td>
+<td style="text-align: center;">-26</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<ul>
+<li>Start by entering data into R</li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter Consumer Expectation and Consumer Spending data</span></span>
+<span id="cb14-2"><a aria-hidden="true" tabindex="-1"></a>CE <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">66</span>, <span class="dv">53</span>, <span class="dv">62</span>, <span class="dv">61</span>, <span class="dv">78</span>, <span class="dv">72</span>, <span class="dv">65</span>, <span class="dv">64</span>, <span class="dv">61</span>, <span class="dv">50</span>, <span class="dv">55</span>, <span class="dv">51</span>)</span>
+<span id="cb14-3"><a aria-hidden="true" tabindex="-1"></a>CS <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">72</span>, <span class="dv">55</span>, <span class="dv">69</span>, <span class="dv">65</span>, <span class="dv">82</span>, <span class="dv">77</span>, <span class="dv">72</span>, <span class="dv">78</span>, <span class="dv">77</span>, <span class="dv">75</span>, <span class="dv">77</span>, <span class="dv">77</span>)</span>
+<span id="cb14-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute difference</span></span>
+<span id="cb14-6"><a aria-hidden="true" tabindex="-1"></a>difference <span class="ot">&lt;-</span> CE <span class="sc">-</span> CS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="the-variance-ratio-test-in-r-3" class="slide level2 smaller">
+<h2>The variance ratio test in R</h2>
+<ul>
+<li>Compute chi-squared statistic <span class="math display">
+\chi^2 = \frac{(n-1) s^2}{\sigma^2_0}
+</span></li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute sample size</span></span>
+<span id="cb15-2"><a aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(difference)</span>
+<span id="cb15-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter null hypothesis</span></span>
+<span id="cb15-5"><a aria-hidden="true" tabindex="-1"></a>sigma_0 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb15-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute sample standard deviation</span></span>
+<span id="cb15-8"><a aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">sd</span>(difference)</span>
+<span id="cb15-9"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute chi-squared statistic</span></span>
+<span id="cb15-11"><a aria-hidden="true" tabindex="-1"></a>chi_squared <span class="ot">&lt;-</span> (n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> s <span class="sc">^</span> <span class="dv">2</span> <span class="sc">/</span> sigma_0 <span class="sc">^</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="the-variance-ratio-test-in-r-4" class="slide level2 smaller">
+<h2>The variance ratio test in R</h2>
+<ul>
+<li>Compute the p-value, and print to screen <span class="math display">
+p = P(\chi_{n-1}^2 &gt; \chi^2) = 1 - P(\chi_{n-1}^2 \leq \chi^2)
+</span></li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute p-value</span></span>
+<span id="cb16-2"><a aria-hidden="true" tabindex="-1"></a>p_value <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(chi_squared, <span class="at">df =</span> n <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb16-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Print p-value</span></span>
+<span id="cb16-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"The p-value for one-sided variance test is"</span>, p_value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><br></p>
+<ul>
+<li>The full code can be downloaded here <a href="codes/variance_ratio_test.R">variance_ratio_test.R</a></li>
+</ul>
+</section>
+<section id="running-the-code" class="slide level2 smaller">
+<h2>Running the code</h2>
+<ul>
+<li>Running <a href="codes/variance_ratio_test.R">variance_ratio_test.R</a> gives the following output:</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>The p-value for one-sided variance test is 0</code></pre>
+</div>
+</div>
+<p><br></p>
+<ul>
+<li>Since <span class="math inline">p = 0 &lt; 0.05</span> we <strong>reject</strong> <span class="math inline">H_0</span></li>
+<li>Therefore the true variance seems to be <span class="math inline">\sigma^2 &gt; 1</span></li>
+</ul>
+</section></section>
+<section>
+<section id="part-4-two-sample-hypothesis-tests" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 4: <br>Two-sample<br> hypothesis tests</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="overview" class="slide level2 smaller">
+<h2>Overview</h2>
+<p>In Lecture 3:</p>
+<ul>
+<li>We looked at data on CCI before and after the 2008 crash</li>
+<li>In this case data for each month is directly comparable</li>
+<li>Can then construct the difference between the 2007 and 2009 values</li>
+<li>Analysis reduces from a two-sample to a one-sample problem</li>
+</ul>
+<div id="Question*-5.1" class="Question">
+<p></p><details class="Question fbx-simplebox fbx-default" open=""><summary><strong>Question</strong></summary><div>How do we analyze two samples that cannot be paired?<p></p>
+</div></details>
+</div>
+</section>
+<section id="problem-statement" class="slide level2 smaller">
+<h2>Problem statement</h2>
+<p><strong>Goal:</strong> compare mean and variance of 2 independent <strong>normal</strong> samples</p>
+<ul>
+<li>First sample:
+<ul>
+<li><span class="math inline">X_1, \ldots, X_n</span> from normal population <span class="math inline">N(\mu_X,\sigma_X^2)</span></li>
+</ul></li>
+<li>Second sample:
+<ul>
+<li><span class="math inline">Y_1, \ldots, Y_m</span> from normal population <span class="math inline">N(\mu_Y,\sigma_Y^2)</span></li>
+</ul></li>
+<li>We may have <span class="math inline">n \neq m</span>
+<ul>
+<li>Samples cannot be paired due to different size!</li>
+</ul></li>
+</ul>
+<p><strong>Tests available:</strong></p>
+<ul>
+<li>Two-sample <span class="math inline">t</span>-test to test for difference in means</li>
+<li>Two-sample <span class="math inline">F</span>-test to test for difference in variances (next week)</li>
+</ul>
+</section>
+<section id="why-is-this-important" class="slide level2 smaller">
+<h2>Why is this important?</h2>
+<ul>
+<li><p>Hypothesis testing starts to get interesting with 2 or more samples</p></li>
+<li><p>t-test and F-test show the normal distribution family in action</p></li>
+<li><p>This is also the maths behind regression</p>
+<ul>
+<li>Same methods apply to seemingly unrelated problems</li>
+<li>Regression is a big subject in statistics</li>
+</ul></li>
+</ul>
+</section>
+<section id="normal-distribution-family-in-action" class="slide level2 smaller">
+<h2>Normal distribution family in action</h2>
+<h3 id="two-sample-t-test">Two-sample t-test</h3>
+<ul>
+<li>Want to compare the means of two independent samples</li>
+<li>At the same time population variances are unknown</li>
+<li>Therefore both variances are estimated with sample variances</li>
+<li>Test statistic is <span class="math inline">t_k</span>-distributed with <span class="math inline">k</span> linked to the total number of observations</li>
+</ul>
+</section>
+<section id="normal-distribution-family-in-action-1" class="slide level2 smaller">
+<h2>Normal distribution family in action</h2>
+<h3 id="two-sample-f-test">Two-sample F-test</h3>
+<ul>
+<li><p>Want to compare the variance of two independent samples</p></li>
+<li><p>This can be done by studying the ratio of the sample variances <span class="math display">
+S^2_X/S^2_Y
+</span></p></li>
+<li><p>We have already shown that <span class="math display">
+\frac{(n - 1) S^2_X}{\sigma^2_X} \sim \chi^2_{n - 1} \qquad
+\frac{(m - 1) S^2_Y}{\sigma^2_Y} \sim \chi^2_{m - 1}
+</span></p></li>
+</ul>
+</section>
+<section id="normal-distribution-family-in-action-2" class="slide level2 smaller">
+<h2>Normal distribution family in action</h2>
+<h3 id="two-sample-f-test-1">Two-sample F-test</h3>
+<ul>
+<li><p>Hence we can study statistic <span class="math display">
+F = \frac{S^2_X / \sigma_X^2}{S^2_Y / \sigma_Y^2}
+</span></p></li>
+<li><p>We will see that <span class="math inline">F</span> has F-distribution (next week)</p></li>
+</ul>
+</section></section>
+<section>
+<section id="part-5-two-sample-t-test" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 5: <br>Two-sample t-test</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="the-two-sample-t-test" class="slide level2 smaller">
+<h2>The two-sample t-test</h2>
+<p><strong>Assumptions</strong>: Suppose given samples from 2 <strong>independent</strong> normal populations</p>
+<ul>
+<li><span class="math inline">X_1, \ldots ,X_n</span> iid with distribution <span class="math inline">N(\mu_X,\sigma_X^2)</span></li>
+<li><span class="math inline">Y_1, \ldots ,Y_m</span> iid with distribution <span class="math inline">N(\mu_Y,\sigma_Y^2)</span></li>
+</ul>
+<p><strong>Further assumptions</strong>:</p>
+<ul>
+<li>In general <span class="math inline">n \neq m</span>, so that one-sample t-test cannot be applied</li>
+<li>The two populations have same variance <span class="math display">
+\sigma^2_X = \sigma^2_Y = \sigma^2
+</span></li>
+</ul>
+<p><strong>Note:</strong> Assuming same variance is simplification. Removing it leads to <em>Welch t-test</em></p>
+</section>
+<section id="the-two-sample-t-test-1" class="slide level2 smaller">
+<h2>The two-sample t-test</h2>
+<p><strong>Goal</strong>: Compare means <span class="math inline">\mu_X</span> and <span class="math inline">\mu_Y</span></p>
+<p><strong>Hypothesis set:</strong> We test for a difference in means <span class="math display">
+H_0 \colon \mu_X = \mu_Y \qquad  H_1 \colon \mu_X \neq \mu_Y
+</span></p>
+<p><strong>t-statistic</strong>: The general form is <span class="math display">
+T = \frac{\text{Estimate}-\text{Hypothesised value}}{\text{e.s.e.}}
+</span></p>
+</section>
+<section id="the-two-sample-t-statistic" class="slide level2 smaller">
+<h2>The two-sample t-statistic</h2>
+<ul>
+<li><p>Define the sample means <span class="math display">
+\overline{X} = \frac{1}{n} \sum_{i=1}^n X_i
+\qquad \qquad
+\overline{Y} = \frac{1}{m} \sum_{i=1}^m Y_i
+</span></p></li>
+<li><p>Notice that <span class="math display">
+{\rm I\kern-.3em E}[ \overline{X} ] = \mu_X   \qquad \qquad
+{\rm I\kern-.3em E}[ \overline{Y} ] = \mu_Y
+</span></p></li>
+<li><p>Therefore we can estimate <span class="math inline">\mu_X - \mu_Y</span> with the sample means, that is, <span class="math display">
+\text{Estimate} = \overline{X} - \overline{Y}
+</span></p></li>
+</ul>
+</section>
+<section id="the-two-sample-t-statistic-1" class="slide level2 smaller">
+<h2>The two-sample t-statistic</h2>
+<ul>
+<li><p>Since we are testing for difference in mean, we have <span class="math display">
+\text{Hypothesised value} = \mu_X - \mu_Y
+</span></p></li>
+<li><p>The <em>Estimated Standard Error</em> is the standard deviation of estimator <span class="math display">
+\text{e.s.e.} = \text{Standard Deviation of } \overline{X} -\overline{Y}
+</span></p></li>
+</ul>
+</section>
+<section id="the-two-sample-t-statistic-2" class="slide level2 smaller">
+<h2>The two-sample t-statistic</h2>
+<ul>
+<li><p>Therefore the two-sample t-statistic is <span class="math display">
+T = \frac{\overline{X} - \overline{Y} - (\mu_X - \mu_Y)}{\text{e.s.e.}}
+</span></p></li>
+<li><p>Under the Null Hypothesis that <span class="math inline">\mu_X = \mu_Y</span>, the t-statistic becomes <span class="math display">
+T = \frac{\overline{X} - \overline{Y} }{\text{e.s.e.}}
+</span></p></li>
+</ul>
+</section>
+<section id="a-note-on-the-degrees-of-freedom-df" class="slide level2 smaller">
+<h2>A note on the degrees of freedom (df)</h2>
+<ul>
+<li><p>The general rule is <span class="math display">
+\text{df} = \text{Sample size} - \text{No. of estimated parameters}
+</span></p></li>
+<li><p>Sample size in two-sample t-test:</p>
+<ul>
+<li><span class="math inline">n</span> in the first sample</li>
+<li><span class="math inline">m</span> in the second sample</li>
+<li>Hence total number of observations is <span class="math inline">n + m</span></li>
+</ul></li>
+<li><p>No.&nbsp;of estimated parameters is 2: Namely <span class="math inline">\mu_X</span> and <span class="math inline">\mu_Y</span></p></li>
+<li><p>Hence degree of freedoms in two-sample t-test is <span class="math display">
+{\rm df} = n + m - 2
+</span> (more on this later)</p></li>
+</ul>
+</section>
+<section id="the-estimated-standard-error" class="slide level2 smaller">
+<h2>The estimated standard error</h2>
+<ul>
+<li><p>Recall: We are assuming populations have same variance <span class="math display">
+\sigma^2_X = \sigma^2_Y = \sigma^2
+</span></p></li>
+<li><p>We need to compute the estimated standard error <span class="math display">
+\text{e.s.e.} = \text{Standard Deviation of } \ \overline{X} -\overline{Y}
+</span></p></li>
+<li><p>Variance of sample mean was computed in the Lemma in Slide 72 Lecture 2</p></li>
+<li><p>Since <span class="math inline">\overline{X} \sim N(\mu_X,\sigma^2)</span> and <span class="math inline">\overline{Y} \sim N(\mu_Y,\sigma^2)</span>, by the Lemma we get <span class="math display">
+{\rm Var}[\overline{X}] = \frac{\sigma^2}{n} \,, \qquad \quad
+{\rm Var}[\overline{Y}] = \frac{\sigma^2}{m}
+</span></p></li>
+</ul>
+</section>
+<section id="the-estimated-standard-error-1" class="slide level2 smaller">
+<h2>The estimated standard error</h2>
+<ul>
+<li><p>Since <span class="math inline">X_i</span> and <span class="math inline">Y_i</span> are independent we get <span class="math inline">{\rm Cov}(X_i,Y_j)=0</span></p></li>
+<li><p>By bilinearity of covariance we infer <span class="math display">
+{\rm Cov}( \overline{X} , \overline{Y} ) = \frac{1}{n \cdot m} \sum_{i=1}^n \sum_{j=1}^m {\rm Cov}(X_i,Y_j) = 0
+</span></p></li>
+<li><p>We can then compute <span class="math display">\begin{align*}
+{\rm Var}[ \overline{X} - \overline{Y} ] &amp; = {\rm Var}[ \overline{X} ] + {\rm Var}[ \overline{Y} ] -
+                                      2 {\rm Cov}( \overline{X} , \overline{Y} ) \\
+                                  &amp; = {\rm Var}[ \overline{X} ] + {\rm Var}[ \overline{Y} ] \\
+                                  &amp; = \sigma^2 \left( \frac{1}{n} + \frac{1}{m}  \right)
+\end{align*}</span></p></li>
+</ul>
+</section>
+<section id="the-estimated-standard-error-2" class="slide level2 smaller">
+<h2>The estimated standard error</h2>
+<ul>
+<li><p>Taking the square root gives <span class="math display">
+\text{S.D.}(\overline{X} - \overline{Y} )= \sigma \ \sqrt{\frac{1}{n}+\frac{1}{m}}
+</span></p></li>
+<li><p>Therefore, the t-statistic is <span class="math display">
+T = \frac{\overline{X} - \overline{Y} - (\mu_X - \mu_Y)}{\text{e.s.e.}}
+= \frac{\overline{X} - \overline{Y} - (\mu_X - \mu_Y)}{\sigma \ \sqrt{\dfrac{1}{n}+\dfrac{1}{m}}}
+</span></p></li>
+</ul>
+</section>
+<section id="estimating-the-variance" class="slide level2 smaller">
+<h2>Estimating the variance</h2>
+<p>The t-statistic is currently <span class="math display">
+T = \frac{\overline{X} - \overline{Y} - (\mu_X - \mu_Y)}{\sigma \ \sqrt{\dfrac{1}{n}+\dfrac{1}{m}}}
+</span></p>
+<ul>
+<li><p>Variance <span class="math inline">\sigma^2</span> is unknown: we need to <strong>estimate it</strong>!</p></li>
+<li><p>Define the sample variances</p></li>
+</ul>
+<p><span class="math display">
+S_X^2 = \frac{ \sum_{i=1}^n X_i^2 - n \overline{X}^2 }{n-1} \qquad \qquad
+S_Y^2 = \frac{ \sum_{i=1}^m Y_i^2 - m \overline{Y}^2 }{m-1}
+</span></p>
+</section>
+<section id="estimating-the-variance-1" class="slide level2 smaller">
+<h2>Estimating the variance</h2>
+<ul>
+<li><p>Recall that <span class="math display">
+X_1, \ldots , X_n \sim N(\mu_X, \sigma^2) \qquad \qquad
+Y_1, \ldots , Y_m \sim N(\mu_Y, \sigma^2)
+</span></p></li>
+<li><p>From Lecture 2, we know that <span class="math inline">S_X^2</span> and <span class="math inline">S_Y^2</span> are unbiased estimators of <span class="math inline">\sigma^2</span>, i.e. <span class="math display">
+{\rm I\kern-.3em E}[ S_X^2 ] = {\rm I\kern-.3em E}[ S_Y^2 ] = \sigma^2
+</span></p></li>
+<li><p>Therefore, both <span class="math inline">S_X^2</span> and <span class="math inline">S_Y^2</span> can be used to estimate <span class="math inline">\sigma^2</span></p></li>
+</ul>
+</section>
+<section id="estimating-the-variance-2" class="slide level2 smaller">
+<h2>Estimating the variance</h2>
+<ul>
+<li><p>We can improve the estimate of <span class="math inline">\sigma^2</span> by combining <span class="math inline">S_X^2</span> and <span class="math inline">S_Y^2</span></p></li>
+<li><p>We will consider a (convex) linear combination <span class="math display">
+S^2 := \lambda_X S_X^2 + \lambda_Y S_Y^2  \,, \qquad  
+\lambda_X + \lambda_Y = 1
+</span></p></li>
+<li><p><span class="math inline">S^2</span> is still an unbiased estimator of <span class="math inline">\sigma^2</span>, since <span class="math display">\begin{align*}
+{\rm I\kern-.3em E}[S^2]  &amp; = {\rm I\kern-.3em E}[ \lambda_X S_X^2 + \lambda_Y S_Y^2 ] \\
+            &amp; = \lambda_X {\rm I\kern-.3em E}[S_X^2] + \lambda_Y {\rm I\kern-.3em E}[S_Y^2] \\
+           &amp; = (\lambda_X + \lambda_Y) \sigma^2 \\
+           &amp; = \sigma^2
+\end{align*}</span></p></li>
+</ul>
+</section>
+<section id="estimating-the-variance-3" class="slide level2 smaller">
+<h2>Estimating the variance</h2>
+<p>We choose coefficients <span class="math inline">\lambda_X</span> and <span class="math inline">\lambda_Y</span> which reflect sample sizes <span class="math display">
+\lambda_X := \frac{n - 1}{n + m - 2} \qquad
+\qquad
+\lambda_Y := \frac{m - 1}{n + m - 2}
+</span></p>
+<p><strong>Notes</strong>:</p>
+<ul>
+<li><p>We have <span class="math inline">\lambda_X + \lambda_Y = 1</span></p></li>
+<li><p>Denominators in <span class="math inline">\lambda_X</span> and <span class="math inline">\lambda_Y</span> are degrees of freedom <span class="math display">{\rm df } = n + m - 2</span></p></li>
+<li><p>This choice is made so that <span class="math inline">S^2</span> has chi-squared distribution (more on this later)</p></li>
+</ul>
+</section>
+<section id="pooled-estimator-of-variance" class="slide level2 smaller">
+<h2>Pooled estimator of variance</h2>
+<div id="Definition*-6.1" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>pooled estimator</strong> of <span class="math inline">\sigma^2</span> is defined as <span class="math display">
+S_p^2 := \lambda_X S_X^2 + \lambda_Y S_Y^2
+      = \frac{(n-1) S_X^2 + (m-1) S_Y^2}{n + m - 2}
+</span><p></p>
+</div></details>
+</div>
+<p><strong>Note</strong>:</p>
+<ul>
+<li><span class="math inline">n=m</span> implies <span class="math inline">\lambda_X = \lambda_Y</span></li>
+<li>In this case <span class="math inline">S_X^2</span> and <span class="math inline">S_Y^2</span> have same weight in <span class="math inline">S_p^2</span></li>
+</ul>
+</section>
+<section id="the-two-sample-t-statistic-3" class="slide level2 smaller">
+<h2>The two-sample t-statistic</h2>
+<ul>
+<li><p>The t-statistic has currently the form <span class="math display">
+T = \frac{\overline{X} - \overline{Y} - (\mu_X - \mu_Y)}{\sigma \ \sqrt{\dfrac{1}{n}+\dfrac{1}{m}}}
+</span></p></li>
+<li><p>We replace <span class="math inline">\sigma</span> with the pooled estimator <span class="math inline">S_p</span></p></li>
+</ul>
+</section>
+<section id="the-two-sample-t-statistic-4" class="slide level2 smaller">
+<h2>The two-sample t-statistic</h2>
+<div id="Definition*-6.2" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The two sample t-statistic is defined as <span class="math display">
+T := \frac{\overline{X} - \overline{Y} - (\mu_X - \mu_Y)}{ S_p \ \sqrt{\dfrac{1}{n}+\dfrac{1}{m}}}  
+</span><p></p>
+</div></details>
+</div>
+<p><strong>Note</strong>: Under the Null Hypothesis that <span class="math inline">\mu_X = \mu_Y</span> this becomes <span class="math display">
+T = \frac{\overline{X} - \overline{Y}}{ S_p \ \sqrt{\dfrac{1}{n}+\dfrac{1}{m}}}
+= \frac{\overline{X} - \overline{Y}}{ \sqrt{ \dfrac{ (n-1) S_X^2 + (m-1) S_Y^2 }{n + m - 2} } \ \sqrt{\dfrac{1}{n}+\dfrac{1}{m}}}
+</span></p>
+</section>
+<section id="distribution-of-two-sample-t-statistic" class="slide level2 smaller">
+<h2>Distribution of two-sample t-statistic</h2>
+<div id="Theorem*-6.3" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>The two sample t-statistic has <span class="math inline">t_{n+m-2}</span> distribution <span class="math display">
+T := \frac{\overline{X} - \overline{Y} - (\mu_X - \mu_Y)}{ S_p \ \sqrt{\dfrac{1}{n}+\dfrac{1}{m}}}  \sim t_{n + m - 2}
+</span><p></p>
+</div></details>
+</div>
+</section>
+<section id="distribution-of-two-sample-t-statistic-1" class="slide level2 smaller">
+<h2>Distribution of two-sample t-statistic</h2>
+<h3 id="proof">Proof</h3>
+<ul>
+<li><p>We have already seen that <span class="math inline">\overline{X} - \overline{Y}</span> is normal with <span class="math display">
+{\rm I\kern-.3em E}[\overline{X} - \overline{Y}] = \mu_X - \mu_Y
+\qquad \qquad
+{\rm Var}[\overline{X} - \overline{Y}] = \sigma^2 \left( \frac{1}{n} + \frac{1}{m} \right)
+</span></p></li>
+<li><p>Therefore we can rescale <span class="math inline">\overline{X} - \overline{Y}</span> to get <span class="math display">
+U := \frac{\overline{X} - \overline{Y} - (\mu_X - \mu_Y)}{ \sigma \sqrt{ \dfrac{1}{n} + \dfrac{1}{m}}} \sim N(0,1)
+</span></p></li>
+</ul>
+</section>
+<section id="distribution-of-two-sample-t-statistic-2" class="slide level2 smaller">
+<h2>Distribution of two-sample t-statistic</h2>
+<h3 id="proof-1">Proof</h3>
+<ul>
+<li><p>We are assuming <span class="math inline">X_1, \ldots, X_n</span> iid <span class="math inline">N(\mu_X,\sigma^2)</span></p></li>
+<li><p>Therefore, as already shown, we have <span class="math display">
+\frac{ (n-1) S_X^2 }{ \sigma^2 } \sim \chi_{n-1}^2
+</span></p></li>
+<li><p>Similarly, since <span class="math inline">Y_1, \ldots, Y_m</span> iid <span class="math inline">N(\mu_Y,\sigma^2)</span>, we get <span class="math display">
+\frac{ (m-1) S_Y^2 }{ \sigma^2 } \sim \chi_{m-1}^2
+</span></p></li>
+</ul>
+</section>
+<section id="distribution-of-two-sample-t-statistic-3" class="slide level2 smaller">
+<h2>Distribution of two-sample t-statistic</h2>
+<h3 id="proof-2">Proof</h3>
+<ul>
+<li><p>Since <span class="math inline">X_i</span> and <span class="math inline">Y_j</span> are independent, we also have that <span class="math display">
+\frac{ (n-1) S_X^2 }{ \sigma^2 }   \quad \text{ and } \quad
+\frac{ (m-1) S_Y^2 }{ \sigma^2 } \quad \text{ are independent}
+</span></p></li>
+<li><p>In particular we obtain <span class="math display">
+\frac{ (n-1) S_X^2 }{ \sigma^2 }  + \frac{ (m-1) S_Y^2 }{ \sigma^2 } \sim \chi_{n-1}^2 + \chi_{m-1}^2 \sim \chi_{m + n- 2}^2
+</span></p></li>
+</ul>
+</section>
+<section id="distribution-of-two-sample-t-statistic-4" class="slide level2 smaller">
+<h2>Distribution of two-sample t-statistic</h2>
+<h3 id="proof-3">Proof</h3>
+<ul>
+<li><p>Recall the definition of <span class="math inline">S_p^2</span> <span class="math display">
+S_p^2 = \frac{(n-1) S_X^2 + (m-1) S_Y^2}{ n + m - 2 }
+</span></p></li>
+<li><p>Therefore <span class="math display">
+V := \frac{ (n+m-2) S_p^2 }{ \sigma^2 }
+= \frac{ (n - 1) S_X^2}{ \sigma^2}  + \frac{ (m-1) S_Y^2 }{ \sigma^2 } \sim \chi_{n + m - 2}^2
+</span></p></li>
+</ul>
+</section>
+<section id="distribution-of-two-sample-t-statistic-5" class="slide level2 smaller">
+<h2>Distribution of two-sample t-statistic</h2>
+<h3 id="proof-4">Proof</h3>
+<ul>
+<li>Rewrite <span class="math inline">T</span> as <span class="math display">\begin{align*}
+T &amp; = \frac{\overline{X} - \overline{Y} - (\mu_X - \mu_Y)}{ S_p \ \sqrt{\dfrac{1}{n}+\dfrac{1}{m}}} \\
+&amp; =  \frac{\overline{X} - \overline{Y} - (\mu_X - \mu_Y)}{ \sigma \sqrt{ \dfrac{1}{n} + \dfrac{1}{m} }   }
+\Bigg/  
+\sqrt{
+  \frac{ (n + m - 2) S_p^2 \big/  \sigma^2}{ (n+ m - 2) }
+  } \\
+&amp; = \frac{U}{\sqrt{V/(n+m-2)}}
+\end{align*}</span></li>
+</ul>
+</section>
+<section id="distribution-of-two-sample-t-statistic-6" class="slide level2 smaller">
+<h2>Distribution of two-sample t-statistic</h2>
+<h3 id="proof-5">Proof</h3>
+<ul>
+<li><p>By construction <span class="math inline">\overline{X}- \overline{Y}</span> is independent of <span class="math inline">S_X^2</span> and <span class="math inline">S_Y^2</span></p></li>
+<li><p>Therefore <span class="math inline">\overline{X}- \overline{Y}</span> is independent of <span class="math inline">S_p^2</span></p></li>
+<li><p>We conclude that <span class="math inline">U</span> and <span class="math inline">V</span> are independent</p></li>
+<li><p>In conclusion, we have shown that <span class="math display">
+T = \frac{U}{\sqrt{V/(n+m-2)}} \,, \qquad
+U \sim N(0,1) \,, \qquad V \sim \chi_{n + m - 2}^2
+</span></p></li>
+<li><p>By the Theorem in Slide 118 of Lecture 2, we conclude that <span class="math display">
+T \sim t_{n+m-2}
+</span></p></li>
+</ul>
+</section>
+<section id="the-two-sample-t-test-2" class="slide level2 smaller">
+<h2>The two-sample t-test</h2>
+<p>Suppose given two <strong>independent</strong> samples</p>
+<ul>
+<li>Sample <span class="math inline">x_1, \ldots, x_n</span> from <span class="math inline">N(\mu_X,\sigma^2)</span> of size <span class="math inline">n</span></li>
+<li>Sample <span class="math inline">y_1, \ldots, y_m</span> from <span class="math inline">N(\mu_Y,\sigma^2)</span> of size <span class="math inline">m</span></li>
+</ul>
+<p>The two-sided hypothesis for <strong>difference in means</strong> is <span class="math display">
+H_0 \colon \mu_X = \mu_Y \,, \quad \qquad
+H_1 \colon \mu_X \neq \mu_Y
+</span></p>
+<p>The one-sided alternative hypotheses are <span class="math display">
+H_1 \colon \mu_X &lt; \mu_Y \quad  \text{ or } \quad
+H_1 \colon \mu_X &gt; \mu_Y
+</span></p>
+</section>
+<section id="procedure-3-steps-1" class="slide level2 smaller">
+<h2>Procedure: 3 Steps</h2>
+<ol type="1">
+<li><strong>Calculation</strong>: Compute the two-sample t-statistic <span class="math display">
+t = \frac{ \overline{x} - \overline{y}}{ s_p \ \sqrt{ \dfrac{1}{n} + \dfrac{1}{m} }}
+</span> where sample means and pooled variance estimator are <span class="math display">
+\overline{x} = \frac{1}{n} \sum_{i=1}^n x_i  \qquad
+\overline{y} = \frac{1}{m} \sum_{i=1}^m y_i  \qquad
+s_p^2 = \frac{ (n-1) s_X^2 + (m - 1) s_Y^2 }{ m + n - 2}
+</span> <span class="math display">
+s_X^2 = \frac{\sum_{i=1}^n x_i^2 - n \overline{x}^2}{n-1}
+\qquad
+s_Y^2 = \frac{\sum_{i=1}^m y_i^2 - m \overline{y}^2}{m-1}
+</span></li>
+</ol>
+</section>
+<section id="section-3" class="slide level2 smaller">
+<h2></h2>
+<ol start="2" type="1">
+<li><strong>Statistical Tables or R</strong>: Find either
+<ul>
+<li>Critical value <span class="math inline">t^*</span> in <a href="files/Statistics_Tables.pdf">Table 1</a></li>
+<li>p-value in R</li>
+</ul></li>
+</ol>
+<p><br></p>
+<ol start="3" type="1">
+<li><strong>Interpretation</strong>: Reject <span class="math inline">H_0</span> when either <span class="math display">
+p &lt; 0.05 \qquad \text{ or } \qquad t \in \,\,\text{Rejection Region}
+\qquad \qquad \qquad \qquad
+(T \, \sim \, t_{n+m-1})
+</span></li>
+</ol>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Alternative</th>
+<th>Rejection Region</th>
+<th><span class="math inline">t^*</span></th>
+<th>p-value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\mu_X \neq \mu_Y</span></td>
+<td><span class="math inline">|t| &gt; t^*</span></td>
+<td><span class="math inline">t_{n+m-1}(0.025)</span></td>
+<td><span class="math inline">2P(T &gt; |t|)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\mu_X &lt; \mu_Y</span></td>
+<td><span class="math inline">t &lt; - t^*</span></td>
+<td><span class="math inline">t_{n+m-1}(0.05)</span></td>
+<td><span class="math inline">P(T &lt; t)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\mu_X &gt; \mu_Y</span></td>
+<td><span class="math inline">t &gt; t^*</span></td>
+<td><span class="math inline">t_{n+m-1}(0.05)</span></td>
+<td><span class="math inline">P(T &gt; t)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="section-4" class="slide level2 smaller">
+<h2></h2>
+
+<img data-src="lecture_4_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"><p>Reject <span class="math inline">H_0</span> if t-statistic <span class="math inline">t</span> falls in the <em>Rejection Region</em> (in gray). Here <span class="math inline">t \sim t_{n+m-1}</span></p>
+</section>
+<section id="the-two-sample-t-test-in-r" class="slide level2 smaller">
+<h2>The two-sample t-test in R</h2>
+<h3 id="general-commands">General commands</h3>
+<ol type="1">
+<li>Store the samples <span class="math inline">x_1,\ldots,x_n</span> and <span class="math inline">y_1,\ldots,y_m</span> in two R vectors
+<ul>
+<li><code>x &lt;- c(x1, ..., xn)</code> <span class="math inline">\qquad</span> <code>y &lt;- c(y1, ..., ym)</code></li>
+</ul></li>
+<li>Perform a two-sample t-test on <code>x</code> and <code>y</code></li>
+</ol>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Alternative</th>
+<th>R command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\mu_X \neq \mu_Y</span></td>
+<td><code>t.test(x, y, var.equal = T)</code></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\mu_X &lt; \mu_Y</span></td>
+<td><code>t.test(x, y, var.equal = T, alt = "less")</code></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\mu_X &gt; \mu_Y</span></td>
+<td><code>t.test(x, y, var.equal = T, alt = "greater")</code></td>
+</tr>
+</tbody>
+</table>
+<ol start="3" type="1">
+<li>Read output: similar to one-sample t-test
+<ul>
+<li>The main quantity of interest is p-value</li>
+</ul></li>
+</ol>
+</section>
+<section id="comments-on-command-t.testx-y" class="slide level2 smaller">
+<h2>Comments on command <code>t.test(x, y)</code></h2>
+<ol type="1">
+<li><p><code>mu = mu0</code> tells R to test null hypothesis: <span class="math display">
+H_0 \colon \mu_X - \mu_Y = \mu_0  \qquad \quad (\text{default is } \, \mu_0 = 0)
+</span></p></li>
+<li><p><code>var.equal = T</code> tells R to assume that populations have same variance <span class="math display">
+\sigma_X^2 = \sigma^2_Y
+</span></p></li>
+<li><p>In this case R computes the t-statistic with formula discussed earlier <span class="math display">
+t = \frac{ \overline{x} - \overline{y} }{s_p \sqrt{ \dfrac{1}{n} + \dfrac{1}{m} }}
+</span></p></li>
+</ol>
+</section>
+<section id="comments-on-command-t.testx-y-1" class="slide level2 smaller">
+<h2>Comments on command <code>t.test(x, y)</code></h2>
+<p><strong>Warning</strong>: If <code>var.equal = T</code> is <strong>not</strong> specified then</p>
+<ul>
+<li><p>R assumes that populations have different variance <span class="math inline">\sigma_X^2 \neq \sigma^2_Y</span></p></li>
+<li><p>In this case the t-statistic <span class="math display">
+  t = \frac{ \overline{x} - \overline{y} }{s_p \sqrt{ \dfrac{1}{n} + \dfrac{1}{m} }}
+</span> is <strong>NOT</strong> t-distributed</p></li>
+<li><p>R performs the <strong>Welch t-test</strong> instead of the <strong>classic t-test</strong><br>
+(more on this later)</p></li>
+</ul>
+</section></section>
+<section>
+<section id="part-6-two-sample-t-test-example" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 6: <br>Two-sample t-test<br>Example</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="section-5" class="slide level2 smaller">
+<h2></h2>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Mathematicians</th>
+<th style="text-align: center;"><span class="math inline">x_1</span></th>
+<th style="text-align: center;"><span class="math inline">x_2</span></th>
+<th style="text-align: center;"><span class="math inline">x_3</span></th>
+<th style="text-align: center;"><span class="math inline">x_4</span></th>
+<th style="text-align: center;"><span class="math inline">x_5</span></th>
+<th style="text-align: center;"><span class="math inline">x_6</span></th>
+<th style="text-align: center;"><span class="math inline">x_7</span></th>
+<th style="text-align: center;"><span class="math inline">x_8</span></th>
+<th style="text-align: center;"><span class="math inline">x_9</span></th>
+<th style="text-align: center;"><span class="math inline">x_{10}</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Wages</td>
+<td style="text-align: center;">36</td>
+<td style="text-align: center;">40</td>
+<td style="text-align: center;">46</td>
+<td style="text-align: center;">54</td>
+<td style="text-align: center;">57</td>
+<td style="text-align: center;">58</td>
+<td style="text-align: center;">59</td>
+<td style="text-align: center;">60</td>
+<td style="text-align: center;">62</td>
+<td style="text-align: center;">63</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Accountants</th>
+<th style="text-align: center;"><span class="math inline">y_1</span></th>
+<th style="text-align: center;"><span class="math inline">y_2</span></th>
+<th style="text-align: center;"><span class="math inline">y_3</span></th>
+<th style="text-align: center;"><span class="math inline">y_4</span></th>
+<th style="text-align: center;"><span class="math inline">y_5</span></th>
+<th style="text-align: center;"><span class="math inline">y_6</span></th>
+<th style="text-align: center;"><span class="math inline">y_7</span></th>
+<th style="text-align: center;"><span class="math inline">y_8</span></th>
+<th style="text-align: center;"><span class="math inline">y_9</span></th>
+<th style="text-align: center;"><span class="math inline">y_{10}</span></th>
+<th style="text-align: center;"><span class="math inline">y_{11}</span></th>
+<th style="text-align: center;"><span class="math inline">y_{12}</span></th>
+<th style="text-align: center;"><span class="math inline">y_{13}</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Wages</td>
+<td style="text-align: center;">37</td>
+<td style="text-align: center;">37</td>
+<td style="text-align: center;">42</td>
+<td style="text-align: center;">44</td>
+<td style="text-align: center;">46</td>
+<td style="text-align: center;">48</td>
+<td style="text-align: center;">54</td>
+<td style="text-align: center;">56</td>
+<td style="text-align: center;">59</td>
+<td style="text-align: center;">60</td>
+<td style="text-align: center;">60</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">64</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<ul>
+<li><p><strong>Samples:</strong> Wage data on 10 Mathematicians and 13 Accountants</p>
+<ul>
+<li>Wages are independent and normally distributed</li>
+<li>Populations have equal variance</li>
+</ul></li>
+<li><p><strong>Quesion:</strong> Is there evidence of differences in average pay?</p></li>
+<li><p><strong>Answer:</strong> Two-sample two-sided t-test for the hypothesis <span class="math display">
+H_0 \colon \mu_X = \mu_Y \,,\qquad
+H_1 \colon \mu_X \neq \mu_Y
+</span></p></li>
+</ul>
+</section>
+<section id="calculations-first-sample" class="slide level2 smaller">
+<h2>Calculations: First sample</h2>
+<ul>
+<li><p><strong>Sample size:</strong> <span class="math inline">\ n =</span> No.&nbsp;of Mathematicians <span class="math inline">= 10</span></p></li>
+<li><p><strong>Mean</strong>: <span class="math display">
+\bar{x} = \frac{\sum_{i=1}^n x_i}{n}
+      = \frac{36+40+46+ \ldots +62+63}{10}=\frac{535}{10}=53.5
+</span></p></li>
+<li><p><strong>Variance:</strong> <span class="math display">\begin{align*}
+s^2_X &amp; = \frac{\sum_{i=1}^n x_i^2 - n \bar{x}^2}{n -1 } \\
+\sum_{i=1}^n x_i^2 &amp; =  36^2+40^2+46^2+ \ldots +62^2+63^2 = 29435 \\
+s^2_X &amp; =  \frac{29435-10(53.5)^2}{9} = 90.2778
+\end{align*}</span></p></li>
+</ul>
+</section>
+<section id="calculations-second-sample" class="slide level2 smaller">
+<h2>Calculations: Second sample</h2>
+<ul>
+<li><p><strong>Sample size:</strong> <span class="math inline">\ m =</span> No.&nbsp;of Accountants <span class="math inline">= 13</span></p></li>
+<li><p><strong>Mean</strong>: <span class="math display">
+\bar{y} = \frac{37+37+42+ \dots +64+64}{13}
+      = \frac{671}{13} = 51.6154
+</span></p></li>
+<li><p><strong>Variance:</strong> <span class="math display">\begin{align*}
+s^2_Y &amp; = \frac{\sum_{i=1}^m y_i^2 - m \bar{y}^2}{m - 1} \\
+\sum_{i=1}^m y_i^2 &amp; = 37^2+37^2+42^2+ \ldots +64^2+64^2 = 35783  \\
+s^2_Y &amp; =  \frac{35783-13(51.6154)^2}{12} = 95.7547
+\end{align*}</span></p></li>
+</ul>
+</section>
+<section id="calculations-pooled-variance" class="slide level2 smaller">
+<h2>Calculations: Pooled Variance</h2>
+<ul>
+<li><p><strong>Pooled variance:</strong> <span class="math display">\begin{align*}
+s_p^2 &amp; = \frac{(n-1) s_X^2 + (m-1) s_Y^2}{ n + m - 2}  \\
+    &amp; = \frac{(9) 90.2778 + (12) 95.7547 }{ 10 + 13 - 2} \\
+    &amp; = 93.40746
+\end{align*}</span></p></li>
+<li><p><strong>Pooled standard deviation:</strong> <span class="math display">
+s_p = \sqrt{93.40746} = 9.6648
+</span></p></li>
+</ul>
+</section>
+<section id="calculations-t-statistic" class="slide level2 smaller">
+<h2>Calculations: t-statistic</h2>
+<ol type="1">
+<li><strong>Calculation:</strong> Compute the two-sample t-statistic</li>
+</ol>
+<p><span class="math display">\begin{align*}
+t &amp; = \frac{\bar{x} - \bar{y} }{s_p \ \sqrt{\dfrac{1}{n}+\dfrac{1}{m}}} \\
+  &amp; = \frac{53.5 - 51.6154}{9.6648 \times \sqrt{\dfrac{1}{10}+\dfrac{1}{13}}} \\
+  &amp; = \frac{1.8846}{9.6648{\times}0.4206} \\
+  &amp; = 0.464 \,\, (3\ \text{d.p.})
+\end{align*}</span></p>
+</section>
+<section id="completing-the-t-test" class="slide level2 smaller">
+<h2>Completing the t-test</h2>
+<ol start="2" type="1">
+<li><strong>Referencing Tables</strong>:
+<ul>
+<li>Degrees of freedom are <span class="math display">{\rm df} = n + m - 2 = 10 + 13 - 2 = 21</span></li>
+<li>Find corresponding critical value in <a href="files/Statistics_Tables.pdf">Table 1</a> <span class="math display">
+t_{21}(0.025) = 2.08
+</span> (Note the value <span class="math inline">0.025</span>, since this is two-sided test)</li>
+</ul></li>
+</ol>
+</section>
+<section id="completing-the-t-test-1" class="slide level2 smaller">
+<h2>Completing the t-test</h2>
+<ol start="3" type="1">
+<li><strong>Interpretation:</strong>
+<ul>
+<li>We have that <span class="math display">
+| t | = 0.464 &lt; 2.08 = t_{21}(0.025)
+</span></li>
+<li>t falls in the <em>acceptance region</em></li>
+<li>Therefore the p-value satisfies <span class="math inline">p&gt;0.05</span></li>
+<li>There is no evidence (<span class="math inline">p&gt;0.05</span>) in favor of <span class="math inline">H_1</span></li>
+<li>Hence we accept that <span class="math inline">\mu_X = \mu_Y</span></li>
+</ul></li>
+<li><strong>Conclusion:</strong> Average pay levels seem to be the same for both professions</li>
+</ol>
+</section>
+<section id="the-two-sample-t-test-in-r-1" class="slide level2 smaller">
+<h2>The two-sample t-test in R</h2>
+<p>This is a two-sided t-test with assumption of equal variance. The p-value is</p>
+<p><span class="math display">
+p = 2 P(t_{n-1} &gt; |t|) \,, \qquad t  = \frac{\bar{x} - \bar{y} }{s_p \ \sqrt{1/n + 1/m}}
+</span></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter Wages data in 2 vectors using function c()</span></span>
+<span id="cb18-2"><a aria-hidden="true" tabindex="-1"></a>mathematicians <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">36</span>, <span class="dv">40</span>, <span class="dv">46</span>, <span class="dv">54</span>, <span class="dv">57</span>, <span class="dv">58</span>, <span class="dv">59</span>, <span class="dv">60</span>, <span class="dv">62</span>, <span class="dv">63</span>)</span>
+<span id="cb18-3"><a aria-hidden="true" tabindex="-1"></a>accountants <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">37</span>, <span class="dv">37</span>, <span class="dv">42</span>, <span class="dv">44</span>, <span class="dv">46</span>, <span class="dv">48</span>, <span class="dv">54</span>, <span class="dv">56</span>, <span class="dv">59</span>, <span class="dv">60</span>, <span class="dv">60</span>, <span class="dv">64</span>, <span class="dv">64</span>)</span>
+<span id="cb18-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Two-sample t-test with null hypothesis mu_X = mu_Y</span></span>
+<span id="cb18-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># and equal variance assumption. Store result in answer and print.</span></span>
+<span id="cb18-8"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a aria-hidden="true" tabindex="-1"></a>answer <span class="ot">&lt;-</span> <span class="fu">t.test</span>(mathematicians, accountants, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-10"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(answer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Code can be downloaded here <a href="codes/two_sample_t_test.R">two_sample_t_test.R</a></li>
+</ul>
+</section>
+<section id="section-6" class="slide level2 smaller">
+<h2></h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Two Sample t-test
+
+data:  mathematicians and accountants
+t = 0.46359, df = 21, p-value = 0.6477
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -6.569496 10.338727
+sample estimates:
+mean of x mean of y 
+ 53.50000  51.61538 </code></pre>
+</div>
+</div>
+<p><strong>Comments on output</strong>:</p>
+<ol type="1">
+<li>First line: R tells us that a Two-Sample t-test is performed</li>
+<li>Second line: Data for t-test is <code>mathematicians</code> and <code>accountants</code></li>
+</ol>
+</section>
+<section id="section-7" class="slide level2 smaller">
+<h2></h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Two Sample t-test
+
+data:  mathematicians and accountants
+t = 0.46359, df = 21, p-value = 0.6477
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -6.569496 10.338727
+sample estimates:
+mean of x mean of y 
+ 53.50000  51.61538 </code></pre>
+</div>
+</div>
+<p><strong>Comments on output</strong>:</p>
+<ol start="3" type="1">
+<li>Third line:
+<ul>
+<li>The t-statistic computed is <span class="math inline">t = 0.46359</span></li>
+<li><strong>Note</strong>: This coincides with the one computed by hand!</li>
+<li>There are <span class="math inline">21</span> degrees of freedom</li>
+<li>The p-values is <span class="math inline">p = 0.6477</span></li>
+</ul></li>
+</ol>
+</section>
+<section id="section-8" class="slide level2 smaller">
+<h2></h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Two Sample t-test
+
+data:  mathematicians and accountants
+t = 0.46359, df = 21, p-value = 0.6477
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -6.569496 10.338727
+sample estimates:
+mean of x mean of y 
+ 53.50000  51.61538 </code></pre>
+</div>
+</div>
+<p><strong>Comments on output</strong>:</p>
+<ol start="4" type="1">
+<li>Fourth line: The alternative hypothesis is that the difference in means is not zero
+<ul>
+<li>This translates to <span class="math inline">H_1 \colon \mu_X \neq \mu_Y</span></li>
+<li><strong>Warning</strong>: This is not saying to reject <span class="math inline">H_0</span> – R is just stating <span class="math inline">H_1</span></li>
+</ul></li>
+</ol>
+</section>
+<section id="section-9" class="slide level2 smaller">
+<h2></h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Two Sample t-test
+
+data:  mathematicians and accountants
+t = 0.46359, df = 21, p-value = 0.6477
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -6.569496 10.338727
+sample estimates:
+mean of x mean of y 
+ 53.50000  51.61538 </code></pre>
+</div>
+</div>
+<p><strong>Comments on output</strong>:</p>
+<ol start="5" type="1">
+<li>Fifth line: R computes a <span class="math inline">95 \%</span> confidence interval for <span class="math inline">\mu_X - \mu_Y</span> <span class="math display">
+(\mu_X - \mu_Y) \in [-6.569496, 10.338727]
+</span>
+<ul>
+<li><strong>Interpretation:</strong> If you repeat the experiment (on new data) over and over, the interval <span class="math inline">[a,b]</span> will contain <span class="math inline">\mu_X - \mu_Y</span> about <span class="math inline">95\%</span> of the times</li>
+</ul></li>
+</ol>
+</section>
+<section id="section-10" class="slide level2 smaller">
+<h2></h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Two Sample t-test
+
+data:  mathematicians and accountants
+t = 0.46359, df = 21, p-value = 0.6477
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -6.569496 10.338727
+sample estimates:
+mean of x mean of y 
+ 53.50000  51.61538 </code></pre>
+</div>
+</div>
+<p><strong>Comments on output</strong>:</p>
+<ol start="6" type="1">
+<li>Seventh line: R computes sample mean for the two populations
+<ul>
+<li>Sample mean for <code>mathematicians</code> is <span class="math inline">53.5</span></li>
+<li>Sample mean for <code>accountants</code> is <span class="math inline">51.61538</span></li>
+</ul></li>
+</ol>
+</section>
+<section id="section-11" class="slide level2 smaller">
+<h2></h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Two Sample t-test
+
+data:  mathematicians and accountants
+t = 0.46359, df = 21, p-value = 0.6477
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -6.569496 10.338727
+sample estimates:
+mean of x mean of y 
+ 53.50000  51.61538 </code></pre>
+</div>
+</div>
+<p><strong>Conclusion</strong>: The p-value is <span class="math inline">p = 0.6477</span></p>
+<ul>
+<li>Since <span class="math inline">p &gt; 0.05</span> we do not reject <span class="math inline">H_0</span></li>
+<li>Hence <span class="math inline">\mu_X</span> and <span class="math inline">\mu_Y</span> appear to be similar</li>
+<li>Average pay levels seem to be the same for both professions</li>
+</ul>
+</section>
+<section id="comment-on-assumptions" class="slide level2 smaller">
+<h2>Comment on Assumptions</h2>
+<p>The previous two-sample t-test was conducted under the following assumptions:</p>
+<ol type="1">
+<li>Wages data is normally distributed</li>
+<li>The two populations have equal variance</li>
+</ol>
+<p>Using R, we can plot the data to see if these are reasonable (<em>graphical exploration</em>)</p>
+<p><strong>Warnings:</strong> Even if the assumptions hold</p>
+<ul>
+<li>we cannot expect the samples to be exactly normal (bell-shaped)
+<ul>
+<li>rather, look for approximate normality</li>
+</ul></li>
+<li>we cannot expect the sample variances to match
+<ul>
+<li>rather, look for a similar spread in the data</li>
+</ul></li>
+</ul>
+</section>
+<section id="estimating-the-sample-distribution-in-r" class="slide level2 smaller">
+<h2>Estimating the sample distribution in R</h2>
+<p>Suppose given a data sample stored in a vector <code>z</code></p>
+<ul>
+<li><p>If the sample is <strong>large</strong>, we can check normality by plotting the histogram of <code>z</code></p></li>
+<li><p>Example: <code>z</code> sample of size 1000 form <span class="math inline">N(0,1)</span> – Its histogram resembles <span class="math inline">N(0,1)</span></p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)                <span class="co"># Sample 1000 times from N(0,1) </span></span>
+<span id="cb25-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(z, <span class="at">probability =</span> <span class="cn">TRUE</span>)     <span class="co"># Plot histogram, with area scaled to 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="lecture_4_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
+<section id="section-12" class="slide level2 smaller">
+<h2></h2>
+<p><strong>Drawback:</strong> Small samples <span class="math inline">\implies</span> hard to check normality from histogram</p>
+<ul>
+<li>This is true even if the data is normal</li>
+<li>Example: <code>z</code> below is sample of size 9 from <span class="math inline">N(0,1)</span> – But histogram not normal</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.78</span>, <span class="sc">-</span><span class="fl">1.67</span>, <span class="sc">-</span><span class="fl">0.38</span>,  <span class="fl">0.92</span>, <span class="sc">-</span><span class="fl">0.58</span>,  </span>
+<span id="cb26-2"><a aria-hidden="true" tabindex="-1"></a>       <span class="fl">0.61</span>, <span class="sc">-</span><span class="fl">1.62</span>, <span class="sc">-</span><span class="fl">0.06</span>, <span class="fl">0.52</span>)           <span class="co"># Random from N(0,1)</span></span>
+<span id="cb26-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(z, <span class="at">probability =</span> <span class="cn">TRUE</span>)                <span class="co"># Histogram not normal</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="lecture_4_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"></section>
+<section id="section-13" class="slide level2 smaller">
+<h2></h2>
+<p><strong>Solution:</strong> Suppose given iid sample <code>z</code> from a distribution <span class="math inline">f</span></p>
+<ul>
+<li><p>The command <code>density(z)</code> estimates the population distribution <span class="math inline">f</span><br>
+(Estimate based on the <em>sampling distribution</em> of <code>z</code> and smoothing - Not easy task)</p></li>
+<li><p>Example: <code>z</code> as in previous slide. The plot of <code>density(z)</code> shows normal behavior</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.78</span>, <span class="sc">-</span><span class="fl">1.67</span>, <span class="sc">-</span><span class="fl">0.38</span>,  <span class="fl">0.92</span>, <span class="sc">-</span><span class="fl">0.58</span>,  </span>
+<span id="cb27-2"><a aria-hidden="true" tabindex="-1"></a>       <span class="fl">0.61</span>, <span class="sc">-</span><span class="fl">1.62</span>, <span class="sc">-</span><span class="fl">0.06</span>, <span class="fl">0.52</span>)           <span class="co"># Random from N(0,1)</span></span>
+<span id="cb27-3"><a aria-hidden="true" tabindex="-1"></a>dz <span class="ot">&lt;-</span> <span class="fu">density</span>(z)                           <span class="co"># Estimate the density of z</span></span>
+<span id="cb27-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dz)                                   <span class="co"># Plot the estimated density</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="lecture_4_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
+<section id="section-14" class="slide level2 smaller">
+<h2></h2>
+<p>The R object <code>density(z)</code> models a 1D function (the estimated distribution of <code>z</code>)</p>
+<ul>
+<li>As such, it contains a grid of x values, with associated y values
+<ul>
+<li>x values are stored in vector <code>density(z)$x</code></li>
+<li>y values are stored in vector <code>density(z)$y</code></li>
+</ul></li>
+<li>These values are useful to set the axis range in a plot</li>
+</ul>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a aria-hidden="true" tabindex="-1"></a>dz <span class="ot">&lt;-</span> <span class="fu">density</span>(z)</span>
+<span id="cb28-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dz,                        <span class="co"># Plot dz</span></span>
+<span id="cb28-4"><a aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">range</span>(dz<span class="sc">$</span>x),        <span class="co"># Set x-axis range</span></span>
+<span id="cb28-5"><a aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">range</span>(dz<span class="sc">$</span>y))        <span class="co"># Set y-axis range</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Axes range set as the <strong>min</strong> and <strong>max</strong> values of components of <code>dz</code></p>
+</section>
+<section id="checking-the-assumptions-on-our-example" class="slide level2 smaller">
+<h2>Checking the Assumptions on our Example</h2>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the estimated distributions</span></span>
+<span id="cb29-2"><a aria-hidden="true" tabindex="-1"></a>d.math <span class="ot">&lt;-</span> <span class="fu">density</span>(mathematicians)</span>
+<span id="cb29-3"><a aria-hidden="true" tabindex="-1"></a>d.acc <span class="ot">&lt;-</span> <span class="fu">density</span>(accountants)</span>
+<span id="cb29-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the estimated distributions</span></span>
+<span id="cb29-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(d.math,                                    <span class="co"># Plot d.math</span></span>
+<span id="cb29-8"><a aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">range</span>(<span class="fu">c</span>(d.math<span class="sc">$</span>x, d.acc<span class="sc">$</span>x)),        <span class="co"># Set x-axis range</span></span>
+<span id="cb29-9"><a aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">range</span>(<span class="fu">c</span>(d.math<span class="sc">$</span>y, d.acc<span class="sc">$</span>y)),        <span class="co"># Set y-axis range</span></span>
+<span id="cb29-10"><a aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Estimated Distributions of Wages"</span>) <span class="co"># Add title to plot</span></span>
+<span id="cb29-11"><a aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(d.acc,                                    <span class="co"># Layer plot of d.acc</span></span>
+<span id="cb29-12"><a aria-hidden="true" tabindex="-1"></a>      <span class="at">lty =</span> <span class="dv">2</span>)                                  <span class="co"># Use different line style</span></span>
+<span id="cb29-13"><a aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb29-14"><a aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,                               <span class="co"># Add legend at top-left</span></span>
+<span id="cb29-15"><a aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Mathematicians"</span>,             <span class="co"># Labels for legend</span></span>
+<span id="cb29-16"><a aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Accountants"</span>), </span>
+<span id="cb29-17"><a aria-hidden="true" tabindex="-1"></a>       <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))                           <span class="co"># Assign curves to legend</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Axes range set as the <strong>min</strong> and <strong>max</strong> values of components of <code>d.math</code> and <code>d.acc</code></p>
+</section>
+<section id="section-15" class="slide level2 smaller">
+<h2></h2>
+
+<img data-src="lecture_4_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"><ol type="1">
+<li><p>Wages data looks approximately normally distributed (roughly bell-shaped)</p></li>
+<li><p>The two populations have similar variance (spreads look similar)</p></li>
+</ol>
+<p><strong>Conclusion:</strong> Two-sample t-test with equal variance is appropriate <span class="math inline">\implies</span> accept <span class="math inline">H_0</span></p>
+</section></section>
+<section>
+<section id="part-7-the-welch-t-test" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 7: <br>The Welch t-test</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="samples-with-different-variance" class="slide level2 smaller">
+<h2>Samples with different variance</h2>
+<ul>
+<li><p>We just examined the two-sample t-tests</p></li>
+<li><p>This assumes independent normal populations with equal variance</p></li>
+</ul>
+<p><span class="math display">
+\sigma_X^2 = \sigma_Y^2
+</span></p>
+<ul>
+<li><p><strong>Question:</strong> What happens if variances are different?</p></li>
+<li><p><strong>Answer:</strong> Use the <strong>Welch Two-sample t-test</strong></p>
+<ul>
+<li>This is a generalization of the two-sample t-test to the case <span class="math inline">\sigma_X^2 \neq \sigma_Y^2</span></li>
+<li>In R it is performed with <code>t.test(x, y)</code></li>
+<li>Note that we are just omitting the option <code>var.equal = TRUE</code></li>
+<li>Equivalently, you may specify <code>var.equal = FALSE</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="the-welch-two-sample-t-test" class="slide level2 smaller">
+<h2>The Welch two-sample t-test</h2>
+<ul>
+<li><p><strong>Welch t-test</strong> consists in computing the <strong>Welch statistic</strong> <span class="math display">
+w = \frac{\overline{x} - \overline{y}}{ \sqrt{ \dfrac{s_X^2}{n} + \dfrac{s_Y^2}{m} } }
+</span></p></li>
+<li><p>If sample sizes <span class="math inline">m,n &gt; 5</span>, then <span class="math inline">w</span> is <strong>approximately t-distributed</strong></p>
+<ul>
+<li>Degrees of freedom are not integer, and depend on <span class="math inline">S_X, S_Y, n, m</span></li>
+</ul></li>
+<li><p>If variances are similar, the welch statistic is comparable to the t-statistic</p></li>
+</ul>
+<p><span class="math display">
+w \approx t : = \frac{ \overline{x} - \overline{y} }{s_p \sqrt{ \dfrac{1}{n} + \dfrac{1}{m} }}
+</span></p>
+</section>
+<section id="welch-t-test-vs-two-sample-t-test" class="slide level2 smaller">
+<h2>Welch t-test Vs two-sample t-test</h2>
+<p>If variances are similar:</p>
+<ul>
+<li>Welch statistic and t-statistic are similar</li>
+<li>p-value from Welch t-test is <strong>similar</strong> to p-value from two-sample t-test</li>
+<li>Since p-values are similar, most times the 2 tests yield <strong>same decision</strong></li>
+<li><strong>The tests can be used interchangeably</strong></li>
+</ul>
+<p>If variances are very different:</p>
+<ul>
+<li>Welch statistic and t-statistic are different</li>
+<li>p-values from the two tests can differ a lot</li>
+<li>The two tests might give <strong>different decision</strong></li>
+<li><strong>Wrong to apply two-sample t-test, as variances are different</strong></li>
+</ul>
+</section>
+<section id="the-welch-two-sample-t-test-in-r" class="slide level2 smaller">
+<h2>The Welch two-sample t-test in R</h2>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter Wages data</span></span>
+<span id="cb30-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a aria-hidden="true" tabindex="-1"></a>mathematicians <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">36</span>, <span class="dv">40</span>, <span class="dv">46</span>, <span class="dv">54</span>, <span class="dv">57</span>, <span class="dv">58</span>, <span class="dv">59</span>, <span class="dv">60</span>, <span class="dv">62</span>, <span class="dv">63</span>)</span>
+<span id="cb30-4"><a aria-hidden="true" tabindex="-1"></a>accountants <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">37</span>, <span class="dv">37</span>, <span class="dv">42</span>, <span class="dv">44</span>, <span class="dv">46</span>, <span class="dv">48</span>, <span class="dv">54</span>, <span class="dv">56</span>, <span class="dv">59</span>, <span class="dv">60</span>, <span class="dv">60</span>, <span class="dv">64</span>, <span class="dv">64</span>)</span>
+<span id="cb30-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Perform Welch two-sample t-test with null hypothesis mu_X = mu_Y</span></span>
+<span id="cb30-8"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Store result of t.test in answer</span></span>
+<span id="cb30-9"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a aria-hidden="true" tabindex="-1"></a>answer <span class="ot">&lt;-</span> <span class="fu">t.test</span>(mathematicians, accountants)</span>
+<span id="cb30-11"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-12"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-13"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Print answer</span></span>
+<span id="cb30-14"><a aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(answer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><strong>Note</strong>:
+<ul>
+<li>This is almost the same code as in Slide 86</li>
+<li>Only difference: we are omitting the option <code>var.equal = TRUE</code> in <code>t.test</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="section-16" class="slide level2 smaller">
+<h2></h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  mathematicians and accountants
+t = 0.46546, df = 19.795, p-value = 0.6467
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -6.566879 10.336109
+sample estimates:
+mean of x mean of y 
+ 53.50000  51.61538 </code></pre>
+</div>
+</div>
+<p><strong>Comments on output</strong>:</p>
+<ol type="1">
+<li>First line: R tells us that a Welch Two-Sample t-test is performed
+<ul>
+<li>The rest of the output is similar to classic t-test</li>
+<li>Main difference is that p-value and t-statistic differ from classic t-test</li>
+</ul></li>
+</ol>
+</section>
+<section id="section-17" class="slide level2 smaller">
+<h2></h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  mathematicians and accountants
+t = 0.46546, df = 19.795, p-value = 0.6467
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -6.566879 10.336109
+sample estimates:
+mean of x mean of y 
+ 53.50000  51.61538 </code></pre>
+</div>
+</div>
+<p><strong>Comments on output</strong>:</p>
+<ol start="2" type="1">
+<li>Third line:
+<ul>
+<li>The Welch t-statistic is <span class="math inline">w = 0.46546</span> (standard t-test gave <span class="math inline">t = 0.46359</span>)</li>
+<li>Degrees of freedom are fractionary <span class="math inline">\rm{df} = 19.795</span> (standard t-test <span class="math inline">\rm{df} = 21</span>)</li>
+<li>The Welch t-statistic is approximately t-distributed with <span class="math inline">W \approx t_{19.795}</span></li>
+</ul></li>
+<li>Fifth line: The confidence interval for <span class="math inline">\mu_X - \mu_Y</span> is also different</li>
+</ol>
+</section>
+<section id="section-18" class="slide level2 smaller">
+<h2></h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  mathematicians and accountants
+t = 0.46546, df = 19.795, p-value = 0.6467
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -6.566879 10.336109
+sample estimates:
+mean of x mean of y 
+ 53.50000  51.61538 </code></pre>
+</div>
+</div>
+<p><strong>Conclusion</strong>: The p-values obtained with the 2 tests are almost the same</p>
+<ul>
+<li><p>Welch t-test: p-value <span class="math inline">= 0.6467 \qquad</span> Classic t-test: p-value <span class="math inline">= 0.6477</span></p></li>
+<li><p>Both test: <span class="math inline">p &gt; 0.05</span>, and therefore do not reject <span class="math inline">H_0</span></p></li>
+<li><p><strong>Note:</strong> This was expected</p>
+<ul>
+<li>The spread of the two populations is similar <span class="math inline">\implies \, \sigma_X^2 \approx \sigma_Y^2</span></li>
+<li>Hence, Welch t-statistic approximates t-statistic <span class="math inline">\implies</span> p-values are similar</li>
+</ul></li>
+</ul>
+</section>
+<section id="exercise" class="slide level2 smaller">
+<h2>Exercise</h2>
+<ul>
+<li><p>We compare the Effect of Two Treatments on Blood Pressure Change</p></li>
+<li><p>Both treatments are given to a group of patients</p></li>
+<li><p>Measurements of changes in blood pressure are taken after 4 weeks of treatment</p></li>
+<li><p>Note that changes represent both positive and negative shifts in blood pressure</p></li>
+</ul>
+<p><br></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Treat. A</strong></td>
+<td>-1.9</td>
+<td>-2.5</td>
+<td>-2.1</td>
+<td>-2.4</td>
+<td>-2.6</td>
+<td>-1.9</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>Treat. B</strong></td>
+<td>-1.1</td>
+<td>-0.9</td>
+<td>-1.4</td>
+<td>0.2</td>
+<td>0.3</td>
+<td>0.6</td>
+<td>-5</td>
+<td>-2.4</td>
+<td>1.5</td>
+<td>-2.3</td>
+<td>-2.8</td>
+<td>2.1</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="section-19" class="slide level2 smaller">
+<h2></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter changes in Blood pressure data</span></span>
+<span id="cb34-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a aria-hidden="true" tabindex="-1"></a>trA <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.9</span>, <span class="sc">-</span><span class="fl">2.5</span>, <span class="sc">-</span><span class="fl">2.1</span>, <span class="sc">-</span><span class="fl">2.4</span>, <span class="sc">-</span><span class="fl">2.6</span>, <span class="sc">-</span><span class="fl">1.9</span>)</span>
+<span id="cb34-4"><a aria-hidden="true" tabindex="-1"></a>trB <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.1</span>, <span class="sc">-</span><span class="fl">0.9</span>, <span class="sc">-</span><span class="fl">1.4</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.6</span>, <span class="sc">-</span><span class="dv">5</span>,</span>
+<span id="cb34-5"><a aria-hidden="true" tabindex="-1"></a>         <span class="sc">-</span><span class="fl">2.4</span>, <span class="sc">-</span><span class="fl">1.5</span>, <span class="fl">2.3</span>, <span class="sc">-</span><span class="fl">2.8</span>, <span class="fl">2.1</span>)</span>
+<span id="cb34-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Mean of Treatment A:"</span>, <span class="fu">mean</span>(trA), <span class="st">"Mean of Treatment B:"</span>, <span class="fu">mean</span>(trB))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mean of Treatment A: -2.233333 Mean of Treatment B: -0.8</code></pre>
+</div>
+</div>
+<p><br></p>
+<ul>
+<li><p>Sample means show both Treatments are effective in decreasing blood pressure</p></li>
+<li><p>However Treatment A seems slightly better</p></li>
+</ul>
+<p><strong>Question:</strong> Perform a t-test to see if Treatment A is better <span class="math display">
+H_0 \colon \mu_A = \mu_B \, , \qquad
+H_1 \colon \mu_A &lt; \mu_B
+</span></p>
+</section>
+<section id="solution-estimated-density-of-treatment-a" class="slide level2 smaller">
+<h2>Solution: Estimated density of Treatment A</h2>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(trA))    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<img data-src="lecture_4_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"><ul>
+<li>Estimated density looks bell-shaped <span class="math inline">\implies</span> First population is normal</li>
+<li>Sample seems concentrated between <span class="math inline">-3</span> and <span class="math inline">-1.5</span></li>
+</ul>
+</section>
+<section id="estimated-density-of-treatment-b" class="slide level2 smaller">
+<h2>Estimated density of Treatment B</h2>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(trB))    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<img data-src="lecture_4_files/figure-revealjs/unnamed-chunk-25-1.png" width="960" class="r-stretch"><ul>
+<li>Estimated density looks bell-shaped <span class="math inline">\implies</span> Second population is normal</li>
+<li>Sample seems concentrated between <span class="math inline">-7</span> and <span class="math inline">4</span></li>
+</ul>
+</section>
+<section id="findings" class="slide level2 smaller">
+<h2>Findings</h2>
+<ul>
+<li>Both populations are normal <span class="math inline">\implies</span> t-test is appropriate</li>
+<li>First sample seems concentrated between <span class="math inline">-3</span> and <span class="math inline">-1.5</span></li>
+<li>Second sample seems concentrated between <span class="math inline">-7</span> and <span class="math inline">4</span></li>
+<li>Treatment B has larger spread</li>
+<li>Therefore we suspect that populations have different variance</li>
+</ul>
+<p><span class="math display">
+\sigma_A^2 \neq \sigma_B^2
+</span></p>
+<p><strong>Conclusion:</strong></p>
+<ul>
+<li>The Welch t-test is appropriate</li>
+<li>Two sample t-test would not be appropriate (as it assumes equal variance)</li>
+</ul>
+</section>
+<section id="apply-the-welch-t-test" class="slide level2 smaller">
+<h2>Apply the Welch t-test</h2>
+<p>We are testing the one-sided hypothesis</p>
+<p><span class="math display">
+H_0 \colon \mu_A = \mu_B \, , \qquad
+H_1 \colon \mu_A &lt; \mu_B
+</span></p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Perform Welch t-test and retrieve p-value</span></span>
+<span id="cb38-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">t.test</span>(trA, trB, <span class="at">alt =</span> <span class="st">"less"</span>, <span class="at">var.equal =</span> F) </span>
+<span id="cb38-4"><a aria-hidden="true" tabindex="-1"></a>ans<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01866013</code></pre>
+</div>
+</div>
+<p><br></p>
+<ul>
+<li><p>The p-value is <span class="math inline">p &lt; 0.05</span></p></li>
+<li><p>We reject <span class="math inline">H_0 \implies</span> Treatment A is more effective</p></li>
+</ul>
+</section>
+<section id="two-sample-t-test-gives-different-decision" class="slide level2 smaller">
+<h2>Two-sample t-test gives different decision</h2>
+<p>We are testing the one-sided hypothesis</p>
+<p><span class="math display">
+H_0 \colon \mu_A = \mu_B \, , \qquad
+H_1 \colon \mu_A &lt; \mu_B
+</span></p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Perform two-sample t-test and retrieve p-value</span></span>
+<span id="cb40-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">t.test</span>(trA, trB, <span class="at">alt =</span> <span class="st">"less"</span>, <span class="at">var.equal =</span> T) </span>
+<span id="cb40-4"><a aria-hidden="true" tabindex="-1"></a>ans<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.05836482</code></pre>
+</div>
+</div>
+<p><br></p>
+<ul>
+<li><p>The p-value is <span class="math inline">p &gt; 0.05</span></p></li>
+<li><p><span class="math inline">H_0</span> cannot be rejected <span class="math inline">\implies</span> There is no evidence that Treatment A is better</p></li>
+<li><p><strong>Wrong conclusion, because two-sample t-test does not apply</strong></p></li>
+</ul>
+</section>
+<section id="disclaimer" class="slide level2 smaller">
+<h2>Disclaimer</h2>
+<ul>
+<li><p>The previous data was synthetic, and the background story was made up!</p></li>
+<li><p>Nonetheless, the example is still valid</p></li>
+<li><p>To construct the data, I sampled as follows</p>
+<ul>
+<li>Treatment A: Sample of size 6 from <span class="math inline">N(-2,1)</span></li>
+<li>Treatment B: Sample of size 12 from <span class="math inline">N(-1.5,9)</span></li>
+</ul></li>
+<li><p>We see that <span class="math display">
+\mu_A &lt; \mu_B \,, \qquad
+\sigma_A^2 \neq \sigma_B^2
+</span></p></li>
+<li><p>This tells us that:</p>
+<ul>
+<li>We can expect that some samples will support that <span class="math inline">\mu_A &lt; \mu_B</span></li>
+<li>Two-sample t-test is inappropriate because <span class="math inline">\sigma_A^2 \neq \sigma_B^2</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="generating-the-data" class="slide level2 smaller">
+<h2>Generating the Data</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Click here to see the code I used</summary>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed for random generation</span></span>
+<span id="cb42-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># This way you always get the same random numbers when</span></span>
+<span id="cb42-3"><a aria-hidden="true" tabindex="-1"></a><span class="co"># you run this code</span></span>
+<span id="cb42-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">21</span>) </span>
+<span id="cb42-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-6"><a aria-hidden="true" tabindex="-1"></a><span class="cf">repeat</span> {</span>
+<span id="cb42-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate random samples</span></span>
+<span id="cb42-8"><a aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">6</span>, <span class="at">mean =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb42-9"><a aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">12</span>, <span class="at">mean =</span> <span class="sc">-</span><span class="fl">1.5</span>, <span class="at">sd =</span> <span class="dv">3</span>)</span>
+<span id="cb42-10"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-11"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># Round x and y to 1 decimal point</span></span>
+<span id="cb42-12"><a aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">round</span>(x, <span class="dv">1</span>)</span>
+<span id="cb42-13"><a aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fu">round</span>(y, <span class="dv">1</span>)</span>
+<span id="cb42-14"><a aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb42-15"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># Perform one-sided t-tests for alternative hypothesis mu_x &lt; mu_y </span></span>
+<span id="cb42-16"><a aria-hidden="true" tabindex="-1"></a>  ans_welch <span class="ot">&lt;-</span> <span class="fu">t.test</span>(x, y, <span class="at">alt =</span> <span class="st">"less"</span>, <span class="at">var.equal =</span> F)</span>
+<span id="cb42-17"><a aria-hidden="true" tabindex="-1"></a>  ans_t_test <span class="ot">&lt;-</span> <span class="fu">t.test</span>(x, y, <span class="at">alt =</span> <span class="st">"less"</span>, <span class="at">var.equal =</span> T)</span>
+<span id="cb42-18"><a aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb42-19"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># Check that Welch test succeeds and two-sample test fails</span></span>
+<span id="cb42-20"><a aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (ans_welch<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;&amp;</span> ans_t_test<span class="sc">$</span>p.value <span class="sc">&gt;</span> <span class="fl">0.05</span>) {</span>
+<span id="cb42-21"><a aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Data successfully generated!!!</span><span class="sc">\n\n</span><span class="st">"</span>)</span>
+<span id="cb42-22"><a aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Synthetic Data TrA:"</span>, x, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb42-23"><a aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Synthetic Data TrB:"</span>, y, <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span>
+<span id="cb42-24"><a aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Welch t-test p-value:"</span>, ans_welch<span class="sc">$</span>p.value, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb42-25"><a aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Two-sample t-test p-value:"</span>, ans_t_test<span class="sc">$</span>p.value)</span>
+<span id="cb42-26"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
+<span id="cb42-27"><a aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb42-28"><a aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data successfully generated!!!
+
+Synthetic Data TrA: -1.9 -2.5 -2.1 -2.4 -2.6 -1.9 
+Synthetic Data TrB: -1.1 -0.9 -1.4 0.2 0.3 0.6 -5 -2.4 -1.5 2.3 -2.8 2.1 
+
+Welch t-test p-value: 0.01866013 
+Two-sample t-test p-value: 0.05836482</code></pre>
+</div>
+</div>
+<p><strong>Method:</strong></p>
+<ul>
+<li><p>Sample the data as in previous slide (round to 1 d.p. for cleaner looking data)</p></li>
+<li><p><strong>Repeat until Welch test succeeds, and two-sample t-test fails</strong> <span class="math display">
+\text{p-value of Welch test } \, &lt; 0.05 &lt; \,
+\text{p-value of Two-sample t-test}
+</span></p></li>
+</ul>
+</section></section>
+<section>
+<section id="part-8-the-t-test-for-paired-samples" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 8: <br> The t-test for <br> paired samples</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="paired-samples" class="slide level2 smaller">
+<h2>Paired samples</h2>
+<ul>
+<li><p>Assume to have two sample with same size</p></li>
+<li><p>Sometimes the two samples depend on each other in some way</p></li>
+</ul>
+<ol type="1">
+<li><strong>Twin studies:</strong>
+<ul>
+<li>Twins are used as pairs (to control genetic or environmental factors)</li>
+<li>Example: test effectiveness of a medical treatment against placebo</li>
+<li>The two samples are clearly dependent<br>
+(think of twins as the same person)<br>
+</li>
+<li>As such, the usual two-sample t-test is not applicable<br>
+(because it assumes independence)</li>
+</ul></li>
+</ol>
+</section>
+<section id="paired-samples-1" class="slide level2 smaller">
+<h2>Paired samples</h2>
+<ul>
+<li><p>Assume to have two sample with same size</p></li>
+<li><p>Sometimes the two samples depend on each other in some way</p></li>
+</ul>
+<ol start="2" type="1">
+<li><strong>Pre-test and Post-test</strong>
+<ul>
+<li>Measure the outcome of a certain action</li>
+<li>Example: does this module work for teaching R?</li>
+<li>We can assess the effectiveness of something with a pre-test and a post-test</li>
+<li>The two samples are clearly dependent<br>
+(each individual takes a test twice)</li>
+<li>As such, the usual two-sample t-test is not applicable<br>
+(because it assumes independence)</li>
+</ul></li>
+</ol>
+</section>
+<section id="the-paired-t-test" class="slide level2 smaller">
+<h2>The paired t-test</h2>
+<p>Suppose given two samples</p>
+<ul>
+<li><p>Sample <span class="math inline">x_1, \ldots, x_n</span> from <span class="math inline">N(\mu_X,\sigma^2_X)</span></p></li>
+<li><p>Sample <span class="math inline">y_1, \ldots, y_n</span> from <span class="math inline">N(\mu_Y,\sigma^2_Y)</span></p></li>
+</ul>
+<p>The hypotheses for <strong>difference in means</strong> are <span class="math display">
+H_0 \colon \mu_X = \mu_Y \,, \quad \qquad
+H_1 \colon \mu_X \neq \mu_Y \,, \quad \mu_X &lt; \mu_Y \,, \quad \text{ or } \quad \mu_X &gt; \mu_Y
+</span></p>
+</section>
+<section id="the-paired-t-test-1" class="slide level2 smaller">
+<h2>The paired t-test</h2>
+<p><strong>Assumption:</strong> The data is <strong>paired</strong>, meaning that the <strong>differences</strong></p>
+<p><span class="math display">
+d_i = x_i - y_i \,\,  \text{ are iid} \,\, N(\mu,\sigma^2) \quad \text{where} \quad \mu := \mu_X - \mu_Y
+</span></p>
+<p>The hypotheses for the difference in means are <strong>equivalent</strong> to</p>
+<p><span class="math display">
+H_0 \colon \mu = 0 \,, \quad \qquad
+H_1 \colon \mu \neq 0 \,, \quad \mu &lt; 0 \,, \quad \text{ or } \quad \mu &gt; 0
+</span></p>
+<p><strong>These can be tested with a one-sample t-test</strong></p>
+<p><br></p>
+<p><strong>R commands:</strong> The paired t-test can be called with the equivalent commands</p>
+<ul>
+<li><p><code>t.test(x, y, paired = TRUE)</code> <span class="math inline">\qquad \quad H_0 \colon  \mu_X = \mu_Y</span></p></li>
+<li><p><code>t.test(x - y)</code> <span class="math inline">\qquad \qquad \qquad \qquad\qquad H_0 \colon \mu = 0</span></p></li>
+</ul>
+</section>
+<section id="example-1-the-2008-crisis-again" class="slide level2 smaller">
+<h2>Example 1: The 2008 crisis (again!)</h2>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 41%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Month</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">F</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">S</th>
+<th style="text-align: center;">O</th>
+<th style="text-align: center;">N</th>
+<th style="text-align: center;">D</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">CCI 2007</td>
+<td style="text-align: center;">86</td>
+<td style="text-align: center;">86</td>
+<td style="text-align: center;">88</td>
+<td style="text-align: center;">90</td>
+<td style="text-align: center;">99</td>
+<td style="text-align: center;">97</td>
+<td style="text-align: center;">97</td>
+<td style="text-align: center;">96</td>
+<td style="text-align: center;">99</td>
+<td style="text-align: center;">97</td>
+<td style="text-align: center;">90</td>
+<td style="text-align: center;">90</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">CCI 2009</td>
+<td style="text-align: center;">24</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">19</td>
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">17</td>
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">23</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: center;">21</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p><strong>Data:</strong> Monthly Consumer Confidence Index (CCI) in 2007 and 2009</p></li>
+<li><p><strong>Question:</strong> Did the crash of 2008 have lasting impact upon CCI?</p></li>
+<li><p><strong>Observations</strong>:</p>
+<ul>
+<li>Data shows a massive drop in CCI between 2007 and 2009</li>
+<li>Data is clearly paired <em>(Pre-test and Post-test situation)</em></li>
+</ul></li>
+<li><p><strong>Method:</strong> Use paired <span class="math inline">t</span>-test to investigate drop in mean CCI</p></li>
+</ul>
+<p><span class="math display">
+H_0 \colon \mu_{2007} = \mu_{2009} \,, \quad H_1 \colon \mu_{2007} &gt; \mu_{2009}
+</span></p>
+</section>
+<section id="perform-paired-t-test" class="slide level2 smaller">
+<h2>Perform paired t-test</h2>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter CCI data</span></span>
+<span id="cb44-2"><a aria-hidden="true" tabindex="-1"></a>score_2007 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">86</span>, <span class="dv">86</span>, <span class="dv">88</span>, <span class="dv">90</span>, <span class="dv">99</span>, <span class="dv">97</span>, <span class="dv">97</span>, <span class="dv">96</span>, <span class="dv">99</span>, <span class="dv">97</span>, <span class="dv">90</span>, <span class="dv">90</span>)</span>
+<span id="cb44-3"><a aria-hidden="true" tabindex="-1"></a>score_2009 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">24</span>, <span class="dv">22</span>, <span class="dv">21</span>, <span class="dv">21</span>, <span class="dv">19</span>, <span class="dv">18</span>, <span class="dv">17</span>, <span class="dv">18</span>, <span class="dv">21</span>, <span class="dv">23</span>, <span class="dv">22</span>, <span class="dv">21</span>)</span>
+<span id="cb44-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Perform paired t-test and print p-value</span></span>
+<span id="cb44-6"><a aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">t.test</span>(score_2007, score_2009, <span class="at">paired =</span> T, <span class="at">alt =</span> <span class="st">"greater"</span>)</span>
+<span id="cb44-7"><a aria-hidden="true" tabindex="-1"></a>ans<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.430343e-13</code></pre>
+</div>
+</div>
+<p><br></p>
+<p>The p-value is significant: <span class="math inline">\,\, p &lt; 0.05</span> <span class="math inline">\, \implies \,</span> reject <span class="math inline">H_0</span> <span class="math inline">\, \implies \,</span> Drop in CCI</p>
+</section>
+<section id="warning" class="slide level2 smaller">
+<h2>Warning</h2>
+<p>It would be <strong>wrong</strong> to use a two-sample t-test</p>
+<ul>
+<li><p>This is because the samples are paired, and hence <strong>dependent</strong></p></li>
+<li><p>This is further supported by computing the correlation</p></li>
+<li><p>High correlation implies <strong>dependence</strong></p></li>
+</ul>
+<p><br></p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(score_2007, score_2009)                <span class="co"># Correlation is high</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.6076749</code></pre>
+</div>
+</div>
+</section>
+<section id="example-2-water-quality-samples" class="slide level2 smaller">
+<h2>Example 2: Water quality samples</h2>
+<ul>
+<li><p>Researchers wish to measure water quality</p></li>
+<li><p>There are two possible tests, one less expensive than the other</p></li>
+<li><p>10 water samples were taken, and each was measured both ways</p></li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>method1</td>
+<td>45.9</td>
+<td>57.6</td>
+<td>54.9</td>
+<td>38.7</td>
+<td>35.7</td>
+<td>39.2</td>
+<td>45.9</td>
+<td>43.2</td>
+<td>45.4</td>
+<td>54.8</td>
+</tr>
+<tr class="even">
+<td>method2</td>
+<td>48.2</td>
+<td>64.2</td>
+<td>56.8</td>
+<td>47.2</td>
+<td>43.7</td>
+<td>45.7</td>
+<td>53.0</td>
+<td>52.0</td>
+<td>45.1</td>
+<td>57.5</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Question:</strong> Do the tests give the same results?</p>
+<ul>
+<li><p><strong>Observation</strong>: The data is paired <em>(twin study situation)</em></p></li>
+<li><p><strong>Method:</strong> Use paired <span class="math inline">t</span>-test to investigate equality of results</p></li>
+</ul>
+<p><span class="math display">
+H_0 \colon \mu_1 = \mu_2  \,, \quad H_1 \colon \mu_1 \neq \mu_2  
+</span></p>
+</section>
+<section id="perform-paired-t-test-1" class="slide level2 smaller">
+<h2>Perform paired t-test</h2>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter tests data</span></span>
+<span id="cb48-2"><a aria-hidden="true" tabindex="-1"></a>method1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">45.9</span>, <span class="fl">57.6</span>, <span class="fl">54.9</span>, <span class="fl">38.7</span>, <span class="fl">35.7</span>, <span class="fl">39.2</span>, <span class="fl">45.9</span>, <span class="fl">43.2</span>, <span class="fl">45.4</span>, <span class="fl">54.8</span>)</span>
+<span id="cb48-3"><a aria-hidden="true" tabindex="-1"></a>method2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">48.2</span>, <span class="fl">64.2</span>, <span class="fl">56.8</span>, <span class="fl">47.2</span>, <span class="fl">43.7</span>, <span class="fl">45.7</span>, <span class="fl">53.0</span>, <span class="fl">52.0</span>, <span class="fl">45.1</span>, <span class="fl">57.5</span>)</span>
+<span id="cb48-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Perform paired t-test and print p-value</span></span>
+<span id="cb48-6"><a aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">t.test</span>(method1, method2, <span class="at">paired =</span> T)</span>
+<span id="cb48-7"><a aria-hidden="true" tabindex="-1"></a>ans<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0006648526</code></pre>
+</div>
+</div>
+<p><br></p>
+<p>p-value is significant: <span class="math inline">\,\, p &lt; 0.05</span> <span class="math inline">\implies</span> reject <span class="math inline">H_0</span> <span class="math inline">\implies</span> Methods perform differently</p>
+</section>
+<section id="warning-1" class="slide level2 smaller">
+<h2>Warning</h2>
+<p>It would be <strong>wrong</strong> to use a two-sample t-test</p>
+<ul>
+<li><p>This is because the samples are paired, and hence <strong>dependent</strong></p></li>
+<li><p>This is also supported by high samples correlation</p></li>
+</ul>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(method1, method2)                <span class="co"># Correlation is very high</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9015147</code></pre>
+</div>
+</div>
+</section>
+<section id="warning-2" class="slide level2 smaller">
+<h2>Warning</h2>
+<p>In this Example, performing a two-sample t-test would lead to <strong>wrong decision</strong></p>
+<p><br></p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Perform Welch t-test and print p-value</span></span>
+<span id="cb52-2"><a aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">t.test</span>(method1, method2, <span class="at">paired =</span> F)       <span class="co"># paired = F is default</span></span>
+<span id="cb52-3"><a aria-hidden="true" tabindex="-1"></a>ans<span class="sc">$</span>p.val</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1165538</code></pre>
+</div>
+</div>
+<p><br></p>
+<p><strong>Wrong conclusion:</strong> <span class="math inline">\,\, p &gt; 0.05</span> <span class="math inline">\implies</span> can’t reject <span class="math inline">H_0</span> <span class="math inline">\implies</span> Methods perform similarly</p>
+<p><strong>Bottom line:</strong> The data is paired, therefore a paired t-test <strong>must</strong> be used</p>
+
+<div class="quarto-auto-generated-content">
+<div class="footer footer-default">
+<p><a href="../index.html">Homepage</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href="../license.html">License</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href="https://www.silviofanzon.com/contact">Contact</a></p>
+</div>
+</div>
+</section></section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>

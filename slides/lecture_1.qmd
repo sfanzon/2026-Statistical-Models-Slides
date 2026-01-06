@@ -1,0 +1,2256 @@
+---
+title: "Statistical Models"
+subtitle: "Lecture 1"
+from: markdown+emoji
+author: 
+    - name: Dr. Silvio Fanzon
+      id: sf
+      email: S.Fanzon@hull.ac.uk
+      url: https://www.silviofanzon.com
+      affiliations: University of Hull
+---
+
+
+
+::: {.content-hidden}
+$
+{{< include macros.tex >}}
+$
+:::
+
+
+
+
+
+# Lecture 1: <br>An introduction to Statistics {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+## Outline of Lecture 1
+
+1. Module info
+2. Introduction
+3. Probability revision I
+4. Moment generating functions
+5. Probability revision II
+
+
+
+
+# Part 1: <br>Module info {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+## Contact details {.smaller}
+
+- **Lecturer:** Dr. Silvio Fanzon
+- **Email:** S.Fanzon@hull.ac.uk
+- **Office:** Room 104a, Larkin Building
+- **Office hours:** Thursday 15:00-16:00
+- **Meetings**: in my office or send me an Email
+
+
+
+
+
+## Questions {.smaller}
+
+
+- If you have any questions please feel free to ``email me``
+
+- We will address ``Homework`` and ``Coursework`` in class
+
+- In addition, please do not hesitate to attend ``office hours``
+
+
+
+## Lectures {.smaller}
+
+Each week we have
+
+- 2 Lectures of 2h each
+- 1 Tutorial of 1h
+
+|    Session    |      Date        |      Place        |
+|---------------|------------------|-------------------|
+|  Lecture 1    |  Thu 16:00-18:00 | Wilberforce LR 4 |
+|  Lecture 2    |  Fri 12:00-14:00 | Robert Blackburn LTC |
+|  Tutorial     |  Fri 15:00-16:00 | Wilberforce LR 3  |
+
+
+
+
+
+## Assessment  {.smaller}
+
+This module will be assessed as follows:
+
+<br>
+
+
+|**Type of Assessment**  | **Percentage of final grade** |
+|:-----                  |:-----                         |
+|  Coursework Portfolio  | 70%                           |
+|  Homework              | 30%                           |
+
+
+
+
+
+## Rules for Coursework {.smaller}
+
+
+- Coursework available on Canvas from Week 9
+
+- Coursework must be submitted on **[Canvas](https://canvas.hull.ac.uk/courses/75082)**
+
+- Deadline: **14:00 on Thursday 1st May**
+
+- **No Late Submission allowed**
+
+
+
+
+
+
+## Rules for Homework {.smaller}
+
+
+- 10 Homework papers, posted weekly on **[Canvas](https://canvas.hull.ac.uk/courses/75082)** 
+
+- Each Homework paper is worth 14 points
+
+- Final Homework grade computation: 
+    * Sum the top 7 scores (max score 98 points)
+    * Rescale to 100
+
+- Homework must be submitted on **[Canvas](https://canvas.hull.ac.uk/courses/75082)**
+
+- Deadline: **14:00 on Thursday**
+
+
+
+
+
+## How to submit assignments {.smaller}
+
+- Submit **PDFs only** on **[Canvas](https://canvas.hull.ac.uk/courses/75082)**
+
+- You have two options:
+	* Write on tablet and submit PDF Output
+	* Write on paper and **Scan in Black and White** using a **Scanner** or **Scanner App** (Tiny Scanner, Scanner Pro, ...)
+
+
+**Important**: I will not mark
+
+- Assignments submitted **outside of Canvas**
+- Assignments submitted more than **24h After the Deadline**
+
+
+
+
+
+## Key submission dates {.smaller}
+
+::: {.column width="48%"}
+
+|  **Assignment** |**Due date** |
+|:--------        |:----------- |
+| Homework 1      | 6 Feb       |
+| Homework 2      | 13 Feb      |
+| Homework 3      | 20 Feb      |
+| Homework 4      | 27 Feb      |
+| Homework 5      | 6 Mar       |
+| Homework 6      | 13 Mar      |
+
+
+:::
+
+
+
+::: {.column width="48%"}
+
+|  **Assignment** |**Due date** |
+|:--------        |:----------- |
+| Homework 7      | 20 Mar      |
+| Homework 8      | 27 Mar      |
+| Homework 9      | 3 Apr       |
+| Homework 10     | 10 Apr      |
+| Easter :sunglasses:    | 14-25 Apr   |
+| Coursework      | 1 May       |
+
+:::
+
+
+
+
+
+
+## References {.smaller}
+### Main textbooks  
+
+
+::: {.column width="61%"}
+
+<br>
+
+Slides are self-contained and based on the book
+
+- [@bingham-fry] Bingham, N. H. and Fry, J. M. 
+<br> *Regression: Linear models in statistics.* <br> Springer, 2010
+
+
+:::
+
+
+::: {.column width="38%"}
+
+[![](images/bingham_fry.png){width=80%}](https://link.springer.com/book/10.1007/978-1-84882-969-5)
+
+:::
+
+
+
+
+
+## References {.smaller}
+### Main textbooks 
+
+
+::: {.column width="61%"}
+<br>
+
+.. and also on the book
+
+- [@fry-burke] Fry, J. M. and Burke, M. 
+<br>*Quantitative methods in finance using R.* 
+<br>Open University Press, 2022
+
+:::
+
+
+::: {.column width="38%"}
+
+[![](images/fry_burke.png){width=80%}](https://www.mheducation.co.uk/quantitative-methods-in-finance-using-r-9780335251261-emea-group)
+
+:::
+
+
+
+
+
+
+
+## References {.smaller}
+### Secondary References 
+
+::: {.column width="69%"}
+- [@casella-berger] Casella, G. and Berger R. L. <br>
+*Statistical inference.*
+<br> Second Edition, Brooks/Cole, 2002
+
+
+- [@degroot] DeGroot M. H. and Schervish M. J. <br> 
+*Probability and Statistics.* 
+<br> Fourth Edition, Addison-Wesley, 2012
+
+:::
+
+
+::: {.column width="30%"}
+
+**Probability & Statistics manual**
+
+**Easier Probability & Statistics manual**
+
+:::
+
+
+
+## References {.smaller}
+### Secondary References 
+
+::: {.column width="69%"}
+- [@dalgaard] Dalgaard, P. <br>
+*Introductory statistics with R.*
+<br> Second Edition, Springer, 2008
+
+
+- [@davies] Davies, T. M. <br> 
+*The book of R.* 
+<br> No Starch Press, 2016
+
+:::
+
+
+::: {.column width="30%"}
+
+**Concise Statistics with R**
+
+**Comprehensive R manual**
+
+:::
+
+
+
+
+
+
+# Part 2: <br>Introduction {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+## The nature of Statistics {.smaller}
+
+- Statistics is a mathematical subject
+
+- We will use a combination of hand calculation and software (R)
+
+- Software (R) is really useful, particularly for dissertations
+
+- Please bring your laptop into class
+
+- Download R onto your laptop
+
+
+
+
+
+
+
+## Overview of the module {.smaller}
+
+
+Module has **11 Lectures**, divided into two parts:
+
+- **Part I** - Mathematical statistics
+
+- **Part II** - Applied statistics
+
+
+
+
+
+## Overview of the module {.smaller}
+### Part I - Mathematical statistics
+
+1. Introduction to statistics
+2. Normal distribution family and one-sample hypothesis tests
+3. Two-sample hypothesis tests
+4. The chi-squared test
+5. Non-parametric statistics
+6. The maths of regression
+
+
+
+
+
+## Overview of the module {.smaller}
+### Part II - Applied statistics
+
+
+7. An introduction to practical regression
+8. The extra sum of squares principle and regression modelling assumptions
+9. Violations of regression assumptions -- Autocorrelation
+10. Violation of regression assumptions -- Multicollinearity
+10. ANOVA -- Dummy variable regression models 
+
+
+
+
+
+
+
+## Questions we will address {.smaller}
+
+
+::: {.column width="48%"}
+
+**1. Generic data:**
+
+- What is a *typical* observation
+  * What is the **mean**?
+
+- How spread out is the data?
+  * What is the **variance**?
+
+:::
+
+
+::: {.column width="48%"}
+
+**2. Regression:**
+
+- What happens to $Y$ as $X$ increases?
+  * increases?
+  * decreases?
+  * nothing?
+
+:::
+
+
+
+**Statistics answers these questions systematically**
+
+- important for large datasets
+- The same mathematical machinery (normal family of distributions) can be applied to both questions
+
+
+
+
+## Question 1 -- Analysing a general dataset {.smaller}
+
+**Two basic questions:**
+
+1. Location or mean
+2. Spread or variance
+
+
+**Statistics enables to answer systematically:**
+
+1. One sample and two-sample $t$-test
+2. Chi-squared test and $F$-test
+
+
+
+
+
+## Recall the following sketch
+
+![Curve represents data distribution](images/Fig1.png){width=90%}
+
+
+
+
+## Question 2 -- Regression {.smaller}
+
+**Basic question in regression:**
+
+- What happens to $Y$ as $X$ increases?
+
+  * increases?
+  * decreases?
+  * nothing?
+
+
+**Regression can be seen as the probabilistic version of (deterministic) linear correlation**
+
+
+
+
+
+
+
+## Positive gradient {.smaller}
+
+As $X$ increases $Y$ increases
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+
+# Create a scatter plot with no data points (type = "n")
+plot(
+  1, 1, 
+  type = "n", 
+  xlab = "", 
+  ylab = "", 
+  xlim = c(0, 5), 
+  ylim = c(0, 5), 
+  frame.plot = TRUE, 
+  axes = FALSE, 
+  asp = 1)
+
+
+mtext("X", side=1, line=3, cex=3)
+mtext("Y", side=2, line=2, cex=3)
+
+# Add the line y = x
+abline(
+  a = 0, 
+  b = 1, 
+  col = "black", 
+  lwd = 2)
+
+```
+
+
+
+
+## Negative gradient {.smaller}
+
+As $X$ increases $Y$ decreases
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+
+# Create a scatter plot with no data points (type = "n")
+plot(
+  1, 1, 
+  type = "n", 
+  xlab = "", 
+  ylab = "", 
+  xlim = c(-3, 3), 
+  ylim = c(-3, 3), 
+  frame.plot = TRUE, 
+  axes = FALSE, 
+  asp = 1)
+
+
+
+mtext("X", side=1, line=3, cex=3)
+mtext("Y", side=2, line=2, cex=3)
+
+# Add the line y = x
+abline(
+  a = 0, 
+  b = -1, 
+  col = "black", 
+  lwd = 2)
+
+```
+
+
+
+
+
+## Zero gradient {.smaller}
+
+Changes in $X$ do not affect $Y$
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+
+# Create a scatter plot with no data points (type = "n")
+plot(
+  1, 1, 
+  type = "n", 
+  xlab = "", 
+  ylab = "", 
+  xlim = c(0, 5), 
+  ylim = c(0, 5), 
+  frame.plot = TRUE, 
+  axes = FALSE, 
+  asp = 1)
+
+
+mtext("X", side=1, line=3, cex=3)
+mtext("Y", side=2, line=2, cex=3)
+
+# Add the line y = x
+abline(
+  a = 2.5, 
+  b = 0, 
+  col = "black", 
+  lwd = 2)
+
+```
+
+
+
+
+
+## Real data example {.smaller}
+
+
+- Real data is more **imperfect**
+- But the same basic idea applies
+- Example: 
+    * $X =$ Stock price
+    * $Y =$ Gold price
+
+
+
+
+
+
+
+
+## Real data example
+### How does real data look like?
+
+::: {style="font-size: 0.75em"}
+Dataset with $33$ entries for Stock and Gold price pairs
+:::
+
+
+::: {style="font-size: 0.55em"}
+```{r}
+#| echo: false
+#| layout-ncol: 1
+
+data <- read.table("datasets/L3eg1data.txt")
+
+#Add column labels to data
+colnames(data) <- c("Stock Price","Gold Price")
+
+# Output markdown table from data
+knitr::kable(
+  list(data[1:11,], data[12:22,], data[23:33,]),
+  row.names = TRUE,
+  format = "html", 
+  table.attr = 'class="table simple table-striped table-hover"',
+) 
+
+
+```
+
+
+:::
+
+
+
+
+## Real data example {.smaller}
+### Visualizing the data: Plot Stock Price VS Gold Price
+
+
+::::: {.columns style='display: flex !important; height: 80%;'}
+
+::: {.column width="38%" style='display: flex; justify-content: center; align-items: center;'}
+
+- Observation: 
+    * As Stock price decreases, Gold price increases
+
+- Why? This might be because:
+    * Stock price decreases
+    * People invest in secure assets (Gold)
+    * Gold demand increases
+    * Gold price increases
+:::
+
+
+::: {.column width="61%" style='display: flex; justify-content: center; align-items: center;'}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+data1 <- read.table("datasets/L3eg1data.txt")
+realgoldprice<-data1[,1]
+realstockprice<-data1[,2]
+plot(realgoldprice,
+  realstockprice, 
+  xlab="", 
+  ylab="")
+
+mtext("Stock Price", side=1, line=3, cex=2)
+mtext("Gold Price", side=2, line=2.5, cex=2)
+
+```
+
+:::
+
+:::::
+
+
+
+
+
+
+## Real data example {.smaller}
+### Visualizing the data: Plot Stock Price VS Gold Price
+
+
+::::: {.columns style='display: flex !important; height: 80%;'}
+
+::: {.column width="38%" style='display: flex; justify-content: center; align-items: center;'}
+
+- Inverse proportionality relation evident for dataset
+
+- **Question**: 
+    * How likely are we to observe it on new data?
+
+- Regression gives rigorous answer
+
+:::
+
+
+::: {.column width="61%" style='display: flex; justify-content: center; align-items: center;'}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+data1 <- read.table("datasets/L3eg1data.txt")
+realgoldprice<-data1[,1]
+realstockprice<-data1[,2]
+plot(realgoldprice,
+  realstockprice, 
+  xlab="", 
+  ylab="")
+
+mtext("Stock Price", side=1, line=3, cex=2)
+mtext("Gold Price", side=2, line=2.5, cex=2)
+
+```
+
+:::
+
+:::::
+
+
+
+
+
+
+
+
+# Part 3: <br>Probability revision I {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## Probability revision I {.smaller}
+
+- You are expected to be familiar with the main concepts from Y1 module  
+**Introduction to Probability & Statistics**
+
+- Self-contained revision material available in <a href="appendix_A.qmd">Appendix A</a> 
+
+
+**Topics to review**: Sections 1--3 of <a href="appendix_A.qmd">Appendix A</a>
+    
+::: {.column width="38%"}
+    
+- Sample space
+- Events
+- Probability measure
+- Conditional probability
+- Events independence
+
+:::
+
+::: {.column width="58%"}
+
+- Random Variable (Discrete and Continuous)
+- Distribution
+- cdf, pmf, pdf
+- Expected value and Variance
+
+:::
+
+
+
+
+
+
+## Summary - Random Variables {.smaller}
+
+- Given probability space $(\Omega, \mathcal{B}, P)$ and a Random Variable $X \colon \Omega \to \mathbb{R}$
+
+- **Cumulative Density Function (cdf)**:
+$F_X(x) := P(X \leq x)$
+
+
+| Discrete RV                       |        Continuous RV         |
+|--------------                     |----------------              |
+| $F_X$ has **jumps**               |  $F_X$ is **continuous**     |
+|**Probability Mass Function (pmf)**|**Probability Density Function (pdf)**|
+| $f_X(x) := P(X=x)$                | $f_X(x) := F_X'(x)$          |  
+| $f_X \geq 0$                      |  $f_X \geq 0$                |
+|$\sum_{x=-\infty}^\infty f_X(x) = 1$| $\int_{-\infty}^\infty f_X(x) \, dx = 1$ |
+| $F_X (x) = \sum_{k=-\infty}^x f_X(k)$| $F_X (x) = \int_{-\infty}^x f_X(t) \, dt$
+| $P(a \leq X \leq b) = \sum_{k = a}^{b} f_X(k)$ | $P(a \leq X \leq b) = \int_a^b f_X(t) \, dt$ |
+
+
+
+
+
+
+
+
+
+
+## Expected Value {.smaller}
+
+
+- Suppose $X \colon \Omega \to \R$ is RV and $g \colon \R \to \R$ a function
+- Then $g(X) \colon \Omega \to \R$ is a RV
+
+
+::: Definition
+
+The **expected value** of the random variable $g(X)$ is
+
+\begin{align*}
+\Expect [g(X)] & := \sum_{x} g(x) f_X(x) = \sum_{x \in \mathbb{R}} g(x) P(X = x)   \quad \text{ if } X \text{ discrete} \\
+\Expect [g(X)] & :=  \int_{-\infty}^{\infty} g(x) f_X(x) \, dx   \quad \text{ if } X \text{ continuous}
+\end{align*}
+
+:::
+
+
+
+
+
+## Expected Value  {.smaller}
+### Properties
+
+
+In particular we have^[These follow by taking $g(x)=x$ in previous definitions, so that $g(X) = X$]
+
+
+- If $X$ discrete
+$$
+\Expect [X] = \sum_{x \in \mathbb{R}} x f_X(x) = \sum_{x \in \mathbb{R}} x P(X = x)
+$$
+
+- If $X$ continuous
+$$
+\Expect [X] = \int_{-\infty}^{\infty} x f_X(x) \, dx
+$$
+
+
+
+
+## Expected Value  {.smaller}
+### Expected value is linear
+
+::: Theorem
+
+Let $X$ be a rv, and $a,b \in \mathbb{R}$ constants. Then
+$$
+\Expect[aX + b]  = a \Expect[X] + b
+$$
+:::
+
+
+
+## Variance {.smaller}
+
+Variance measures how much a rv $X$ deviates from $\Expect[X]$
+
+::: Definition
+### Variance
+
+The **variance** of a random variable $X$ is
+$$
+\Var[X]:= \Expect[(X - \Expect[X])^2]
+$$
+
+:::
+
+::: Proposition
+### Equivalent formula
+
+$$
+\Var[X] =  \Expect[X^2] - \Expect[X]^2
+$$
+
+:::
+
+
+
+
+
+## Variance {.smaller}
+### Variance is quadratic
+
+::: Proposition
+
+$X$ rv and $a,b \in \R$. Then
+$$
+\Var[a X + b] = a^2 \Var[X] 
+$$
+
+:::
+
+
+
+
+
+
+
+
+
+## Example - Gamma distribution {.smaller}
+### Definition
+
+
+The **Gamma distribution** with parameters $\alpha,\beta>0$ is
+$$
+f(x) := \frac{x^{\alpha-1} e^{-\beta{x}} \beta^{\alpha}}{\Gamma(\alpha)} \,, \quad x > 0
+$$
+where $\Gamma$ is the **Gamma function**
+$$
+\Gamma(a) :=\int_0^{\infty} x^{a-1} e^{-x} \, dx
+$$
+
+
+
+
+
+## Example - Gamma distribution {.smaller}
+### Definition
+
+**Properties of $\Gamma$**:
+
+- The Gamma function coincides with the factorial on natural numbers
+$$
+\Gamma(n)=(n-1)! \,, \quad \forall \, n \in \N
+$$
+
+- More in general
+$$
+\Gamma(a)=(a-1)\Gamma(a-1) \,, \quad \forall \, a > 0
+$$
+
+
+-  Definition of $\Gamma$ implies normalization of the Gamma distribution:
+$$
+\int_0^{\infty} f(x) \,dx = 
+\int_0^{\infty} \frac{x^{\alpha-1} e^{-\beta{x}} \beta^{\alpha}}{\Gamma(\alpha)}  \, dx
+=  1 
+$$
+
+
+
+## Example - Gamma distribution {.smaller}
+### Definition
+
+$X$ has Gamma distribution with parameters $\alpha,\beta$ if 
+
+- the pdf of $X$ is
+$$
+f_X(x) = 
+\begin{cases} 
+\dfrac{x^{\alpha-1} e^{-\beta{x}} \beta^{\alpha}}{\Gamma(\alpha)}  & \text{ if } x > 0 \\
+0                                                                 & \text{ if } x \leq 0
+\end{cases}
+$$
+
+- In this case we write $X \sim \Gamma(\alpha,\beta)$
+
+- $\alpha$ is **shape** parameter
+
+- $\beta$ is **rate** parameter
+
+
+
+
+## Example - Gamma distribution {.smaller}
+### Plot
+
+Plotting $\Gamma(\alpha,\beta)$ for parameters $(2,1)$ and $(3,2)$
+
+```{r}
+# Set the shape and rate parameters for the first gamma distribution
+alpha1 <- 2
+beta1 <- 1
+
+# Set the shape and rate parameters for the second gamma distribution
+alpha2 <- 3
+beta2 <- 2
+
+# Generate values for the x-axis
+x_values <- seq(0, 15, by = 0.1)
+
+# Calculate the probability density function (PDF) values for each x for the first distribution
+pdf_values1 <- dgamma(x_values, shape = alpha1, rate = beta1)
+
+# Calculate the probability density function (PDF) values for each x for the second distribution
+pdf_values2 <- dgamma(x_values, shape = alpha2, rate = beta2)
+
+# Plot the gamma PDFs
+plot(x_values, 
+    pdf_values1, 
+    type = "l", 
+    col = "blue", lwd = 2,
+    xlab = "", 
+    ylab = "",
+    ylim = c(0, max(pdf_values1, pdf_values2) + 0.1))
+
+lines(x_values, 
+      pdf_values2, 
+      col = "red", 
+      lwd = 2)
+
+mtext("x", side=1, line=3, cex=2)
+mtext("pdf", side=2, line=2.5, cex=2)
+
+# Add a legend
+legend("topright", legend = c(paste("Gamma(", alpha1, ",", beta1, ")", sep = ""),
+                              paste("Gamma(", alpha2, ",", beta2, ")", sep = "")),
+       col = c("blue", "red"), lty = 1, lwd = 2, cex = 1.5)
+
+```  
+
+
+
+
+
+## Example - Gamma distribution {.smaller}
+### Expected value
+
+Let $X \sim \Gamma(\alpha,\beta)$. We have:
+\begin{align*}
+\Expect [X] & = \int_{-\infty}^\infty x f_X(x) \, dx  \\
+            & = \int_0^\infty  x \, \frac{x^{\alpha-1} e^{-\beta{x}} \beta^{\alpha}}{\Gamma(\alpha)} \, dx \\
+            & = \frac{ \beta^{\alpha} }{ \Gamma(\alpha) }
+            \int_0^\infty  x^{\alpha} e^{-\beta{x}}  \, dx
+\end{align*}
+
+
+
+## Example - Gamma distribution {.smaller}
+### Expected value
+
+Recall previous calculation:
+$$
+\Expect [X] = \frac{ \beta^{\alpha} }{ \Gamma(\alpha) }
+            \int_0^\infty  x^{\alpha} e^{-\beta{x}}  \, dx
+$$
+Change variable $y=\beta x$ and recall definition of $\Gamma$:
+\begin{align*}
+ \int_0^\infty  x^{\alpha} e^{-\beta{x}}  \, dx & = 
+  \int_0^\infty  \frac{1}{\beta^{\alpha}} (\beta x)^{\alpha} e^{-\beta{x}} \frac{1}{\beta} \, \beta \, dx \\
+  & = \frac{1}{\beta^{\alpha+1}} \int_0^\infty  y^{\alpha} e^{-y} \, dy \\
+  & = \frac{1}{\beta^{\alpha+1}} \Gamma(\alpha+1)
+\end{align*}
+
+
+
+
+## Example - Gamma distribution {.smaller}
+### Expected value
+
+Therefore
+\begin{align*}
+\Expect [X] & = \frac{ \beta^{\alpha} }{ \Gamma(\alpha) }
+            \int_0^\infty  x^{\alpha} e^{-\beta{x}}  \, dx \\
+            & =  \frac{ \beta^{\alpha} }{ \Gamma(\alpha) } \, \frac{1}{\beta^{\alpha+1}} \Gamma(\alpha+1) \\
+            & = \frac{\Gamma(\alpha+1)}{\beta \Gamma(\alpha)}
+\end{align*}
+
+Recalling that $\Gamma(\alpha+1)=\alpha \Gamma(\alpha)$:
+$$
+\Expect [X] = \frac{\Gamma(\alpha+1)}{\beta \Gamma(\alpha)} = \frac{\alpha}{\beta}
+$$
+
+
+
+## Example - Gamma distribution {.smaller}
+### Variance
+
+We want to compute
+$$
+\Var[X] = \Expect[X^2] - \Expect[X]^2
+$$
+
+- We already have $\Expect[X]$
+- Need to compute $\Expect[X^2]$
+
+
+
+## Example - Gamma distribution {.smaller}
+### Variance
+
+Proceeding similarly we have:
+
+\begin{align*}
+\Expect[X^2] & = \int_{-\infty}^{\infty} x^2 f_X(x) \, dx \\
+             & = \int_{0}^{\infty}  x^2 \, \frac{ x^{\alpha-1} \beta^{\alpha} e^{- \beta x} }{ \Gamma(\alpha) } \, dx \\
+             & =  \frac{\beta^{\alpha}}{\Gamma(\alpha)} \int_{0}^{\infty}  x^{\alpha+1} e^{- \beta x} \, dx 
+\end{align*}
+
+
+
+
+## Example - Gamma distribution {.smaller}
+### Variance
+
+Recall previous calculation:
+$$
+\Expect [X^2] =  \frac{\beta^{\alpha}}{\Gamma(\alpha)} \int_{0}^{\infty}  x^{\alpha+1} e^{- \beta x} \, dx 
+$$
+Change variable $y=\beta x$ and recall definition of $\Gamma$:
+\begin{align*}
+ \int_0^\infty  x^{\alpha+1} e^{-\beta{x}}  \, dx & = 
+  \int_0^\infty  \frac{1}{\beta^{\alpha+1}} (\beta x)^{\alpha + 1} e^{-\beta{x}} \frac{1}{\beta} \, \beta \, dx \\
+  & = \frac{1}{\beta^{\alpha+2}} \int_0^\infty  y^{\alpha + 1 } e^{-y} \, dy \\
+  & = \frac{1}{\beta^{\alpha+2}} \Gamma(\alpha+2)
+\end{align*}
+
+
+
+## Example - Gamma distribution {.smaller}
+### Variance
+
+Therefore
+$$
+\Expect [X^2]  = \frac{ \beta^{\alpha} }{ \Gamma(\alpha) }
+            \int_0^\infty  x^{\alpha+1} e^{-\beta{x}}  \, dx 
+             =  \frac{ \beta^{\alpha} }{ \Gamma(\alpha) } \, \frac{1}{\beta^{\alpha+2}} \Gamma(\alpha+2) 
+              = \frac{\Gamma(\alpha+2)}{\beta^2 \Gamma(\alpha)}
+$$
+Now use following formula twice $\Gamma(\alpha+1)=\alpha \Gamma(\alpha)$:
+$$
+\Gamma(\alpha+2)= (\alpha + 1) \Gamma(\alpha + 1) = (\alpha + 1) \alpha \Gamma(\alpha)
+$$
+Substituting we get
+$$
+\Expect [X^2] = \frac{\Gamma(\alpha+2)}{\beta^2 \Gamma(\alpha)} = \frac{(\alpha+1) \alpha}{\beta^2}
+$$
+
+
+
+## Example - Gamma distribution {.smaller}
+### Variance
+
+Therefore
+$$
+\Expect [X] = \frac{\alpha}{\beta}  \quad \qquad
+\Expect [X^2] = \frac{(\alpha+1) \alpha}{\beta^2}
+$$
+and the variance is
+\begin{align*}
+\Var[X] & = \Expect [X^2] - \Expect [X]^2 \\
+        & = \frac{(\alpha+1) \alpha}{\beta^2} - \frac{\alpha^2}{\beta^2} \\
+        & = \frac{\alpha}{\beta^2}
+\end{align*}
+
+
+
+
+
+
+# Part 4: <br>Moment generating functions {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+## Moment generating function {.smaller}
+
+
+- We abbreviate **Moment generating function** with **MGF**
+
+- MGF provides a short-cut to calculating mean and variance
+
+
+
+::: Definition
+
+The **moment generating function** or **MGF** of a rv $X$ is
+$$
+M_X(t) := \Expect [e^{tX}] \,, \quad \forall \, t \in \R
+$$
+
+:::
+
+In particular we have:
+
+::: {.column width="48%"}
+
+- $X$ discrete:
+$$
+M_X(t) = \sum_{x \in \R} e^{tx} f_X(x)
+$$
+
+:::
+
+::: {.column width="48%"}
+
+- $X$ continuous:
+$$
+M_X(t) = \int_{-\infty}^\infty e^{tx} f_X(x) \, dx
+$$
+
+:::
+
+
+
+
+## Moment generating function {.smaller}
+### Computing moments
+
+
+::: Theorem
+
+If $X$ has MGF $M_X$ then
+$$
+\Expect[X^n] = M_X^{(n)} (0)
+$$
+where we denote
+$$
+M_X^{(n)} (0) :=  \frac{d^n}{dt^n} M_X^{(n)}(t) \bigg|_{t=0}
+$$
+
+:::
+
+The quantity $\Expect[X^n]$ is called **$n$-th moment** of $X$
+ 
+
+
+
+## Moment generating function {.smaller}
+### Proof of Theorem
+
+Suppose $X$ continuous and that we can exchange derivative and integral:
+\begin{align*}
+\frac{d}{dt} M_X(t) & = \frac{d}{dt} \int_{-\infty}^\infty e^{tx} f_X(x) \, dx 
+                      = \int_{-\infty}^\infty \left( \frac{d}{dt} e^{tx} \right) f_X(x) \, dx \\
+                    & = \int_{-\infty}^\infty xe^{tx} f_X(x) \, dx 
+                      = \Expect(Xe^{tX})
+\end{align*}
+Evaluating at $t = 0$:
+$$
+\frac{d}{dt} M_X(t) \bigg|_{t = 0} = \Expect(Xe^{0}) = \Expect[X]
+$$
+
+
+
+
+## Moment generating function {.smaller}
+### Proof of Theorem
+
+Proceeding by induction we obtain:
+$$
+\frac{d^n}{dt^n} M_X(t) = \Expect(X^n e^{tX})
+$$
+Evaluating at $t = 0$ yields the thesis:
+$$
+\frac{d^n}{dt^n} M_X(t) \bigg|_{t = 0} = \Expect(X^n e^{0}) = \Expect[X^n]
+$$
+
+
+
+
+
+
+## Moment generating function {.smaller}
+### Notation
+
+For the first 3 derivatives we use special notations:
+
+$$
+M_X'(0) := M^{(1)}_X(0) = \Expect[X] 
+$$
+$$
+M_X''(0) := M^{(2)}_X(0) = \Expect[X^2] 
+$$
+$$
+M_X'''(0) := M^{(3)}_X(0) = \Expect[X^3] 
+$$
+
+
+
+
+
+
+## Example - Normal distribution {.smaller}
+### Definition
+
+
+- The **normal distribution** with mean $\mu$ and variance $\sigma^2$ is
+$$
+f(x) := \frac{1}{\sqrt{2\pi\sigma^2}} \, \exp\left( -\frac{(x-\mu)^2}{2\sigma^2}\right) \,, \quad x \in \R
+$$
+
+
+- $X$ has **normal distribution** with mean $\mu$ and variance $\sigma^2$ if $f_X = f$
+
+    * In this case we write $X \sim N(\mu,\sigma^2)$
+
+- The **standard normal distribution** is denoted $N(0,1)$
+
+
+
+
+
+## Example - Normal distribution {.smaller}
+### Plot
+
+Plotting $N(\mu,\sigma^2)$ for parameters $(0,1)$ and $(3,2)$
+
+```{r}
+# Set the shape and rate parameters for the first gamma distribution
+mu1 <- 0
+sigma1 <- 1
+
+# Set the shape and rate parameters for the second gamma distribution
+mu2 <- 3
+sigma2 <- 2
+
+# Generate values for the x-axis
+x_values <- seq(-7, 7, by = 0.1)
+
+# Calculate the probability density function (PDF) values for each x for the first distribution
+pdf_values1 <- dnorm(x_values, mean = mu1, sd = sqrt(sigma1))
+
+# Calculate the probability density function (PDF) values for each x for the second distribution
+pdf_values2 <- dnorm(x_values, mean = mu2, sd = sqrt(sigma2))
+
+# Plot the gamma PDFs
+plot(x_values, 
+    pdf_values1, 
+    type = "l", 
+    col = "blue", lwd = 2,
+    xlab = "", 
+    ylab = "",
+    ylim = c(0, max(pdf_values1, pdf_values2) + 0.1))
+
+lines(x_values, 
+      pdf_values2, 
+      col = "red", 
+      lwd = 2)
+
+mtext("x", side=1, line=3, cex=2)
+mtext("pdf", side=2, line=2.5, cex=2)
+
+# Add a legend
+legend("topright", legend = c(paste("N(", mu1, ",", sigma1, ")", sep = ""),
+                              paste("N(", mu2, ",", sigma2, ")", sep = "")),
+       col = c("blue", "red"), lty = 1, lwd = 2, cex = 1.5)
+
+``` 
+
+
+
+## Example - Normal distribution {.smaller}
+### Moment generating function
+
+The equation for the normal pdf is
+$$
+f_X(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \, \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
+$$
+Being pdf, we must have $\int f_X(x) \, dx = 1$. This yields:
+\begin{equation} \tag{1}
+\int_{-\infty}^{\infty} \exp \left( -\frac{x^2}{2\sigma^2} + \frac{\mu{x}}{\sigma^2} \right) \, dx = \exp \left(\frac{\mu^2}{2\sigma^2} \right) \sqrt{2\pi} \sigma
+\end{equation}
+
+
+
+## Example - Normal distribution {.smaller}
+### Moment generating function
+
+We have
+\begin{align*}
+M_X(t) & := \Expect (e^{tX}) 
+         = \int_{-\infty}^{\infty} e^{tx} f_X(x) \, dx  \\
+       & = \int_{-\infty}^{\infty} e^{tx} \frac{1}{\sqrt{2\pi}\sigma} 
+       \exp \left( -\frac{(x-\mu)^2}{2\sigma^2} \right) \, dx \\
+       & = \frac{1}{\sqrt{2\pi}\sigma} \int_{-\infty}^{\infty} e^{tx} 
+       \exp \left( -\frac{x^2}{2\sigma^2} - \frac{\mu^2}{2\sigma^2} + \frac{x\mu}{\sigma^2} \right) \, dx \\     
+       & = \exp\left(-\frac{\mu^2}{2\sigma^2} \right) 
+       \frac{1}{\sqrt{2\pi}\sigma}
+       \int_{-\infty}^{\infty} \exp \left(- \frac{x^2}{2\sigma^2} + \frac{(t\sigma^2+\mu) x}{\sigma^2} \right) \, dx
+\end{align*}
+
+
+
+## Example - Normal distribution {.smaller}
+### Moment generating function
+
+We have shown
+\begin{equation} \tag{2}
+M_X(t) = \exp\left(-\frac{\mu^2}{2\sigma^2} \right) 
+       \frac{1}{\sqrt{2\pi}\sigma}
+       \int_{-\infty}^{\infty} \exp \left(- \frac{x^2}{2\sigma^2} + \frac{(t\sigma^2+\mu) x}{\sigma^2} \right) \, dx
+\end{equation}
+Replacing $\mu$ by $(t\sigma^2 + \mu)$ in (1) we obtain
+\begin{equation} \tag{3}
+\int_{-\infty}^{\infty} \exp \left(- \frac{x^2}{2\sigma^2} + \frac{(t\sigma^2+\mu) x}{\sigma^2} \right) \, dx 
+= \exp \left( \frac{(t\sigma^2+\mu)^2}{2\sigma^2}  \right) \,  
+\sqrt{2\pi}\sigma
+\end{equation}
+Substituting (3) in (2) and simplifying we get
+$$
+M_X(t) = \exp \left( \mu t + \frac{t^2 \sigma^2}{2}  \right)
+$$
+
+
+
+
+## Example - Normal distribution {.smaller}
+### Mean
+
+Recall the mgf
+$$
+M_X(t) = \exp \left( \mu t + \frac{t^2 \sigma^2}{2}  \right)
+$$
+The first derivative is
+$$
+M_X'(t) = (\mu + \sigma^2 t ) \exp \left( \mu t + \frac{t^2 \sigma^2}{2}  \right)
+$$
+Therefore the mean:
+$$
+\Expect [X] = M_X'(0) = \mu 
+$$
+
+
+
+
+## Example - Normal distribution {.smaller}
+### Variance
+
+The first derivative of mgf is
+$$
+M_X'(t) = (\mu + \sigma^2 t ) \exp \left( \mu t + \frac{t^2 \sigma^2}{2}  \right)
+$$
+The second derivative is then
+$$
+M_X''(t) = \sigma^2  \exp \left( \mu t + \frac{t^2 \sigma^2}{2}  \right) +
+(\mu + \sigma^2 t )^2 \exp \left( \mu t + \frac{t^2 \sigma^2}{2}  \right)
+$$
+Therefore the second moment is:
+$$
+\Expect [X^2] = M_X''(0) = \sigma^2 + \mu^2 
+$$
+
+
+
+## Example - Normal distribution {.smaller}
+### Variance
+
+We have seen that:
+$$
+\Expect[X] = \mu   \quad  \qquad \Expect [X^2] = \sigma^2 + \mu^2 
+$$
+Therefore the variance is:
+\begin{align*}
+\Var[X] & = \Expect[X^2] - \Expect[X]^2 \\
+        & =  \sigma^2 + \mu^2 - \mu^2 \\
+        & = \sigma^2 
+\end{align*}
+
+
+
+
+
+
+## Example - Gamma distribution {.smaller}
+### Moment generating function
+
+Suppose $X \sim \Gamma(\alpha,\beta)$. This means
+$$
+f_X(x) = 
+\begin{cases} 
+\dfrac{x^{\alpha-1} e^{-\beta{x}} \beta^{\alpha}}{\Gamma(\alpha)}  & \text{ if } x > 0 \\
+0                                                                 & \text{ if } x \leq 0
+\end{cases}
+$$
+
+- We have seen already that 
+$$
+\Expect[X] = \frac{\alpha}{\beta} \quad  \qquad
+\Var[X] =  \frac{\alpha}{\beta^2}
+$$
+
+
+- We want to compute mgf $M_X$ to derive again $\Expect[X]$ and $\Var[X]$
+
+
+
+## Example - Gamma distribution {.smaller}
+### Moment generating function
+
+We compute
+\begin{align*}
+M_X(t) & = \Expect [e^{tX}] = \int_{-\infty}^\infty e^{tx} f_X(x) \, dx \\
+       & = \int_0^{\infty} e^{tx} \, \frac{x^{\alpha-1}e^{-\beta{x}} \beta^{\alpha}}{\Gamma(\alpha)} \, dx \\
+       & = \frac{\beta^{\alpha}}{\Gamma(\alpha)}\int_0^{\infty}x^{\alpha-1}e^{-(\beta-t)x} \, dx
+\end{align*}
+
+
+## Example - Gamma distribution {.smaller}
+### Moment generating function
+
+From the previous slide we have
+$$
+M_X(t) = \frac{\beta^{\alpha}}{\Gamma(\alpha)}\int_0^{\infty}x^{\alpha-1}e^{-(\beta-t)x} \, dx
+$$
+Change variable $y=(\beta-t)x$ and recall the definition of $\Gamma$:
+\begin{align*}
+\int_0^{\infty} x^{\alpha-1} e^{-(\beta-t)x} \, dx & =
+\int_0^{\infty} \frac{1}{(\beta-t)^{\alpha-1}} [(\beta-t)x]^{\alpha-1} e^{-(\beta-t)x}  \frac{1}{(\beta-t)} (\beta - t) \, dx   \\
+& = \frac{1}{(\beta-t)^{\alpha}} \int_0^{\infty} y^{\alpha-1} e^{-y}  \, dy \\
+& = \frac{1}{(\beta-t)^{\alpha}} \Gamma(\alpha)
+\end{align*}
+
+
+
+## Example - Gamma distribution {.smaller}
+### Moment generating function
+
+Therefore
+\begin{align*}
+M_X(t) & = \frac{\beta^{\alpha}}{\Gamma(\alpha)}\int_0^{\infty}x^{\alpha-1}e^{-(\beta-t)x} \, dx \\
+       & = \frac{\beta^{\alpha}}{\Gamma(\alpha)} \cdot \frac{1}{(\beta-t)^{\alpha}} \Gamma(\alpha) \\
+       & = \frac{\beta^{\alpha}}{(\beta-t)^{\alpha}}
+\end{align*}
+
+
+
+## Example - Gamma distribution {.smaller}
+### Expectation
+
+From the mgf
+$$
+M_X(t) = \frac{\beta^{\alpha}}{(\beta-t)^{\alpha}}
+$$
+we compute the first derivative:
+\begin{align*}
+M_X'(t) & = \frac{d}{dt} [\beta^{\alpha}(\beta-t)^{-\alpha}] \\
+        & = \beta^{\alpha}(-\alpha)(\beta-t)^{-\alpha-1}(-1) \\
+        & = \alpha\beta^{\alpha}(\beta-t)^{-\alpha-1}
+\end{align*}
+
+
+
+## Example - Gamma distribution {.smaller}
+### Expectation
+
+From the first derivative
+$$
+M_X'(t) = \alpha\beta^{\alpha}(\beta-t)^{-\alpha-1}
+$$
+we compute the expectation
+\begin{align*}
+\Expect[X] & = M_X'(0) \\
+           & = \alpha\beta^{\alpha}(\beta)^{-\alpha-1} \\
+           & =\frac{\alpha}{\beta}  
+\end{align*}
+
+
+
+## Example - Gamma distribution {.smaller}
+### Variance
+
+From the first derivative
+$$
+M_X'(t) = \alpha\beta^{\alpha}(\beta-t)^{-\alpha-1}
+$$
+we compute the second derivative
+\begin{align*}
+M_X''(t) & = \frac{d}{dt}[\alpha\beta^{\alpha}(\beta-t)^{-\alpha-1}] \\
+         & = \alpha\beta^{\alpha}(-\alpha-1)(\beta-t)^{-\alpha-2}(-1)\\
+         & = \alpha(\alpha+1)\beta^{\alpha}(\beta-t)^{-\alpha-2}
+\end{align*}
+
+
+
+
+## Example - Gamma distribution {.smaller}
+### Variance
+
+From the second derivative
+$$
+M_X''(t) = \alpha(\alpha+1)\beta^{\alpha}(\beta-t)^{-\alpha-2}
+$$
+we compute the second moment:
+\begin{align*}
+\Expect[X^2] & = M_X''(0) \\
+             & = \alpha(\alpha+1)\beta^{\alpha}(\beta)^{-\alpha-2} \\
+             & = \frac{\alpha(\alpha + 1)}{\beta^2}
+\end{align*}
+
+
+
+## Example - Gamma distribution {.smaller}
+### Variance
+
+From the first and second moments:
+$$
+\Expect[X] = \frac{\alpha}{\beta} \qquad \qquad
+\Expect[X^2] = \frac{\alpha(\alpha + 1)}{\beta^2}
+$$
+we can compute the variance
+\begin{align*}
+\Var[X] & = \Expect[X^2] - \Expect[X]^2 \\
+        & = \frac{\alpha(\alpha + 1)}{\beta^2} - \frac{\alpha^2}{\beta^2} \\
+        & = \frac{\alpha}{\beta^2}
+\end{align*}
+
+
+
+
+## Moment generating function {.smaller}
+### The mgf characterizes a distribution
+
+
+::: Theorem
+
+Let $X$ and $Y$ be random variables with mgfs $M_X$ and $M_Y$ respectively. Assume there exists $\e>0$ such that
+$$
+M_X(t) = M_Y(t) \,, \quad \forall \, t \in (-\e , \e)
+$$
+Then $X$ and $Y$ have the same cdf
+$$
+F_X(u) = F_Y(u) \,, \quad \forall \, x \in \R
+$$
+
+:::
+
+In other words: $\qquad$ **same mgf** $\quad \implies \quad$ **same distribution**
+
+
+
+
+## Example  {.smaller}
+
+- Suppose $X$ is a random variable such that
+$$
+M_X(t) = \exp \left( \mu t + \frac{t^2 \sigma^2}{2}  \right)
+$$
+As the above is the mgf of a normal distribution, by the previous Theorem we infer $X \sim N(\mu,\sigma^2)$
+
+- Suppose $Y$ is a random variable such that
+$$
+M_Y(t) =  \frac{\beta^{\alpha}}{(\beta-t)^{\alpha}}
+$$
+As the above is the mgf of a Gamma distribution, by the previous Theorem we infer $Y \sim \Gamma(\alpha,\beta)$
+
+
+ 
+
+
+# Part 5: <br>Probability revision II {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## Probability revision II {.smaller}
+
+- You are expected to be familiar with the main concepts from Y1 module    
+**Introduction to Probability & Statistics**
+
+- Self-contained revision material available in <a href="appendix_A.qmd">Appendix A</a> 
+
+
+**Topics to review**: Sections 4--5 of <a href="appendix_A.qmd">Appendix A</a>
+    
+::: {.column width="38%"}
+    
+- Random vectors
+- Bivariate vectors
+- Joint pdf and pmf
+- Marginals
+
+:::
+
+::: {.column width="58%"}
+
+- Conditional distributions
+- Conditional expectation
+- Conditional variance
+
+:::
+
+
+
+
+
+
+
+## Univariate vs Bivariate vs Multivariate {.smaller}
+
+- Probability models seen so far only involve 1 random variable
+    * These are called **univariate models**
+
+- We are also interested in probability models involving multiple variables:
+    * Models with 2 random variables are called **bivariate**
+    * Models with more than 2 random variables are called **multivariate**
+
+
+
+
+## Random vectors {.smaller}
+### Definition
+
+**Recall**: a random variable is a **measurable** function
+$$
+X \colon \Omega \to \R \,, \quad \Omega \,\, \text{ sample space}
+$$
+
+::: Definition
+
+A **random vector** is a measurable function $\XX \colon \Omega \to \R^n$. We say that
+
+- $\XX$ is **univariate** if $n=1$
+- $\XX$ is **bivariate** if $n=2$
+- $\XX$ is **multivariate** if $n \geq 3$
+
+:::
+
+
+
+
+
+## Random vectors {.smaller}
+### Notation
+
+- The components of a random vector $\XX$ are denoted by
+$$
+\XX = (X_1, \ldots, X_n) 
+$$
+with $X_i \colon \Omega \to \R$ random variables
+
+
+- We denote a two-dimensional bivariate random vector by 
+$$
+(X,Y)
+$$
+with $X,Y \colon \Omega \to \R$ random variables
+
+
+
+
+
+## Summary - Bivariate Random Vectors {.smaller}
+
+
+| $(X,Y)$ discrete random vector       |  $(X,Y)$ continuous random vector         |
+|--------------                        |----------------                           |
+| $X$ and $Y$ discrete RV                |  $X$ and $Y$ continuous RV                  |
+|**Joint pmf**                         |**Joint pdf**                              |
+| $f_{X,Y}(x,y) := P(X=x,Y=y)$         | $P((X,Y) \in A) = \int_A f_X(x,y) \,dxdy$ |  
+| $f_{X,Y} \geq 0$                     |  $f_{X,Y} \geq 0$                         |
+|$\sum_{(x,y)\in \R^2} f_{X,Y}(x,y)=1$ | $\int_{\R^2} f_{X,Y}(x,y) \, dxdy= 1$     |
+|**Marginal pmfs**                     | **Marginal pdfs**                         |
+| $f_X (x) := P(X=x)$                  |$P(a \leq X \leq b) = \int_a^b f_X(x) \,dx$|
+| $f_Y (y) := P(Y=y)$                  |$P(a \leq Y \leq b) = \int_a^b f_Y(y) \,dy$|
+|$f_X (x)=\sum_{y \in \R} f_{X,Y}(x,y)$|$f_X(x) = \int_{\R} f_{X,Y}(x,y) \,dy$     |
+|$f_Y (y)=\sum_{x \in \R} f_{X,Y}(x,y)$|$f_Y(y) = \int_{\R} f_{X,Y}(x,y) \,dx$     |
+
+
+
+
+
+
+## Expected Value {.smaller}
+
+
+- Suppose $(X,Y) \colon \Omega \to \R^2$ is random vector and $g \colon \R^2 \to \R$ function
+- Then $g(X,Y) \colon \Omega \to \R$ is random variable
+
+
+::: Definition
+
+The **expected value** of the random variable $g(X,Y)$ is
+\begin{align*}
+\Expect [g(X,Y)] & := \sum_{x,y} g(x,y)  P(X=x,Y=y)   \quad \text{ if } (X,Y) \text{ discrete} \\
+\Expect [g(X,Y)] & := \int_{\R^2} g(x,y) f_{X,Y}(x,y) \, dxdy   \quad \text{ if } (X,Y) \text{ continuous}
+\end{align*}
+
+:::
+
+
+**Notation**:The symbol $\int_{\R^2}$ denotes the double integral $\int_{-\infty}^\infty\int_{-\infty}^\infty$
+
+
+
+
+
+## Conditional distributions {.smaller}
+
+
+$(X,Y)$ rv with joint pdf (or pmf) $f_{X,Y}$ and marginal pdfs (or pmfs)
+$f_X, f_Y$
+
+- The **conditional pdf (or pmf) of $Y$ given that $X=x$** is the function $f(\cdot | x)$
+$$
+f(y|x) := \frac{f_{X,Y}(x,y)}{f_X(x)} \, , \qquad \text{ whenever} \quad f_X(x)>0
+$$
+
+- The **conditional pdf (or pmf) of $X$ given that $Y=y$** is the function $f(\cdot | y)$
+$$
+f(x|y) := \frac{f_{X,Y}(x,y)}{f_Y(y)}\, , \qquad \text{ whenever} \quad f_Y(y)>0
+$$
+
+- **Notation**: We will often write
+    * $Y|X$ to denote the distribution $f(y|x)$
+    * $X|Y$ to denote the distribution $f(x|y)$
+
+
+
+
+## Conditional expectation  {.smaller}
+
+
+::: Definition
+
+$(X,Y)$ random vector and $g \colon \R \to \R$ function. The **conditional expectation** of $g(Y)$ given $X=x$ is
+\begin{align*}
+\Expect [g(Y) | x] & := \sum_{y} g(y) f(y|x)   \quad \text{ if } (X,Y) \text{ discrete} \\
+\Expect [g(Y) | x] & := \int_{y \in \R} g(y) f(y|x) \, dy   \quad \text{ if } (X,Y) \text{ continuous}
+\end{align*}
+
+:::
+
+- $\Expect [g(Y) | x]$ is a real number for all $x \in \R$
+- $\Expect [g(Y) | X]$ denotes the Random Variable $h(X)$ where $h(x):=\Expect [g(Y) | x]$
+
+
+
+
+## Conditional variance  {.smaller}
+
+
+::: Definition
+
+$(X,Y)$ random vector. The **conditional variance** of $Y$ given $X=x$ 
+is
+$$
+\Var [Y | x]  := \Expect[Y^2|x] - \Expect[Y|x]^2 
+$$
+
+:::
+
+- $\Var [Y | x]$ is a real number for all $x \in \R$
+- $\Var [Y | X]$ denotes the Random Variable 
+$$
+\Var [Y | X] := \Expect[Y^2|X] - \Expect[Y|X]^2 
+$$
+
+
+
+
+## Exercise - Conditional distribution  {.smaller}
+
+Assume given a continuous random vector $(X,Y)$ with **joint pdf**
+$$
+f_{X,Y}(x,y) := e^{-y}  \,\, \text{ if } \,\, 0 < x < y  \,, \quad 
+f_{X,Y}(x,y) :=0    \,\, \text{ otherwise}
+$$
+
+::: {.column width="42%"}
+
+- Compute $f_X$ and $f(y|x)$
+- Compute $\Expect[Y|X]$
+- Compute $\Var[Y|X]$
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+
+library(plotly)
+
+# Define the function
+f <- function(x, y) {
+  if (0 < x && x < y) {
+    return(exp(-y))
+  } else {
+    return(0)
+  }
+}
+
+# Generate data for the surface plot
+x_vals <- seq(0, 2, length.out = 200)
+y_vals <- seq(0, 2, length.out = 200)
+
+z_matrix <- outer(x_vals, y_vals, Vectorize(function(x, y) f(x, y)))
+
+# Create a 3D surface plot using plot_ly
+plot_ly(
+  x = x_vals,
+  y = y_vals,
+  z = z_matrix,
+  type = "surface",
+  colors = "viridis",
+  showscale = FALSE
+) %>% 
+    layout(
+    scene = list(
+      xaxis = list(title = "x"),
+      yaxis = list(title = "y"),
+      zaxis = list(title = "f_XY"),
+      camera = list(
+        eye = list(x = 1.87, y = 0.88, z = 0.64)
+      )
+    ),
+    width = 800,
+    height = 600
+  )
+
+
+```
+
+:::
+
+
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+
+
+## Solution  {.smaller}
+
+- We compute $f_X$, the **marginal pdf of $X$**:
+  * If $x \leq 0$ then $f_{X,Y}(x,y)=0$. Therefore
+    $$
+    f_X(x) = \int_{-\infty}^\infty f_{X,Y}(x,y) \, dy = 0 
+    $$
+  * If $x > 0$ then $f_{X,Y}(x,y)=e^{-y}$ if $y>x$, and $f_{X,Y}(x,y)=0$ if $y \leq x$. Thus
+  \begin{align*}
+  f_X(x) & = \int_{-\infty}^\infty f_{X,Y}(x,y) \, dy = 
+  \int_{x}^\infty e^{-y} \, dy \\
+  & = - e^{-y} \bigg|_{y=x}^{y=\infty}  = -e^{-\infty} + e^{-x}  = e^{-x} 
+  \end{align*}
+
+
+
+
+
+## Solution  {.smaller}
+
+
+- The **marginal pdf of $X$** has then **exponential distribution**
+$$
+f_{X}(x) = 
+\begin{cases}
+e^{-x} & \text{ if } x > 0 \\
+0      & \text{ if } x \leq 0 
+\end{cases}
+$$
+
+
+```{r}
+
+# Define the probability density function (PDF)
+f_X <- function(x) {
+  exp(-x)
+}
+
+# Generate x values for plotting
+x_values <- seq(0, 4, length.out = 100)
+
+# Calculate corresponding y values
+y_values <- f_X(x_values)
+
+# Plot the distribution using base R plot function
+plot(x_values, 
+    y_values, 
+    type = "l", 
+    col = "blue", 
+    lwd = 4,
+    xlab = "", 
+    ylab = "")
+
+mtext("x", side=1, line=3, cex=2)
+mtext("f_X", side=2, line=2.5, cex=2)
+
+
+# Add a grid for better visualization
+grid()
+
+```
+
+
+
+## Solution  {.smaller}
+
+
+- We now compute $f(y|x)$, the **conditional pdf of $Y$ given $X=x$**:
+    * Note that $f_X(x)>0$ for all $x>0$
+    * Hence assume fixed some $x>0$
+    * If $y>x$ we have $f_{X,Y}(x,y)=e^{-y}$. Hence
+    $$
+    f(y|x) := \frac{f_{X,Y}(x,y)}{f_X(x)} = \frac{e^{-y}}{e^{-x}} = e^{-(y-x)}
+    $$
+    * If $y \leq x$ we have $f_{X,Y}(x,y)=0$. Hence
+    $$
+    f(y|x) := \frac{f_{X,Y}(x,y)}{f_X(x)} = \frac{0}{e^{-x}} = 0
+    $$
+
+
+
+
+
+## Solution  {.smaller}
+
+
+- The conditional distribution $Y|X$ is therefore **exponential**, shifted by $x$
+$$
+f(y|x) = 
+\begin{cases}
+e^{-(y-x)} & \text{ if } y > x \\
+0      & \text{ if } y \leq x 
+\end{cases}
+$$
+
+- The **conditional expectation** of $Y$ given $X=x$ is
+\begin{align*}
+\Expect[Y|x] & = \int_{-\infty}^\infty y f(y|x) \, dy 
+               = \int_{x}^\infty y e^{-(y-x)} \, dy \\
+             & = -(y+1) e^{-(y-x)} \bigg|_{x}^\infty =  x + 1  
+\end{align*}
+where we integrated by parts
+
+
+
+
+
+## Solution  {.smaller}
+
+
+- Therefore **conditional expectation** of $Y$ given $X=x$ is
+$$
+\Expect[Y|x] = x + 1  
+$$
+
+
+- This can also be interpreted as the random variable
+$$
+\Expect[Y|X] = X + 1  
+$$
+
+
+- This is not surprising! 
+    * The distribution of $Y|X$ is just an exponential translated by $X$
+    * Therefore, the expected value of $Y|X$ is the expected value of the exponential distribution, which is $1$, translated by $X$
+
+
+
+
+
+
+
+## Solution  {.smaller}
+
+
+- The **conditional second moment** of $Y$ given $X=x$ is
+\begin{align*}
+\Expect[Y^2|x] & = \int_{-\infty}^\infty y^2 f(y|x) \, dy 
+               = \int_{x}^\infty y^2 e^{-(y-x)} \, dy \\
+             & = (y^2+2y+2) e^{-(y-x)} \bigg|_{x}^\infty = x^2 + 2x + 2 
+\end{align*}
+where we integrated by parts
+
+- The **conditional variance** of $Y$ given $X=x$ is
+$$
+\Var[Y|x] = \Expect[Y^2|x] - \Expect[Y|x]^2 = x^2 + 2x + 2 - (x+1)^2 = 1
+$$
+
+
+
+## Solution  {.smaller}
+
+- The conditional variance can be interpreted as the random variable
+$$
+\Var[Y|X] = 1
+$$
+
+- This is not surprising! 
+    * The distribution of $Y|X$ is just an exponential translated by $X$
+    * Therefore, the shape of the distribution does not change
+    * Thus, the variance of $Y|X$ does not depend on $X$
+    $$
+    \Var[Y|X = x ] = \Var[Y | X = 0] = 1
+    $$
+
+
+
+
+
+
+
+## Conditional Expectation {.smaller}
+### A useful formula
+
+::: Theorem
+
+$(X,Y)$ random vector. Then
+$$
+\Expect[X] = \Expect[ \Expect[X|Y] ]
+$$
+
+:::
+
+**Note**: The above formula contains abuse of notation -- $\Expect$ has 3 meanings
+
+- First $\Expect$ is with respect to the marginal of $X$
+- Second $\Expect$ is with respect to the marginal of $Y$
+- Third $\Expect$ is with respect to the conditional distribution $X|Y$
+
+
+
+## Conditional Variance {.smaller}
+### A useful formula
+
+::: Theorem
+
+$(X,Y)$ random vector. Then
+$$
+\Var[X] = \Expect[ \Var[ X|Y] ] + \Var [\Expect[X|Y]]
+$$
+
+:::
+
+
+
+## Exercise {.smaller}
+
+Let $n \in \N$ be constant, and the random vector $(X,Y)$ satisfy the following:
+
+- $X$ has uniform distribution on $[0,1]$, meaning that its pdf is
+$$
+f_X(x) =  \chi_{[0,1]}(x) = 
+\begin{cases}
+1  & \, \text{ if } \, x \in [0,1] \\
+0  & \, \text{ otherwise }
+\end{cases}
+$$
+
+- The distribution of $Y$, conditional on $X = x$, is binomial $\binomial(n,x)$. This means
+$$
+P(Y = k | X = x) = \binom{n}{k} x^k (1-x)^{n-k} \,, \quad k = 0 , 1 , \ldots ,n \,,
+$$
+where the binomial coefficient is $\binom{n}{k} = \frac{n!}{k!(n-k)!}$      		
+
+**Question:** Compute $\Expect[Y]$ and $\Var[Y]$
+
+
+
+
+## Solution {.smaller}
+
+- By assumption $X$ is uniform on $[0,1]$. Therefore
+\begin{align*}
+f_X(x) & =  \chi_{[0,1]}(x) = 
+\begin{cases}
+1  & \, \text{ if } \, x \in [0,1] \\
+0  & \, \text{ otherwise }
+\end{cases} \\
+ \Expect[X] & = \int_\R x f_{X}(x)\, dx = \int_0^1 x \, dx = \frac12  \\
+ \Expect[X^2] & = \int_\R x^2 f_{X} (x)\, dx = \int_0^1 x^2 \, dx = \frac13 \\
+ \Var[X] & = \Expect[X^2] - \Expect[X]^2 = \frac13 - \frac{1}{4} = \frac{1}{12}
+\end{align*}
+
+
+## Solution {.smaller}
+
+
+- By assumption $Y | X = x$ is $\binomial(n,x)$. Using well-known formulas, we get
+$$
+\Expect[Y|X] = nX \,, \qquad  
+\Var[Y|X] = nX(1-X) 
+$$
+
+- Therefore we conclude
+\begin{align*}
+\Expect[Y] & = \Expect[ \Expect[Y|X] ] = \Expect[nX] = n \Expect[X] = \frac{n}{2} \\
+& \phantom{s} \\
+\Var[Y] & = \Expect[\Var[Y|X]] + \Var[\Expect[Y|X]] \\ 
+        & = \Expect[nX(1-X)] + \Var[nX] \\
+        & = n \Expect[X] - n\Expect[X^2] + n^2\Var[X] \\
+        & = \frac{n}{2} - \frac{n}{3} + \frac{n^2}{12} = \frac{n}{6}  + \frac{n^2}{12} 
+\end{align*}
+
+
+
+
+
+
+## References
+
+
+
+
+
+
+
+
+::: {.content-hidden}
+
+
+
+
+# Thank you! {background-color="#cc0164" visibility="uncounted"}
+
+
+::: footer
+
+<div color="#cc0164"> </div>
+
+:::
+
+
+
+
+
+## Real data example
+### How does real data look like?
+
+::: {style="font-size: 0.8em"}
+Dataset with $33$ entries for Stock and Gold price pairs
+:::
+
+::: {style="font-size: 0.6em"}
+
+```{r}
+#| echo: false
+#| layout-ncol: 3
+#| tbl-cap: "Dataset with 33 entries for Stock and Gold price pairs"
+
+# Read dataset
+data <- read.table("datasets/L3eg1data.txt")
+
+#Add column labels to data
+colnames(data) <- c("Stock Price","Gold Price")
+
+# Output markdown table from data
+
+knitr::kable(data[1:11,], row.names = TRUE)
+
+knitr::kable(data[12:22,], row.names = TRUE)
+
+knitr::kable(data[23:33,], row.names = TRUE)
+
+```
+
+:::
+
+:::
+
+
+

@@ -1,0 +1,361 @@
+---
+title: "Statistical Models"
+subtitle: "Appendix B"
+from: markdown+emoji
+author: 
+    - name: Dr. Silvio Fanzon
+      id: sf
+      email: S.Fanzon@hull.ac.uk
+      url: https://www.silviofanzon.com
+      affiliations: University of Hull
+---
+
+
+
+::: {.content-hidden}
+$
+{{< include macros.tex >}}
+$
+:::
+
+
+
+
+# Appendix B: <br>R Style Guide {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+## R Style Guide {.smaller}
+
+- Styling your code is optional
+- However it is considered good manners to do so
+- Good coding style makes code more readable
+- Highly recommended, especially for assignments
+- The next few slides on Style are based on these two posts:
+  * Style Guide by Hadley Wickham ([link](http://adv-r.had.co.nz/Style.html#:~:text=When%20indenting%20your%20code%2C%20use,definition%20runs%20over%20multiple%20lines.))
+  * Google's R Style Guide ([link](https://google.github.io/styleguide/Rguide.html))
+
+
+
+## File names {.smaller}
+
+They should be meaningful and end in .R
+
+```r
+# Good
+football-models.R  
+utility-functions.R
+homework_1.R
+homework1.R
+
+# Bad
+footballmodels.r # Hard to read
+stuff.r          # What is inside this file?
+code.r           # Same as above
+
+```
+
+
+
+## Objects names {.smaller}
+
+- Objects names shoulde be lowercase
+- Use an underscore (``_``) to separate words within a name
+- Variable names should be nouns, not verbs
+- Come up with names that are concise and meaningful
+
+```r
+# Good
+day_one  # This will clearly store the value of first day
+day_1    # Still clear
+
+
+# Bad
+first_day_of_the_month  # Too long
+dayone                  # Hard to read
+DayOne                  # Mix of upper and lower case
+fdm                     # Hard to guess what this means
+```
+
+
+
+
+## Functions names {.smaller}
+
+- Name functions with ``BigCamelCase`` ([link](https://en.wikipedia.org/wiki/Camel_case))
+- This is to clearly distinguish functions from other objects
+- Functions names should be verbs
+- Come up with names that are concise and meaningful
+
+```r
+# Good
+DoNothing <- function() {
+  return(invisible(NULL))
+}
+
+# Bad
+donothing <- function() {
+  return(invisible(NULL))
+}
+```
+
+
+
+
+
+## Object and functions names {.smaller}
+
+If possible avoid using names of existing functions and variables
+
+
+```r
+# Bad
+T <- FALSE                  # T is reserved for the boolean TRUE
+c <- 10                     # c denotes the concatenation operator
+mean <- function(x) sum(x)  # mean already denotes a built in function
+```
+
+
+
+## Assignment {.smaller}
+
+Use ``<-`` and not ``=`` for assignment
+
+```r 
+# Good
+x <- 5
+
+# Bad
+x = 5
+```
+
+
+
+
+## Spacing {.smaller}
+
+- Spacing is **really** something you should be careful about
+- Place spaces around all infix operators (``=``, ``+``, ``-``, ``<-``, etc.) 
+- Place spaces around ``=`` when calling a function 
+- Always put a space after a comma, never before (like in regular English)
+
+```r 
+# Good
+average <- mean(feet / 12 + inches, na.rm = TRUE)
+
+# Bad
+average<-mean(feet/12+inches,na.rm=TRUE)
+```
+
+
+
+
+## Spacing with Brackets {.smaller}
+
+- Do not place spaces around code in parentheses or square brackets
+- Unless there is a comma
+
+```r
+# Good
+if (condition) do(x)
+diamonds[5, ]
+
+# Bad
+if ( condition ) do(x)  # No spaces around condition
+x[1,]                   # Needs a space after the comma
+x[1 ,]                  # Space goes after comma not before
+```
+
+
+
+
+## Spacing - Exceptions {.smaller}
+
+- Symbols ``:``, ``::`` and ``:::`` do not need spacing
+
+```r
+# Good
+x <- 1:10
+
+# Bad
+x <- 1 : 10
+```
+
+- Place a space before left parentheses, except in a function call
+
+```r
+#Good
+if (condition) do(x)
+plot(x, y)
+
+# Bad
+if(condition)do(x)    # (condition) needs spacing
+plot (x, y)           # This does not need spacing
+```
+
+
+
+## Extra Spacing {.smaller}
+
+Extra spacing is ok if it improves alignment of ``=`` or ``<-``
+
+```r
+list(
+  total = a + b + c, 
+  mean  = (a + b + c) / n
+)
+```
+
+
+
+## Curly braces {.smaller}
+
+- An opening curly brace should never go on its own line 
+- An opening curly brace should always be followed by a new line
+- Always **indent** the code inside curly braces
+
+
+::: {.column width="45%"}
+
+```r
+# Good
+
+if (y < 0 && debug) {
+  message("Y is negative")
+}
+
+if (y == 0) {
+  log(x)
+} 
+```
+
+:::
+
+
+::: {.column width="45%"}
+
+```r
+# Bad
+
+if (y < 0 && debug)
+message("Y is negative")
+
+
+if (y == 0) 
+{
+  log(x)} 
+```
+
+:::
+
+
+
+
+
+## Line length {.smaller}
+
+- Limit code to 80 characters per line
+- This fits comfortably on a printed page 
+- If you run out of room, encapsulate some of the work in separate function
+
+
+
+
+## Indentation {.smaller}
+
+- When indenting your code, use two spaces
+- Never use tabs or mix tabs and spaces
+- Indentation should be used for **functions**, **if**, **for**, etc.
+
+```r
+SumTwoNumbers <- function(x, y) {
+  s = x + y
+  return(s)
+}
+```
+
+
+
+## Indentation - Exception {.smaller}
+
+If a function definition runs over multiple lines, indent the second line to where the definition starts
+
+```r
+long_function_name <- function(a = "a long argument", 
+                               b = "another argument",
+                               c = "another long argument") {
+  # As usual code is indented by two spaces.
+}
+```
+
+
+
+
+## Use explicit returns {.smaller}
+
+- Functions can return objects
+- R has an implicit return feature
+- Do not rely on this feature, but explicitly mention ``return(object)``
+
+```r
+# Good
+AddValues <- function(x, y) {
+  return(x + y)                     # Function returns x+y
+}
+
+# Bad
+AddValues <- function(x, y) {
+  x + y                             # Function still returns x+y
+}                                   # but it is not immediate to see it
+```
+
+
+
+
+## Named arguments {.smaller}
+
+- Often you can call a function without explicitly naming arguments:
+  * ``plot(height, weight)``
+  * ``mean(weight)``
+
+- This might be fine for ``plot()`` or ``mean``
+
+- However for less common functions:
+  * One might struggle to remember the meaning of **arguments positions**
+  * It is therefore good practice to **name arguments**
+
+```r
+# Good
+seq(from = 1, to = 11, by = 1)
+
+# Bad
+seq(1, 11, 1)
+```
+
+
+
+## Comments {.smaller}
+
+- **Most importantly**: Comment your code
+- Each line of a comment should begin with comment symbol ``#`` and a single space
+
+```r 
+# Here we sum two numbers  
+x+y
+```
+
+
+- Use commented lines of ``-`` and ``=`` to break up code into easily readable chunks
+
+```r
+# Load data ---------------------------
+
+# Plot data ---------------------------
+```

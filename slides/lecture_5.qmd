@@ -1,0 +1,2464 @@
+---
+title: "Statistical Models"
+subtitle: "Lecture 5"
+from: markdown+emoji
+author: 
+    - name: Dr. Silvio Fanzon
+      id: sf
+      email: S.Fanzon@hull.ac.uk
+      url: https://www.silviofanzon.com
+      affiliations: University of Hull
+---
+
+
+
+::: {.content-hidden}
+$
+{{< include macros.tex >}}
+$
+:::
+
+
+
+
+# Lecture 5: <br>Two-sample F-test & <br> Goodness-of-fit test  {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+
+
+## Outline of Lecture 5
+
+
+1. The F-distribution
+2. Two-sample F-test
+3. Worked Example
+4. The goodness-of-fit test
+5. Worked Examples 
+
+
+
+
+
+# Part 1: <br>The F-distribution {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## Recall {.smaller}
+
+The chi-squared distribution with $p$ degrees of freedom is
+$$
+\chi_p^2 = Z_1^2 + \ldots + Z_p^2  \qquad \text{where} \qquad  Z_1, \ldots, Z_n \,\,\, \text{iid} \,\,\, N(0, 1)
+$$
+
+Chi-squared distribution was used to:
+
+- Describe distribution of sample variance $S^2$:
+$$
+\frac{(n-1)S^2}{\sigma^2} \sim \chi_{n-1}^2
+$$
+
+- Define t-distribution with $p$ degrees of freedom:
+$$
+t_p \sim \frac{U}{\sqrt{V/p}} \qquad \text{where} \qquad
+U \sim N(0,1) \,, \quad V \sim \chi_p^2 \quad \text{ independent}
+$$
+
+
+
+## The F-distribution {.smaller}
+
+::: Definition
+
+The r.v. $F$ has F-distribution with $p$ and $q$ degrees of freedom
+if the pdf is
+$$
+f_F(x) = \frac{ \Gamma \left(\frac{p+q}{2} \right) }{ \Gamma \left( \frac{p}{2} \right) \Gamma \left( \frac{q}{2} \right) } 
+\left( \frac{p}{q} \right)^{p/2} \, 
+\frac{ x^{ (p/2) - 1 } }{ [ 1 + (p/q) x ]^{(p+q)/2} } \,, \quad x > 0
+$$
+
+
+:::
+
+
+**Notation**:  F-distribution with $p$ and $q$ degrees of freedom is denoted by $F_{p,q}$
+
+
+**Remark:** Used to describes **variance estimators** for independent samples
+
+
+
+
+## Plot of F-distributions {.smaller}
+
+
+```{r}
+# Set the degrees of freedom
+df1_num <- 1; df1_den <- 5
+df2_num <- 5; df2_den <- 5
+df3_num <- 10; df3_den <- 20
+
+# Generate values for the x-axis
+x_values <- seq(0.1, 8, by = 0.01)
+
+# Calculate the probability density function (PDF) values for each x for the 3 distributions
+pdf_values1 <- df(x_values, df1_num, df1_den)
+pdf_values2 <- df(x_values, df2_num, df2_den)
+pdf_values3 <- df(x_values, df3_num, df3_den)
+
+
+# Plot the gamma PDFs
+plot(x_values, 
+    pdf_values1, 
+    type = "l", 
+    col = "blue", lwd = 2,
+    xlab = "", 
+    ylab = "",
+    ylim = c(0, max(pdf_values2, pdf_values3) + 0.1))
+
+lines(x_values, 
+      pdf_values2, 
+      col = "red", 
+      lwd = 2)
+
+lines(x_values, 
+      pdf_values3, 
+      col = "black", 
+      lwd = 2)
+
+mtext("x", side=1, line=3, cex=2)
+mtext("pdf", side=2, line=2.5, cex=2)
+
+# Add a legend
+legend("topright", legend = c(paste("F(", df1_num, ",", df1_den, ")", sep = ""),
+                              paste("F(", df2_num, ",", df2_den, ")", sep = ""),
+                              paste("F(", df3_num, ",", df3_den, ")", sep = "")),
+       col = c("blue", "red", "black"), lty = 1, lwd = 2, cex = 1.5)
+
+``` 
+
+
+
+
+## Characterization of F-distribution {.smaller}
+
+The F-distribution is obtained as ratio of 2 independent chi-squared distributions
+
+::: Theorem
+
+Suppose that $U \sim \chi_p^2$ and $V \sim \chi_q^2$ are independent. Then
+$$
+X := \frac{U/p}{V/q} \sim F_{p,q}
+$$
+
+:::
+
+
+
+## Idea of Proof {.smaller}
+
+- This is similar to the proof (seen in Homework 2) that 
+$$
+\frac{U}{\sqrt{V/p}} \sim t_p
+$$
+where $U \sim N(0,1)$ and $V \sim \chi_p^2$ are independent 
+
+- In our case we need to prove
+$$
+X := \frac{U/p}{V/q} \sim F_{p,q}
+$$
+where $U \sim \chi_p^2$ and $V \sim \chi_q^2$ are independent
+
+
+
+
+## Idea of Proof {.smaller}
+
+- $U \sim \chi_{p}^2$ and $V \sim \chi_q^2$ are independent. Therefore
+\begin{align*}
+f_{U,V} (u,v) & = f_U(u) f_V(v) \\
+              & = 
+\frac{ 1 }{ \Gamma \left( \frac{p}{2} \right) \Gamma \left( \frac{q}{2} \right) 2^{(p+q)/2} }  u^{\frac{p}{2} - 1}
+v^{\frac{q}{2} - 1} e^{-(u+v)/2}
+\end{align*}
+
+
+- Consider the change of variables 
+$$
+x(u,v) := \frac{u/p}{v/q} \,, \quad y(u,v) := u + v
+$$
+
+
+
+
+## Idea of Proof {.smaller}
+
+- This way we have
+$$
+X = \frac{U/p}{V/q}  \,, \qquad Y = U + V
+$$
+
+
+- To conclude the proof, we need to compute the pdf of $X$, that is $f_X$
+
+- This can be computed as the $X$ marginal of $f_{X,Y}$
+$$
+f_{X}(x) = \int_{0}^\infty f_{X,Y}(x,y) \, dy
+$$
+
+
+
+## Idea of Proof {.smaller}
+
+- The joint pdf $f_{X,Y}$ can be computed by inverting the change of variables
+$$
+x(u,v) := \frac{u/p}{v/q} \,, \quad y(u,v) := u + v
+$$
+and using the formula
+$$
+f_{X,Y}(x,y) = f_{U,V}(u(x,y),v(x,y)) \, |\det J|
+$$
+where $J$ is the Jacobian of the inverse transformation 
+$$
+(x,y) \mapsto (u(x,y),v(x,y))
+$$
+
+
+
+## Idea of Proof {.smaller}
+
+- Since $f_{U,V}$ is known, then also $f_{X,Y}$ is known
+
+- Moreover the integral
+$$
+f_{X}(x) = \int_{0}^\infty f_{X,Y}(x,y) \, dy
+$$
+can be explicitly computed, yielding the thesis
+$$
+f_{X}(x) = \frac{ \Gamma \left(\frac{p+q}{2} \right) }{ \Gamma \left( \frac{p}{2} \right) \Gamma \left( \frac{q}{2} \right) } 
+\left( \frac{p}{q} \right)^{p/2} \, 
+\frac{ x^{ (p/2) - 1 } }{ [ 1 + (p/q) x ]^{(p+q)/2} }
+$$
+
+
+
+
+## Properties of F-distribution {.smaller}
+
+::: Theorem
+
+1. Suppose $X \sim F_{p,q}$ with $q>2$. Then 
+$$
+\Expect[X] = \frac{q}{q-2}
+$$
+
+2. If $X \sim F_{p,q}$ then $1/X \sim F_{q,p}$
+
+3. If $X \sim t_q$ then $X^2 \sim F_{1,q}$
+
+:::
+
+
+
+
+## Properties of F-distribution {.smaller}
+### Proof of Theorem
+
+1. Requires a bit of work (omitted)
+
+2. By the Theorem in Slide 6, we have
+$$
+X \sim F_{p,q} \quad \implies \quad X = \frac{U/p}{V/q}
+$$
+with $U \sim \chi_p^2$ and $V \sim \chi_q^2$ independent. Therefore
+$$
+\frac{1}{X} = \frac{V/q}{U/p} \sim  \frac{\chi^2_q/q}{\chi^2_p/p} \sim F_{q,p}
+$$
+
+
+
+## Properties of F-distribution {.smaller}
+### Proof of Theorem
+
+3. Suppose $X \sim t_q$. The Theorem in Slide 118 of Lecture 2, guarantees that
+$$
+X = \frac{U}{\sqrt{V/q}}
+$$
+where $U \sim N(0,1)$ and $V \sim \chi_q^2$ are independent. Therefore
+$$
+X^2 = \frac{U^2}{V/q}
+$$
+
+
+
+## Properties of F-distribution {.smaller}
+### Proof of Theorem
+
+- Since $U \sim N(0,1)$, by definition $U^2 \sim \chi_1^2$. 
+- Moreover $U^2$ and $V$ are independet, since $U$ and $V$ are independent
+- Finally, the Theorem in Slide 6 implies
+$$
+X^2 = \frac{U^2}{V/q} \sim \frac{\chi_1^2/1}{\chi_q^2/q} \sim F_{1,q} 
+$$
+
+
+
+
+
+
+
+# Part 2: <br>Two-sample F-test {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+
+
+
+## Variance estimators {.smaller}
+
+Suppose given **independent** random samples from 2 normal populations:
+
+- $X_1, \ldots, X_n$ iid random sample from $N(\mu_X, \sigma_X^2)$
+- $Y_1, \ldots, Y_m$ iid random sample from $N(\mu_Y, \sigma_Y^2)$
+
+
+**Problem**:
+
+- We want to compare **variance** of the 2 populations
+- We do it by studying the variances ratio
+$$
+\frac{\sigma_X^2}{\sigma_Y^2}
+$$
+
+
+
+## Variance estimators {.smaller}
+
+**Question**: 
+
+- Suppose the variances $\sigma_X^2$ and $\sigma_Y^2$ are **unknown**
+- How can we estimate the ratio $\sigma_X^2 /\sigma_Y^2 \,$ ?
+
+. . . 
+
+**Answer**: 
+
+- Estimate the ratio $\sigma_X^2 /\sigma_Y^2 \,$ using sample variances
+$$
+S^2_X / S^2_Y
+$$
+
+- The F-distribution allows to compare the quantities 
+$$
+\sigma_X^2 /\sigma_Y^2 \qquad \text{and} \qquad S^2_X / S^2_Y
+$$
+
+
+
+
+## Variance ratio distribution {.smaller}
+
+::: Theorem
+
+Suppose given **independent** random samples from 2 normal populations:
+
+- $X_1, \ldots, X_n$ iid random sample from $N(\mu_X, \sigma_X^2)$
+- $Y_1, \ldots, Y_m$ iid random sample from $N(\mu_Y, \sigma_Y^2)$
+
+The random variable 
+$$
+F = \frac{ S_X^2 / \sigma_X^2  }{ S_Y^2 / \sigma_Y^2 } \, \sim \, F_{n-1,m-1}
+$$
+that is, $F$ is F-distributed with $n-1$ and $m-1$ degrees of freedom
+
+:::
+
+
+
+## Variance ratio distribution {.smaller}
+### Proof
+
+- We need to prove
+$$
+F = \frac{ S_X^2 / \sigma_X^2  }{ S_Y^2 / \sigma_Y^2 } \sim F_{n-1,m-1}
+$$
+
+
+- By the Theorem in Slide 101 Lecture 2, we have that
+$$
+ \frac{S_X^2}{ \sigma_X^2} \sim \frac{\chi_{n-1}^2}{n-1} \,, \qquad 
+ \frac{S_Y^2}{ \sigma_Y^2} \sim \frac{\chi_{m-1}^2}{m-1}
+$$
+
+
+## Variance ratio distribution {.smaller}
+### Proof
+
+- Therefore 
+$$
+F = \frac{ S_X^2 / \sigma_X^2  }{ S_Y^2 / \sigma_Y^2 } = \frac{U/p}{V/q}  
+$$
+where we have
+$$
+U \sim \chi_{p}^2 \,, \qquad 
+V \sim \chi_q^2 \,, \qquad 
+p = n-1 \,, \qquad
+q = m - 1
+$$
+
+
+- By the Theorem in Slide 6, we infer the thesis
+$$
+F = \frac{U/p}{V/q}   \sim F_{n-1,m-1}
+$$
+
+
+
+## Unbiased estimation of variance ratio {.smaller}
+
+**Question:** Why is $S_X^2/S_Y^2$ a good estimator for $\sigma_X^2/\sigma_Y^2$
+
+**Answer:** 
+
+- Because $S_X^2/S_Y^2$ is (asymptotically) unbiased estimator of $\sigma_X^2/\sigma_Y^2$
+- This is shown in the following Theorem
+
+
+
+
+
+## Unbiased estimation of variance ratio {.smaller}
+
+
+::: Theorem
+
+Suppose given independent random samples from 2 normal populations:
+
+- $X_1, \ldots, X_n$ iid random sample from $N(\mu_X, \sigma_X^2)$
+- $Y_1, \ldots, Y_m$ iid random sample from $N(\mu_Y, \sigma_Y^2)$
+
+It holds that
+$$
+\Expect \left[ \frac{S_X^2}{S_Y^2}  \right] = \frac{m-1}{m-3} \frac{\sigma_X^2}{\sigma_Y^2}  \,, \qquad
+\lim_{m \to \infty} \Expect \left[ \frac{S_X^2}{S_Y^2}  \right] =  \frac{\sigma_X^2}{\sigma_Y^2} 
+$$
+
+:::
+
+
+
+
+
+
+
+## The F-statistic {.smaller}
+
+**Assumption**: Suppose given 2 samples from independent normal populations
+
+$$
+X_1, \ldots, X_n \, \text{ iid from } \, N(\mu_X, \sigma_X^2) \,, \qquad \quad
+Y_1, \ldots, Y_m \, \text{ iid from } \, N(\mu_Y, \sigma_Y^2)
+$$
+
+
+::: Definition
+
+The **F-statistic** is defined as
+$$
+F := \frac{ S_X^2 / \sigma_X^2  }{ S_Y^2 / \sigma_Y^2 } 
+\, \sim  \, F_{n-1,m-1}
+$$
+
+:::
+
+**Note**: Under the Null hypothesis that $\sigma_X^2 = \sigma_Y^2$, the F-statistic simplifies to
+$$
+F =  \frac{ S_X^2 }{ S_Y^2 }
+$$
+
+
+
+## The two-sample F-test {.smaller}
+
+Suppose given two **independent** samples
+
+$$
+x_1, \ldots, x_n \, \text{ iid from } \, N(\mu_X, \sigma_X^2) \,, \qquad \quad
+y_1, \ldots, y_m \, \text{ iid from } \, N(\mu_Y, \sigma_Y^2)
+$$
+
+
+The hypotheses for **difference in variance** are
+$$
+H_0 \colon \sigma_X^2 = \sigma_Y^2 \,, \quad \qquad 
+H_1 \colon \sigma_X^2 \neq \sigma_Y^2 \quad \text{ or } \quad 
+H_1 \colon \sigma_X^2 > \sigma_Y^2
+$$
+
+
+
+**Very important:** We only consider two-sided and right-tailed hypotheses  
+
+- This is because we can always label the samples in a way that $s_X^2 \geq s_Y^2$
+
+- Therefore, there is no reason to suspect that $\sigma_X^2 < \sigma_Y^2$
+
+- This allows us to work only with upper quantiles  
+(and avoid a lot of trouble, as the F-distribution is asymmetric)
+
+
+
+
+
+
+
+
+## Procedure: 3 Steps {.smaller}
+
+1. **Calculation**: Compute the two-sample F-statistic
+$$
+F = \frac{ s_X^2}{ s_Y^2}
+$$
+where sample variances are
+$$
+s_X^2 = \frac{\sum_{i=1}^n x_i^2 - n \overline{x}^2}{n-1}
+\qquad \quad
+s_Y^2 = \frac{\sum_{i=1}^m y_i^2 - m \overline{y}^2}{m-1}
+$$
+
+
+**Very important:** $s_X^2$ refers to the sample with **largest variance**
+
+$$
+\implies \quad s_X^2 \geq s_Y^2 \,, \qquad F \geq 1
+$$
+
+
+
+
+
+##  {.smaller}
+
+2. **Statistical Tables or R**: Find either
+    * Critical value $F^*$ in [Tables 3, 4](files/Statistics_Tables.pdf)
+    * p-value in R
+
+<br> 
+
+3. **Interpretation**: Reject $H_0$ when either
+$$
+p < 0.05 \qquad \text{ or } \qquad F \in \,\,\text{Rejection Region} 
+\qquad \qquad \qquad \qquad
+(X \, \sim \, F_{n-1,m-1})
+$$
+
+
+| Alternative                      | Rejection Region  | $F^*$             | p-value         |
+|----------------------------------|-------------------|-------------------|-----------------|
+| $\sigma^2_X \neq \sigma^2_Y$               | $F > F^*$       | $F_{n-1, m-1}(0.025)$| $2P(X > F)$   |
+| $\sigma^2_X > \sigma^2_Y$                  | $F > F^*$       | $F_{n -1, m-1}(0.05)$ | $P(X > F)$      |
+: {tbl-colwidths="[25,25,25,25]"}
+
+
+
+
+
+## {.smaller}
+
+```{r}
+# Degrees of freedom
+df1 <- 6
+df2 <- 10
+
+# Values for x-axis
+x <- seq(0, 6, length.out = 1000)
+
+# Calculate PDF of F-distribution
+pdf <- df(x, df1, df2)
+
+# Set layout for 2 plots side by side
+par(mfrow = c(1, 2))
+
+# ==========================
+# Two-tailed test
+# ==========================
+plot(x, pdf, type = "l", col = "blue", lwd = 2, xlab = "", ylab = "",
+     main = expression("Two-Tailed Test: " ~ sigma[X]^2 != sigma[Y]^2))
+
+# Left rejection region (alpha/2 = 0.025)
+crit_left <- qf(0.025, df1, df2)
+x_fill_left <- x[x <= crit_left]
+y_fill_left <- pdf[x <= crit_left]
+polygon(c(x_fill_left, rev(x_fill_left)), c(y_fill_left, rep(0, length(y_fill_left))),
+        col = "gray", border = NA)
+
+# Right rejection region (alpha/2 = 0.025)
+crit_right <- qf(0.975, df1, df2)
+x_fill_right <- x[x >= crit_right]
+y_fill_right <- pdf[x >= crit_right]
+polygon(c(x_fill_right, rev(x_fill_right)), c(y_fill_right, rep(0, length(y_fill_right))),
+        col = "gray", border = NA)
+
+# Add critical value labels with symbolic subscripts
+text(crit_left + 1.2, df(crit_left, df1, df2) + - 0.35, expression(F[n-1 * "," * m-1](0.925)),
+     pos = 3, col = "red", cex = 1.1)
+
+text(crit_right + 1.0, df(crit_right, df1, df2) + 0.0, expression(F[n-1 * "," * m-1](0.025)),
+     pos = 3, col = "red", cex = 1.1)
+
+# Legend
+legend("topright", legend = c("Rej. Region area = 0.025 x 2"), fill = "gray", cex = 1)
+
+# ==========================
+# Right-tailed test
+# ==========================
+plot(x, pdf, type = "l", col = "blue", lwd = 2, xlab = "", ylab = "",
+     main = expression("Right-Tailed Test: " ~ sigma[X]^2 > sigma[Y]^2))
+
+# Critical value for 0.05 significance level
+crit_right_tail <- qf(0.95, df1, df2)
+
+# Shading rejection region
+x_fill_right <- x[x >= crit_right_tail]
+y_fill_right <- pdf[x >= crit_right_tail]
+polygon(c(x_fill_right, rev(x_fill_right)), c(y_fill_right, rep(0, length(y_fill_right))),
+        col = "gray", border = NA)
+
+# Add critical value label with symbolic subscripts
+text(crit_right_tail + 1.1, df(crit_right_tail, df1, df2) - 0.01,
+     expression(F[n-1 * "," * m-1](0.05)), pos = 3, col = "red", cex = 1.1)
+
+# Legend
+legend("topright", legend = c("Rej. Region area = 0.05"), fill = "gray", cex = 1)
+
+# Reset layout
+par(mfrow = c(1, 1))
+
+
+```
+
+::: {style="font-size: 0.92em"}
+- Reject $H_0$ if F-statistic falls in the *Rejection Region* (in gray)
+
+- Recall $F \geq 1 \implies$ for two-sided test we only need to check if $F > F_{n-1,m-1}(0.025)$
+:::
+
+
+## Tables: Critical values of F distribution {.smaller}
+
+- **Always** construct F-statistic as
+$$
+F = \frac{s^2_X}{s^2_Y} \quad\quad  \text{where} \quad\quad s^2_X \geq s^2_Y \qquad \implies \qquad F \geq 1
+$$
+
+- This way only the **upper** critical values of F-distribution are needed
+
+
+- Upper critical values for F distribution are in [Tables 3, 4](files/Statistics_Tables.pdf)
+    
+| Table # | Critical values           |
+|-------  |---------------------------|
+| 3       | $F_{\nu_1,\nu_2} (0.05)$  |
+| 4       | $F_{\nu_1,\nu_2} (0.025)$ |
+
+
+
+
+
+## Table 3 in [Statistics_Tables.pdf](files/Statistics_Tables.pdf) {.smaller}
+
+
+![](images/F_statistic_table_3.png){width=82%}
+
+**Table 3:** Lists the values $F_{\nu_1,\nu_2}(0.05)$, which means
+
+$$
+P(X > F_{\nu_1,\nu_2}(0.05)) = 0.05 \,, \qquad \text{ when } \quad X \sim F_{\nu_1,\nu_2}
+$$
+
+For example $F_{9, 6}(0.05) = 4.10$
+
+
+
+
+
+##  {.smaller}
+
+Plot of $F_{9,6}$ distribution. White area is $0.95$. Shaded area is $0.05$
+$$
+P(F_{9,6} > 4.10) =  0.05 \,, \qquad 
+4.10 = F_{9,6}(0.05)
+$$
+
+
+```{r}
+# Degrees of freedom
+df_num <- 9
+df_den <- 6
+
+# Generate values for the x-axis
+x <- seq(0.1, 7, by = 0.01)
+
+# Calculate the probability density function (PDF) for the F-distribution
+pdf <- df(x, df_num, df_den)
+
+# Plot PDF
+plot(x, pdf, type = "l", col = "blue", lwd = 2, xlab = "x", ylab = "Density")
+
+# Shade area where p-value > 0.95
+critical_value <- qf(0.95, df_num, df_den)
+x_fill_right <- x[x >= critical_value]
+y_fill_right <- pdf[x >= critical_value]
+polygon(c(x_fill_right, rev(x_fill_right)), c(y_fill_right, rep(0, length(y_fill_right))), col = "gray", border = NA)
+
+# Add annotation with subscript F_{9,6}
+text(critical_value, df(critical_value, df_num, df_den) + 0.05, 
+     bquote(F[.(df_num)*","*.(df_den)](0.05) == .(round(critical_value, 2))), 
+     pos = 3, col = "red", cex = 1.3)
+
+# Add legend
+legend("topright", legend = c("area = 0.05"), fill = "gray", cex = 1.3)
+
+
+```
+
+
+
+
+## Table 4 in [Statistics_Tables.pdf](files/Statistics_Tables.pdf) {.smaller}
+
+
+![](images/F_statistic_table_4.png){width=82%}
+
+**Table 4:** Lists the values $F_{\nu_1,\nu_2}(0.025)$, which means
+
+$$
+P(X > F_{\nu_1,\nu_2}(0.025)) = 0.025 \,, \qquad \text{ when } \quad X \sim F_{\nu_1,\nu_2}
+$$
+
+For example $F_{9, 6}(0.025) = 5.52$
+
+
+
+
+
+
+## What about missing values? {.smaller}
+
+- Sometimes the value $F_{\nu_1,\nu_2}(\alpha)$ is missing from F-table
+
+- In such case approximate $F_{\nu_1,\nu_2}(\alpha)$ with average of closest entries available
+
+
+![](images/F_statistic_table_missing.png){width=82%}
+
+**Example:** $F_{21,5}(0.05)$ is missing. We can approximate it by
+$$
+F_{21,5}(0.05) \approx \frac{F_{20,5}(0.05) + F_{25,5}(0.05)}{2} = \frac{ 4.56 + 4.52 }{ 2 } = 4.54
+$$
+
+
+
+
+
+
+
+## The two-sample F-test in R {.smaller}
+
+1. Store the samples $x_1,\ldots,x_n$ and $y_1,\ldots,y_m$ in two R vectors
+    * ``x <- c(x1, ..., xn)``
+    * ``y <- c(y1, ..., ym)``
+
+2. Perform a two-sample F-test on ``x`` and ``y``
+
+|Alternative                  |    R command                               |
+|-----------------------------|--------------------------------------------|
+|$\sigma_X^2 \neq \sigma_Y^2$ | ``var.test(x, y)``                         |
+|$\sigma_X^2 > \sigma_Y^2$    |``var.test(x, y, alt = "greater")`` |
+: {tbl-colwidths="[30,70]"}
+
+3. Read output: similar to two-sample t-test
+    * The main quantity of interest is p-value
+
+
+
+
+
+
+
+# Part 3: <br>Worked Example {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+
+
+##  {.smaller}
+
+- **Data:** Wages of 10 Mathematicians and 13 Accountants (again!)
+
+- **Assumptions:** Wages are independent and normally distributed
+
+
+
+|                  |     |     |     |     |     |     |     |     |     |      |     |    |    |
+|:-----------      |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:----:|:---:|:--:|:--:|
+|**Mathematicians**| 36  |  40 | 46  | 54  |  57 | 58  | 59  | 60  |  62 |  63  |     |    |    |
+|**Accountants**   | 37  | 37  | 42  |  44 |  46 |  48 |  54 |  56 |  59 | 60   |  60 | 64 | 64 |
+
+- Last week, we conducted a two-sample t-test for equality of means
+$$
+H_0 \colon \mu_X = \mu_Y \,, \qquad 
+H_1 \colon \mu_X \neq \mu_Y
+$$
+
+- We concluded that there is no evidence ($p>0.05$) of difference in pay levels
+
+- However, the two-sample t-test assumed equal variance
+$$
+\sigma_X^2 = \sigma_Y^2
+$$
+
+- We checked this assumption by plotting the estimated sample distributions
+
+
+
+##  {.smaller}
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "View the R Code"
+
+# Enter the Wages data
+mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
+accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
+
+# Compute the estimated distributions
+d.math <- density(mathematicians)
+d.acc <- density(accountants)
+
+# Plot the estimated distributions
+
+plot(d.math,                                    # Plot d.math
+     xlim = range(c(d.math$x, d.acc$x)),        # Set x-axis range
+     ylim = range(c(d.math$y, d.acc$y)),        # Set y-axis range
+     main = "Estimated Distributions of Wages") # Add title to plot
+lines(d.acc,                                    # Layer plot of d.acc
+      lty = 2)                                  # Use different line style
+         
+legend("topleft",                               # Add legend at top-left
+       legend = c("Mathematicians",             # Labels for legend
+                  "Accountants"), 
+       lty = c(1, 2))                           # Assign curves to legend          
+```
+
+
+- The plot shows that the two populations have similar variance (spread)
+
+- Thanks to the F-test, we can now compare variances in a quantitative way
+
+
+
+
+## Setting up the F-test {.smaller}
+
+- We want to test for equality of the two variances
+
+- There is no prior reason to believe that pay in one group is more spread out
+
+- Therefore, a two-sided test is appropriate
+$$
+H_0 \colon \sigma_X^2 = \sigma_Y^2 \,, \qquad
+H_1 \colon \sigma_X^2 \neq \sigma_Y^2
+$$
+
+- First task is to compute the F-statistic
+$$
+F = \frac{s_X^2}{s_Y^2}
+$$
+
+
+- **Important:** We need to make sure the samples are labelled so that
+$$
+s_X^2 \geq s_Y^2
+$$
+
+
+
+
+## 1. Calculation {.smaller}
+### Variance of first sample (Already done last week!)
+
+- **Sample size:** $\ n =$ No. of Mathematicians $= 10$
+- **Mean**:
+$$
+\bar{x} = \frac{\sum_{i=1}^n x_i}{n} 
+        = \frac{36+40+46+ \ldots +62+63}{10}=\frac{535}{10}=53.5
+$$
+
+- **Variance:**
+\begin{align*}
+  \sum_{i=1}^n x_i^2 & =  36^2+40^2+46^2+ \ldots +62^2+63^2 = 29435 \\
+  s^2_X & = \frac{\sum_{i=1}^n x_i^2 - n \bar{x}^2}{n -1 }
+          = \frac{29435-10(53.5)^2}{9} = 90.2778
+\end{align*}
+
+
+
+
+## 1. Calculation {.smaller}
+### Variance of second sample (Already done last week!)
+
+- **Sample size:** $\ m =$ No. of Accountants $= 13$
+- **Mean**:
+$$
+\bar{y} = \frac{37+37+42+ \dots +64+64}{13}
+        = \frac{671}{13} = 51.6154
+$$
+
+- **Variance:**
+\begin{align*}
+  \sum_{i=1}^m y_i^2 & = 37^2+37^2+42^2+ \ldots +64^2+64^2 = 35783  \\
+  s^2_Y & = \frac{\sum_{i=1}^m y_i^2 - m \bar{y}^2}{m - 1} 
+          = \frac{35783-13(51.6154)^2}{12} = 95.7547
+\end{align*}
+
+
+
+## 1. Calculation {.smaller}
+### The F-statistic
+
+
+- Notice that
+$$
+s^2_Y = 95.7547 > 90.2778 = s_X^2
+$$
+
+- Hence the $F$-statistic is
+$$
+F = \frac{s^2_Y}{s_X^2} = \frac{95.7547}{90.2778} = 1.061\ \quad (3\ \text{d.p.})
+$$
+
+- **Important:** We have swapped role of $s^2_X$ and $s^2_Y$, since $s^2_Y > s^2_X$. This way
+$$
+F > 1
+$$
+
+
+
+
+## 2. Referencing Tables {.smaller}
+
+- Degrees of freedom are
+$$ 
+n - 1 = 10 - 1 = 9 \,, \qquad
+m - 1 = 13 - 1 = 12
+$$
+
+- **Note**: Since we have swapped role of $s^2_X$ and $s^2_Y$, we have
+$$
+F =  \frac{s^2_Y}{s_X^2}  \sim F_{m-1,n-1} = F_{12,9}
+$$
+
+- We need to find the critical value $F_{12,9}(0.025)$ in [Table 4](files/Statistics_Tables.pdf)
+
+**Note: This is a two-sided test. Hence $\alpha = 0.025$, and not $0.05$!**
+
+
+
+##  {.smaller}
+
+- Below is a section of [Table 4](files/Statistics_Tables.pdf)
+
+![](images/F_statistic_table_missing_2.png){width=82%}
+
+
+- We note that $F_{12, 9}$ is missing. Closest values are $F_{10, 9}$ and $F_{15, 9}$
+
+- We estimate the desired critical value by averaging the two
+
+$$
+F_{12, 9}(0.025) \approx \frac{F_{10, 9}(0.025) + F_{15, 9}(0.025)}{2} = \frac{3.96 + 3.77}{2} = 3.865
+$$
+
+
+
+
+## 3. Interpretation {.smaller}
+
+
+- We have that
+$$
+F = 1.061 <  3.865 = F_{12, 9}(0.025)
+$$
+
+- Therefore the p-value satisfies
+$$
+p > 0.05
+$$
+
+- There is no evidence ($p > 0.05$) in favor of $H_1$. We have no reason to doubt that
+$$
+\sigma_X^2 = \sigma_Y^2
+$$
+
+
+- **Conclusion:** 
+    i. Wage levels for the two groups appear to be equally well spread out
+    ii. This is in line with previous graphical checks
+
+
+
+
+
+
+
+## The F-test in R {.smaller}
+
+We present two implementations in R:
+
+1. Simple solution using the command ``var.test``
+2. A first-principles construction closer to our earlier hand calculation
+
+
+
+
+## Simple solution: ``var.test`` {.smaller}
+
+This is a two-sided F-test. The p-value is computed by
+
+$$
+p = 2 P(F_{m-1, n-1} > F) \,, \qquad F  = \frac{s_Y^2}{s_X^2} 
+$$
+
+
+```r
+# Enter Wages data in 2 vectors using function c()
+mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
+accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
+
+
+# Perform two-sided F-test using var.test
+# Store result and print
+ans <- var.test(accountants, mathematicians)
+print(ans)
+```
+
+- **Note**: ``accountants`` goes first because it has larger variance
+- Code can be downloaded here [F_test.R](codes/F_test.R)
+
+
+
+
+##  {.smaller}
+
+```{r}
+# Enter Wages data in 2 vectors using function c()
+
+mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
+accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
+
+
+# Perform two-sided F-test using var.test
+# Store result and print
+
+ans <- var.test(accountants, mathematicians)
+print(ans)
+```
+
+**Comments**: 
+
+1. First line: R tells us that an F-test is performed
+
+2. Second line: Data for F-test is ``accountants`` and ``mathematicians``
+
+3. The F-statistic computed is $F = 1.0607$
+    * **Note**: This coincides with the one computed by hand (up to rounding error)
+
+
+
+
+##  {.smaller}
+
+```{r}
+# Enter Wages data in 2 vectors using function c()
+
+mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
+accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
+
+
+# Perform two-sided F-test using var.test
+# Store result and print
+
+ans <- var.test(accountants, mathematicians)
+print(ans)
+```
+
+
+**Comments**: 
+
+4. Numerator of F-statistic has $12$ degrees of freedom
+5. Denominator of F-statistic has $9$ degrees of freedom
+6. p-value is $p = 0.9505$
+
+
+
+
+##  {.smaller}
+
+```{r}
+# Enter Wages data in 2 vectors using function c()
+
+mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
+accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
+
+
+# Perform two-sided F-test using var.test
+# Store result and print
+
+ans <- var.test(accountants, mathematicians)
+print(ans)
+```
+
+
+**Comments**: 
+
+7. Fourth line: The alternative hypothesis is that ratio of variances is $\, \neq 1$
+    * This translates to $H_1 \colon \sigma_Y^2 \neq \sigma^2_X$
+    * **Warning**: This is not saying to reject $H_0$ -- R is just stating $H_1$
+
+
+
+
+
+##  {.smaller}
+
+```{r}
+# Enter Wages data in 2 vectors using function c()
+
+mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
+accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
+
+
+# Perform two-sided F-test using var.test
+# Store result and print
+
+ans <- var.test(accountants, mathematicians)
+print(ans)
+```
+
+
+**Comments**: 
+
+8. Fifth line: R computes a $95 \%$ confidence interval for ratio $\sigma_Y^2/\sigma_X^2$ 
+$$
+(\sigma_Y^2/\sigma_X^2 ) \in [0.2742053, 3.6443547]
+$$
+    * **Interpretation:** If you repeat the experiment (on new data) over and over, the interval will contain $\sigma_Y^2/\sigma_X^2$ about $95\%$ of the times
+
+
+
+
+
+## {.smaller}
+
+```{r}
+# Enter Wages data in 2 vectors using function c()
+
+mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
+accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
+
+
+# Perform two-sided F-test using var.test
+# Store result and print
+
+ans <- var.test(accountants, mathematicians)
+print(ans)
+```
+
+
+**Comments**: 
+
+9. Seventh line: R computes ratio of sample variances
+    * We have that $s_Y^2/s_X^2 = 1.060686$
+    * By definition, the above coincides with the F-statistic (up to rounding)
+
+
+
+
+
+##  {.smaller}
+
+```{r}
+# Enter Wages data in 2 vectors using function c()
+mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
+accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
+
+
+# Perform two-sided F-test using var.test
+# Store result and print
+ans <- var.test(accountants, mathematicians)
+print(ans)
+```
+
+
+**Conclusion**: The p-value is $p = 0.9505$
+
+- Since $p > 0.05$, we do not reject $H_0$
+- Hence $\sigma^2_X$ and $\sigma^2_Y$ appear to be similar
+- Wage levels for the two groups appear to be equally well spread out
+
+
+
+
+
+## First principles solution {.smaller}
+
+- Start by entering data into R
+
+```r
+# Enter Wages data in 2 vectors using function c()
+
+mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
+accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
+``` 
+
+
+
+
+
+## First principles solution {.smaller}
+
+- Check which population has higher variance
+- In our case ``accountants`` has higher variance
+
+```r
+# Check which variance is higher
+
+cat("\n Variance of accountants is", var(accountants))
+cat("\n Variance of mathematicians is", var(mathematicians))
+```
+
+```{r}
+# Enter Wages data in 2 vectors using function c()
+
+mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
+accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
+
+cat("\n Variance of accountants is", var(accountants))
+cat("\n Variance of mathematicians is", var(mathematicians))
+``` 
+
+## First principles solution {.smaller}
+
+- Compute sample sizes
+
+```r
+# Calculate sample sizes
+
+n <- length(mathematicians)
+m <- length(accountants)
+```
+
+
+## First principles solution {.smaller}
+
+- Compute F-statistic
+$$
+F = \frac{s_Y^2}{s_X^2}
+$$
+
+- **Recall**: Numerator has to have larger variance
+
+- In our case ``accountants`` is numerator
+
+
+```r
+# Compute F-statistics
+# Numerator is population with largest variance
+
+F <- var(accountants) / var(mathematicians)
+```
+
+
+
+
+
+
+## First principles solution  {.smaller}
+
+
+- Compute the p-value
+$$
+p = 2P(F_{m-1, n-1} > F) = 2 - 2P(F_{m-1, n-1} \leq F) \,, \qquad F = \frac{s_Y^2}{s_X^2}
+$$
+
+
+```r
+# Compute p-value
+p_value <- 2 - 2 * pf(F, df1 = m - 1, df2 = n - 1)
+
+# Print p-value
+cat("\n The p-value for two-sided F-test is", p_value)
+```
+
+<br>
+
+- **Note:** The command ``pf(x, df1 = n, df2 = m)`` computes probability
+$$
+P(F_{n,m} \leq x)
+$$
+
+
+
+## First principles solution: Output {.smaller}
+
+- Full code be downloaded here [F_test_first_principles.R](codes/F_test_first_principles.R)
+
+- Running the code yields the output:
+
+```{r}
+# Enter Wages data in 2 vectors using function c()
+mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
+accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
+
+# Check which variance is higher
+cat("\n Variance of accountants is", var(accountants))
+cat("\n Variance of mathematicians is", var(mathematicians))
+
+# Calculate sample sizes
+n <- length(mathematicians)
+m <- length(accountants)
+
+# Compute F-statistics
+# Numerator is population with largest variance
+F <- var(accountants)/var(mathematicians)
+
+# Compute p-value
+p_value <- 2 - 2 * pf(F, df1 = m - 1, df2 = n - 1)
+
+# Print p-value
+cat("\n The p-value for two-sided F-test is", p_value)
+```
+
+<br>
+
+- Note: The p-value coincides with the one obtained with ``var.test``
+    * This is a way to cross check our code is right
+
+- Since $p > 0.05$, we **do not reject** $H_0$
+
+
+
+
+
+# Part 4: <br> The goodness-of-fit test {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+## Scenario 1: Simple counts {.smaller}
+
+**Data:** in the form of **numerical counts**
+
+**Test:** difference between observed counts and predictions of theoretical model
+
+**Example**: Blood counts
+
+- We conducted blood type testing on a sample of 6004 individuals, and the results are summarized below.
+
+    | A  |  B  |  AB  |  O  |
+    |:--:|:---:|:----:|:---:|
+    |2162| 738 | 228  |2876 |
+
+- We want to compare the above data to the theoretical probability model
+
+    | A  |  B  |  AB  |  O  |
+    |:--:|:---:|:----:|:---:|
+    |1/3 | 1/8 |  1/24| 1/2 |
+
+
+
+
+## Scenario 2: Counts with multiple factors {.smaller}
+
+| Manager     |     Won |  Drawn  | Lost    |
+|:-----------:|:-------:|:-------:|:-------:|
+| **Moyes**   |   27    | 9       |   15    |
+|**Van Gaal** |   54    |  25     |   24    |
+|**Mourinho** |   84    |  32     |   28    |
+|**Solskjaer**|    91   |   37    |   40    |
+|**Rangnick** |    11   |   10    |   8     |
+|**ten Hag**  |    61   |   12    |   28    |
+
+
+**Example:** Relative performance of Manchester United managers
+
+- Each football manager has Win, Draw and Loss count
+
+
+
+## Scenario 2: Counts with multiple factors {.smaller}
+
+| Manager     |     Won |  Drawn  | Lost    |
+|:-----------:|:-------:|:-------:|:-------:|
+| **Moyes**   |   27    | 9       |   15    |
+|**Van Gaal** |   54    |  25     |   24    |
+|**Mourinho** |   84    |  32     |   28    |
+|**Solskjaer**|    91   |   37    |   40    |
+|**Rangnick** |    11   |   10    |   8     |
+|**ten Hag**  |    61   |   12    |   28    |
+
+
+**Questions:**
+
+- Is the number of Wins, Draws and Losses uniformly distributed?
+- Are there differences between the performances of each manager?
+
+
+
+## Plan {.smaller}
+
+1. In this Lecture: 
+    * We study Scenario 1 -- Simple counts
+    * Chi-squared goodness-of-fit test
+
+2. Next week:
+    * We will study Scenario 2 -- Counts with multiple factors
+    * Chi-squared test of independence
+
+
+
+## Categorical Data {.smaller}
+
+
+- Finite number of possible categories or types
+- Observations can only belong to one category
+- $O_i$ refers to **observed count** of category $i$
+
+| Type $1$| Type $2$ |  $\ldots$ | Type $n$ |
+|:-------:|:--------:|:---------:|:--------:|
+|$O_1$    |   $O_2$  | $\ldots$  |    $O_n$ |
+
+- $E_i$ refers to **expected count** of category $i$
+
+| Type $1$| Type $2$ |  $\ldots$ | Type $n$ |
+|:-------:|:--------:|:---------:|:--------:|
+|$E_1$    |   $E_2$  | $\ldots$  |    $E_n$ |
+ 
+
+
+## Chi-squared goodness-of-fit test {.smaller}
+
+**Goal:** Compare expected counts $E_i$ with observed counts $O_i$
+
+
+**Null hypothesis:** Expected counts match the Observed counts
+
+$$
+H_0 \colon O_i = E_i \,, \qquad \forall \, i = 1, \ldots, n
+$$
+
+**Method:** Look for evidence against the null hypothesis
+
+- Distance between observed counts and expected counts is large
+
+- For example, if
+$$
+(O_i - E_i)^2 \geq c
+$$
+for some chosen constant $c$
+
+
+
+## Chi-squared statistic {.smaller}
+
+::: Definition
+
+The **chi-squared statistic** is
+$$
+\chi^2 := \sum_{i=1}^n \frac{(O_i-E_i)^2}{E_i}
+$$
+
+:::
+
+**Remark:** 
+
+- $\chi^2$ represents the global distance between observed and expected counts
+
+- Indeed, we have that
+$$
+\chi^2 = 0 \qquad \iff \qquad O_i = E_i  \,\,\,\, \text{ for all } \,\,\,\, i = 1 , \, \ldots , \, n
+$$
+
+
+## Tests using Chi-squared statistic {.smaller}
+
+**Null hypothesis:** Expected counts match the Observed counts
+
+$$
+H_0 \colon O_i = E_i \,, \qquad \forall \, i = 1, \ldots, n
+$$
+
+**Remarks:**
+
+- If $H_0$ is to be believed, we expect small differences between $O_i$ and $E_i$ 
+    * Therefore $\chi^2$ will be small (and non-negative)
+ 
+- If $H_0$ is wrong, it will happen that some $O_i$ are larger than the $E_i$
+    * Therefore $\chi^2$ will be large (and non-negative)
+
+- The above imply that tests on $\chi^2$ should be **one-sided** (right-tailed)
+
+
+
+
+
+## The Multinomial distribution {.smaller}
+
+Models the following experiment
+  
+- The experiment consists of $m$ independent trials 
+- Each trial results in one of $n$ distinct possible outcomes
+- The probability of the $i$-th outcome is $p_i$ on every trial, with
+$$
+0 \leq p_i \leq 1 \qquad \qquad \sum_{i=1}^n p_i = 1
+$$
+- $X_i$ counts the number of times $i$-th outcome occurred in the m trials. It holds
+$$
+\sum_{i=1}^n X_i = m
+$$
+
+
+
+## Multinomial distribution {.smaller}
+### Schematic visualization
+
+<br>
+
+
+|  Outcome type | $1$  | $\ldots$ | $n$   | Total                   |
+|:-------------|:----:|:--------:|:-----:|:-----------------------:|
+| Counts        |$X_1$ | $\ldots$ | $X_n$ | $X_1 + \ldots + X_n = m$|
+| Probabilities |$p_1$ | $\ldots$ | $p_n$ | $p_1 + \ldots + p_n = 1$|
+: {tbl-colwidths="[20,10,10,10,30]"}
+
+
+
+
+
+## The case $n = 2$ {.smaller}
+
+For $n = 2$, the multinomial reduces to a binomial:
+
+- Each trial has $n = 2$ possible outcomes
+- $X_1$ counts the number of *successes* 
+- $X_2 = m − X_1$ counts the number of *failures* in $m$ trials
+- Probability of *success* is $p_1$
+- Probability of *failure* is $p_2 = 1 - p_1$
+
+
+| Outcome types | $1$     | $2$               |
+|:------------- |:-------:|:-----------------:|
+| Counts        |$X_1$    |  $X_2 = m - X_1$  |
+| Probabilities |$p_1$    |  $p_2 = 1 - p_1$  |
+: {tbl-colwidths="[20,20,30]"}
+
+
+
+
+## Formal definition {.smaller}
+
+::: Definition
+
+Let $m,n \in \N$ and $p_1, \ldots, p_n$ numbers such that
+$$
+0 \leq p_i \leq 1 \,, \qquad \quad 
+\sum_{i=1}^n p_i = 1
+$$
+The random vector $\XX = (X_1, \ldots, X_n)$ has **multinomial distribution** with $m$ trials and cell probabilities $p_1,\ldots,p_n$ if joint pmf is
+$$
+f (x_1, \ldots , x_n) = \frac{m!}{x_1 ! \cdot \ldots \cdot x_n !} \ p_1^{x_1} \cdot \ldots \cdot p_n^{x_n}  \,, \qquad \forall \, x_i \in \N  \, \st \sum_{i=1}^n x_i = m
+$$
+We denote $\XX \sim \multinomial(m,p_1,\ldots,p_n)$
+
+:::
+
+
+
+## Properties of Multinomial distribution {.smaller}
+
+Suppose that $\XX = (X_1, \ldots, X_n) \sim \multinomial(m,p_1,\ldots,p_n)$
+
+- If we are only interested in outcome $i$, the remaining outcomes are *failures*
+
+- This means $X_i$ is binomial with $m$ trials and *success* probability $p_i$  
+
+- We write $X_i \sim \binomial(m,p_i)$ and the pmf is
+$$
+f(x_i) = P(X = x_i) = \frac{m!}{x_i! \cdot (1-x_i)!} \, p_i^{x_i} (1-p_i)^{1-x_i} 
+\qquad \forall \, x_i = 0 , \ldots , m 
+$$
+- Since $X_i \sim \binomial(m,p_i)$ it holds
+$$
+\Expect[X_i] = m p_i \qquad \qquad 
+\Var[X_i] = m p_i (1-p_i)
+$$
+
+
+
+## Statistical Model: Multinomial Counts {.smaller}
+
+- $O_i$ refers to **observed count** of category $i$
+
+
+- $E_i$ refers to **expected count** of category $i$
+
+- We suppose that Type $i$ is observed with probability $p_i$ and
+$$
+0 \leq p_i \leq 1 \,, \qquad \quad p_1 + \ldots + p_n = 1
+$$
+
+- Total number of observations is $m$
+
+- The counts are modelled by
+$$
+(O_1, \ldots, O_n) \sim \multinomial (m, p_1, \ldots, p_n)
+$$
+
+- The expected counts are modelled by
+$$
+E_i := \Expect[ O_i ] = m p_i
+$$
+
+
+
+
+
+## The chi-squared statistic {.smaller}
+
+Consider counts and expected counts
+$$
+(O_1, \ldots, O_n) \sim \multinomial (m, p_1, \ldots, p_n)
+\qquad \qquad 
+E_i := m p_i
+$$
+
+
+::: Definition
+
+The chi-squared statistic for multinomial counts is defined by
+$$
+\chi^2 = \sum_{i=1}^n \frac{(O_i-E_i)^2}{E_i} 
+       = \sum_{i=1}^n \frac{( O_i - m p_i )^2}{ m p_i }
+$$
+
+:::
+
+**Question**: What is the distribution of $\chi^2 \,$?
+
+
+
+
+## Distribution of chi-squared statistic {.smaller}
+
+::: Theorem
+
+Suppose the counts $(O_1, \ldots, O_n) \sim \multinomial (m,p_1, \ldots, p_n)$. Then
+$$
+\chi^2 = \sum_{i=1}^n \frac{( O_i - m p_i )^2}{ m p_i } \ \stackrel{{\rm d}}{\longrightarrow} \ \chi_{n-1}^2
+$$
+when sample size $m \to \infty$, where the convergence is in distribution
+:::
+
+- Hence, the distribution of $\chi^2$ is **approximately** $\chi_{n-1}^2$ when $m$ is large
+
+- The above Theorem is due to Karl Pearson in his 1900 paper [link](https://www.tandfonline.com/doi/abs/10.1080/14786440009463897)
+
+- Proof is difficult. Seven different proofs are presented in this paper [link](https://arxiv.org/abs/1808.09171)
+
+
+
+## Heuristic proof of Theorem {.smaller}
+
+- Since $O_i \sim \binomial(m, p_i)$, the *Central 
+Limit Theorem* implies
+$$
+ \frac{O_i - \Expect[O_i]}{ \sqrt{\Var[O_i] } } = 
+\frac{O_i - m p_i }{ \sqrt{m p_i(1 - p_i) } } \
+ \stackrel{{\rm d}}{\longrightarrow} \ N(0,1)
+$$
+as $m \to \infty$
+
+- In particular, since $(1-p_i)$ in constant, we have
+$$
+\frac{O_i - m p_i }{ \sqrt{m p_i } } \ \approx \ \frac{O_i - m p_i }{ \sqrt{m p_i(1 - p_i) } } \ \approx \ N(0,1) 
+$$
+
+
+
+
+## Heuristic proof of Theorem {.smaller}
+
+- Squaring the previous expression, we get
+$$
+ \frac{(O_i - m p_i)^2 }{ m p_i } \ \approx   \ N(0,1)^2 = \chi_1^2  
+$$
+
+
+- If the above random variables were pairwise independent, we would obtain
+$$
+\chi^2 = \sum_{i=1}^n \frac{(O_i - m p_i)^2 }{ m p_i } \ \approx  \ \sum_{i=1}^n \chi_1^2 = \chi_n^2  
+$$
+
+
+- However the $O_i$ are not independent, because of the linear constraint
+$$
+O_1 + \ldots + O_n = m
+$$
+(total counts have to sum to $m$)
+
+
+
+## Heuristic proof of Theorem {.smaller}
+
+
+- A priori, there should be $n$ degrees of freedom
+
+- However, the linear constraint reduces degrees of freedom by $1$
+    * because one can choose the first $n-1$ counts, and the last one is given by
+$$
+O_n = m - O_1 - \ldots - O_{n-1}
+$$
+
+- Thus, we have $n-1$ degrees of freedom, implying that
+$$
+\chi^2 = \sum_{i=1}^n \frac{(O_i - m p_i)^2 }{ m p_i } \ \approx \ \chi_{n-1}^2  
+$$
+
+**This is not a proof! The actual proof is super technical**
+
+
+
+## Quality of chi-squared approximation {.smaller}
+
+- Define expected counts $E_i := m p_i$ 
+- Consider approximation from Theorem:
+$$
+\chi^2 = \sum_{i=1}^n \frac{(O_i - E_i)^2 }{ E_i } \ \approx \ \chi_{n-1}^2  
+$$
+
+- The approximation is:
+  
+  | **Good**     |  $E_i \geq 5  \, \text{ for all } \, i = 1 , \ldots n$ |
+  |:------------ |:------------------------------------------------------ |
+  | **Bad**      |                $E_i < 5 \,$ for some $\, i = 1 , \ldots n$ |
+    
+
+- **How to compute the p-value:** When approximation is
+    * **Good:** Use $\chi_{n-1}^2$ approximation of $\chi^2$
+    * **Bad:** Use Monte Carlo simulations (more on this later)
+
+
+
+
+
+## The chi-squared goodness-of-fit test {.smaller}
+
+**Setting:** 
+
+- Population consists of individuals of $n$ different types
+- $p_i$ is probability that an individuals selected at random is of type $i$
+
+
+**Problem:** $p_i$ is unknown and needs to be estimated
+
+**Hypothesis:** As guess for $p_1,\ldots,p_n$, we take $p_1^0, \ldots, p_n^0$ such that
+$$
+0 \leq p_i^0 \leq 1 \qquad \qquad \sum_{i=1}^n p_i^0 = 1
+$$
+
+
+
+## The chi-squared goodness-of-fit test {.smaller}
+
+**Formal Hypothesis:** We test for equality of $p_i$ to $p_i^0$
+\begin{align*}
+& H_0 \colon p_i = p_i^0 \qquad \text{ for all } \, i = 1, \ldots, n \\
+& H_1 \colon p_i \neq p_i^0 \qquad \text{ for at least one } \, i 
+\end{align*}
+
+
+**Sample**: 
+
+- We draw $m$ items from population
+- $O_i$ denotes the number of items of type $i$ drawn
+- According to our model, 
+$$
+(O_1, \ldots, O_n) \sim \multinomial (m,p_1, \ldots, p_n)
+$$
+
+
+
+
+## The chi-squared goodness-of-fit test {.smaller}
+
+**Data**: Vector of counts $(o_1,\ldots,o_n)$
+
+**Schematically:** We can represent probabilities and counts in a table
+
+<br>
+
+|  Type      | $1$  | $\ldots$ | $n$   | Total                   |
+|:----------- |:----:|:--------:|:-----:|:-----------------------:|
+| Counts      |$o_1$ | $\ldots$ | $o_n$ | $m$|
+|Probabilities|$p_1$ | $\ldots$ | $p_n$ | $1$|
+
+
+
+## Procedure: 3 Steps {.smaller}
+
+1. **Calculation**: 
+    * Compute total counts and expected counts
+    $$
+    m = \sum_{i=1}^n o_i \qquad \quad E_i = m p_i^0
+    $$ 
+    * Compute the chi-squared statistic
+    $$
+    \chi^2 = \sum_{i=1}^n \frac{ (o_i - E_i)^2 }{E_i}
+    $$
+
+
+
+##  {.smaller}
+
+2. **Statistical Tables or R**: 
+    * Check that $E_i \geq 5$ for all $i = 1, \ldots, n$
+    * In this case $\chi^2 \ \approx \ \chi_{n-1}^2$
+    * Find critical value $\chi^2_{n-1}(0.05)$ in [Table 2](files/Statistics_Tables.pdf)
+    * Alternatively, compute p-value in R
+
+<br>
+
+3. **Interpretation**: Reject $H_0$ when either
+$$
+p < 0.05 \qquad \text{ or } \qquad \chi^2 \in \,\,\text{Rejection Region}
+$$
+
+
+| Alternative                                      | Rejection Region               |    p-value                 |
+|--------------------------------------------------|--------------------------------|----------------------------|
+| $\exists \, i \,\,$ s.t. $\,\, p_i \neq p_i^0$ | $\chi^2 > \chi^2_{n-1}(0.05)$  | $P(\chi_{n-1}^2 > \chi^2)$ |
+: {tbl-colwidths="[28,28,20]"}
+ 
+
+
+
+
+## {.smaller}
+
+```{r}
+# Degrees of freedom
+df <- 3
+
+# Values for x-axis
+x <- seq(0, 10, length.out = 1000)
+
+# Calculate PDF of F-distribution
+pdf <- dchisq(x, df)
+
+
+# ==========================
+# Right-tailed test
+# ==========================
+
+plot(x, pdf, type = "l", col = "blue", lwd = 2, xlab = "", ylab = "",
+     main = expression("Alternative: " ~ p[i] != p[i]^0))
+
+# Critical value for 0.05 significance level
+crit_right_tail <- qchisq(0.95, df)
+
+# Shading rejection region
+x_fill_right <- x[x >= crit_right_tail]
+y_fill_right <- pdf[x >= crit_right_tail]
+polygon(c(x_fill_right, rev(x_fill_right)), c(y_fill_right, rep(0, length(y_fill_right))),
+        col = "gray", border = NA)
+
+# Add critical value label with symbolic subscripts
+text(crit_right_tail + 0.8, dchisq(crit_right_tail, df) +0.01,
+     expression(chi[n-1](0.05)), pos = 3, col = "red", cex = 1.1)
+
+# Legend
+legend("topright", legend = c("Rej. Region area = 0.05"), fill = "gray", cex = 1)
+
+
+```
+
+
+Reject $H_0$ if $\chi^2$ statistic falls in the *Rejection Region* (in gray)
+
+
+
+
+
+## The chi-squared goodness-of-fit test in R {.smaller}
+
+1. Store the counts $o_1,\ldots, o_n$ in R vector
+    * ``counts <- c(o1, ..., on)``
+
+2. Store the null hypothesis probabilities $p_1^0,\ldots, p_n^0$ in R vector
+    * ``null.p <- c(p1, ..., pn)``
+
+3. Perform a goodness-of-fit test on ``counts`` with ``null.p``
+
+|Alternative                                    |    R command                         |
+|-----------------------------------------------|--------------------------------------|
+|$\exists \, i \,\,$ s.t. $\,\, p_i \neq p_i^0$ | ``chisq.test(counts, p = null.p)``  |
+: {tbl-colwidths="[30,70]"}
+
+
+4. Read output: similar to two-sample t-test and F-test
+    * The main quantity of interest is p-value
+
+
+
+
+
+## Comment 1 {.smaller}
+###  Default null probabilities
+
+If null probabilities are not specified:
+
+- R assumes equal probability for each type
+
+- For example, assume that ``counts <- c(o1, ..., on)``
+
+- Equal probability means that
+$$
+p_i^0 = \frac{1}{n} \,, \qquad \forall \, i = 1, \ldots, n
+$$
+
+- Test ``counts`` against equal probabilities with the command 
+    * ``chisq.test(counts)`` 
+
+
+
+## Comment 2 {.smaller}
+###  Quality of chi-squared approximation
+
+- By default, R computes p-value via the $\chi_{n-1}^2$ approximation
+
+- **R will warn you if expected counts are too low, and tell you to use Monte Carlo**
+
+
+- To compute p-value via Monte Carlo simulation, use option
+    * ``simulate.p.value = T``  
+
+
+
+
+
+
+# Part 5: <br>Worked Examples {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## Example 1: Blood counts {.smaller}
+
+- Suppose to have **counts** of blood type for some people
+- We also have theoretical probabilities that we want to test
+
+    |Blood type     | A  |  B  |  AB  |  O  |
+    |:--------------|:--:|:---:|:----:|:---:|
+    |**Count**      |2162| 738 | 228  |2876 |
+    |**Probability**|1/3 | 1/8 |  1/24| 1/2 |
+
+
+- Hence the null hypothesis probabilities are 
+$$
+p_1^0 = \frac{1}{3} \qquad \quad   p_2^0 = \frac{1}{8} \qquad \quad
+p_3^0 = \frac{1}{24} \qquad \quad p_4^0 = \frac{1}{2}
+$$
+
+- The alternative hypothesis is: $\qquad H_1 \colon p_i \neq p_i^0 \,\,$ for at least one $\, i$
+
+
+
+## Goodness-of-fit test by hand {.smaller}
+
+1. **Calculation**: 
+    * Compute total counts
+    $$
+    m = \sum_{i=1}^n o_i = 2162 + 738 + 228 + 2876 = 6004
+    $$
+    * Compute expected counts
+    \begin{align*}
+    E_1 & = m p_1^0 = 6004 \times \frac{1}{3} = 2001.3  \\ 
+    E_2 & = m p_2^0 = 6004 \times \frac{1}{8} = 750.5   \\
+    E_3 & = m p_3^0 = 6004 \times \frac{1}{24} = 250.2   \\
+    E_4 & = m p_4^0 = 6004 \times \frac{1}{2} = 3002  
+    \end{align*}
+
+
+##  {.smaller}
+
+1. **Calculation**: 
+    * Compute the chi-squared statistic
+    \begin{align*}
+    \chi^2 & = \sum_{i=1}^n \frac{ (o_i - E_i)^2 }{E_i} \\
+           & = \frac{ (2162 − 2001.3)^2 }{ 2001.3 } + 
+               \frac{ (738 − 750.5)^2 }{ 750.5 } \\
+           & \phantom{ = } + \frac{ (228 − 250.2)^2 }{ 250.2 } + 
+               \frac{ (2876 − 3002)^2 }{ 3002 } \\    
+           & = 20.36  
+    \end{align*}
+
+
+
+
+
+## {.smaller}
+
+2. **Statistical Tables**: 
+    * Degrees of freedom are $\, {\rm df} = n - 1 = 3$
+    * We have computed
+    $$
+    E_1 = 2001.3 \qquad E_2 = 750.5 \qquad E_3 = 250.2 \qquad E_4 = 3002
+    $$
+    * Hence $E_i \geq 5$ for all $i = 1, \ldots, n$
+    * In this case $\chi^2 \ \approx \ \chi_{3}^2$
+    * In chi-squared [Table 2](files/Statistics_Tables.pdf) we find critical value
+    $$
+    \chi^2_{3} (0.05) = 7.82
+    $$
+    
+
+
+
+##  {.smaller}
+
+3. **Interpretation:**
+    * We have that
+    $$
+    \chi^2 = 20.36  > 7.82 = \chi_{3}^2 (0.05)
+    $$
+    * Therefore we reject $H_0$
+    * This means we accept the alternative
+    $$
+    H_1 \colon p_i \neq p_i^0 \qquad \text{ for at least one } \, i
+    $$
+
+**Conclusion:** Observed counts suggest at least one of null probabilities $p_i^0$ is wrong
+
+
+
+## Goodness-of-fit test in R {.smaller}
+
+- We use R to perform a goodness-of-fit test on alternative
+$$
+H_1 \colon p_i \neq p_i^0 \qquad \text{ for at least one } \, i
+$$
+
+- The code can be downloaded here [good_fit.R](codes/good_fit.R)
+
+```r
+# Enter counts and null hypothesis probabilities
+counts <- c(2162, 738, 228, 2876)
+null.p <- c(1/3, 1/8, 1/24, 1/2)
+
+# Perform goodness-of-fit test
+# Store the output and print
+
+ans <- chisq.test(counts, p = null.p)
+print(ans)
+```
+
+
+
+## Output {.smaller}
+
+- Running the code in the previous slide we obtain
+
+
+```{r}
+# Enter counts and null hypothesis probabilities
+counts <- c(2162, 738, 228, 2876)
+null.p <- c(1/3, 1/8, 1/24, 1/2)
+
+# Perform goodness-of-fit test
+# Store the output and print
+
+ans <- chisq.test(counts, p = null.p)
+print(ans)
+```
+
+<br>
+
+
+::: {.column width="49%"}
+
+- Chi-squared statistic is $\, \chi^2 = 20.359$
+
+- Degrees of freedom are $\, {\rm df} = 3$
+
+- p-value is $p \approx 0$
+
+:::
+
+
+::: {.column width="35%"}
+
+- Therefore $p < 0.05$ 
+
+- We reject $H_0$
+
+:::
+
+
+**Conclusion:** At least one of the theoretical probabilities appears to be wrong
+
+
+
+
+## Example 2: Fair dice {.smaller}
+
+- A dice with $6$ faces is rolled $100$ times
+- The counts observed are
+
+|Outcome  | $1$ | $2$ | $3$  | $4$ |  $5$|  $6$|
+|:--      |:---:|:---:|:----:|:---:|:---:|:---:|
+|**Count**|13   | 17  | 9    | 17  | 18  | 26  |
+
+
+- **Exercise**: Is the dice fair?
+    * Formulate appropriate goodness-of-fit test
+    * Implement this test in R
+
+
+
+
+## Solution {.smaller}
+
+- The dice is fair if 
+
+$$
+P(\text{rolling }\, i) = \frac16 \,, \quad \forall \, i = 1, \ldots, 6
+$$
+
+- Therefore, we test the following hypothesis
+\begin{align*}
+& H_0 \colon p_i = \frac{1}{6} \qquad \text{ for all } \, i = 1, \ldots, 6 \\
+& H_1 \colon p_i \neq \frac{1}{6} \qquad \text{ for at least one } \, i 
+\end{align*}
+
+
+
+## {.smaller}
+
+- The R code is given below
+
+```r
+# Enter counts and null hypothesis probabilities
+counts <- c(13, 17, 9, 17, 18, 26)
+null_p. <- rep(1/6, 6)
+
+# Perform goodness-of-fit test
+chisq.test(counts, p = null.p)
+```
+
+<br> 
+
+- Note that each type is equally likely
+
+- Therefore, we can achieve same result **without** specifying null probabilities
+
+
+```r
+# Enter counts
+counts <- c(13, 17, 9, 17, 18, 26)
+
+# Perform goodness-of-fit test assuming equal probabilities
+chisq.test(counts)
+```
+
+
+## Solution {.smaller}
+
+- Both codes in the previous slide give the following output
+
+
+```{r}
+counts <- c(13, 17, 9, 17, 18, 26)
+chisq.test(counts)
+```
+
+<br>
+
+
+::: {.column width="49%"}
+
+- Chi-squared statistic is $\, \chi^2 = 9.68$
+
+- Degrees of freedom are $\, {\rm df} = 5$
+
+- p-value is $p \approx 0.08$
+
+:::
+
+
+::: {.column width="35%"}
+
+- Therefore $p > 0.05$ 
+
+- We cannot reject $H_0$
+
+
+:::
+
+**Conclusion:** The dice appears to be fair
+
+
+
+
+## Example 3: Voting data {.smaller}
+
+- Assume there are two candidates: Republican and Democrat
+- Voter can choose one of these, or be undecided
+- 100 people are surveyed, and the results are 
+
+| Republican | Democrat | Undecided |
+|:----------:|:--------:|:---------:|
+|   35       |   40     |   25      |
+
+
+- Hystorical data suggest that undecided voters are $30\%$ of population
+
+- **Exercise**: Is difference between Republican and Democratic significant?
+    * Formulate appropriate goodness-of-fit test
+    * Implement this test in R
+    * You are not allowed to use ``chisq.test``
+
+
+
+## Solution {.smaller}
+
+- Hystorical data suggest that undecided voters are $30\%$ of population. Hence
+$$
+p_3^0 = 0.3
+$$
+- Want to test if there is difference between Republican and Democrat
+- Hence null hypothesis is
+$$
+p_1^0 = p_2^0
+$$
+
+- Since probabilities must sum to 1, we get
+$$
+p_1^0 + p_2^0 + p_3^0 = 1 \quad \implies \quad 
+p_1^0 = 0.35\,, \qquad  p_2^0 = 0.35 \,, \qquad 
+p_3^0 = 0.3
+$$
+
+- We test the hypothesis
+$$
+H_0 \colon p_i = p_i^0 \,\, \text{ for all }  \, i = 1, \ldots, 3 \,, 
+\qquad H_1 \colon  p_i \neq p_i^0 \, \text{ for some }\, i
+$$
+
+
+## {.smaller}
+
+- Perform goodness-of-fit test without using ``chisq.test``
+
+- First, we enter the data
+
+```r
+# Enter counts and null hypothesis probabilities
+counts <- c(35, 40 , 25)
+null.p <- c(0.35, 0.35, 0.3)
+```
+
+- Compute the total number of counts $m = o_1 + \ldots + o_n$
+
+```r
+# Compute total counts
+m <- sum(counts)
+```
+
+- Compute degrees of freedom $\, {\rm df} = n - 1$
+
+```r
+# Compute degrees of freedom
+degrees <- length(counts) - 1
+```
+
+
+
+##  {.smaller}
+
+- Compute the expected counts $E_i = m p_i^0$
+
+```r
+# Compute expected counts
+exp.counts <- m * null.p
+```
+
+- We now check that the expected counts satisfy $E_i \geq 5$
+
+```r
+# Print expected counts with a message
+cat("The expected counts are:", exp.counts)
+
+# Check if the expected counts are larger than 5
+if (all(exp.counts >= 5)) {
+  cat("Expected counts are larger than 5.", 
+      "\nThe chi-squared approximation is valid!")
+} else {
+  cat("Warning, low expected counts.",
+      "\nMonte Carlo simulation must be used.")
+}
+```
+
+```{r}
+counts <- c(35, 40 , 25)
+null.p <- c(0.35, 0.35, 0.3)
+m <- sum(counts)
+exp.counts <- m * null.p
+
+# Print expected counts with a message
+cat("The expected counts are:", exp.counts)
+
+# Check if the expected counts are larger than 5
+if (all(exp.counts >= 5)) {
+  cat("Expected counts are larger than 5.", 
+      "\nThe chi-squared approximation is valid!")
+} else {
+  cat("Warning, low expected counts.",
+      "\nMonte Carlo simulation must be used.")
+}
+```
+
+
+##  {.smaller}
+
+- Compute the chi-squared statistic 
+$$
+\chi^2 = \sum_{i=1}^n \frac{( o_i - E_i )^2}{E_i}
+$$
+
+
+
+```r
+# Compute chi-squared statistic
+chi.squared <- sum( (counts - exp.counts)^2 / exp.counts )
+```
+
+- We know that all the counts are larger than 5. Thus $\chi^2 \approx \chi_{n-1}^2$
+
+- We can therefore compute the p-valued with the formula
+$$
+p = P( \chi_{n-1}^2 > \chi^2 ) = 1 - P( \chi_{n-1}^2 \leq \chi^2 )
+$$
+
+```r
+# Compute p-value
+p_value <- 1 - pchisq(chi.squared, df = degrees)
+
+# Print p-value
+cat("The p-value is:", p_value)
+```
+
+
+
+
+##  {.smaller}
+
+- The full code can be downloaded here [good_fit_first_principles.R](codes/good_fit_first_principles.R)
+
+- Running the code gives the following output
+
+```{r}
+# Enter counts and null hypothesis probabilities
+counts <- c(35, 40 , 25)
+null.p <- c(0.35, 0.35, 0.3)
+
+# Compute total counts
+m <- sum(counts)
+
+# Compute degrees of freedom
+degrees <- length(counts) - 1
+
+# Compute expected counts
+exp.counts <- m * null.p
+
+# Print expected counts with a message
+cat("The expected counts are:", exp.counts)
+
+# Check if the expected counts are larger than 5
+if (all(exp.counts >= 5)) {
+  cat("Expected counts are larger than 5.", 
+      "\nThe chi-squared approximation is valid!")
+} else {
+  cat("Warning, low expected counts.",
+      "\nMonte Carlo simulation must be used.")
+}
+
+# Compute chi-squared statistic
+chi.squared <- sum( (counts - exp.counts)^2 / exp.counts )
+
+# Compute p-value
+p_value <- 1 - pchisq(chi.squared, df = degrees)
+
+# Print p-value
+cat("The p-value is:", p_value)
+```
+
+<br>
+
+- Therefore p-value is $p > 0.05$
+
+- We do not reject $H_0$
+
+
+**Conclusion:** No reason to believe that Republicans and Democrats are not tied
+

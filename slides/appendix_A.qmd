@@ -1,0 +1,3842 @@
+---
+title: "Statistical Models"
+subtitle: "Appendix A"
+from: markdown+emoji
+author: 
+    - name: Dr. Silvio Fanzon
+      id: sf
+      email: S.Fanzon@hull.ac.uk
+      url: https://www.silviofanzon.com
+      affiliations: University of Hull
+---
+
+
+
+::: {.content-hidden}
+$
+{{< include macros.tex >}}
+$
+:::
+
+
+
+
+# Appendix A: <br>Probability revision {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+
+## Introduction {.smaller}
+
+- In this Appendix we review some fundamental notions from Y1 module  
+**Introduction to Probability & Statistics**
+
+- The mathematical descriptions might look (a bit) different, but the concepts are the same
+
+**Topics reviewed**:
+    
+::: {.column width="42%"}
+    
+- Sample space, Events
+- Probability measure
+- Conditional probability
+- Random Variables
+- Distribution, cdf, pmf, pdf
+- Expected value and Variance
+
+:::
+
+
+::: {.column width="58%"}
+
+- Random vectors
+- Joint pdf and pmf, Marginals
+- Conditional distributions and expectation
+- Independence of random variables
+- Covariance and correlation
+- Multivariate random vectors
+
+:::
+
+
+
+
+## Outline of Appendix A
+
+1. Probability space
+2. Random variables
+3. Expected value
+4. Bivariate random vectors
+5. Conditional distributions
+6. Independence
+7. Covariance and correlation
+8. Multivariate random vectors
+
+
+
+
+# Part 1: <br>Probability space {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+
+## Sample space {.smaller}
+
+
+::: Definition
+### Sample space
+
+A set $\Omega$ of all possible outcomes of some experiment
+
+:::
+
+
+**Examples**:
+
+- Coin toss: results in Heads $= H$ and Tails $= T$ 
+$$
+\Omega = \{ H, T \}
+$$
+
+- Student grade for *Statistical Models*: a number between $0$ and $100$
+$$
+\Omega = \{ x \in \mathbb{R} \, \colon \, 0 \leq x \leq 100 \} = [0,100]
+$$
+
+
+
+
+
+
+## Events {.smaller}
+
+
+::: Definition
+### Event
+
+A subset $E$ of the sample space $\Omega$ (including $\emptyset$ and $\Omega$ itself)
+
+:::
+
+
+**Operations with events**:
+
+- **Union** of two events $A$ and $B$
+$$
+A \cup B := \{ x \in \Omega \colon x \in A \, \text{ or } \, x \in B \}
+$$
+
+- **Intersection** of two events $A$ and $B$
+$$
+A \cap B := \{ x \in \Omega \colon x \in A \, \text{ and } \, x \in B \}
+$$
+
+
+
+
+## Events {.smaller}
+
+
+**More Operations with events**:
+
+- **Complement** of an event $A$
+$$
+A^c  := \{ x \in \Omega \colon x \notin A  \}
+$$
+
+
+- **Infinite Union** of a family of events $A_i$ with $i \in I$
+
+$$
+\bigcup_{i \in I} A_i := \{ x \in \Omega \colon x \in A_i \, \text{ for some } \, i \in I \}
+$$
+
+- **Infinite Intersection** of a family of events $A_i$ with $i \in I$
+
+$$
+\bigcap_{i \in I} A_i := \{ x \in \Omega \colon x \in A_i \, \text{ for all } \, i \in I \}
+$$
+
+
+
+
+
+## Events {.smaller}
+
+**Example**: Consider sample space and events
+$$
+\Omega := (0,1] \,, \quad 
+A_i = \left[\frac{1}{i} , 1 \right] \,, \quad i \in \mathbb{N}
+$$
+Then
+$$
+\bigcup_{i \in I} A_i = (0,1] \,, \quad 
+\bigcap_{i \in I} A_i = \{ 1 \}
+$$
+
+
+
+
+
+## Events {.smaller}
+
+::: Definition
+### Disjoint
+
+Two events $A$ and $B$ are **disjoint** if
+$$
+A \cap B = \emptyset
+$$
+Events $A_1, A_2, \ldots$ are **pairwise disjoint** if
+$$
+A_i \cap A_j = \emptyset \,, \quad \forall \, i \neq j
+$$
+:::
+
+
+
+
+
+## Events {.smaller}
+
+::: Definition
+### Partition
+
+The collection of events  $A_1, A_2, \ldots$ is a **partition** of $\Omega$ if
+
+1. $A_1, A_2, \ldots$ are pairwise disjoint
+2. $\Omega = \cup_{i=1}^\infty A_i$
+
+:::
+
+
+
+
+
+
+## What's a Probability? {.smaller}
+
+
+- To each event $E \subset \Omega$ we would like to associate a number
+$$
+P(E) \in [0,1]
+$$
+
+- The number $P(E)$ is called the **probability** of $E$
+
+- The number $P(E)$ models the **frequency of occurrence** of $E$:
+
+    * $P(E)$ small means $E$ has low chance of occurring
+    * $P(E)$ large means $E$ has high chance of occurring
+
+- **Technical issue**:
+
+    * One cannot associate a number $P(E)$ for all events in $\Omega$
+    * Probability function $P$ only defined for a **smaller** family of events
+    * Such family of events is called $\sigma$-algebra
+
+
+
+
+
+
+## $\sigma$-algebras {.smaller}
+
+
+::: Definition
+### sigma-algebra
+
+Let $\mathcal{B}$ be a collection of events. We say that $\mathcal{B}$ is a $\sigma$-algebra if
+
+1. $\emptyset \in \mathcal{B}$
+2. If $A \in \mathcal{B}$ then $A^c \in \mathcal{B}$
+3. If $A_1,A_2 , \ldots \in \mathcal{B}$ then $\cup_{i=1}^\infty A_i \in \mathcal{B}$
+
+
+:::
+
+
+
+**Remarks**:
+
+- Since $\emptyset \in \mathcal{B}$ and $\emptyset^c = \Omega$, we deduce that
+$\Omega \in \mathcal{B}$
+
+- Thanks to DeMorgan's Law we have that
+$$
+A_1,A_2 , \ldots \in \mathcal{B} \quad \implies \quad \cap_{i=1}^\infty A_i \in \mathcal{B}
+$$
+
+
+
+
+
+
+## $\sigma$-algebras {.smaller}
+### Examples
+
+Suppose $\Omega$ is any set: 
+
+- Then
+$$
+\mathcal{B} = \{ \emptyset, \Omega \}
+$$
+is a $\sigma$-algebra
+
+
+- The power set of $\Omega$
+$$
+\mathcal{B} = \operatorname{Power} (\Omega) := \{ A \colon A \subset \Omega \}
+$$
+is a $\sigma$-algebra
+
+
+
+
+
+
+## $\sigma$-algebras {.smaller}
+### Examples
+
+
+- If $\Omega$ has $n$ elements then $\mathcal{B} = \operatorname{Power} (\Omega)$ contains $2^n$ sets
+
+- If $\Omega = \{ 1,2,3\}$ then
+\begin{align*}
+\mathcal{B} = \operatorname{Power} (\Omega) = \big\{ & \{1\} , \, \{2\}, \, \{3\}  \\
+                                       &  \{1,2\} , \, \{2,3\}, \, \{1,3\}      \\
+                                       & \emptyset , \{1,2,3\}   \big\}
+\end{align*}
+
+- If $\Omega$ is **uncountable** then the power set of $\Omega$ is not easy to describe
+
+
+
+
+
+
+## Lebesgue $\sigma$-algebra {.smaller}
+
+
+::: Question
+
+$\mathbb{R}$ is uncountable. Which $\sigma$-algebra do we consider?
+
+:::
+
+
+::: Definition 
+### Lebesgue sigma-algebra
+
+
+The Lebesgue $\sigma$-algebra on $\mathbb{R}$ is the smallest $\sigma$-algebra $\mathcal{L}$ containing all sets of the form
+$$
+(a,b) \,, \quad (a,b] \,, \quad [a,b) \,, \quad [a,b] 
+$$
+for all $a,b \in \mathbb{R}$
+
+:::
+
+
+
+## Lebesgue $\sigma$-algebra {.smaller}
+
+
+::: Important
+
+Therefore the events of $\R$ are 
+
+- Intervals
+- Unions and intersection of intervals
+- Countable Unions and intersection of intervals
+
+:::
+
+
+::: Warning 
+
+- I only told you that the Lebsesgue $\sigma$-algebra $\mathcal{L}$ **exists**
+- Explicitly showing that $\mathcal{L}$ exists is not easy, see [@rosenthal]
+
+:::
+
+
+
+
+## Probability measure {.smaller}
+
+Suppose given:
+
+- $\Omega$ sample space 
+- $\mathcal{B}$ a $\sigma$-algebra on $\Omega$
+
+::: Definition
+### Probability measure
+
+A **probability measure** on $\Omega$ is a map
+$$
+P \colon \mathcal{B} \to [0,1]
+$$
+such that the **Axioms of Probability** hold
+
+1. $P(\Omega) = 1$
+2. If $A_1, A_2,\ldots$ are pairwise disjoint then
+$P\left( \bigcup_{i=1}^\infty  A_i \right)  = \sum_{i=1}^\infty P(A_i)$
+
+:::
+
+
+
+
+## Properties of Probability {.smaller}
+
+Let $A, B \in \mathcal{B}$. As a consequence of the Axioms of Probability:
+
+
+1. $P(\emptyset) = 0$
+2. If $A$ and $B$ are disjoint then
+$$
+P(A \cup B) = P(A) + P(B)
+$$
+3. $P(A^c) = 1 - P(A)$
+4. $P(A) = P(A \cap B) + P(A \cap B^c)$
+5. $P(A\cup B) = P(A) + P(B) - P(A \cap B)$
+6. If $A \subset B$ then
+$$
+P(A) \leq P(B)
+$$
+
+
+
+
+
+## Properties of Probability {.smaller} 
+
+7. Suppose $A$ is an event and $B_1,B_2, \ldots$ a partition of $\Omega$. Then
+$$
+P(A) = \sum_{i=1}^\infty  P(A \cap B_i)
+$$
+8. Suppose $A_1,A_2, \ldots$ are events. Then
+$$
+P\left( \bigcup_{i=1}^\infty  A_i \right)  \leq  \sum_{i=1}^\infty P(A_i)
+$$
+
+
+
+
+## Example: Fair Coin Toss {.smaller}
+
+- The sample space for **coin toss** is $\Omega = \{ H, T \}$
+
+- We take as $\sigma$-algebra the power set of $\Omega$
+$$
+\mathcal{B} = \{  \emptyset , \, \{H\}  , \, \{T\} , \, \{H,T\}   \}
+$$
+
+- We suppose that the coin is fair
+
+    * This means $P \colon \mathcal{B} \to [0,1]$ satisfies
+    $$
+    P(\{H\}) = P(\{T\})
+    $$
+    * Assuming the above we get
+    $$
+    1 = P(\Omega) = P(\{H\} \cup \{T\}) = 
+    P(\{H\}) + P(\{T\}) = 2 P(\{H\})
+    $$
+    * Therefore 
+    $P(\{H\}) = P(\{T\}) = \frac12$
+
+
+
+
+
+## Conditional Probability {.smaller}
+
+::: Definition
+### Conditional Probability
+
+Let $A,B$ be events in $\Omega$ with 
+$$
+P(B)>0 
+$$ 
+The **conditional probability** of $A$ given $B$ is
+$$
+P(A|B) := \frac{P(A \cap B)}{P(B)} 
+$$
+
+:::
+
+
+
+
+## Conditional Probability {.smaller}
+### Intuition
+
+The conditional probability
+$$
+P(A|B) = \frac{P( A \cap B)}{P(B)}
+$$ 
+represents the probability of $A$, knowing that $B$ has happened:
+
+- If $B$ has happened, then $B$ is the *new sample space* 
+- Therefore $A \cap B^c$ cannot happen, and we are only interested in $A \cap B$
+- Hence it makes sense to define $P(A|B) \propto P(A \cap B)$
+- We divide $P(A\cap B)$ by $P(B)$ so that $P(A|B) \in [0,1]$ is still a probability
+- The function $A \mapsto P(A|B)$ is a probability measure on $\Omega$
+
+
+
+
+## Bayes' Rule {.smaller}
+
+
+- For two events $A$ and $B$ is holds
+
+$$
+P(A | B ) = P(B|A) \frac{P(A)}{P(B)}
+$$
+
+
+- Given a partition $A_1, A_2, \ldots$ of the sample space we have
+
+$$
+P(A_i | B ) = \frac{ P(B|A_i) P(A_i)}{\sum_{j=1}^\infty P(B | A_j) P(A_j)}
+$$
+
+
+
+
+
+## Independence {.smaller}
+
+
+::: Definition
+
+Two events $A$ and $B$ are **independent** if 
+$$
+P(A \cap B) = P(A)P(B)
+$$
+A collection of events $A_1 , \ldots ,A_n$ are **mutually independent** if
+for any subcollection $A_{i_1}, \ldots, A_{i_k}$ it holds
+$$
+P \left(  \bigcap_{j=1}^k A_j  \right) = \prod_{j=1}^k  P(A_{i_j})
+$$
+
+:::
+
+
+
+
+
+# Part 2: <br>Random variables {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## Random Variables {.smaller}
+### Motivation
+
+- Consider the experiment of flipping a coin $50$ times
+- The sample space consists of $2^{50}$ elements
+- Elements are vectors of $50$ entries recording the outcome $H$ or $T$ of each flip
+- This is a very large sample space!
+
+
+Suppose we are only interested in
+$$
+X = \text{ number of } \, H \, \text{ in } \, 50 \, \text{flips}
+$$
+
+- Then the new sample space is the set of integers
+$\{ 0,1,2,\ldots,50\}$
+- This is much smaller!
+- $X$ is called a Random Variable
+
+
+
+
+## Random Variables {.smaller}
+
+
+Assume given
+
+- $\Omega$ sample space
+- $\mathcal{B}$ a $\sigma$-algebra of events on $\Omega$
+- $P \colon \mathcal{B} \to [0,1]$ a probability measure
+
+
+::: Definition
+### Random variable
+
+A function $X \colon \Omega \to \mathbb{R}$
+
+:::
+
+
+We will abbreviate Random Variable with rv
+
+
+
+
+
+## Random Variables {.smaller}
+### Technical remark 
+
+
+::: Definition
+### Random variable
+
+A **measurable** function $X \colon \Omega \to \mathbb{R}$
+
+:::
+
+
+**Technicality**: 
+$X$ is a **measurable** function if
+$$
+\{ X \in I \} := \{ \omega \in \Omega \colon X(\omega) \in I \} \in \mathcal{B} \,, \quad \forall \, I \in \mathcal{L}
+$$
+where 
+
+- $\mathcal{L}$ is the Lebsgue $\sigma$-algebra on $\mathbb{R}$
+- $\mathcal{B}$ is the given $\sigma$-algebra on $\Omega$
+
+
+
+
+## Random Variables {.smaller}
+### Notation
+
+- In particular $I \in \mathcal{L}$ can be of the form
+$$
+(a,b) \,, \quad (a,b] \,, \quad [a,b) \,, \quad [a,b] \,, \quad 
+\forall \, a, b \in \mathbb{R}
+$$
+
+- In this case the set 
+$$
+\{X \in I\} \in \mathcal{B}
+$$ 
+is denoted by, respectively:
+$$
+\{ a < X < b \} \,, \quad \{ a < X \leq b \} \,, \quad \{ a \leq X < b \} \,, \quad \{ a \leq X \leq b \}
+$$
+
+- If $a=b=x$ then $I=[x,x]=\{x\}$. Then we denote
+$$
+\{X \in I\} = \{X = x\}
+$$
+
+
+
+## Distribution {.smaller}
+### Why do we require measurability?
+
+**Answer**: Because it allows to define a new probability measure on $\mathbb{R}$
+
+
+::: Definition
+### Distribution
+
+The **distribution** of a random variable $X \colon \Omega \to \mathbb{R}$ is the probability measure on $\mathbb{R}$
+$$
+P_X \colon \mathcal{L} \to [0,1] \,, \quad P_X (I) := P \left( \{X \in I\} \right) \,, \,\, \forall \, I \in  \mathcal{L}
+$$
+
+:::
+
+
+**Note**: 
+
+- One can show that $P_X$ satisfies the *Probability Axioms*
+- Thus $P_X$ is a probability measure on $\mathbb{R}$
+- In the future we will denote 
+$P \left( X \in I \right) := P \left( \{X \in I\} \right)$
+
+
+
+
+
+
+
+## Distribution {.smaller}
+### Why is the distribution useful?
+
+**Answer**: Because it allows to define a random variable $X$
+
+- by specifying the distribution values
+$$
+P \left( X \in I \right) 
+$$
+- rather than defining an explicit function $X \colon \Omega \to \mathbb{R}$
+
+
+**Important**: More often than not
+
+- We care about the distribution of $X$
+- We do not care about how $X$ is defined
+
+
+
+
+
+## Example - Three coin tosses {.smaller}
+
+
+- Sample space $\Omega$ given by the below values of $\omega$
+
++:---------:+:----:+:---:+:---:+:---:+:---:+:---:+:---:+:---:+
+| $\omega$  | HHH  | HHT | HTH | THH | TTH | THT | HTT | TTT |
++-----------+------+-----+-----+-----+-----+-----+-----+-----+
+
+
+- The probability of each outcome is the same
+$$
+P(\omega) = \frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} = \frac{1}{8} \,, \quad \forall \, \omega \in \Omega
+$$
+
+
+- Define the random variable $X \colon \Omega \to \R$ by
+$$
+X(\omega) :=  \text{ Number of H in }  \omega
+$$
+
+|           |      |     |     |     |     |     |     |     |
+|:---------:|:----:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| $\omega$  | HHH  | HHT | HTH | THH | TTH | THT | HTT | TTT |
+|$X(\omega)$|  $3$ | $2$ | $2$ | $2$ | $1$ | $1$ | $1$ | $0$ | 
+
+
+
+
+## Example - Three coin tosses {.smaller}
+
+
+- Recall the definition of $X$
+
+|           |      |     |     |     |     |     |     |     |
+|:---------:|:----:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| $\omega$  | HHH  | HHT | HTH | THH | TTH | THT | HTT | TTT |
+|$X(\omega)$|  $3$ | $2$ | $2$ | $2$ | $1$ | $1$ | $1$ | $0$ | 
+
+
+- The range of $X$ is $\{0,1,2,3\}$
+
+- Hence the only interesting values of $P_X$ are
+$$
+P(X=0) \,, \quad 
+P(X=1) \,, \quad 
+P(X=2) \,, \quad 
+P(X=3)
+$$
+
+
+
+
+## Example - Three coin tosses {.smaller}
+
+
+- Recall the definition of $X$
+
+|           |      |     |     |     |     |     |     |     |
+|:---------:|:----:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| $\omega$  | HHH  | HHT | HTH | THH | TTH | THT | HTT | TTT |
+|$X(\omega)$|  $3$ | $2$ | $2$ | $2$ | $1$ | $1$ | $1$ | $0$ | 
+
+
+- We compute
+\begin{align*}
+P(X=0) & = P(TTT) = \frac{1}{8} \\
+P(X=1) & = P(TTH) + P(THT) + P(HTT) = \frac{3}{8} \\
+P(X=2) & = P(HHT) + P(HTH) + P(THH) = \frac{3}{8} \\
+P(X=3) & = P(HHH) = \frac{1}{8}
+\end{align*}
+
+
+
+
+## Example - Three coin tosses {.smaller}
+
+
+- Recall the definition of $X$
+
+|           |      |     |     |     |     |     |     |     |
+|:---------:|:----:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| $\omega$  | HHH  | HHT | HTH | THH | TTH | THT | HTT | TTT |
+|$X(\omega)$|  $3$ | $2$ | $2$ | $2$ | $1$ | $1$ | $1$ | $0$ | 
+
+
+- The distribution of $X$ is summarized in the table below
+
+|           |               |               |              |               |
+|:---------:|:-------------:|:-------------:|:------------:|:-------------:|
+| $x$       | $0$           | $1$           | $2$          |     $3$       |
+|$P(X=x)$   | $\frac{1}{8}$ | $\frac{3}{8}$ | $\frac{3}{8}$| $\frac{1}{8}$ | 
+: {tbl-colwidths="[40,15,15,15,15]"}
+
+
+
+
+
+
+## Cumulative Distribution Function {.smaller}
+
+
+**Recall**: The **distribution** of a rv $X \colon \Omega \to \mathbb{R}$ is the probability measure on $\mathbb{R}$
+$$
+P_X \colon \mathcal{L} \to [0,1] \,, \quad P_X (I) := P \left( X \in I \right) \,, \,\, \forall \, I \in  \mathcal{L}
+$$
+
+::: Definition
+### cdf
+
+The **cumulative distribution function** or **cdf** of a rv $X \colon \Omega \to \mathbb{R}$ is
+$$
+F_X \colon \mathbb{R} \to \mathbb{R} \,, \quad 
+F_X(x) := P_X (X \leq x) 
+$$
+
+:::
+
+
+## Cumulative Distribution Function {.smaller}
+### Intuition
+
+- $F_X$ is the *primitive* of $P_X$:
+    * Recall from Analysis: The primitive of a continuous function $g \colon \R \to \R$ is 
+    $$
+    G(x):=\int_{-\infty}^x g(y) \,dy
+    $$
+    * Note that $P_X$ is not a function but a **distribution**
+    * However the definition of cdf as a primitive still makes sense
+
+
+- $P_X$ will be the *derivative* of $F_X$ - In a suitable generalized sense
+    * Recall from Analysis: Fundamental Theorem of Calculus says 
+    $G'(x)=g(x)$
+    * Since $F_X$ is the primitive of $P_X$, it will still hold
+    $F_X'=P_X$ in the **sense of distributions**
+    
+
+
+
+
+## Distribution Function {.smaller}
+### Example
+
+
+- Consider again 3 coin tosses and the rv
+$X(\omega) :=  \text{ Number of H in }  \omega$
+
+- We computed that the distribution $P_X$ of $X$ is
+
+|           |               |               |              |               |
+|:---------:|:-------------:|:-------------:|:------------:|:-------------:|
+| $x$       | $0$           | $1$           | $2$          |     $3$       |
+|$P(X=x)$   | $\frac{1}{8}$ | $\frac{3}{8}$ | $\frac{3}{8}$| $\frac{1}{8}$ | 
+: {tbl-colwidths="[40,15,15,15,15]"}
+
+
+::: {.column width="38%"}
+
+- One can compute
+$$
+F_X(x) = 
+\begin{cases}
+0  & \text{if } x < 0 \\
+\frac{1}{8}  & \text{if } 0 \leq x < 1 \\
+\frac{1}{2}  & \text{if } 1 \leq x < 2 \\
+\frac{7}{8}  & \text{if } 2 \leq x < 3 \\
+1            & \text{if } 3 \leq x
+\end{cases}
+$$
+
+:::
+
+
+::: {.column width="56%"}
+
+- For example
+\begin{align*}
+F_X(2.1) & = P(X \leq 2.1) \\
+         & = P(X=0,1 \text{ or } 2) \\
+         & = P(X=0) + P(X=1) + P(X=2) \\
+         & = \frac{1}{8} + \frac{3}{8} + \frac{3}{8} = \frac{7}{8}
+\end{align*}
+
+:::
+
+
+
+
+
+## Cumulative Distribution Function {.smaller}
+### Example
+
+
+```{r}
+# Define the step function
+step_function <- function(x) {
+  if (x < 0) {
+    return(0)
+  } else if (x < 1) {
+    return(1/8)
+  } else if (x < 2) {
+    return(1/2)
+  } else if (x < 3) {
+    return(7/8)
+  } else {
+    return(1)
+  }
+}
+
+# Generate x values
+x_values <- seq(-1, 4, length.out = 1000)
+
+# Calculate corresponding y values using the step function
+y_values <- sapply(x_values, step_function)
+
+# Create a data frame for ggplot
+plot(x_values, 
+    y_values, 
+    type = 's',
+    xlab = "",
+    ylab = "")
+
+mtext("x", side=1, line=3, cex=2)
+mtext("F_X(x)", side=2, line=2.5, cex=2)
+
+```
+
+
+
+::: {.column width="43%"}
+
+- Plot of $F_X$: it is a **step function**
+- $F_X'=0$ except at $x=0,1,2,3$
+- $F_X$ jumps at $x=0,1,2,3$ 
+
+:::
+
+::: {.column width="56%"}
+
+- Size of jump at $x$ is $P(X=x)$ 
+- $F_X'=P_X$ in the sense of **distributions**
+<br> (Advanced analysis concept - not covered)
+
+:::
+
+
+
+
+## Discrete Random Variables {.smaller}
+
+In the previous example:
+
+- The cdf $F_X$ had **jumps**
+- Hence $F_X$ was **discountinuous**
+- We take this as definition of **discrete** rv
+
+
+
+::: Definition
+
+$X \colon \Omega \to \mathbb{R}$ is **discrete** if $F_X$ has jumps
+
+:::
+
+
+
+
+
+## Probability Mass Function {.smaller}
+
+- In this slide $X$ is a **discrete** rv
+- Therefore $F_X$ has **jumps**
+
+::: Definition
+
+The **Probability Mass Function** or **pmf** of a discrete rv $X$ is
+$$
+f_X \colon \mathbb{R} \to \mathbb{R} \,, \quad 
+f_X(x) := P(X = x) 
+$$
+
+:::
+
+
+
+## Probability Mass Function {.smaller}
+
+::: Proposition
+
+The **pmf** $f_X(x) = P(X=x)$ can be used to
+
+- compute probabilities
+    $$
+    P(a \leq X \leq b) = \sum_{k = a}^b f_X (k) \,, \quad \forall \, a,b \in 
+    \mathbb{Z} \,, \,\, a \leq b 
+    $$
+- compute the **cdf**
+    $$
+    F_X(x) = P(X \leq x) = \sum_{k=-\infty}^x f_X(k)
+    $$
+
+:::
+
+
+
+
+
+## Example 1 - Discrete RV {.smaller}
+
+- Consider again 3 coin tosses and the RV
+$X(\omega) :=  \text{ Number of H in }  \omega$
+
+- The pmf of $X$ is $f_X(x):=P(X=x)$, which we have already computed
+
+|           |               |               |              |               |
+|:---------:|:-------------:|:-------------:|:------------:|:-------------:|
+| $x$       | $0$           | $1$           | $2$          |     $3$       |
+|$f_X(x)= P(X=x)$ | $\frac{1}{8}$ | $\frac{3}{8}$ | $\frac{3}{8}$| $\frac{1}{8}$ | 
+: {tbl-colwidths="[40,15,15,15,15]"}
+
+
+
+```{r}
+# Example data
+values <- c(0, 1, 2, 3)
+probabilities <- c(1/8, 3/8, 3/8, 1/8)
+
+# Plot PMF
+plot(values, 
+    probabilities, 
+    xlab = "",
+    ylab = "",
+    xaxt='n',
+    type="h", 
+    lwd=4, 
+    col="blue")
+
+axis(1, at = values,labels = T)
+mtext("x", side=1, line=3, cex=2)
+mtext("f_X(x)", side=2, line=2.5, cex=2)
+
+points(values, probabilities, col = "red", pch = 16)
+
+grid()
+```
+
+
+
+
+
+
+
+## Example 2 - Geometric Distribution {.smaller}
+
+- Suppose $p \in (0,1)$ is a given probability of **success**
+- Hence $1-p$ is probability of **failure**
+- Consider the random variable 
+$$
+X = \text{ Number of attempts to obtain first success}
+$$
+- Since each trial is independent, the pmf of $X$ is
+$$
+f_X (x) = P(X=x) = (1-p)^{x-1} p \,, \quad \forall \, x \in \mathbb{N}
+$$
+- This is called **geometric distribution**
+
+
+
+## Example 2 - Geometric Distribution {.smaller}
+
+- We want to compute the cdf of $X$: For $x \in \mathbb{N}$ with $x > 0$
+\begin{align*}
+F_X(x) & = P(X \leq x) = \sum_{k=1}^x P(X=k) = \sum_{k=1}^x f_X(k) \\
+       & = \sum_{k=1}^x (1-p)^{k-1} p 
+         = \frac{1-(1-p)^x}{1-(1-p)} p = 1 - (1-p)^x 
+\end{align*}
+where we used the formula for the sum of geometric series:
+$$
+\sum_{k=1}^x t^{k-1} = \frac{1-t^x}{1-t} \,, \quad t \neq 1 
+$$
+
+
+
+## Example 2 - Geometric Distribution {.smaller}
+
+
+- $F_X$ is flat between two consecutive natural numbers:
+\begin{align*}
+F_X(x+k) & = P(X \leq x+k) \\
+         & = P(X \leq x) \\
+         & = F_X(x) 
+\end{align*} 
+for all $x \in \mathbb{N}, k \in [0,1)$
+
+- Therefore $F_X$ has **jumps** and $X$ is **discrete**
+
+
+
+
+
+## Continuous Random Variables {.smaller} 
+
+**Recall**: $X$ is **discrete** if $F_X$ has **jumps**
+
+
+::: Definition
+### Continuous Random Variable
+
+$X \colon \Omega \to \mathbb{R}$ is **continuous** if 
+$F_X$ is **continuous**
+
+:::
+
+
+
+
+
+
+
+## Probability Mass Function? {.smaller}
+
+- Suppose $X$ is a **continuous** rv
+- Therefore $F_X$ is **continuous**
+
+::: Question 
+
+Can we define the Probability Mass Function for $X$?
+
+:::
+
+
+**Answer**: 
+
+- Yes we can, but it would be useless - pmf carries no information
+- This is because 
+$$
+f_X(x) = P(X=x) = 0 \,, \quad \forall \, x \in \mathbb{R}
+$$
+
+
+
+
+## Probability Mass Function? {.smaller}
+
+
+- Indeed, for all $\varepsilon>0$ we have $\{ X = x \} \subset \{  x - \varepsilon < X \leq x  \}$
+- Therefore by the properties of probabilities we have
+\begin{align*}
+P (X = x ) & \leq P(  x - \varepsilon < X \leq x ) \\
+           & = P(X \leq x) - P(X \leq x - \varepsilon) \\
+           & = F_X(x) - F_X(x-\varepsilon)
+\end{align*}
+where we also used the definition of $F_X$
+- Since $F_X$ is continuous we get
+$$
+0 \leq P(X = x) \leq \lim_{\varepsilon \to 0} F_X(x) - F_X(x-\varepsilon) = 0
+$$
+- Then $f_X(x) = P(X=x) = 0$ for all $x \in \mathbb{R}$
+
+
+
+
+
+
+## Probability Density Function {.smaller}
+
+**pmf** carries no information for continuous RV -- We instead define the **pdf**
+
+
+::: Definition
+
+The **Probability Density Function** or **pdf** of a continuous rv $X$ is
+a function $f_X \colon \mathbb{R} \to \mathbb{R}$ s.t.
+$$
+F_X(x) =  \int_{-\infty}^x f_X(t) \, dt  \,, \quad \forall \, x \in
+\mathbb{R}
+$$
+
+:::
+
+
+**Technical issue**: 
+
+- If $X$ is continuous then pdf **does not exist** in general  
+(absolute continuity is required)
+- Counterexamples are rare, therefore we will **assume** existence of pdf
+
+
+
+
+## Probability Density Function {.smaller}
+### Properties
+
+::: Proposition
+
+Suppose $X$ is continuous rv. They hold
+
+- The **cdf** $F_X$ is continuous and differentiable (a.e.) with
+$$
+F_X' = f_X
+$$
+
+- Probability can be computed via
+    $$
+    P(a \leq X \leq b) = \int_{a}^b f_X (t) \, dt \,, \quad \forall \, a,b \in 
+    \mathbb{R} \,, \,\, a \leq b 
+    $$
+
+:::
+
+
+
+
+
+## Example - Logistic Distribution {.smaller}
+
+
+- The random variable $X$ has **logistic distribution** if its **pdf** is
+$$
+f_X(x) = \frac{e^{-x}}{(1+e^{-x})^2}
+$$
+
+
+
+```{r}
+
+# Define the probability density function (PDF)
+f_X <- function(x) {
+  exp(-x) / (1 + exp(-x))^2
+}
+
+# Generate x values for plotting
+x_values <- seq(-10, 10, length.out = 1000)
+
+# Calculate corresponding y values
+y_values <- f_X(x_values)
+
+# Plot the distribution using base R plot function
+plot(x_values, 
+    y_values, 
+    type = "l", 
+    col = "blue", 
+    lwd = 4,
+    xlab = "", 
+    ylab = "")
+
+mtext("x", side=1, line=3, cex=2)
+mtext("f_X", side=2, line=2.5, cex=2)
+
+
+# Add a grid for better visualization
+grid()
+
+```
+
+
+
+## Example - Logistic Distribution {.smaller}
+
+
+- The random variable $X$ has **logistic distribution** if its **pdf** is
+$$
+f_X(x) = \frac{e^{-x}}{(1+e^{-x})^2}
+$$
+
+
+
+- The **cdf** can be computed to be
+$$
+F_X(x) = \int_{-\infty}^x f_X(t) \, dt = \frac{1}{1+e^{-x}}
+$$
+
+
+- The RHS is known as **logistic function**
+
+
+
+
+
+## Example - Logistic Distribution {.smaller}
+
+
+**Application**: Logistic function models expected score in chess (see [Wikipedia](https://en.wikipedia.org/wiki/Elo_rating_system))
+
+
+
+- $R_A$ is ELO rating of player $A$, $R_B$ is ELO rating of player $B$
+- $E_A$ is expected score of player $A$: 
+$$
+E_A := P(A \text{ wins}) + \frac12 P(A \text{ draws})
+$$
+- $E_A$ modelled by logistic function
+$$
+E_A := \frac{1}{1+ 10^{(R_B-R_A)/400} }
+$$
+- Example: Beginner is rated $1000$, International Master is rated $2400$
+$$
+R_{\rm Begin} = 1000, \quad  R_{\rm IM}=2400 , \quad E_{\rm Begin} = \frac{1}{1 + 10^{1400/400}} = 0.00031612779
+$$
+
+
+
+
+## Characterization of pmf and pdf {.smaller}
+
+
+::: Theorem
+
+Let $f \colon \mathbb{R} \to \mathbb{R}$. Then $f$ is pmf or pdf of a RV $X$ iff
+
+1. $f(x) \geq 0$ for all $x \in \mathbb{R}$
+2. $\sum_{x=-\infty}^\infty f(x) = 1 \,\,\,$ (pmf) $\quad$ or $\quad$ $\int_{-\infty}^\infty f(x) \, dx = 1\,\,\,$ (pdf)
+
+:::
+
+In the above setting: 
+
+- The RV $X$ has **distribution**
+$$
+P(X = x) = f(x)  \,\,\, \text{ (pmf) } \quad  \text{ or }  \quad
+P(a \leq X \leq b) = \int_a^b f(t) \, dt   \,\,\, \text{ (pdf)}
+$$
+
+- The symbol $X \sim f$ denotes that $X$ has distribution $f$
+
+
+
+
+
+## Summary - Random Variables {.smaller}
+
+- Given probability space $(\Omega, \mathcal{B}, P)$ and a Random Variable $X \colon \Omega \to \mathbb{R}$
+
+- **Cumulative Density Function (cdf)**:
+$F_X(x) := P(X \leq x)$
+
+
+| Discrete RV                       |        Continuous RV         |
+|--------------                     |----------------              |
+| $F_X$ has **jumps**               |  $F_X$ is **continuous**     |
+|**Probability Mass Function (pmf)**|**Probability Density Function (pdf)**|
+| $f_X(x) := P(X=x)$                | $f_X(x) := F_X'(x)$          |  
+| $f_X \geq 0$                      |  $f_X \geq 0$                |
+|$\sum_{x=-\infty}^\infty f_X(x) = 1$| $\int_{-\infty}^\infty f_X(x) \, dx = 1$ |
+| $F_X (x) = \sum_{k=-\infty}^x f_X(k)$| $F_X (x) = \int_{-\infty}^x f_X(t) \, dt$
+| $P(a \leq X \leq b) = \sum_{k = a}^{b} f_X(k)$ | $P(a \leq X \leq b) = \int_a^b f_X(t) \, dt$ |
+
+
+
+
+# Part 3: <br>Expected value {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+
+## Functions of Random Variables {.smaller}
+
+- $X \colon \Omega \to \mathbb{R}$ random variable and $g \colon \mathbb{R} \to \mathbb{R}$ function
+- Then $Y:=g(X) \colon \Omega \to \mathbb{R}$ is random variable
+- For $A \subset \mathbb{R}$ we define the pre-image 
+$$
+g^{-1}(A) := \{  x \in \mathbb{R} \colon g(x) \in A \}
+$$
+- For $A=\{y\}$ single element set we denote
+$$
+g^{-1}(\{y\}) = g^{-1}(y) =  \{  x \in \mathbb{R} \colon g(x) = y \}
+$$
+- The distribution of $Y$ is
+$$
+P(Y \in A) = P(g(X) \in A ) = P(X \in g^{-1}(A))
+$$
+
+
+
+## Functions of Random Variables {.smaller}
+
+**Question**: What is the relationship between $f_X$ and $f_Y$?
+
+- **$X$ discrete**: Then $Y$ is discrete and
+$$
+f_Y (y) = P(Y = y) = \sum_{x \in g^{-1}(y)} P(X=x) = \sum_{x \in g^{-1}(y)} f_X(x) 
+$$
+
+- **$X$ and $Y$ continuous**: Then
+\begin{align*}
+F_Y(y) & = P(Y \leq y) = P(g(X) \leq y) \\
+       & = P(\{ x \in \mathbb{R} \colon g(x) \leq y \}   ) = \int_{\{ x \in \mathbb{R} \colon g(x) \leq y \}} f_X(t) \, dt
+\end{align*}
+
+
+
+
+
+## Functions of Random Variables {.smaller}
+
+**Issue**: The below set may be tricky to compute
+$$
+\{ x \in \mathbb{R} \colon g(x) \leq y \}
+$$
+
+However it can be easily computed if $g$ is **strictly monotone**:
+
+- **g strictly increasing**: Meaning that 
+$$
+x_1 < x_2 \quad \implies \quad g(x_1) < g(x_2)
+$$
+
+- **g strictly decreasing**: Meaning that 
+$$
+x_1 < x_2 \quad \implies \quad g(x_1) > g(x_2)
+$$
+
+- In both cases $g$ is **invertible**
+
+
+
+
+
+## Functions of Random Variables {.smaller}
+
+Let $g$ be **strictly increasing**:
+
+- Then
+$$
+\{ x \in \mathbb{R} \colon g(x) \leq y \} = \{ x \in \mathbb{R} \colon x \leq g^{-1}(y) \}
+$$
+
+- Therefore
+\begin{align*}
+F_Y(y) & = \int_{\{ x \in \mathbb{R} \colon g(x) \leq y \}} f_X(t) \, dt 
+         = \int_{\{ x \in \mathbb{R} \colon x \leq g^{-1}(y) \}} f_X(t) \, dt  \\
+       & = \int_{-\infty}^{g^{-1}(y)} f_X(t) \, dt 
+         = F_X(g^{-1}(y)) 
+\end{align*}
+
+
+
+
+
+## Functions of Random Variables {.smaller}
+
+Let $g$ be **strictly decreasing**:
+
+- Then
+$$
+\{ x \in \mathbb{R} \colon g(x) \leq y \} = \{ x \in \mathbb{R} \colon x \geq g^{-1}(y) \}
+$$
+
+- Therefore
+\begin{align*}
+F_Y(y) & = \int_{\{ x \in \mathbb{R} \colon g(x) \leq y \}} f_X(t) \, dt 
+         = \int_{\{ x \in \mathbb{R} \colon x \geq g^{-1}(y) \}} f_X(t) \, dt  \\
+       & = \int_{g^{-1}(y)}^{\infty} f_X(t) \, dt 
+         = 1 - \int_{-\infty}^{g^{-1}(y)}f_X(t) \, dt  \\
+       & = 1 - F_X(g^{-1}(y)) 
+\end{align*}
+
+
+
+
+
+## Summary - Functions of Random Variables {.smaller}
+
+
+- **$X$ discrete**: Then $Y$ is discrete and
+$$
+f_Y (y) = \sum_{x \in g^{-1}(y)} f_X(x) 
+$$
+
+- **$X$ and $Y$ continuous**: Then
+$$
+F_Y(y) = \int_{\{ x \in \mathbb{R} \colon g(x) \leq y \}} f_X(t) \, dt
+$$
+
+- **$X$ and $Y$ continuous** and
+    * **$g$ strictly increasing**: $F_Y(y) = F_X(g^{-1}(y))$
+    * **$g$ strictly decreasing**: $F_Y(y) = 1 - F_X(g^{-1}(y))$
+
+
+
+
+
+## Expected Value {.smaller}
+
+
+- Suppose $X \colon \Omega \to \R$ is RV and $g \colon \R \to \R$ a function
+- Then $g(X) \colon \Omega \to \R$ is a RV
+
+
+::: Definition
+
+The **expected value** of the random variable $g(X)$ is
+
+\begin{align*}
+\Expect [g(X)] & := \sum_{x} g(x) f_X(x) = \sum_{x \in \mathbb{R}} g(x) P(X = x)   \quad \text{ if } X \text{ discrete} \\
+\Expect [g(X)] & :=  \int_{-\infty}^{\infty} g(x) f_X(x) \, dx   \quad \text{ if } X \text{ continuous}
+\end{align*}
+
+:::
+
+
+
+
+
+## Expected Value  {.smaller}
+### Properties
+
+
+In particular we have^[These follow by taking $g(x)=x$ in previous definitions, so that $g(X) = X$]
+
+
+- If $X$ discrete
+$$
+\Expect [X] = \sum_{x \in \mathbb{R}} x f_X(x) = \sum_{x \in \mathbb{R}} x P(X = x)
+$$
+
+- If $X$ continuous
+$$
+\Expect [X] = \int_{-\infty}^{\infty} x f_X(x) \, dx
+$$
+
+
+
+
+
+
+
+
+## Expected Value  {.smaller}
+### Expected value is linear
+
+::: Theorem
+
+$X$ rv, $g,h \colon \R \to \R$ functions and $a,b,c \in \mathbb{R}$. The expected value is **linear**
+\begin{equation} \tag{1}
+\Expect [a g(X) + b h(X) + c] = a\Expect [g(X)] + b \Expect [h(X)] + c
+\end{equation}
+In particular
+\begin{align} \tag{2}
+\Expect[aX] & = a \Expect[X] \\
+\Expect [c] & = c \tag{3}
+\end{align}
+:::
+
+
+
+
+
+## Expected Value  {.smaller}
+### Proof of Theorem
+
+- Equation (2) follows from (1) by setting $g(x)=x$ and $b=c=0$
+
+- Equation (3) follows from (1) by setting $a=b=0$
+
+- To show (1), suppose $X$ is continuous and set $p(x):=ag(x)+bh(x)+c$
+\begin{align*}
+\Expect [ag(X) + & b h(X) + c]  = \Expect [p(X)] = \int_{\R} p(x) f_X(x) \, dx \\
+& = \int_{\R} (ag(x) + bh(x) + c) f_X(x) \, dx  \\
+& = a\int_{\R} g(x) f_X(x) \, dx  + b\int_{\R} h(x) f_X(x) \, dx +  c\int_{\R} f_X(x) \, dx  \\
+& = a \Expect[g(X)] + b \Expect[h(X)] + c
+\end{align*}
+
+- If $X$ is discrete just replace integrals with series in the above argument
+
+
+
+
+
+
+
+## Expected Value  {.smaller}
+### Further Properties
+
+Below are further properties of $\Expect$, which we do not prove
+
+::: Theorem
+
+Suppose $X$ and $Y$ are rv. The expected value is:
+
+- **Monotone**: $X \leq Y  \quad \implies \quad \Expect [X] \leq  \Expect [Y]$
+
+- **Non-degenerate**: $\Expect[|X|] = 0 \quad \implies \quad X = 0$
+
+- $X=Y \quad \implies \quad \Expect[X]=\Expect[Y]$ 
+
+:::
+
+
+
+
+
+
+## Variance {.smaller}
+
+Variance measures how much a rv $X$ deviates from $\Expect[X]$
+
+::: Definition
+### Variance
+
+The **variance** of a random variable $X$ is
+$$
+\Var[X]:= \Expect[(X - \Expect[X])^2]
+$$
+
+:::
+
+
+**Note**:
+
+- $\Var [X] = 0 \quad \implies \quad (X - \Expect[X])^2 = 0 \quad  \implies \quad X = \Expect [X]$
+- If $\Var[X]$ is small then $X$ is close to $\Expect[X]$
+- If $\Var[X]$ is large then $X$ is very variable
+
+
+
+
+## Variance {.smaller}
+### Equivalent formula
+
+::: Proposition
+$$
+\Var[X] =  \Expect[X^2] - \Expect[X]^2
+$$
+:::
+
+**Proof:**
+\begin{align*}
+\Var[X] & = \Expect[(X - \Expect[X])^2] \\
+        & = \Expect[X^2 - 2 X \Expect[X] +  \Expect[X]^2] \\  
+        & = \Expect[X^2] - \Expect[2 X \Expect[X]]  + \Expect[ \Expect[X]^2] \\
+        & = \Expect[X^2] - 2 \Expect[X]^2 + \Expect[X]^2 \\
+        & = \Expect[X^2] - \Expect[X]^2
+\end{align*}
+
+
+
+
+
+## Variance {.smaller}
+### Variance is quadratic
+
+::: Proposition
+
+$X$ rv and $a,b \in \R$. Then
+$$
+\Var[a X + b] = a^2 \Var[X] 
+$$
+
+:::
+
+
+**Proof:** Using linearity of $\Expect$ and the fact that $\Expect[c]=c$ for constants:
+\begin{align*}
+\Var[a X + b] & = \Expect[ (aX + b)^2 ] - \Expect[ aX + b ]^2 \\
+              & = \Expect[ a^2X^2 + b^2 + 2abX ] - ( a\Expect[X]  + b)^2 \\
+              & = a^2 \Expect[ X^2 ] + b^2 + 2ab \Expect[X] - 
+                  a^2 \Expect[X]^2   - b^2 - 2ab \Expect[X] \\
+              & = a^2 ( \Expect[ X^2 ] - \Expect[ X ]^2 ) = a^2 \Var[X]
+\end{align*}
+
+
+
+
+
+## Variance {.smaller}
+### How to compute the Variance
+
+We have
+$$
+\Var[X] =  \Expect[X^2] - \Expect[X]^2
+$$
+
+- $X$ discrete:
+$$
+E[X] = \sum_{x \in \mathbb{R}} x f_X(x) \,, \qquad 
+E[X^2] = \sum_{x \in \mathbb{R}} x^2 f_X(x)
+$$
+
+
+- $X$ continuous:
+$$
+E[X] = \int_{-\infty}^\infty x f_X(x) \, dx \,, \qquad 
+E[X^2] = \int_{-\infty}^\infty x^2 f_X(x) \, dx
+$$
+
+
+
+
+
+## Example - Gamma distribution {.smaller}
+### Definition
+
+
+The **Gamma distribution** with parameters $\alpha,\beta>0$ is
+$$
+f(x) := \frac{x^{\alpha-1} e^{-\beta{x}} \beta^{\alpha}}{\Gamma(\alpha)} \,, \quad x > 0
+$$
+where $\Gamma$ is the **Gamma function**
+$$
+\Gamma(a) :=\int_0^{\infty} x^{a-1} e^{-x} \, dx
+$$
+
+
+
+
+
+## Example - Gamma distribution {.smaller}
+### Definition
+
+**Properties of $\Gamma$**:
+
+- The Gamma function coincides with the factorial on natural numbers
+$$
+\Gamma(n)=(n-1)! \,, \quad \forall \, n \in \N
+$$
+
+- More in general
+$$
+\Gamma(a)=(a-1)\Gamma(a-1) \,, \quad \forall \, a > 0
+$$
+
+
+-  Definition of $\Gamma$ implies normalization of the Gamma distribution:
+$$
+\int_0^{\infty} f(x) \,dx = 
+\int_0^{\infty} \frac{x^{\alpha-1} e^{-\beta{x}} \beta^{\alpha}}{\Gamma(\alpha)}  \, dx
+=  1 
+$$
+
+
+
+## Example - Gamma distribution {.smaller}
+### Definition
+
+$X$ has Gamma distribution with parameters $\alpha,\beta$ if 
+
+- the pdf of $X$ is
+$$
+f_X(x) = 
+\begin{cases} 
+\dfrac{x^{\alpha-1} e^{-\beta{x}} \beta^{\alpha}}{\Gamma(\alpha)}  & \text{ if } x > 0 \\
+0                                                                 & \text{ if } x \leq 0
+\end{cases}
+$$
+
+- In this case we write $X \sim \Gamma(\alpha,\beta)$
+
+- $\alpha$ is **shape** parameter
+
+- $\beta$ is **rate** parameter
+
+
+
+
+## Example - Gamma distribution {.smaller}
+### Plot
+
+Plotting $\Gamma(\alpha,\beta)$ for parameters $(2,1)$ and $(3,2)$
+
+```{r}
+# Set the shape and rate parameters for the first gamma distribution
+alpha1 <- 2
+beta1 <- 1
+
+# Set the shape and rate parameters for the second gamma distribution
+alpha2 <- 3
+beta2 <- 2
+
+# Generate values for the x-axis
+x_values <- seq(0, 15, by = 0.1)
+
+# Calculate the probability density function (PDF) values for each x for the first distribution
+pdf_values1 <- dgamma(x_values, shape = alpha1, rate = beta1)
+
+# Calculate the probability density function (PDF) values for each x for the second distribution
+pdf_values2 <- dgamma(x_values, shape = alpha2, rate = beta2)
+
+# Plot the gamma PDFs
+plot(x_values, 
+    pdf_values1, 
+    type = "l", 
+    col = "blue", lwd = 2,
+    xlab = "", 
+    ylab = "",
+    ylim = c(0, max(pdf_values1, pdf_values2) + 0.1))
+
+lines(x_values, 
+      pdf_values2, 
+      col = "red", 
+      lwd = 2)
+
+mtext("x", side=1, line=3, cex=2)
+mtext("pdf", side=2, line=2.5, cex=2)
+
+# Add a legend
+legend("topright", legend = c(paste("Gamma(", alpha1, ",", beta1, ")", sep = ""),
+                              paste("Gamma(", alpha2, ",", beta2, ")", sep = "")),
+       col = c("blue", "red"), lty = 1, lwd = 2, cex = 1.5)
+
+```  
+
+
+
+
+
+## Example - Gamma distribution {.smaller}
+### Expected value
+
+Let $X \sim \Gamma(\alpha,\beta)$. We have:
+\begin{align*}
+\Expect [X] & = \int_{-\infty}^\infty x f_X(x) \, dx  \\
+            & = \int_0^\infty  x \, \frac{x^{\alpha-1} e^{-\beta{x}} \beta^{\alpha}}{\Gamma(\alpha)} \, dx \\
+            & = \frac{ \beta^{\alpha} }{ \Gamma(\alpha) }
+            \int_0^\infty  x^{\alpha} e^{-\beta{x}}  \, dx
+\end{align*}
+
+
+
+## Example - Gamma distribution {.smaller}
+### Expected value
+
+Recall previous calculation:
+$$
+\Expect [X] = \frac{ \beta^{\alpha} }{ \Gamma(\alpha) }
+            \int_0^\infty  x^{\alpha} e^{-\beta{x}}  \, dx
+$$
+Change variable $y=\beta x$ and recall definition of $\Gamma$:
+\begin{align*}
+ \int_0^\infty  x^{\alpha} e^{-\beta{x}}  \, dx & = 
+  \int_0^\infty  \frac{1}{\beta^{\alpha}} (\beta x)^{\alpha} e^{-\beta{x}} \frac{1}{\beta} \, \beta \, dx \\
+  & = \frac{1}{\beta^{\alpha+1}} \int_0^\infty  y^{\alpha} e^{-y} \, dy \\
+  & = \frac{1}{\beta^{\alpha+1}} \Gamma(\alpha+1)
+\end{align*}
+
+
+
+
+## Example - Gamma distribution {.smaller}
+### Expected value
+
+Therefore
+\begin{align*}
+\Expect [X] & = \frac{ \beta^{\alpha} }{ \Gamma(\alpha) }
+            \int_0^\infty  x^{\alpha} e^{-\beta{x}}  \, dx \\
+            & =  \frac{ \beta^{\alpha} }{ \Gamma(\alpha) } \, \frac{1}{\beta^{\alpha+1}} \Gamma(\alpha+1) \\
+            & = \frac{\Gamma(\alpha+1)}{\beta \Gamma(\alpha)}
+\end{align*}
+
+Recalling that $\Gamma(\alpha+1)=\alpha \Gamma(\alpha)$:
+$$
+\Expect [X] = \frac{\Gamma(\alpha+1)}{\beta \Gamma(\alpha)} = \frac{\alpha}{\beta}
+$$
+
+
+
+## Example - Gamma distribution {.smaller}
+### Variance
+
+We want to compute
+$$
+\Var[X] = \Expect[X^2] - \Expect[X]^2
+$$
+
+- We already have $\Expect[X]$
+- Need to compute $\Expect[X^2]$
+
+
+
+## Example - Gamma distribution {.smaller}
+### Variance
+
+Proceeding similarly we have:
+
+\begin{align*}
+\Expect[X^2] & = \int_{-\infty}^{\infty} x^2 f_X(x) \, dx \\
+             & = \int_{0}^{\infty}  x^2 \, \frac{ x^{\alpha-1} \beta^{\alpha} e^{- \beta x} }{ \Gamma(\alpha) } \, dx \\
+             & =  \frac{\beta^{\alpha}}{\Gamma(\alpha)} \int_{0}^{\infty}  x^{\alpha+1} e^{- \beta x} \, dx 
+\end{align*}
+
+
+
+
+## Example - Gamma distribution {.smaller}
+### Variance
+
+Recall previous calculation:
+$$
+\Expect [X^2] =  \frac{\beta^{\alpha}}{\Gamma(\alpha)} \int_{0}^{\infty}  x^{\alpha+1} e^{- \beta x} \, dx 
+$$
+Change variable $y=\beta x$ and recall definition of $\Gamma$:
+\begin{align*}
+ \int_0^\infty  x^{\alpha+1} e^{-\beta{x}}  \, dx & = 
+  \int_0^\infty  \frac{1}{\beta^{\alpha+1}} (\beta x)^{\alpha + 1} e^{-\beta{x}} \frac{1}{\beta} \, \beta \, dx \\
+  & = \frac{1}{\beta^{\alpha+2}} \int_0^\infty  y^{\alpha + 1 } e^{-y} \, dy \\
+  & = \frac{1}{\beta^{\alpha+2}} \Gamma(\alpha+2)
+\end{align*}
+
+
+
+## Example - Gamma distribution {.smaller}
+### Variance
+
+Therefore
+$$
+\Expect [X^2]  = \frac{ \beta^{\alpha} }{ \Gamma(\alpha) }
+            \int_0^\infty  x^{\alpha+1} e^{-\beta{x}}  \, dx 
+             =  \frac{ \beta^{\alpha} }{ \Gamma(\alpha) } \, \frac{1}{\beta^{\alpha+2}} \Gamma(\alpha+2) 
+              = \frac{\Gamma(\alpha+2)}{\beta^2 \Gamma(\alpha)}
+$$
+Now use following formula twice $\Gamma(\alpha+1)=\alpha \Gamma(\alpha)$:
+$$
+\Gamma(\alpha+2)= (\alpha + 1) \Gamma(\alpha + 1) = (\alpha + 1) \alpha \Gamma(\alpha)
+$$
+Substituting we get
+$$
+\Expect [X^2] = \frac{\Gamma(\alpha+2)}{\beta^2 \Gamma(\alpha)} = \frac{(\alpha+1) \alpha}{\beta^2}
+$$
+
+
+
+## Example - Gamma distribution {.smaller}
+### Variance
+
+Therefore
+$$
+\Expect [X] = \frac{\alpha}{\beta}  \quad \qquad
+\Expect [X^2] = \frac{(\alpha+1) \alpha}{\beta^2}
+$$
+and the variance is
+\begin{align*}
+\Var[X] & = \Expect [X^2] - \Expect [X]^2 \\
+        & = \frac{(\alpha+1) \alpha}{\beta^2} - \frac{\alpha^2}{\beta^2} \\
+        & = \frac{\alpha}{\beta^2}
+\end{align*}
+
+
+
+
+# Part 4: <br>Bivariate random vectors {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+## Univariate vs Bivariate vs Multivariate {.smaller}
+
+- Probability models seen so far only involve 1 random variable
+    * These are called **univariate models**
+
+- We are also interested in probability models involving multiple variables:
+    * Models with 2 random variables are called **bivariate**
+    * Models with more than 2 random variables are called **multivariate**
+
+
+
+
+## Random vectors {.smaller}
+### Definition
+
+**Recall**: a random variable is a **measurable** function
+$$
+X \colon \Omega \to \R \,, \quad \Omega \,\, \text{ sample space}
+$$
+
+::: Definition
+
+A **random vector** is a measurable function $\XX \colon \Omega \to \R^n$. We say that
+
+- $\XX$ is **univariate** if $n=1$
+- $\XX$ is **bivariate** if $n=2$
+- $\XX$ is **multivariate** if $n \geq 3$
+
+:::
+
+
+
+
+
+## Random vectors {.smaller}
+### Notation
+
+- The components of a random vector $\XX$ are denoted by
+$$
+\XX = (X_1, \ldots, X_n) 
+$$
+with $X_i \colon \Omega \to \R$ random variables
+
+
+- We denote a two-dimensional bivariate random vector by 
+$$
+(X,Y)
+$$
+with $X,Y \colon \Omega \to \R$ random variables
+
+
+
+
+
+
+
+
+
+## Discrete bivariate random vectors {.smaller}
+### Main definitions
+
+::: Definition
+
+The (bivariate) random vector $(X,Y)$ is **discrete** if $X$ and $Y$ are discrete random variables
+
+:::
+
+::: Definition
+
+The **joint probability mass function** or **joint pmf** of a discrete
+random vector $(X,Y)$ is the function $f_{X,Y} \colon \R^2 \to \R$ defined by
+$$
+f_{X,Y}(x,y) := P(X=x, Y=y ) \,, \qquad \forall \, (x,y) \in \R^2 
+$$
+
+:::
+
+**Notation**: $P(X=x, Y=y ) := P( \{X=x \} \cap \{ Y=y \})$
+
+
+
+## Discrete bivariate random vectors {.smaller}
+### Computing probabilities
+
+- The joint pmf can be used to compute the probability of $A \subset \R^2$
+\begin{align*}
+P((X,Y) \in A) & := P( \{ \omega \in \Omega  \colon ( X(\omega), Y(\omega) ) \in A  \} ) \\ 
+               &  = \sum_{(x,y) \in A} f_{X,Y} (x,y)
+\end{align*}
+
+- In particular we obtain
+$$
+ \sum_{(x,y) \in \R^2} f_{X,Y} (x,y) = 1
+$$
+
+
+
+## Discrete bivariate random vectors {.smaller}
+### Expected value
+
+- Suppose $(X,Y) \colon \Omega \to \R^2$ random vector and $g \colon \R^2 \to \R$ function
+- Then $g(X,Y) \colon \Omega \to \R$ is random variable
+
+
+::: Definition
+
+The **expected value** of the random variable $g(X,Y)$ is
+$$
+\Expect[g(X,Y)] := \sum_{(x,y) \in \R^2} g(x,y) f_{X,Y}(x,y) = \sum_{(x,y) \in \R^2} g(x,y) P(X=x,Y=y)
+$$
+
+:::
+
+
+
+## Discrete bivariate random vectors {.smaller}
+### Marginals
+
+
+::: Definition
+
+Let $(X,Y)$ be a discrete random vector.
+The **marginal pmfs** of $X$ and $Y$ are the functions
+$$
+f_X (x) := P(X = x) \quad \text{ and } \quad 
+f_Y(y) := P(Y = y)
+$$
+
+:::
+
+**Note**: The **marginal pmfs** of $X$ and $Y$ are just the usual **pmfs** of $X$ and $Y$
+
+
+
+
+## Discrete bivariate random vectors {.smaller}
+### Marginals
+
+
+Marginals of $X$ and $Y$ can be computed from the joint pmf $f_{X,Y}$ 
+
+::: Theorem
+
+Let $(X,Y)$ be a discrete random vector with joint pmf $f_{X,Y}$.
+The **marginal pmfs** of $X$ and $Y$ are given by
+$$
+f_X(x) = \sum_{y \in \R} f_{X,Y}(x,y) \quad \text{ and }
+\quad 
+f_Y(y) = \sum_{x \in \R} f_{X,Y}(x,y)
+$$
+
+:::
+
+
+
+## Example - Discrete random vector {.smaller}
+### Setting
+
+- Consider experiment of tossing two dice. Then sample space is
+$$
+\Omega = \{ (m,n)  \colon m,n \in \{1,\ldots,6\}  \}
+$$
+with $m$ and $n$ being the outcomes of first and second dice, respectively
+- We assume that the dice are fair. Therefore $P(\{(m,n)\})=1/36$
+- Define the discrete random variables
+\begin{align*}
+X(m,n) & := m + n   \quad   &  \text{ sum of the dice} \\
+Y(m,n) & := | m - n|  \quad &  \text{ |difference of the dice|}
+\end{align*}
+- For example
+$$
+X(3,3) = 3 + 3 = 6  \qquad \qquad  Y(3,3) = |3 - 3| = 0
+$$
+
+
+
+## Example - Discrete random vector {.smaller}
+### Computing joint pmf
+
+- To compute joint pmf one needs to consider all the cases
+$$
+f_{X,Y}(x,y) = P(X=x,Y=y) \,, \quad (x,y) \in \R^2
+$$
+
+- For example $X=4$ and $Y=0$ is only obtained for $(2,2)$. Hence
+$$
+f_{X,Y}(4,0) = P(X=4,Y=0) = P(\{(2,2)\}) = \frac{1}{6} \cdot  \frac{1}{6} = \frac{1}{36}
+$$
+
+- Similarly $X=5$ and $Y=2$ is only obtained for $(4,1)$ and $(1,4)$. Thus
+$$
+f_{X,Y}(5,2) = P(X=5,Y=2) = P(\{(4,1)\} \cup \{(1,4)\}) 
+= \frac{1}{36} + \frac{1}{36} = \frac{1}{18} 
+$$
+
+
+
+## Example - Discrete random vector {.smaller}
+### Computing joint pmf
+
+
+- $f_{X,Y}(x,y)=0$ for most of the pairs $(x,y)$. Indeed $f_{X,Y}(x,y)=0$ if
+$$
+x \notin X(\Omega)  \quad \text{ or } \quad  y \notin Y(\Omega)
+$$
+
+- We have $X(\Omega)=\{2,3,4,5,6,7,8,9,10,11,12\}$
+
+- We have $Y(\Omega)=\{0,1,2,3,4,5\}$
+
+- Hence $f_{X,Y}$ only needs to be computed for pairs $(x,y)$ satisfying
+$$
+ 2 \leq x \leq 12  \quad \text{ and } \quad  0 \leq y \leq 5
+$$
+
+- Within this range, other values will be zero. For example
+$$
+f_{X,Y}(3,0) = P(X=3,Y=0) = P(\emptyset) = 0
+$$
+
+
+
+
+## Example - Discrete random vector {.smaller}
+### Table of values of joint pmf
+
+Below are all the values for $f_{X,Y}$. Empty entries correspond to $f_{X,Y}(x,y) = 0$
+
+|    |    |    |    |    |    |    |$x$ |    |    |    |    |    |
+|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|    |    | 2  | 3  | 4  | 5  | 6  | 7  |  8 |  9 |  10| 11 | 12 |
+|    | 0  |1/36|    |1/36|    |1/36|    |1/36|    |1/36|    |1/36|
+|    | 1  |    |1/18|    |1/18|    |1/18|    |1/18|    |1/18|    |
+|$y$ | 2  |    |    |1/18|    |1/18|    |1/18|    |1/18|    |    |
+|    | 3  |    |    |    |1/18|    |1/18|    |1/18|    |    |    |
+|    | 4  |    |    |    |    |1/18|    |1/18|    |    |    |    |
+|    | 5  |    |    |    |    |    |1/18|    |    |    |    |    |
+
+
+
+
+## Example - Discrete random vector {.smaller}
+### Expected value
+
+- We want to compute $\Expect[XY]$
+- Hence consider the function $g(x,y):=xy$
+- We obtain
+\begin{align*}
+\Expect[XY] & = \Expect[g(X,Y)] \\
+            & = \sum_{(x,y) \in \R^2} g(x,y) f_{X,Y}(x,y)\\
+            & = \sum_{(x,y) \in \R^2} xy f_{X,Y}(x,y)
+\end{align*}
+
+
+
+## Example - Discrete random vector {.smaller}
+### Expected value
+
+We can use the non-zero entries in the table for $f_{X,Y}$ to compute:
+\begin{align*}
+\Expect[XY] & = 3 \cdot 1 \cdot \frac{1}{18} + 5 \cdot 1 \cdot \frac{1}{18} + 7 \cdot 1 \cdot \frac{1}{18} + 
+9 \cdot 1 \cdot \frac{1}{18} +  11 \cdot 1 \cdot \frac{1}{18} \\
+            & + 4 \cdot 2 \cdot \frac{1}{18} + 
+                6 \cdot 2 \cdot \frac{1}{18} +
+                8 \cdot 2 \cdot \frac{1}{18} +
+                10\cdot 2 \cdot \frac{1}{18} \\
+            & + 5 \cdot 3 \cdot \frac{1}{18} + 
+                7 \cdot 3 \cdot \frac{1}{18} +
+                9 \cdot 3 \cdot \frac{1}{18} \\
+            & + 6 \cdot 4 \cdot \frac{1}{18} + 
+                8 \cdot 4 \cdot \frac{1}{18}  \\
+            & + 7 \cdot 5 \cdot \frac{1}{18} \\
+            & = (35 + 56 + 63 + 56 + 35 ) \frac{1}{18} = \frac{245}{18}  
+\end{align*}
+
+
+
+## Example - Discrete random vector {.smaller}
+### Marginals
+
+- We want to compute the marginal of $Y$ via the formula
+$$
+f_Y(y) = \sum_{x \in \R} f_{X,Y}(x,y)
+$$
+
+- Again looking at the table for $f_{X,Y}$, we get
+\begin{align*}
+f_Y(0) & = f_{X,Y}(2,0) + f_{X,Y}(4,0) + f_{X,Y}(6,0) \\ 
+       &  + f_{X,Y}(8,0) + f_{X,Y}(10,0) + f_{X,Y}(12,0) \\
+       & = 6 \cdot \frac{1}{36} = \frac{3}{18}
+\end{align*}
+
+
+
+
+## Example - Discrete random vector {.smaller}
+### Marginals
+
+- Similarly, we get
+\begin{align*}
+f_Y(1) & = f_{X,Y}(3,1) + f_{X,Y}(5,1) + f_{X,Y}(7,1) \\
+       & + f_{X,Y}(9,1) +  f_{X,Y}(11,1) \\
+       & = 5 \cdot \frac{1}{18} = \frac{5}{18}
+\end{align*}
+- And the remaining values follow a similar pattern:
+$$
+f_Y(2) = \frac{4}{18}  \,, \quad 
+f_Y(3) = \frac{3}{18}  \,, \quad 
+f_Y(4) = \frac{2}{18}  \,, \quad 
+f_Y(5) = \frac{1}{18}  \,, \quad 
+$$
+
+
+
+## Example - Discrete random vector {.smaller}
+### Marginals
+
+Hence the pmf of $Y$ is given by the table below
+
+| $y$    |   $0$       |        $1$   |      $2$     |     $3$      |      $4$     |     $5$      |
+|:------:|:-----------:|:------------:|:------------:|:------------:|:------------:|:------------:|
+|$f_Y(y)$|$\frac{3}{18}$|$\frac{5}{18}$|$\frac{4}{18}$|$\frac{3}{18}$|$\frac{2}{18}$|$\frac{1}{18}$|  
+
+Note that $f_Y$ is indeed a pmf, since 
+$$
+\sum_{y \in \R} f_Y(y) = \sum_{y=0}^5 f_Y(y) = 1
+$$
+
+
+
+
+
+## Continuous bivariate random vectors {.smaller}
+
+
+::: Definition
+
+The random vector $(X,Y)$ is **continuous** if $X$ and $Y$ are continuous rv
+
+:::
+
+::: Definition
+
+The **joint probability density function** or **joint pdf** of a continuous
+random vector $(X,Y)$ is a function $f_{X,Y} \colon \R^2 \to \R$ s.t.
+$$
+P((X,Y) \in A) = \int_{A} f_{X,Y}(x,y) \, dxdy
+$$
+
+:::
+
+
+
+- $\int_A$ is a double integral over $A$, like the ones you saw in Calculus
+- The joint pdf is defined over the whole $\R^2$
+
+
+
+
+
+## Continuous bivariate random vectors {.smaller}
+### Expected value
+
+- Suppose $(X,Y) \colon \Omega \to \R^2$ continuous random vector and $g \colon \R^2 \to \R$ function
+- Then $g(X,Y) \colon \Omega \to \R$ is random variable
+
+
+::: Definition
+
+The **expected value** of the random variable $g(X,Y)$ is
+$$
+\Expect[g(X,Y)] := \int_{\R^2} g(x,y) f_{X,Y}(x,y) \, dxdy
+$$
+
+:::
+
+
+**Notation**:The symbol $\int_{\R^2}$ denotes the double integral $\int_{-\infty}^\infty\int_{-\infty}^\infty$
+
+
+
+
+## Continuous bivariate random vectors {.smaller}
+### Marginals
+
+
+::: Definition
+
+Let $(X,Y)$ be a continuous random vector.
+The **marginal pdfs** of $X$ and $Y$ are functions 
+$f_X,f_Y \colon \R \to \R$ s.t.
+$$
+P(a \leq X \leq b)  =  \int_{a}^b f_X (x) \,dx  \quad \text{ and } \quad 
+P(a \leq Y \leq b)  =  \int_{a}^b f_Y (y) \,dy 
+$$
+
+:::
+
+**Note**: The **marginal pdfs** of $X$ and $Y$ are just the usual **pdfs** of $X$ and $Y$
+
+
+
+
+## Continuous bivariate random vectors {.smaller}
+### Marginals
+
+
+Marginals of $X$ and $Y$ can be computed from the joint pdf $f_{X,Y}$ 
+
+::: Theorem
+
+Let $(X,Y)$ be a discrete random vector with joint pdf $f_{X,Y}$.
+The **marginal pdfs** of $X$ and $Y$ are given by
+$$
+f_X(x) = \int_{-\infty}^\infty f_{X,Y}(x,y) \,dy \quad \text{ and }
+\quad 
+f_Y(y) = \int_{-\infty}^\infty f_{X,Y}(x,y) \, dx
+$$
+
+:::
+
+
+
+
+## Characterization of joint pmf and pdf {.smaller}
+
+
+::: Theorem
+
+Let $f \colon \R^2 \to \R$. Then $f$ is **joint pmf** or **joint pdf** of a random vector $(X,Y)$ iff
+
+1. $f(x,y) \geq 0$ for all $(x,y) \in \R^2$
+2. $\sum_{(x,y) \in \R^2} f(x,y) = 1 \,\,\,$ (joint pmf) $\quad$ or $\quad$ $\int_{\R^2} f(x,y) \,dxdy = 1 \,\,\,$ (joint pdf)
+
+:::
+
+In the above setting:
+
+- The random vector $(X,Y)$ has **distribution**
+    * $P(X=x,Y=y ) = f(x,y)   \,\,\,\text{ (joint pmf)}$
+    * $P((X,Y) \in A) = \int_A f (x,y) \, dxdy  \,\,\, \text{ (joint pdf)}$
+
+- The symbol $(X,Y) \sim f$ denotes that $(X,Y)$ has distribution $f$
+
+
+
+
+
+
+## Summary - Random Vectors {.smaller}
+
+
+
+| $(X,Y)$ discrete random vector       |  $(X,Y)$ continuous random vector         |
+|--------------                        |----------------                           |
+| $X$ and $Y$ discrete                 |  $X$ and $Y$ continuous                   |
+|**Joint pmf**                         |**Joint pdf**                              |
+| $f_{X,Y}(x,y) := P(X=x,Y=y)$         | $P((X,Y) \in A) = \int_A f_X(x,y) \,dxdy$ |  
+| $f_{X,Y} \geq 0$                     |  $f_{X,Y} \geq 0$                         |
+|$\sum_{(x,y)\in \R^2} f_{X,Y}(x,y)=1$ | $\int_{\R^2} f_{X,Y}(x,y) \, dxdy= 1$     |
+|**Marginal pmfs**                     | **Marginal pdfs**                         |
+| $f_X (x) := P(X=x)$                  |$P(a \leq X \leq b) = \int_a^b f_X(x) \,dx$|
+| $f_Y (y) := P(Y=y)$                  |$P(a \leq Y \leq b) = \int_a^b f_Y(y) \,dy$|
+|$f_X (x)=\sum_{y \in \R} f_{X,Y}(x,y)$|$f_X(x) = \int_{\R} f_{X,Y}(x,y) \,dy$     |
+|$f_Y (y)=\sum_{x \in \R} f_{X,Y}(x,y)$|$f_Y(y) = \int_{\R} f_{X,Y}(x,y) \,dx$     |
+
+
+
+
+
+## Linearity of Expected Value {.smaller}
+
+
+::: Theorem
+
+$(X,Y)$ random vector, $g,h \colon \R^2 \to \R$ functions and $a,b,c \in \R$. The expectation is linear:
+\begin{equation} \tag{1}
+\Expect( a g (X,Y) + b h(X,Y)+ c ) = a \Expect[g(X,Y)] + b \Expect[h(X,Y)] + c
+\end{equation}
+In particular
+\begin{equation} \tag{2}
+\Expect[a X + b Y] = a\Expect[X] + b\Expect[Y]
+\end{equation}
+
+:::
+
+
+- Proof of (1) follows by definition (see also argument in Slide 64)
+- Equation (2) follows from (1) by setting 
+$$ 
+c=0 \,, \quad  g(x,y)=x \,, \qquad h(x,y)=y
+$$
+
+
+
+
+
+
+
+
+
+# Part 5: <br>Conditional distributions {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+
+
+## Conditional distributions - Discrete case  {.smaller}
+
+- Suppose given a discrete random vector $(X,Y)$
+
+- It might happen that the event $\{X=x\}$ depends on $\{Y=y\}$ 
+
+- If $P(Y=y)>0$ we can define the **conditional probability**
+$$
+P(X=x|Y=y) := \frac{P(X=x,Y=y)}{P(Y=y)} = \frac{f_{X,Y}(x,y)}{f_Y(y)}
+$$
+where $f_{X,Y}$ is **joint pmf** of $(X,Y)$ and $f_Y$ the **marginal pmf** of $Y$
+
+
+
+
+## Conditional pmf  {.smaller}
+
+
+::: Definition
+
+$(X,Y)$ discrete random vector with joint pmf $f_{X,Y}$ and marginal pmfs 
+$f_X, f_Y$
+
+- For any $x$ such that $f_X(x)=P(X=x)>0$ the **conditional pmf of $Y$ given that $X=x$** is the function $f(\cdot | x)$ defined by
+$$
+f(y|x) := P(Y=y|X=x) = \frac{f_{X,Y}(x,y)}{f_X(x)}
+$$
+
+- For any $y$ such that $f_Y(y)=P(X=y)>0$ the **conditional pmf of $X$ given that $Y=y$** is the function $f(\cdot | y)$ defined by
+$$
+f(x|y) := P(X=x|Y=y) =\frac{f_{X,Y}(x,y)}{f_Y(y)}
+$$
+
+:::
+
+
+
+
+## Conditional pmf  {.smaller}
+
+- Conditional pmf $f(y|x)$ is indeed a **pmf**:
+  - $f(y|x) \geq 0$
+  - $\sum_{y} f(y|x) = \dfrac{\sum_{y} f_{X,Y}(x,y)}{f_X(x)} = \dfrac{f_X(x)}{f_X(x)} = 1$
+  - Hence there exists a discrete rv $Z$ whose pmf is $f(y|x)$
+  - This is true by the Theorem in Slide 53
+
+- Similar reasoning yields that also $f(x|y)$ is a **pmf**
+
+- **Notation**: We will often write
+    * $X|Y$ to denote the distribution $f(x|y)$
+    * $Y|X$ to denote the distribution $f(y|x)$
+
+
+
+
+## Conditional distributions - Continuous case  {.smaller}
+
+
+- In the discrete case we consider the conditional probability
+$$
+P(X=x|Y=y) = \frac{P(X=x,Y=y)}{P(Y=y)}
+$$
+- However when $Y$ is continuous random variable we have
+$$
+P(Y=y) = 0 \quad \forall \, y \in \R
+$$
+- **Question**: How do we define conditional distributions in the continuous case?
+- **Answer**: By replacing pmfs with pdfs
+
+
+
+## Conditional pdf  {.smaller}
+
+
+::: Definition
+
+$(X,Y)$ continuous random vector with joint pdf $f_{X,Y}$ and marginal pdfs 
+$f_X, f_Y$
+
+- For any $x$ such that $f_X(x)>0$ the **conditional pdf of $Y$ given that $X=x$** is the function $f(\cdot | x)$ defined by
+$$
+f(y|x) := \frac{f_{X,Y}(x,y)}{f_X(x)}
+$$
+
+- For any $y$ such that $f_Y(y)>0$ the **conditional pdf of $X$ given that $Y=y$** is the function $f(\cdot | y)$ defined by
+$$
+f(x|y) := \frac{f_{X,Y}(x,y)}{f_Y(y)}
+$$
+
+:::
+
+
+
+
+## Conditional pdf  {.smaller}
+
+- Conditional pdf $f(y|x)$ is indeed a **pdf**:
+  - $f(y|x) \geq 0$
+  - $\int_{y \in \R} f(y|x) \, dy = \dfrac{\int_{y \in \R} f_{X,Y}(x,y) \, dy}{f_X(x)} = \dfrac{f_X(x)}{f_X(x)} = 1$
+  - Hence there exists a continuous rv $Z$ whose pdf is $f(y|x)$
+  - This is true by the Theorem in Slide 53
+
+- Similar reasoning yields that also $f(x|y)$ is a **pdf**
+
+
+
+
+
+## Conditional expectation  {.smaller}
+
+
+::: Definition
+
+$(X,Y)$ random vector and $g \colon \R \to \R$ function. The **conditional expectation** of $g(Y)$ given $X=x$ is
+\begin{align*}
+\Expect [g(Y) | x] & := \sum_{y} g(y) f(y|x)   \quad \text{ if } (X,Y) \text{ discrete} \\
+\Expect [g(Y) | x] & := \int_{y \in \R} g(y) f(y|x) \, dy   \quad \text{ if } (X,Y) \text{ continuous}
+\end{align*}
+
+:::
+
+- $\Expect [g(Y) | x]$ is a real number for all $x \in \R$
+- $\Expect [g(Y) | X]$ denotes the Random Variable $h(X)$ where $h(x):=\Expect [g(Y) | x]$
+
+
+
+
+## Conditional variance  {.smaller}
+
+
+::: Definition
+
+$(X,Y)$ random vector. The **conditional variance** of $Y$ given $X=x$ 
+is
+$$
+\Var [Y | x]  := \Expect[Y^2|x] - \Expect[Y|x]^2 
+$$
+
+:::
+
+- $\Var [Y | x]$ is a real number for all $x \in \R$
+- $\Var [Y | X]$ denotes the Random Variable 
+$$
+\Var [Y | X] := \Expect[Y^2|X] - \Expect[Y|X]^2 
+$$
+
+
+
+
+## Exercise - Conditional distribution  {.smaller}
+
+Assume given a continuous random vector $(X,Y)$ with **joint pdf**
+$$
+f_{X,Y}(x,y) := e^{-y}  \,\, \text{ if } \,\, 0 < x < y  \,, \quad 
+f_{X,Y}(x,y) :=0    \,\, \text{ otherwise}
+$$
+
+::: {.column width="42%"}
+
+- Compute $f_X$ and $f(y|x)$
+- Compute $\Expect[Y|X]$
+- Compute $\Var[Y|X]$
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+
+library(plotly)
+
+# Define the function
+f <- function(x, y) {
+  if (0 < x && x < y) {
+    return(exp(-y))
+  } else {
+    return(0)
+  }
+}
+
+# Generate data for the surface plot
+x_vals <- seq(0, 2, length.out = 200)
+y_vals <- seq(0, 2, length.out = 200)
+
+z_matrix <- outer(x_vals, y_vals, Vectorize(function(x, y) f(x, y)))
+
+# Create a 3D surface plot using plot_ly
+plot_ly(
+  x = x_vals,
+  y = y_vals,
+  z = z_matrix,
+  type = "surface",
+  colors = "viridis",
+  showscale = FALSE
+) %>% 
+    layout(
+    scene = list(
+      xaxis = list(title = "x"),
+      yaxis = list(title = "y"),
+      zaxis = list(title = "f_XY"),
+      camera = list(
+        eye = list(x = 1.87, y = 0.88, z = 0.64)
+      )
+    ),
+    width = 800,
+    height = 600
+  )
+
+
+```
+
+:::
+
+
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+
+
+## Solution  {.smaller}
+
+- We compute $f_X$, the **marginal pdf of $X$**:
+  * If $x \leq 0$ then $f_{X,Y}(x,y)=0$. Therefore
+    $$
+    f_X(x) = \int_{-\infty}^\infty f_{X,Y}(x,y) \, dy = 0 
+    $$
+  * If $x > 0$ then $f_{X,Y}(x,y)=e^{-y}$ if $y>x$, and $f_{X,Y}(x,y)=0$ if $y \leq x$. Thus
+  \begin{align*}
+  f_X(x) & = \int_{-\infty}^\infty f_{X,Y}(x,y) \, dy = 
+  \int_{x}^\infty e^{-y} \, dy \\
+  & = - e^{-y} \bigg|_{y=x}^{y=\infty}  = -e^{-\infty} + e^{-x}  = e^{-x} 
+  \end{align*}
+
+
+
+
+
+## Solution  {.smaller}
+
+
+- The **marginal pdf of $X$** has then **exponential distribution**
+$$
+f_{X}(x) = 
+\begin{cases}
+e^{-x} & \text{ if } x > 0 \\
+0      & \text{ if } x \leq 0 
+\end{cases}
+$$
+
+
+```{r}
+
+# Define the probability density function (PDF)
+f_X <- function(x) {
+  exp(-x)
+}
+
+# Generate x values for plotting
+x_values <- seq(0, 4, length.out = 100)
+
+# Calculate corresponding y values
+y_values <- f_X(x_values)
+
+# Plot the distribution using base R plot function
+plot(x_values, 
+    y_values, 
+    type = "l", 
+    col = "blue", 
+    lwd = 4,
+    xlab = "", 
+    ylab = "")
+
+mtext("x", side=1, line=3, cex=2)
+mtext("f_X", side=2, line=2.5, cex=2)
+
+
+# Add a grid for better visualization
+grid()
+
+```
+
+
+
+
+## Solution  {.smaller}
+
+
+- We now compute $f(y|x)$, the **conditional pdf of $Y$ given $X=x$**:
+    * Note that $f_X(x)>0$ for all $x>0$
+    * Hence assume fixed some $x>0$
+    * If $y>x$ we have $f_{X,Y}(x,y)=e^{-y}$. Hence
+    $$
+    f(y|x) := \frac{f_{X,Y}(x,y)}{f_X(x)} = \frac{e^{-y}}{e^{-x}} = e^{-(y-x)}
+    $$
+    * If $y \leq x$ we have $f_{X,Y}(x,y)=0$. Hence
+    $$
+    f(y|x) := \frac{f_{X,Y}(x,y)}{f_X(x)} = \frac{0}{e^{-x}} = 0
+    $$
+
+
+
+
+
+## Solution  {.smaller}
+
+
+- The conditional distribution $Y|X$ is therefore **exponential**, shifted by $x$
+$$
+f(y|x) = 
+\begin{cases}
+e^{-(y-x)} & \text{ if } y > x \\
+0      & \text{ if } y \leq x 
+\end{cases}
+$$
+
+- The **conditional expectation** of $Y$ given $X=x$ is
+\begin{align*}
+\Expect[Y|x] & = \int_{-\infty}^\infty y f(y|x) \, dy 
+               = \int_{x}^\infty y e^{-(y-x)} \, dy \\
+             & = -(y+1) e^{-(y-x)} \bigg|_{x}^\infty =  x + 1  
+\end{align*}
+where we integrated by parts
+
+
+
+
+
+## Solution  {.smaller}
+
+
+- Therefore **conditional expectation** of $Y$ given $X=x$ is
+$$
+\Expect[Y|x] = x + 1  
+$$
+
+
+- This can also be interpreted as the random variable
+$$
+\Expect[Y|X] = X + 1  
+$$
+
+
+- This is not surprising! 
+    * The distribution of $Y|X$ is just an exponential translated by $X$
+    * Therefore, the expected value of $Y|X$ is the expected value of the exponential distribution, which is $1$, translated by $X$
+
+
+
+
+
+
+
+## Solution  {.smaller}
+
+
+- The **conditional second moment** of $Y$ given $X=x$ is
+\begin{align*}
+\Expect[Y^2|x] & = \int_{-\infty}^\infty y^2 f(y|x) \, dy 
+               = \int_{x}^\infty y^2 e^{-(y-x)} \, dy \\
+             & = (y^2+2y+2) e^{-(y-x)} \bigg|_{x}^\infty = x^2 + 2x + 2 
+\end{align*}
+where we integrated by parts
+
+- The **conditional variance** of $Y$ given $X=x$ is
+$$
+\Var[Y|x] = \Expect[Y^2|x] - \Expect[Y|x]^2 = x^2 + 2x + 2 - (x+1)^2 = 1
+$$
+
+
+
+## Solution  {.smaller}
+
+- The conditional variance can be interpreted as the random variable
+$$
+\Var[Y|X] = 1
+$$
+
+- This is not surprising! 
+    * The distribution of $Y|X$ is just an exponential translated by $X$
+    * Therefore, the shape of the distribution does not change
+    * Thus, the variance of $Y|X$ does not depend on $X$
+    $$
+    \Var[Y|X = x ] = \Var[Y | X = 0] = 1
+    $$
+
+
+
+
+## Conditional Expectation {.smaller}
+### A useful formula
+
+::: Theorem
+
+$(X,Y)$ random vector. Then
+$$
+\Expect[X] = \Expect[ \Expect[X|Y] ]
+$$
+
+:::
+
+**Note**: The above formula contains abuse of notation -- $\Expect$ has 3 meanings
+
+- First $\Expect$ is with respect to the marginal of $X$
+- Second $\Expect$ is with respect to the marginal of $Y$
+- Third $\Expect$ is with respect to the conditional distribution $X|Y$
+
+
+
+## Conditional Expectation {.smaller}
+### Proof of Theorem
+
+- Suppose $(X,Y)$ is continuous
+
+- Recall that $\Expect[X|Y]$ denotes the random variable $g(Y)$ with 
+$$
+g(y):= \Expect[X|y] := \int_{\R} xf(x|y) \, dx
+$$
+
+- Also recall that by definition
+$$
+f_{X,Y}(x,y)= f(x|y)f_Y(y)
+$$
+
+
+## Conditional Expectation {.smaller}
+### Proof of Theorem
+
+
+- Therefore
+\begin{align*}
+\Expect[\Expect[X|Y]] & = \Expect[g(Y)] =  \int_{\R} g(y) f_Y(y) \, dy  \\
+                      & = \int_{\R}  \left(  \int_{\R} xf(x|y) \, dx   \right) f_Y(y)\, dy
+                        = \int_{\R^2}  x f(x|y) f_Y(y) \, dx dy  \\
+                      & = \int_{\R^2}  x f_{X,Y}(x,y) \, dx dy 
+                        = \int_{\R}  x \left( \int_{\R} f_{X,Y}(x,y)\, dy \right) \, dx   \\
+                      & = \int_{\R}  x f_{X}(x) \, dx  
+                        = \Expect[X]
+\end{align*}
+
+
+- If $(X,Y)$ is discrete the thesis follows by replacing intergrals with series
+
+
+## Conditional Expectation {.smaller}
+### Example - Application of the formula
+
+
+- Consider again the continuous random vector $(X,Y)$ with **joint pdf**
+$$
+f_{X,Y}(x,y) := e^{-y}  \,\, \text{ if } \,\, 0 < x < y  \,, \quad 
+f_{X,Y}(x,y) :=0    \,\, \text{ otherwise}
+$$
+
+-  We have proven that 
+$$
+\Expect[Y|X] = X + 1  
+$$
+
+- We have also shown that $f_X$ is exponential
+$$
+f_{X}(x) = 
+\begin{cases}
+e^{-x} & \text{ if } x > 0 \\
+0      & \text{ if } x \leq 0 
+\end{cases}
+$$
+
+
+
+
+## Conditional Expectation {.smaller}
+### Example - Application of the formula
+
+
+- From the knowledge of $f_X$ we can compute $\Expect[X]$
+$$
+\Expect[X] = \int_0^\infty x e^{-x} \, dx = -(x+1)e^{-x} \bigg|_{x=0}^{x=\infty} = 1
+$$
+
+- Using the Theorem we can compute $\Expect[Y]$ **without** computing $f_Y$:
+\begin{align*}
+\Expect[Y] & = \Expect[ \Expect[Y|X] ] \\
+           & = \Expect[X + 1] \\
+           & = \Expect[X] + 1  \\
+           & = 1 + 1 = 2
+\end{align*}
+
+
+
+
+
+## Conditional Variance {.smaller}
+### A useful formula
+
+::: Theorem
+
+$(X,Y)$ random vector. Then
+$$
+\Var[X] = \Expect[ \Var[ X|Y] ] + \Var [\Expect[X|Y]]
+$$
+
+:::
+
+
+
+
+
+## Exercise {.smaller}
+
+Let $n \in \N$ be constant, and the random vector $(X,Y)$ satisfy the following:
+
+- $X$ has uniform distribution on $[0,1]$, meaning that its pdf is
+$$
+f_X(x) =  \chi_{[0,1]}(x) = 
+\begin{cases}
+1  & \, \text{ if } \, x \in [0,1] \\
+0  & \, \text{ otherwise }
+\end{cases}
+$$
+
+- The distribution of $Y$, conditional on $X = x$, is binomial $\binomial(n,x)$. This means
+$$
+P(Y = k | X = x) = \binom{n}{k} x^k (1-x)^{n-k} \,, \quad k = 0 , 1 , \ldots ,n \,,
+$$
+where the binomial coefficient is $\binom{n}{k} = \frac{n!}{k!(n-k)!}$      		
+
+**Question:** Compute $\Expect[Y]$ and $\Var[Y]$
+
+
+
+
+## Solution {.smaller}
+
+- By assumption $X$ is uniform on $[0,1]$. Therefore
+\begin{align*}
+f_X(x) & =  \chi_{[0,1]}(x) = 
+\begin{cases}
+1  & \, \text{ if } \, x \in [0,1] \\
+0  & \, \text{ otherwise }
+\end{cases} \\
+ \Expect[X] & = \int_\R x f_{X}(x)\, dx = \int_0^1 x \, dx = \frac12  \\
+ \Expect[X^2] & = \int_\R x^2 f_{X} (x)\, dx = \int_0^1 x^2 \, dx = \frac13 \\
+ \Var[X] & = \Expect[X^2] - \Expect[X]^2 = \frac13 - \frac{1}{4} = \frac{1}{12}
+\end{align*}
+
+
+## Solution {.smaller}
+
+
+- By assumption $Y | X = x$ is $\binomial(n,x)$. Using well-known formulas, we get
+$$
+\Expect[Y|X] = nX \,, \qquad  
+\Var[Y|X] = nX(1-X) 
+$$
+
+- Therefore we conclude
+\begin{align*}
+\Expect[Y] & = \Expect[ \Expect[Y|X] ] = \Expect[nX] = n \Expect[X] = \frac{n}{2} \\
+& \phantom{s} \\
+\Var[Y] & = \Expect[\Var[Y|X]] + \Var[\Expect[Y|X]] \\ 
+        & = \Expect[nX(1-X)] + \Var[nX] \\
+        & = n \Expect[X] - n\Expect[X^2] + n^2\Var[X] \\
+        & = \frac{n}{2} - \frac{n}{3} + \frac{n^2}{12} = \frac{n}{6}  + \frac{n^2}{12} 
+\end{align*}
+
+
+
+
+
+
+
+# Part 6: <br>Independence {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+
+
+
+## Independence of random variables  {.smaller}
+### Intuition
+
+- In previous example: the conditional distribution of $Y$ given $X=x$ was
+$$
+f(y|x) = 
+\begin{cases}
+e^{-(y-x)} & \text{ if } y > x \\
+0      & \text{ if } y \leq x 
+\end{cases}
+$$
+
+- In particular $f(y|x)$ depends on $x$
+
+- This means that knowledge of $X$ gives information on $Y$
+
+- When $X$ does not give any information on $Y$ we say that 
+$X$ and $Y$ are **independent**
+
+
+
+
+
+## Independence of random variables {.smaller}
+### Formal definition
+
+::: Definition
+
+$(X,Y)$ random vector with joint pdf or pmf $f_{X,Y}$ and marginal pdfs or pmfs $f_X,f_Y$. We say that $X$ and $Y$ are **independent** random variables if
+$$
+f_{X,Y}(x,y)  =  f_X(x)f_Y(y) \,, \quad \forall \, (x,y) \in \R^2 
+$$
+
+:::
+
+
+
+
+## Independence of random variables {.smaller}
+### Conditional distributions and probabilities
+
+
+If $X$ and $Y$ are **independent** then $X$ gives no information on $Y$ (and vice-versa):
+
+- Conditional distribution: $Y|X$ is same as $Y$
+$$
+f(y|x) = \frac{f_{X,Y}(x,y)}{f_X(x)} = \frac{f_X(x)f_Y(y)}{f_X(x)} = f_Y(y)
+$$
+
+- Conditional probabilities: From the above we also obtain
+\begin{align*}
+P(Y \in A | x) & = \sum_{y \in A} f(y|x) = \sum_{y \in A} f_Y(y) = P(Y \in A)  & \, \text{ discrete rv} \\
+P(Y \in A | x) & = \int_{y \in A} f(y|x) \, dy = \int_{y \in A} f_Y(y) \, dy = P(Y \in A)  &  \, \text{ continuous rv}
+\end{align*}
+
+
+
+
+
+## Independence of random variables {.smaller}
+### Characterization of independence - Densities
+
+::: Theorem
+
+$(X,Y)$ random vector with joint pdf or pmf $f_{X,Y}$. They are equivalent:
+
+- $X$ and $Y$ are independent random variables
+- There exist functions $g(x)$ and $h(y)$ such that
+$$
+f_{X,Y}(x,y) = g(x)h(y) \,, \quad \forall \, (x,y) \in \R^2
+$$
+
+::: 
+
+
+
+
+
+## Exercise {.smaller}
+
+A student leaves for class between 8 AM and 8:30 AM and takes between 40 and 50 minutes to get there
+
+- Denote by $X$ the time of departure 
+    * $X = 0$ corresponds to 8 AM
+    * $X = 30$ corresponds to 8:30 AM
+- Denote by $Y$ the travel time
+
+- Assume that $X$ and $Y$ are independent and uniformly distributed
+
+
+**Question:** Find the probability that the student arrives to class before 9 AM
+
+
+
+
+
+## Solution {.smaller}
+
+
+- By assumption $X$ is uniform on $(0,30)$. Therefore
+$$
+f_X(x)  = 
+\begin{cases}
+\frac{1}{30} & \text{ if } \, x \in (0,30)  \\
+0 & \text{ otherwise }
+\end{cases}
+$$
+
+- By assumption $Y$ is uniform on $(40,50)$. Therefore
+$$
+f_Y(y) = 
+\begin{cases}
+\frac{1}{10} & \text{ if } \, y \in (40,50)  \\
+0 & \text{ otherwise }
+\end{cases}
+$$
+where we used that $50 - 40 = 10$
+
+
+
+## Solution {.smaller}
+
+
+- Define the rectangle
+$$
+R = (0,30) \times (40,50)
+$$
+
+- Since $X$ and $Y$ are independent, we get
+
+$$
+f_{X,Y}(x,y) = f_X(x)f_Y(y) = 
+\begin{cases}
+\frac{1}{300} & \text{ if } \, (x,y) \in R  \\
+0 & \text{ otherwise }
+\end{cases}
+$$
+
+
+
+## Solution {.smaller}
+
+- The arrival time is given by $X + Y$
+
+- Therefore, the student arrives to class before 9 AM iff $X + Y < 60$
+
+- Notice that 
+$$
+\{X + Y < 60 \}  = \{ (x,y) \in \R^2 \, \colon \, 0 \leq x < 60 - y,  40 \leq y < 50 \} 
+$$
+
+## Solution {.smaller}
+
+Therefore, the probability of arriving before 9 AM is
+
+\begin{align*}
+P(\text{arrives before 9 AM}) & = P(X + Y < 60) \\
+                              & = \int_{\{X+Y < 60\}} f_{X,Y} (x,y) \, dxdy  \\
+                              & = \int_{40}^{50} \left( \int_0^{60-y} \frac{1}{300} \, dx 
+                              \right) \, dy  \\
+                              & = \frac{1}{300}  \int_{40}^{50} (60 - y) \, dy \\
+                              & = \frac{1}{300} \ y \left(  60 - \frac{y}{2} \right) \Bigg|_{y=40}^{y=50} \\
+                              & = \frac{1}{300} \cdot (1750 - 1600) = \frac12
+\end{align*}
+
+
+
+
+
+
+
+## Consequences of independence {.smaller}
+
+::: Theorem
+
+Suppose $X$ and $Y$ are independent random variables. Then
+
+- For any $A,B \subset \R$ we have
+$$
+P(X \in A, Y \in B) = P(X \in A) P(Y \in B)
+$$
+
+- Suppose $g(x)$ is a function of (only) $x$,
+$h(y)$ is a function of (only) $y$. Then
+$$
+\Expect[g(X)h(Y)] = \Expect[g(X)]\Expect[h(Y)]  
+$$
+
+::: 
+
+
+
+
+## Consequences of independence {.smaller}
+### Proof of First Statement
+
+- Define the function $p(x,y):=g(x)h(y)$. Then
+\begin{align*}
+\Expect[g(X)h(Y)] & = \Expect(p(X,Y)) = \int_{\R^2} p(x,y) f_{X,Y}(x,y)  \, dxdy \\
+                  & = \int_{\R^2} g(x)h(y) f_X(x) f_Y(y)  \, dxdy \\
+                  & = \left( \int_{-\infty}^\infty g(x) f_X(x) \, dx \right)
+                      \left( \int_{-\infty}^\infty h(y) f_Y(y) \, dy \right) \\
+                  & = \Expect[g(X)] \Expect[h(Y)]
+\end{align*}
+
+- Proof in the discrete case is the same: replace intergrals with series
+
+
+
+
+
+## Consequences of independence {.smaller}
+### Proof of Second Statement
+
+- Define the product set 
+$$
+A \times B :=\{ (x,y) \in \R^2 \colon x \in A , y \in B\}
+$$
+
+
+- Therefore we get
+\begin{align*}
+P(X \in A , Y \in B) & = \int_{A \times B} f_{X,Y}(x,y) \, dxdy \\
+                     & = \int_{A \times B} f_X(x) f_Y(y) \, dxdy \\
+                     & = \left(\int_{A} f_X(x) \, dx \right)
+                         \left(\int_{B} f_Y(y) \, dy \right) \\
+                     & = P(X \in A) P(Y \in B)
+\end{align*}
+
+
+
+
+
+
+
+
+# Part 7: <br>Covariance and correlation {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+
+## Covariance & Correlation {.smaller}
+### Relationship between RV
+
+
+Given two random variables $X$ and $Y$ we said that
+
+- $X$ and $Y$ are **independent** if
+$$
+f_{X,Y}(x,y) = f_X(x) g_Y(y)
+$$
+
+- In this case there is no relationship between $X$ and $Y$
+
+- This is reflected in the conditional distributions:
+$$
+X|Y \sim X \qquad \qquad Y|X \sim Y
+$$
+
+
+
+
+
+## Covariance & Correlation {.smaller}
+### Relationship between RV
+
+
+If $X$ and $Y$ are **not independent** then there is a **relationship** between them
+
+::: Question 
+
+How do we measure the strength of such dependence?
+
+:::
+
+
+**Answer**: By introducing the notions of
+
+- Covariance
+- Correlation
+
+
+
+
+## Covariance {.smaller}
+### Definition
+
+
+**Notation**: Given two rv $X$ and $Y$ we denote
+\begin{align*}
+& \mu_X := \Expect[X]   \qquad & \mu_Y & := \Expect[Y] \\
+& \sigma^2_X := \Var[X] \qquad  & \sigma^2_Y & := \Var[Y] 
+\end{align*}
+
+
+::: Definition 
+
+The **covariance** of $X$ and $Y$ is the number
+$$
+\Cov(X,Y) := \Expect[  (X - \mu_X) (Y - \mu_Y)  ]
+$$
+
+:::
+
+
+
+
+## Covariance {.smaller}
+### Remark 
+
+The sign of $\Cov(X,Y)$ gives information about the relationship between $X$ and $Y$:
+
+- If $X$ is **large**, is $Y$ likely to be **small** or **large**?
+- If $X$ is **small**, is $Y$ likely to be **small** or **large**?
+- Covariance encodes the above questions
+
+
+
+## Covariance {.smaller}
+### Remark 
+
+The sign of $\Cov(X,Y)$ gives information about the relationship between $X$ and $Y$
+
+|                             |$X$ small: $\, X<\mu_X$|$X$ large: $\, X>\mu_X$|
+|-----------------------------|----------------------------|-----------------------------|
+|$Y$ small: $\, Y<\mu_Y$|     $(X-\mu_X)(Y-\mu_Y)>0$ |  $(X-\mu_X)(Y-\mu_Y)<0$     |
+|$Y$ large: $\, Y>\mu_Y$|     $(X-\mu_X)(Y-\mu_Y)<0$ |  $(X-\mu_X)(Y-\mu_Y)>0$     |
+: {tbl-colwidths="[30,35,35]"}
+
+<br>
+
+|                             |$X$ small: $\, X<\mu_X$|$X$ large: $\, X>\mu_X$|
+|-----------------------------|----------------------------|-----------------------------|
+|$Y$ small: $\, Y<\mu_Y$|     $\Cov(X,Y)>0$          |  $\Cov(X,Y)<0$              |
+|$Y$ large: $\, Y>\mu_Y$|     $\Cov(X,Y)<0$          |  $\Cov(X,Y)>0$              |
+: {tbl-colwidths="[30,35,35]"}
+
+
+
+
+
+## Covariance {.smaller}
+### Alternative Formula
+
+::: Theorem 
+
+The covariance of $X$ and $Y$ can be computed via
+$$
+\Cov(X,Y) = \Expect[XY] - \Expect[X]\Expect[Y]
+$$
+
+:::
+
+
+
+
+## Covariance {.smaller}
+### Proof of Theorem
+
+Using linearity of $\Expect$ and the fact that $\Expect[c]=c$ for $c \in \R$:
+\begin{align*}
+\Cov(X,Y) : & = \Expect[ \,\, (X - \Expect[X]) (Y - \Expect[Y]) \,\,  ] \\
+            &  = \Expect \left[ \,\, XY - X \Expect[Y] - Y \Expect[X] + \Expect[X]\Expect[Y] \,\, \right]  \\
+            &  = \Expect[XY] - \Expect[ X \Expect[Y] ]
+               - \Expect[ Y \Expect[X] ] + \Expect[\Expect[X] \Expect[Y]] \\
+            & =  \Expect[XY] - \Expect[X] \Expect[Y]    
+               - \Expect[Y] \Expect[X] + \Expect[X] \Expect[Y] \\
+            & =  \Expect[XY] - \Expect[X] \Expect[Y]    
+\end{align*}
+
+
+
+
+
+
+
+## Correlation {.smaller}
+
+**Remark**:
+
+- $\Cov(X,Y)$ encodes only **qualitative** information about the relationship between $X$ and $Y$
+
+- To obtain **quantitative** information we introduce the **correlation**
+
+
+
+::: Definition 
+
+The **correlation** of $X$ and $Y$ is the number
+$$
+\rho_{XY} := \frac{\Cov(X,Y)}{\sigma_X \sigma_Y} 
+$$
+
+:::
+
+
+
+
+## Correlation detects linear relationships  {.smaller}
+
+::: Theorem
+
+For any random variables $X$ and $Y$ we have
+
+- $- 1\leq \rho_{XY} \leq 1$
+- $|\rho_{XY}|=1$ if and only if there exist $a,b \in \R$ such that
+$$
+P(Y = aX + b) = 1
+$$
+    * If $\rho_{XY}=1$ then $a>0$  $\qquad \qquad \quad$ (positive linear correlation)
+    * If $\rho_{XY}=-1$ then $a<0$ $\qquad \qquad$ (negative linear correlation)
+
+:::
+
+
+**Proof**: Omitted, see page 172 of [@casella-berger]
+
+
+
+
+
+## Correlation \& Covariance {.smaller}
+### Independent random variables
+
+
+::: Theorem
+
+If $X$ and $Y$ are independent random variables then
+$$
+\Cov(X,Y) = 0 \,, \qquad \rho_{XY}=0
+$$
+
+:::
+
+
+**Proof**: 
+
+- If $X$ and $Y$ are independent then $\Expect[XY]=\Expect[X]\Expect[Y]$
+- Therefore $\Cov(X,Y)= \Expect[XY]-\Expect[X]\Expect[Y] = 0$
+- Moreover $\rho_{XY}=0$ by definition
+
+
+
+
+
+
+
+## Formula for Variance {.smaller}
+### Variance is quadratic
+
+::: Theorem
+
+For any two random variables $X$ and $Y$ and $a,b \in \R$
+$$
+\Var[aX + bY] = a^2 \Var[X] + b^2 \Var[Y] + 2 \Cov(X,Y)
+$$
+If $X$ and $Y$ are independent then
+$$
+\Var[aX + bY] = a^2 \Var[X] + b^2 \Var[Y]
+$$
+
+:::
+
+
+**Proof**: Exercise
+
+
+
+
+
+
+## Example 1 {.smaller}
+
+- Assume $X$ and $Z$ are independent, and
+$$
+X  \sim {\rm uniform} \left( 0,1 \right)  \,, \qquad 
+Z  \sim {\rm uniform} \left( 0, \frac{1}{10} \right) 
+$$
+
+
+- Consider the random variable 
+$$
+Y = X + Z
+$$
+
+- Since $X$ and $Z$ are independent, and $Z$ is uniform, we have that
+$$
+Y | X = x  \, \sim \,  {\rm uniform} \left( x, x + \frac{1}{10} \right) 
+$$
+(adding $x$ to $Z$ simply shifts the uniform distribution of $Z$ by $x$)
+
+- **Question:** Is the correlation $\rho_{XY}$ between $X$ and $Y$ high or low?
+
+
+
+## Example 1 {.smaller}
+
+- As $Y | X  \, \sim \,  {\rm uniform} \left( X, X + \frac{1}{10} \right)$, the conditional pdf of $Y$ given $X = x$ is
+$$
+f(y|x) = 
+\begin{cases}
+10 & \text{ if } \, y \in \left( x , x + \frac{1}{10} \right) \\
+0  & \text{ otherwise}
+\end{cases}
+$$
+
+- As $X  \sim {\rm uniform} (0,1)$, its pdf is
+$$
+f_X(x) = 
+\begin{cases}
+1 & \text{ if } \, x \in \left( 0 , 1  \right) \\
+0  & \text{ otherwise}
+\end{cases}
+$$
+
+- Therefore, the joint distribution of $(X,Y)$ is
+$$
+f_{X,Y}(x,y) = f(y|x)f_X(x) = \begin{cases}
+10 & \text{ if } \, x \in (0,1) \, \text{ and } \, y \in \left( x , x + \frac{1}{10} \right) \\
+0  & \text{ otherwise}
+\end{cases}
+$$
+
+
+
+## Example 1 {.smaller}
+
+In gray: the region where $f_{X,Y}(x,y)>0$
+
+- When $X$ increases, $Y$ increases linearly (not surprising, since $Y = X + Z$)
+- We expect the correlation $\rho_{XY}$ to be close to $1$
+
+```{r}
+# Load necessary library
+library(ggplot2)
+
+# Define the function to check where f_{X,Y}(x,y) is nonzero
+f_XY <- function(x, y) {
+  if (x >= 0 & x <= 1 & y >= x & y <= x + 1/10) {
+    return(1)  # Nonzero region (1 means presence)
+  } else {
+    return(0)  # Zero region (0 means absence)
+  }
+}
+
+# Generate a finer grid of (x, y) values
+x_values <- seq(0, 1, length.out = 300)  
+y_values <- seq(0, 1.1, length.out = 300)  
+
+# Create a matrix to store function values
+z_matrix <- outer(x_values, y_values, Vectorize(f_XY))
+
+# Convert to a data frame for ggplot2
+df <- expand.grid(x = x_values, y = y_values)
+df$z <- as.vector(z_matrix)
+
+# Plot the filled region with 1:1 aspect ratio
+ggplot(df, aes(x, y, fill = factor(z))) +
+  geom_tile() +  
+  scale_fill_manual(values = c("white", "gray30")) +  # White for 0, dark gray for nonzero
+  labs(x = "X", y = "Y") +  # Remove title
+  theme_minimal() +
+  theme(legend.position = "none",  # Remove legend for clarity
+        aspect.ratio = 1)  # Set aspect ratio to 1:1
+
+```
+
+
+
+## Example 1 -- Computing $\rho_{XY}${.smaller}
+
+- For a random variable $W \sim {\rm uniform} (a,b)$, we have
+$$
+\Expect[W] = \frac{a+b}{2} \,, \qquad 
+\Var[W] = \frac{(b-a)^2}{12}
+$$
+
+- Since $X \sim {\rm uniform} (0,1)$ and $Z \sim {\rm uniform} (0,1/10)$, we have
+$$
+\Expect[X] = \frac12 \,, \qquad 
+\Var[X] = \frac{1}{12} \,, \qquad 
+\Expect[Z] = \frac{1}{20} \,, \qquad 
+\Var[Z] = \frac{1}{1200}
+$$
+
+
+- Since $X$ and $Z$ are independent, we also have
+$$
+\Var[Y] = \Var[X + Z] =  \Var[X] + \Var[Z] = \frac{1}{12} + \frac{1}{1200} 
+$$
+
+
+
+
+
+## Example 1 -- Computing $\rho_{XY}${.smaller}
+
+- Since $X$ and $Z$ are independent, we have
+$$
+\Expect[XZ] = \Expect[X]\Expect[Z]
+$$
+
+- We conclude that
+\begin{align*}
+\Cov(X,Y) & = \Expect[XY] -  \Expect[X] \Expect[Y] \\
+          & = \Expect[X(X + Z)] -  \Expect[X] \Expect[X + Z] \\
+          & = \Expect[X(X + Z)] -  \Expect[X] \Expect[X + Z] \\
+          & = \Expect[X^2] - \Expect[X]^2 + \Expect[XZ] - \Expect[X]\Expect[Z] \\
+          & = \Var[X] = \frac{1}{12}
+\end{align*}
+
+
+
+## Example 1 -- Computing $\rho_{XY}${.smaller}
+
+
+- The correlation between $X$ and $Y$ is
+\begin{align*}
+\rho_{XY} & = \frac{\Cov(X,Y)}{\sqrt{\Var[X]}\sqrt{\Var[Y]}} \\
+          & = \frac{\frac{1}{12}}{\sqrt{\frac{1}{12}}  \sqrt{ \frac{1}{12} + \frac{1}{1200}} } = \sqrt{\frac{100}{101}}
+\end{align*}
+
+- As expected, we have very high correlation $\rho_{XY} \approx 1$
+
+- This confirms a very strong **linear** relationship between $X$ and $Y$
+
+
+
+
+
+
+
+## Example 2 {.smaller}
+
+- Assume $X$ and $Z$ are independent, and
+$$
+X  \sim {\rm uniform} \left( -1,1 \right)  \,, \qquad 
+Z  \sim {\rm uniform} \left( 0, \frac{1}{10} \right) 
+$$
+
+
+- Define the random variable 
+$$
+Y = X^2 + Z
+$$
+
+- Since $X$ and $Z$ are independent, and $Z$ is uniform, we have that
+$$
+Y | X = x  \, \sim \,  {\rm uniform} \left( x^2, x^2 + \frac{1}{10} \right) 
+$$
+(adding $x$ to $Z$ simply shifts the uniform distribution of $Z$ by $x$)
+
+- **Question:** Is the correlation $\rho_{XY}$ between $X$ and $Y$ high or low?
+
+
+
+## Example 2 {.smaller}
+
+- As $Y | X  \, \sim \,  {\rm uniform} \left( X^2, X^2 + \frac{1}{10} \right)$, the conditional pdf of $Y$ given $X = x$ is
+$$
+f(y|x) = 
+\begin{cases}
+10 & \text{ if } \, y \in \left( x^2 , x^2 + \frac{1}{10} \right) \\
+0  & \text{ otherwise}
+\end{cases}
+$$
+
+- As $X  \sim {\rm uniform} (-1,1)$, its pdf is
+$$
+f_X(x) = 
+\begin{cases}
+\frac12 & \text{ if } \, x \in \left( -1 , 1  \right) \\
+0  & \text{ otherwise}
+\end{cases}
+$$
+
+- Therefore, the joint distribution of $(X,Y)$ is
+$$
+f_{X,Y}(x,y) = f(y|x)f_X(x) = \begin{cases}
+10 & \text{ if } \, x \in (-1,1) \, \text{ and } \, y \in \left( x^2 , x^2 + \frac{1}{10} \right) \\
+0  & \text{ otherwise}
+\end{cases}
+$$
+
+
+
+## Example 2 {.smaller}
+
+In gray: the region where $f_{X,Y}(x,y)>0$
+
+- When $X$ increases, $Y$ increases quadratically (not surprising, as $Y = X^2 + Z$)
+- There is no linear relationship between $X$ and $Y$ $\,\, \implies \,\,$ we expect $\, \rho_{XY} \approx 0$
+
+```{r}
+# Load necessary library
+library(ggplot2)
+
+# Define the function to check where f_{X,Y}(x,y) is nonzero
+f_XY <- function(x, y) {
+  if (x > -1 & x < 1 & y > x^2 & y < x^2 + 1/10) {
+    return(1)  # Nonzero region (1 means presence)
+  } else {
+    return(0)  # Zero region (0 means absence)
+  }
+}
+
+# Generate a finer grid of (x, y) values
+x_values <- seq(-1, 1, length.out = 300)  # x in (-1,1)
+y_values <- seq(0, 1.1, length.out = 300)  # y in a reasonable range
+
+# Create a matrix to store function values
+z_matrix <- outer(x_values, y_values, Vectorize(f_XY))
+
+# Convert to a data frame for ggplot2
+df <- expand.grid(x = x_values, y = y_values)
+df$z <- as.vector(z_matrix)
+
+# Plot the filled region with 1:1 aspect ratio
+ggplot(df, aes(x, y, fill = factor(z))) +
+  geom_tile() +  
+  scale_fill_manual(values = c("white", "gray30")) +  # White for 0, dark gray for nonzero
+  labs(x = "X", y = "Y") +
+  theme_minimal() +
+  theme(legend.position = "none",  # Remove legend for clarity
+        aspect.ratio = 1)  # Set aspect ratio to 1:1
+
+```
+
+
+
+## Example 2 -- Computing $\rho_{XY}${.smaller}
+
+- Since $X \sim {\rm uniform} (-1,1)$, we can compute that
+$$
+\Expect[X] = \Expect[X^3] = 0
+$$
+
+
+- Since $X$ and $Z$ are independent, we have
+$$
+\Expect[XZ] = \Expect[X]\Expect[Z] = 0
+$$
+
+
+
+
+## Example 2 -- Computing $\rho_{XY}${.smaller}
+
+- Compute the covariance
+\begin{align*}
+\Cov(X,Y) & = \Expect[XY] -  \Expect[X] \Expect[Y] \\
+          & = \Expect[XY] \\
+          & = \Expect[X(X^2 + Z)]  \\
+          & = \Expect[X^3] + \Expect[XZ] = 0
+\end{align*}
+
+
+- The correlation between $X$ and $Y$ is
+$$
+\rho_{XY}  = \frac{\Cov(X,Y)}{\sqrt{\Var[X]}\sqrt{\Var[Y]}} = 0 
+$$
+
+
+- This confirms there is **no linear** relationship between $X$ and $Y$
+
+
+
+
+## References

@@ -1,0 +1,80 @@
+project:
+  title: "Statistical Models"
+  type: website
+  output-dir: docs
+
+
+
+bibliography: teaching.bib
+csl: elsevier-with-titles.csl
+
+
+website:
+  
+  favicon: favicon.png
+  search: false
+  navbar:
+    search: false
+    pinned: false
+    background: black
+    foreground: "#E8E8E8"
+  sidebar:
+    style: "floating"
+    search: false
+    contents:
+      - href: index.qmd
+        text: Homepage
+      - section: "Slides"
+        contents:
+          - href: slides/lecture_1.qmd
+            text: Lecture 1
+          - href: slides/lecture_2.qmd
+            text: Lecture 2
+          - href: slides/lecture_3.qmd
+            text: Lecture 3
+          - href: slides/lecture_4.qmd
+            text: Lecture 4
+          - href: slides/lecture_5.qmd
+            text: Lecture 5
+          - href: slides/lecture_6.qmd
+            text: Lecture 6
+          - href: slides/lecture_7.qmd
+            text: Lecture 7
+          - href: slides/lecture_8.qmd
+            text: Lecture 8
+          - href: slides/lecture_9.qmd
+            text: Lecture 9
+          - href: slides/lecture_10.qmd
+            text: Lecture 10
+          - href: slides/lecture_11.qmd
+            text: Lecture 11
+          - href: slides/appendix_A.qmd
+            text: Appendix A
+          - href: slides/appendix_B.qmd
+            text: Appendix B
+      - href: license.qmd
+        text: License
+  page-footer:
+    center: 
+      - text: "License"
+        href: license.qmd
+      - text: "Contact" 
+        href: https://www.silviofanzon.com/contact
+
+format:
+  html:
+    toc: true
+    toc-title: On this page
+    toc-location: right
+    code-overflow: wrap
+    execute:
+      freeze: auto
+    theme:
+      light: [flatly, theme-custom-light.scss]
+      dark: [darkly, theme-custom-dark.scss]
+    fig-align: center
+    fig-cap-location: bottom
+    link-external-icon: true
+
+
+

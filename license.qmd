@@ -1,0 +1,34 @@
+# License {.unnumbered}
+
+## Reuse {.unnumbered}
+
+
+::: {.column width="60%"}
+This work is licensed under a 
+[CC-BY-NC-ND 4.0](http://creativecommons.org/licenses/by-nc-nd/4.0/)
+:::
+
+
+::: {.column width="38%"}
+![](/by-nc-nd.png){width=2.1in}
+:::
+
+
+## Citation {.unnumbered}
+
+For attribution, please cite this work as:
+
+> Fanzon, Silvio and Fry, John (2025). *Lecture Slides on Statistical Models*.  
+[https://www.silviofanzon.com/2025-Statistical-Models-Slides/](https://www.silviofanzon.com/2025-Statistical-Models-Slides/)
+
+
+BibTex citation:
+
+
+```bibtex
+@electronic{Fanzon-Fry-Statistical-Models-2025,
+	author = {Fanzon, Silvio and Fry, John},
+	title = {Lecture Slides on Statistical Models},
+	url = {https://www.silviofanzon.com/2025-Statistical-Models-Slides/},
+	year = {2025}}
+```

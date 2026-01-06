@@ -1,0 +1,4500 @@
+---
+title: "Statistical Models"
+subtitle: "Lecture 10"
+from: markdown+emoji
+author: 
+    - name: Dr. Silvio Fanzon
+      id: sf
+      email: S.Fanzon@hull.ac.uk
+      url: https://www.silviofanzon.com
+      affiliations: University of Hull
+---
+
+
+
+::: {.content-hidden}
+$
+{{< include macros.tex >}}
+$
+:::
+
+
+
+
+# Lecture 10: <br> Model Selection & <br> Regression Assumptions {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+
+
+## Outline of Lecture 10 {.smaller}
+
+
+1. Model Selection
+
+2. Examples of Model Selection
+
+3. Regression Assumptions
+
+4. Heteroscedasticity
+
+5. Autocorrelation
+
+
+
+# Part 1: <br> Model Selection <br> {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+## Testing regression parameters {.smaller}
+
+**Summary:** In Lecture 10 we have studied t-test and F-test for regression parameters:
+
+1. **t-test:** Consider the *general linear regression model*
+
+$$
+Y_i = \beta_1 z_{i1} + \ldots + \beta_{ip} z_{ip} + \e_i \,, \qquad 
+\e_i \, \text{ iid } \, N(0, \sigma^2)
+$$
+
+- We have that 
+
+$$
+Z_j \,\, \text{ affects } \,\, Y \qquad \iff \qquad
+\beta_j \neq 0
+$$
+
+- To see if $Z_j$ affects $Y$, we introduced **t-test** for the hypothesis
+
+\begin{align*}
+H_0 \colon  & \beta_j = 0 \\
+H_1 \colon & \beta_j \neq 0
+\end{align*}
+
+
+
+## Testing regression parameters {.smaller}
+
+2. **F-test:** We considered two **nested** multiple regression models 
+    \begin{align*}
+    \textbf{Model 1:} & \qquad Y_ i= \beta_1 + \e_i \\[10pt]
+    \textbf{Model 2:} & \qquad Y_ i= \beta_1 + \beta_2 x_{i2}+ \ldots + \beta_p x_{ip} + \e_i
+    \end{align*}
+
+- We tested the **Overall Significance** of the parameters $\beta_2 , \ldots, \beta_p$
+    * This means choosing which model makes better predictions
+
+- The comparison is achieved with **F-test** for the hypothesis
+
+\begin{align*}
+H_0 & \colon \, \beta_2 = \beta_3 = \ldots = \beta_p = 0 \\
+H_1 & \colon \text{ At least one of the } \beta_i \text{ is non-zero}
+\end{align*}
+
+
+
+
+## More general nested models {.smaller}
+
+Consider the more general **nested** multiple regression models
+
+\begin{align*}
+    \textbf{Model 1:} & \quad Y_ i =\beta_1 + \beta_2 x_{i2}+ \ldots + \beta_{k} x_{ik} + \e_i \\[10pt]
+    \textbf{Model 2:} & \quad Y_ i= \beta_1 + \beta_2 x_{i2}+ \ldots + \beta_{k} x_{ik} + \beta_{k + 1} x_{i(k + 1)} + 
+    \ldots + \beta_{p} x_{ip} + \e_i
+\end{align*}
+
+
+- Model 1 has k parameters
+
+- Model 2 has p parameters, with $p > k$
+
+- The two models coincide if and only if all the extra parameters are zero
+
+$$
+\beta_{k + 1} = \beta_{k + 2} = \ldots = \beta_p = 0 
+$$
+
+
+
+## Model Selection {.smaller}
+
+Consider the more general **nested** multiple regression models
+
+\begin{align*}
+    \textbf{Model 1:} & \quad Y_ i =\beta_1 + \beta_2 x_{i2}+ \ldots + \beta_{k} x_{ik} + \e_i \\[10pt]
+    \textbf{Model 2:} & \quad Y_ i= \beta_1 + \beta_2 x_{i2}+ \ldots + \beta_{k} x_{ik} + \beta_{k + 1} x_{i(k + 1)} + 
+    \ldots + \beta_{p} x_{ip} + \e_i
+\end{align*}
+
+**Question:** How do we decide which model is better?
+
+**Answer:** Test hypothesis for *Model Selection*
+
+\begin{align*}
+H_0 \colon & \, \beta_{k+1} = \beta_{k+2} = \ldots  = \beta_p = 0 \\[5pt]
+H_1 \colon & \, \text{ At least one among } \beta_{k+1}, \ldots, \beta_p \text{ is non-zero}
+\end{align*}
+
+- $H_0$ is in favor of Model 1 $\qquad \quad H_1$ is in favor of Model 2
+
+
+
+
+
+## Comparing the two Models {.smaller}
+
+Consider the more general **nested** multiple regression models
+
+\begin{align*}
+    \textbf{Model 1:} & \quad Y_ i =\beta_1 + \beta_2 x_{i2}+ \ldots + \beta_{k} x_{ik} + \e_i \\[10pt]
+    \textbf{Model 2:} & \quad Y_ i= \beta_1 + \beta_2 x_{i2}+ \ldots + \beta_{k} x_{ik} + \beta_{k + 1} x_{i(k + 1)} + 
+    \ldots + \beta_{p} x_{ip} + \e_i
+\end{align*}
+
+**Goal:** Formulate a statistic to decide between the 2 Models
+
+- First, calculate ML Estimators $\hat{\beta}^1$ and $\hat{\beta}^2$ for Models 1 and 2, respectively
+
+- With the MLEs, define the predictions for the two models
+
+\begin{align*}
+\hat y_i^1 & := \hat{\beta}_1^{1} + \hat{\beta}_2^1 x_{i2}+ \ldots + \hat{\beta}_{k}^1 x_{ik} \\[10pt]
+\hat y_i^2 & :=  \hat{\beta}_1^2 + \hat{\beta}_2^2 x_{i2}+ \ldots + \hat{\beta}_{k}^2 x_{ik} + \hat{\beta}_{k + 1}^2 x_{i(k + 1)} + 
+    \ldots + \hat{\beta}_{p}^2 x_{ip}
+\end{align*}
+
+
+
+
+## Comparing the two Models {.smaller}
+
+Consider the more general **nested** multiple regression models
+
+\begin{align*}
+    \textbf{Model 1:} & \quad Y_ i =\beta_1 + \beta_2 x_{i2}+ \ldots + \beta_{k} x_{ik} + \e_i \\[10pt]
+    \textbf{Model 2:} & \quad Y_ i= \beta_1 + \beta_2 x_{i2}+ \ldots + \beta_{k} x_{ik} + \beta_{k + 1} x_{i(k + 1)} + 
+    \ldots + \beta_{p} x_{ip} + \e_i
+\end{align*}
+
+- Recall: The $\RSS$ measures variation between data and prediction
+
+- Compute the $\RSS$ for both models
+
+\begin{align*}
+    \textbf{Model 1:} & \quad \RSS_1 := \RSS (k) = \sum_{i=1}^n (y_i - \hat y_i^1)^2 \\[10pt]
+    \textbf{Model 2:} & \quad \RSS_2 := \RSS (p) = \sum_{i=1}^n (y_i - \hat y_i^2)^2
+\end{align*}
+
+
+
+## Extra sum of squares {.smaller}
+
+::: Definition 
+
+The **extra sum of squares** is the difference
+
+$$
+\RSS_1 - \RSS_2 := \RSS (k) - \RSS (p)
+$$
+
+
+:::
+
+**Recall:** $\RSS$ cannot increase if we increase the number of parameteres
+$$
+k < p \quad \implies \quad \RSS (k) \geq \RSS (p)
+$$
+(this is because $\RSS$ is defined via minimization, as already remarked in Lecture 10)
+
+**Remark:** In particular, we deduce that the *Extra Sum of Squares* is non-negative
+$$
+\RSS_1 - \RSS_2 \geq 0
+$$
+
+
+
+
+## Deciding between the two models {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+The hypothesis for deciding between the two model is
+\begin{align*}
+H_0 \colon & \, \beta_{k+1} = \beta_{k+2} = \ldots  = \beta_p = 0 \\[5pt]
+H_1 \colon & \, \text{ At least one among } \beta_{k+1}, \ldots, \beta_p \text{ is non-zero}
+\end{align*}
+
+- Suppose the null hypothesis $H_0$ holds
+
+- In this case, the two Models are the same
+
+- Therefore, predictions will be similar
+
+- Hence, the $\RSS$ for the 2 models are similar
+
+$$
+\RSS_1 \, \approx \, \RSS_2
+$$
+
+:::
+
+
+
+## Deciding between the two models {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+The hypothesis for deciding between the two model is
+\begin{align*}
+H_0 \colon & \, \beta_{k+1} = \beta_{k+2} = \ldots  = \beta_p = 0 \\[5pt]
+H_1 \colon & \, \text{ At least one among } \beta_{k+1}, \ldots, \beta_p \text{ is non-zero}
+\end{align*}
+
+- Suppose instead that the alternative hypothesis $H_1$ holds
+
+
+- As already noted, in general it holds that
+$$
+\RSS_1 \geq \RSS_2
+$$
+
+
+- From $H_1$, we know that some of the extra parameters $\beta_{k+1} , \ldots, \beta_p$ are non-zero
+
+- Thus, Model 2 will give better predictions $\implies \RSS_2$ is **much smaller**
+$$
+\RSS_1 \gg \RSS_2
+$$
+
+:::
+
+
+
+
+
+## Conclusion: 2 cases {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+
+1. Choose Model 1:
+
+\begin{align*}
+H_0 \,\, \text{ holds } & \, \iff \,  \beta_{k+1} = \beta_{k+2} = \ldots  = \beta_p = 0 \\[15pt]
+ & \, \iff \, \RSS_1 \approx \RSS_2 \, \iff \, \frac{\RSS_1 - \RSS_2}{\RSS_2} \approx 0 
+ \end{align*}
+
+2. Choose Model 2:
+
+\begin{align*} 
+H_1 \,\, \text{ holds } & \, \iff \, \exists \,\, i \in \{ k+1, \ldots, p\} \, \text{ s.t.  } \, \beta_i \neq 0 \\[15pt]
+ & \, \iff \, \RSS_1 \gg \RSS_2 \, \iff \, \frac{\RSS_1 - \RSS_2}{\RSS_2} \gg 0
+\end{align*}
+
+:::
+
+
+## Construction of F-statistic {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+- Thus, the quantity below can be used as statistic to decide between the 2 models
+
+$$
+\frac{\RSS_1 - \RSS_2}{\RSS_2}
+$$
+
+
+- However, in order to obtain a known distribution, we need to rescale
+
+
+
+- To this end, note that the degrees of freedom are:
+    * Model 1:
+    $$
+    k \text{ parameters } \quad \implies \quad \df_1 =  n - k
+    $$
+    * Model 2:
+    $$
+    p \text{ parameters } \quad \implies \quad \df_2 = n - p
+    $$
+
+:::
+
+
+
+
+
+
+
+## F-statistic for Model Selection {.smaller}
+
+::: Definition
+
+The F-statistic for Model Selection is
+
+\begin{align*}
+F & = \frac{ \RSS_1 - \RSS_2 }{ \df_1 - \df_2  } \bigg/
+      \frac{ \RSS_2 }{ \df_2  }  \\[20pt]
+ & = \frac{ \RSS(k) - \RSS(p) }{ p - k  } \bigg/
+      \frac{ \RSS(p) }{ n - p  }  
+\end{align*}
+
+:::
+
+**Theorem:** The F-statistic for Model Selection has F-distribution
+
+$$
+F \, \sim  \, F_{\df_1 - \df_2 , \, \df_2} = F_{p - k, \, n - p}
+$$
+
+
+
+
+## Rewriting the F-statistic {.smaller}
+
+Denote by $R^2_1$ and $R^2_2$ the coefficients of determination of the 2 models
+
+::: Proposition
+
+The F-statistic for Model Selection can be rewritten as
+
+\begin{align*}
+F & = \frac{ \RSS_1 - \RSS_2 }{ \df_1 - \df_2  } \bigg/
+      \frac{ \RSS_2 }{ \df_2 }   \\[20pt]
+  & = \frac{ R^2_2 - R^2_1 }{1 - R^2_2}  \, \cdot \,  \frac{n-p}{p-k}
+\end{align*}
+
+:::
+
+
+## Proof of Proposition {.smaller}
+
+
+- Recall the definition of coefficient of determination for the two models
+
+$$
+R_1^2 := R^2 (k) := 1 - \frac{ \RSS(k) }{ \TSS }
+\, , \qquad \quad 
+R_2^2 := R^2 (p) := 1 - \frac{ \RSS(p) }{ \TSS }
+$$
+
+- **Note:** $\TSS$ does not depend on numeber of parameters
+
+
+- From the above, we get
+
+$$
+\RSS(k) = (1 - R_1^2) \TSS 
+\, , \qquad \quad 
+\RSS(p) = (1 - R_2^2) \TSS 
+$$
+
+
+- In particular, we obtain
+
+\begin{align*}
+\RSS(k) - \RSS(p) = ( R^2_2 - R^2_1 )  \TSS
+\end{align*}
+
+
+
+##  {.smaller}
+
+- Therefore, the F-statistic can be rewritten as
+
+\begin{align*}
+F & = \frac{ \RSS_1 - \RSS_2 }{ \df_1 - \df_2  } \bigg/
+      \frac{ \RSS_2 }{ \df_2 }   \\[20pt]
+  & = \frac{ \RSS(k) - \RSS(p) }{\RSS(p)}  \, \cdot \,  \frac{n-p}{p-k} \\[20pt]
+  & = \frac{ (R^2_2 - R^2_1) \TSS }{ (1 - R^2_2) \TSS} \, \cdot \,  \frac{n-p}{p-k} \\[20pt]
+  & = \frac{ R^2_2 - R^2_1 }{1 - R^2_2}  \, \cdot \,  \frac{n-p}{p-k}
+\end{align*}
+
+- The proof is concluded
+
+
+
+
+
+
+## Test for Model Selection {.smaller}
+
+- **Recall:** We want to decide between the 2 models
+
+\begin{align*}
+    \textbf{Model 1:} & \quad Y_ i =\beta_1 + \beta_2 x_{i2}+ \ldots + \beta_{k} x_{ik} + \e_i \\[10pt]
+    \textbf{Model 2:} & \quad Y_ i= \beta_1 + \beta_2 x_{i2}+ \ldots + \beta_{k} x_{ik} + \beta_{k + 1} x_{i(k + 1)} + 
+    \ldots + \beta_{p} x_{ip} + \e_i
+\end{align*}
+
+
+- To make a decision, we have formulated the hypothesis
+
+\begin{align*}
+H_0 \colon & \, \beta_{k+1} = \beta_{k+2} = \ldots  = \beta_p = 0 \\[5pt]
+H_1 \colon & \, \text{ At least one among } \beta_{k+1}, \ldots, \beta_p \text{ is non-zero}
+\end{align*}
+
+- $H_0$ is in favor of Model 1 $\qquad \quad H_1$ is in favor of Model 2
+
+
+
+
+## {.smaller}
+
+
+::: {style="font-size: 0.93em"}
+
+We use the F-statistic to decide between the two models
+$$
+F = \frac{ \RSS(k) - \RSS(p) }{ p - k  } \bigg/
+      \frac{ \RSS(p) }{ n - p  } 
+$$
+
+
+1. Choose Model 1:
+\begin{align*}
+H_0 \,\, \text{ holds }  & \, \iff \, \beta_{k+1} = \beta_{k+2} = \ldots  = \beta_p = 0  \\[10pt]
+  & \, \iff \, \RSS(k) \approx \RSS (p) \, \iff \, F \approx 0 
+ \end{align*}
+
+2. Choose Model 2:
+\begin{align*} 
+H_1 \,\, \text{ holds } & \, \iff \,\exists \,\, i \in \{ k+1, \ldots, p\} \, \text{ s.t.  } \, \beta_i \neq 0  \\[10pt]
+  &  \, \iff \, \RSS(k) \gg \RSS (p) \, \iff \, F \gg 0
+\end{align*}
+
+
+- **Therefore, the test is one-sided: $\,\,$ Reject $H_0 \iff F \gg 0$**
+
+
+:::
+
+
+
+
+
+## The F-test for Model Selection {.smaller}
+
+**Assumption:** Given data points $(x_{i2},\ldots , x_{ip},  y_i)$, consider the nested models
+
+\begin{align*}
+    \textbf{Model 1:} & \quad Y_ i =\beta_1 + \beta_2 x_{i2}+ \ldots + \beta_{k} x_{ik} + \e_i \\[10pt]
+    \textbf{Model 2:} & \quad Y_ i= \beta_1 + \beta_2 x_{i2}+ \ldots + \beta_{k} x_{ik} + \beta_{k + 1} x_{i(k + 1)} + 
+    \ldots + \beta_{p} x_{ip} + \e_i
+\end{align*}
+
+**Hypothesis:** To decide which model gives better predictions
+
+\begin{align*}
+H_0 \colon & \, \beta_{k+1} = \beta_{k+2} = \ldots  = \beta_p = 0 \\[5pt]
+H_1 \colon & \, \text{ At least one among } \beta_{k+1}, \ldots, \beta_p \text{ is non-zero}
+\end{align*}
+
+- $H_0$ is in favor of Model 1 $\qquad \quad H_1$ is in favor of Model 2
+
+
+
+## Procedure: 3 Steps {.smaller}
+
+1. **Calculation**: Compute MLEs $\hat{\beta}^1, \hat{\beta}^2$ and predictions $\hat{y}_i^2, \hat{y}_i^2$ for the 2 models
+$$
+\hat{\beta}^i = (Z_i^TZ_i)^{-1} Z_i^T y \,, \qquad \hat{y}^i = Z_i \hat{\beta}^i \,, \qquad Z_i = \text{design matrix for Model } i
+$$
+Compute the $\TSS$. Compute $\RSS$ and $R^2$ coefficient for both models
+$$
+\TSS = \sum_{i=1}^n (y_i - \overline{y})^2\,, \qquad
+\RSS_j = \sum_{i=1}^n (y_i - \hat{y}_i^j)^2 \,, \qquad 
+R^2_j = 1 - \frac{\RSS_j}{\TSS}
+$$
+Finally, compute the F-statistic for *Model Selection*
+$$
+F = \frac{R^2_2 - R_1^2}{1 - R^2_2} \, \cdot \, \frac{n - p}{p - k} \ \sim \ F_{p-k, n - p} 
+$$
+
+
+
+## {.smaller}
+
+2. **Statistical Tables or R**: Find either
+    * Critical value $F^*$ in [Table 3](files/Statistics_Tables.pdf)
+    * p-value in R
+
+<br>
+
+3. **Interpretation**: Reject $H_0$ when either
+$$
+p < 0.05 \qquad \text{ or } \qquad F \in \,\,\text{Rejection Region}
+$$
+
+
+
+
+| Alternative                               | Rejection Region  | $F^*$              | p-value              |
+|-------------------------------------------|-------------------|--------------------|----------------------|
+| $\exists \,\, i \in \{ k+1, \ldots, p\}$ s.t. $\beta_i \neq 0$ | $F > F^*$         | $F_{p-k,n-p}(0.05)$| $P(F_{p-k,n-p} > F)$ |
+: {tbl-colwidths="[35,20,20,25]"}
+
+
+
+## The F-test for Model Selection in R {.smaller}
+
+
+1. Fit the two models with ``lm``
+2. Compare the models with the command $\, \texttt{anova} \qquad\quad$  (more on this later)
+
+```r
+model.1 <- lm(y ~ x1 + ... + xk)
+model.2 <- lm(y ~ x1 + ... + xk + x(k+1) + ... + xp)
+
+anova(model.1, model.2)
+```
+
+**Alternative:**
+
+- Find $R^2_1$ and $R^2_2$ in each Summary
+- Compute F-statistic and p-value by hand, using formulas
+    
+$$
+F = \frac{R^2_2 - R_1^2}{1 - R^2_2} \, \cdot \, \frac{n - p}{p - k} \,, \qquad p = P(F_{p-k,n-p} > F)
+$$
+
+
+
+
+
+
+## F-test for Overall Significance revisited {.smaller}
+
+- The F-test for Overall Significance allows to select between models
+\begin{align*}
+    \textbf{Model 1:} & \qquad Y_ i= \beta_1 + \e_i \\[10pt]
+    \textbf{Model 2:} & \qquad Y_ i= \beta_1 + \beta_2 x_{2, i}+ \ldots + \beta_p x_{p, i} + \e_i
+\end{align*}
+
+- Model 1 has $k = 1$ parameters
+
+- F-statistic for *Model Selection* coincides with F-statistic for *Overall Significance*
+
+$$
+F = \frac{ \RSS(1) - \RSS(p) }{ p - 1  } \bigg/
+      \frac{ \RSS(p) }{ n - p  }
+$$
+
+**Model Selection and Overall Significance tests coincide in this case**
+
+
+
+
+
+# Part 2: <br>Examples of <br> Model Selection {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+## Examples of Model Selection {.smaller}
+
+We illustrate F-test for Model Selection with 3 examples:
+
+- Joint significance in Multiple linear Regression
+- Polynomial regression (Two Examples)
+
+
+
+## Example 1: Multiple linear regression {.smaller}
+### Consider again the Longley dataset
+
+```{r}
+longley <- read.table(file = "datasets/longley.txt",
+                      header = TRUE)
+
+head(longley,n=3)
+```
+
+
+::: {style="font-size: 0.30em"}
+
+<br>
+
+:::
+
+**Goal:** Explain the number of *Employed* people $Y$ in the US in terms of
+
+- $X_2$ *GNP deflator* to adjust GNP for inflation
+- $X_3$ *GNP* Gross National Product
+- $X_4$ number of *Unemployed*
+- $X_5$ number of people in the *Armed Forces*
+- $X_6$ *non-institutionalised Population* $\geq$ age 14 (not in care of insitutions)
+- $X_7$ *Years* from 1947 to 1962
+
+
+
+
+##  {.smaller}
+
+**Previous Analysis:** Using t-test for parameters significance, we showed that
+
+- $X_2, X_3$ and $X_6$ do not affect $Y$
+- $X_4$ and $X_5$ negatively affect $Y$
+- $X_7$ positively affects $Y$
+
+**Question:** Since $X_2, X_3, X_6$ do not affect $Y$, can we exclude them from the model?
+
+**Answer:** Use the F-test for Model Selection on the 2 nested models
+
+
+- **Model 1:** The Reduced Model without $X_2, X_3, X_6$
+$$
+Y = \beta_1 +  \beta_4 X_4 +  \beta_5 X_5 + 
+       \beta_7 X_7 + \e
+$$
+
+- **Model 2:** The Full Model
+$$
+Y = \beta_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4 + 
+       \beta_5 X_5 +  \beta_6 X_6 +  \beta_7 X_7 + \e
+$$
+
+
+
+
+
+## R commands for reading in the data {.smaller}
+
+- We read the data in the same way we did last time
+
+- Longley dataset available here [longley.txt](datasets/longley.txt)
+
+- Download the file and place it in current working directory
+
+```r
+# Read data file
+longley <- read.table(file = "longley.txt", header = TRUE)
+
+# Store columns in vectors
+x2 <- longley[ , 1]        # GNP Deflator
+x3 <- longley[ , 2]        # GNP
+x4 <- longley[ , 3]        # Unemployed
+x5 <- longley[ , 4]        # Armed Forces
+x6 <- longley[ , 5]        # Population
+x7 <- longley[ , 6]        # Year
+y <- longley[ , 7]         # Employed
+```
+
+
+## R commands for F-test of Model Selection {.smaller}
+
+1. Fit the two multiple regression models
+
+\begin{align*}
+\textbf{Model 1:} & \quad Y = \beta_1 + \beta_4 X_4 + \beta_5 X_5 + 
+       \beta_7 X_7 + \e \\[10pt]
+\textbf{Model 2:} & \quad Y = \beta_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4 + 
+       \beta_5 X_5 +  \beta_6 X_6 +  \beta_7 X_7 + \e
+\end{align*}
+
+
+```r
+# Fit Model 1 and Model 2
+model.1 <- lm(y ~ x4 + x5 + x7)
+model.2 <- lm(y ~ x2 + x3 + x4 + x5 + x6 + x7)
+```
+
+2. F-test for Model Selection is done using the command $\, \texttt{anova}$
+
+```r
+# F-test for Model Selection
+anova(model.1, model.2)
+```
+
+
+- Full code can be downloaded here [longley_selection.R](codes/longley_selection.R)
+
+
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+```{r}
+# Read data file
+longley <- read.table(file = "datasets/longley.txt",
+                      header = TRUE)
+
+# Store columns in vectors
+x2 <- longley[ , 1]        # GNP Deflator
+x3 <- longley[ , 2]        # GNP
+x4 <- longley[ , 3]        # Unemployed
+x5 <- longley[ , 4]        # Armed Forces
+x6 <- longley[ , 5]        # Population
+x7 <- longley[ , 6]        # Year
+y <- longley[ , 7]         # Employed
+
+# Fit Model 1 and Model 2
+model.1 <- lm(y ~ x4 + x5 + x7)
+model.2 <- lm(y ~ x2 + x3 + x4 + x5 + x6 + x7)
+
+# F-test for Model Selection
+anova(model.1, model.2)
+```
+
+
+<br>
+
+- First two lines say that the following 2 models are being compared
+\begin{align*}
+    \textbf{Model 1:} & \quad Y = \beta_1 + \beta_4 x_{4} + \beta_5 x_{5} + \beta_7 x_{7}  + \e \\[10pt]
+    \textbf{Model 2:} &\quad Y =\beta_1 + \beta_2 x_{2}+ \beta_3 x_{3} + \beta_4 x_{4} + \beta_5 x_{5} + \beta_{6} x_{6} + \beta_7 x_{7}  + \e
+\end{align*}
+
+- The null hypothesis favors Model 1; The alternative favors Model 2
+\begin{align*}
+H_0 \colon & \, \beta_{2} = \beta_{3} = \beta_6 = 0 \\[5pt]
+H_1 \colon & \, \text{ At least one among } \beta_{2}, \beta_{3}, \beta_6  \text{ is non-zero}
+\end{align*}
+
+:::
+
+
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+```{r}
+# Read data file
+longley <- read.table(file = "datasets/longley.txt",
+                      header = TRUE)
+
+# Store columns in vectors
+x2 <- longley[ , 1]        # GNP Deflator
+x3 <- longley[ , 2]        # GNP
+x4 <- longley[ , 3]        # Unemployed
+x5 <- longley[ , 4]        # Armed Forces
+x6 <- longley[ , 5]        # Population
+x7 <- longley[ , 6]        # Year
+y <- longley[ , 7]         # Employed
+
+# Fit Model 1 and Model 2
+model.1 <- lm(y ~ x4 + x5 + x7)
+model.2 <- lm(y ~ x2 + x3 + x4 + x5 + x6 + x7)
+
+# F-test for Model Selection
+anova(model.1, model.2)
+```
+
+<br>
+
+- $\texttt{Res.Df} \,$ are the degrees of freedom of each model
+    * The sample size of longley is 16
+    * Model 1 has $k=4$ parameters
+    * Model 2 has $p=7$ parameters
+    * $\df_1 = n - k = 16 - 4 = 12   \quad \qquad \df_2 = n - p = 16 - 7 = 9$
+
+
+:::
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+```{r}
+# Read data file
+longley <- read.table(file = "datasets/longley.txt",
+                      header = TRUE)
+
+# Store columns in vectors
+x2 <- longley[ , 1]        # GNP Deflator
+x3 <- longley[ , 2]        # GNP
+x4 <- longley[ , 3]        # Unemployed
+x5 <- longley[ , 4]        # Armed Forces
+x6 <- longley[ , 5]        # Population
+x7 <- longley[ , 6]        # Year
+y <- longley[ , 7]         # Employed
+
+# Fit Model 1 and Model 2
+model.1 <- lm(y ~ x4 + x5 + x7)
+model.2 <- lm(y ~ x2 + x3 + x4 + x5 + x6 + x7)
+
+# F-test for Model Selection
+anova(model.1, model.2)
+```
+
+<br>
+
+- $\texttt{Df} \,$ is difference in degrees of freedom
+    * $\df_1 = 12$
+    * $\df_2 = 9$
+    * Therefore the difference is
+    $$
+    \df_1 - \df_2 = 12 - 9 = 3
+    $$
+
+:::
+
+
+
+##  {.smaller}
+
+
+::: {style="font-size: 0.95em"}
+
+```{r}
+# Read data file
+longley <- read.table(file = "datasets/longley.txt",
+                      header = TRUE)
+
+# Store columns in vectors
+x2 <- longley[ , 1]        # GNP Deflator
+x3 <- longley[ , 2]        # GNP
+x4 <- longley[ , 3]        # Unemployed
+x5 <- longley[ , 4]        # Armed Forces
+x6 <- longley[ , 5]        # Population
+x7 <- longley[ , 6]        # Year
+y <- longley[ , 7]         # Employed
+
+# Fit Model 1 and Model 2
+model.1 <- lm(y ~ x4 + x5 + x7)
+model.2 <- lm(y ~ x2 + x3 + x4 + x5 + x6 + x7)
+
+# F-test for Model Selection
+anova(model.1, model.2)
+```
+
+
+<br>
+
+- $\texttt{RSS} \,$ is the residual sum of squares for each model
+    * $\RSS_1 = 1.32336$
+    * $\RSS_2 = 0.83642$
+
+- $\texttt{Sum of Sq} \,$ is the *Extra Sum of Squares*
+    * $\RSS_1 - \RSS_2 = 0.48694$
+
+
+:::
+
+
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+```{r}
+# Read data file
+longley <- read.table(file = "datasets/longley.txt",
+                      header = TRUE)
+
+# Store columns in vectors
+x2 <- longley[ , 1]        # GNP Deflator
+x3 <- longley[ , 2]        # GNP
+x4 <- longley[ , 3]        # Unemployed
+x5 <- longley[ , 4]        # Armed Forces
+x6 <- longley[ , 5]        # Population
+x7 <- longley[ , 6]        # Year
+y <- longley[ , 7]         # Employed
+
+# Fit Model 1 and Model 2
+model.1 <- lm(y ~ x4 + x5 + x7)
+model.2 <- lm(y ~ x2 + x3 + x4 + x5 + x6 + x7)
+
+# F-test for Model Selection
+anova(model.1, model.2)
+```
+
+<br>
+
+- $\texttt{F} \,$ is the F-statistic for Model Selection
+
+\begin{align*}
+F & = \frac{ \RSS_1 - \RSS_2 }{ \df_1 - \df_2 } \bigg/ 
+      \frac{ \RSS_2 }{ \df_2 } \\
+  & = \frac{ 1.32336 - 0.83642 }{ 12 - 9 } \bigg/ 
+      \frac{ 0.83642 }{ 9 } =  1.7465
+\end{align*}
+
+:::
+
+
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+```{r}
+# Read data file
+longley <- read.table(file = "datasets/longley.txt",
+                      header = TRUE)
+
+# Store columns in vectors
+x2 <- longley[ , 1]        # GNP Deflator
+x3 <- longley[ , 2]        # GNP
+x4 <- longley[ , 3]        # Unemployed
+x5 <- longley[ , 4]        # Armed Forces
+x6 <- longley[ , 5]        # Population
+x7 <- longley[ , 6]        # Year
+y <- longley[ , 7]         # Employed
+
+# Fit Model 1 and Model 2
+model.1 <- lm(y ~ x4 + x5 + x7)
+model.2 <- lm(y ~ x2 + x3 + x4 + x5 + x6 + x7)
+
+# F-test for Model Selection
+anova(model.1, model.2)
+```
+
+<br>
+
+- $\texttt{Pr(>F)}$ is the p-value for the F-test for Model Selection 
+    * $F \, \sim \, F_{\df_1 - \df_2 , \, \df_2 } = F_{3, 9}$
+    * Therefore the p-value is
+    $$
+    p = P(F_{3,9} > F) = 0.227
+    $$
+
+:::
+
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+```{r}
+# Read data file
+longley <- read.table(file = "datasets/longley.txt",
+                      header = TRUE)
+
+# Store columns in vectors
+x2 <- longley[ , 1]        # GNP Deflator
+x3 <- longley[ , 2]        # GNP
+x4 <- longley[ , 3]        # Unemployed
+x5 <- longley[ , 4]        # Armed Forces
+x6 <- longley[ , 5]        # Population
+x7 <- longley[ , 6]        # Year
+y <- longley[ , 7]         # Employed
+
+# Fit Model 1 and Model 2
+model.1 <- lm(y ~ x4 + x5 + x7)
+model.2 <- lm(y ~ x2 + x3 + x4 + x5 + x6 + x7)
+
+# F-test for Model Selection
+anova(model.1, model.2)
+```
+
+<br>
+
+**Conclusion:** The p-value is $p = 0.227 > 0.05$
+
+- This means we cannot reject $H_0$, which said that $\beta_{2} = \beta_{3} = \beta_6 = 0$ 
+- Therefore the Reduced Model 1 has to be preferred
+$$
+Y = \beta_1 + \beta_4 x_{4} + \beta_5 x_{5} + \beta_7 x_{7}  + \e
+$$
+
+- This gives statistical evidence that $X_2, X_3,X_6$ can be excluded from the model
+- *GNP Deflator*, *GNP* and *Population* do not affect the *Number of Employed*
+
+:::
+
+
+
+
+## Example 2: Motion of falling bodies {.smaller}
+
+Engraving (1546): people believed projectiles follow circular trajectories ([source](https://www.alamy.com/engraving-depicting-the-path-of-a-projectile-shown-as-a-circular-arc-rather-than-a-parabolic-arc-as-was-later-proved-to-be-the-case-by-galileo-galileo-galilei-1564-1642-an-italian-polymath-dated-16th-century-image186386912.html))
+
+
+
+![](images/engraving.jpg){width=73%}
+
+
+
+
+## {.smaller}
+
+- 1609: Galileo proved mathematically that projectile trajectories are parabolic
+    * His finding was based on empirical data
+    * A ball (covered in ink) was released on an inclined plane from *Initial Height*
+    * Ink mark on the floor represented the *Horizontal Distance* traveled
+    * Unit of measure is *punti*  $\qquad\quad 1 \text{ punto} = 169/180 \, \text{mm}$
+
+![](images/galileo_0.png){width=73%}
+
+
+
+
+## {.smaller}
+
+- We have access to Galileo's original data [@drake_galileo]
+- Does a parabolic (quadratic) trajectory really explain the data? 
+- Let's fit a polynomial regression model and find out!
+
+![](images/galileo.png){width=73%}
+
+
+
+
+## Plotting the data {.smaller}
+
+<br>
+
+|                         |      |     |     |     |     |     |      |
+|:------------------      |:---- |:--  |:--- |:--- |:--  |:-   |:-    |
+| **Initial Height**      | 100  | 200 | 300 | 450 | 600 | 800 | 1000 |
+| **Horizontal Distance** | 253  | 337 | 395 | 451 | 495 | 534 | 573  |
+
+<br>
+
+```r
+# Enter the data
+height <- c(100, 200, 300, 450, 600, 800, 1000)
+distance <- c(253, 337, 395, 451, 495, 534, 573)
+
+# Scatter plot of data
+plot(height, distance, pch = 16)
+```
+
+
+## Data visualization {.smaller}
+
+::: {.column width="45%"}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Enter the data
+height <- c(100, 200, 300, 450, 600, 800, 1000)
+distance <- c(253, 337, 395, 451, 495, 534, 573)
+
+# Scatter plot of data
+plot(height, distance, xlab = "", ylab = "", pch = 16, cex = 2)
+
+# Add labels
+mtext("Initial height", side = 1, line = 3, cex = 2.1)
+mtext("Horizontal distance", side = 2, line = 2.5, cex = 2.1)
+```
+
+:::
+
+
+
+::: {.column width="53%"}
+
+::: {style="font-size: 0.93em"}
+
+- The plot shows that a parabola might fit better than a straight line
+
+- We can first fit the usual simple linear regression model
+$$
+{\rm distance} = \beta_1 + \beta_2 \, {\rm height } + \e
+$$
+
+
+
+- Then, we can try a degree 2 polynomial (linear) regression model
+$$
+{\rm distance} = \beta_1 + \beta_2 \, {\rm height } + \beta_3 \, {\rm height }^2 + \e
+$$
+
+- We can compare the 2 models with the F-test for *Model Selection*
+
+:::
+
+:::
+
+
+
+
+
+
+
+## Fit simple linear model {.smaller}
+
+$$
+{\rm distance} = \beta_1 + \beta_2 \, {\rm height } + \e
+$$
+
+
+
+<br>
+
+
+```r
+# Fit linear model
+linear <- lm(distance ~ height)
+
+# Print summary
+summary(linear)
+```
+
+
+
+
+## {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+```verbatim
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 269.71246   24.31239  11.094 0.000104 ***
+height        0.33334    0.04203   7.931 0.000513 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 33.68 on 5 degrees of freedom
+Multiple R-squared:  0.9264,	Adjusted R-squared:  0.9116 
+F-statistic: 62.91 on 1 and 5 DF,  p-value: 0.0005132
+
+```
+
+<br>
+
+
+- Individual t-tests show that coefficients for both **Intercept** and **height** are non-zero
+     * $\beta_1 \neq 0$ because corresponding p-value is $p = 0.000104 < 0.05$
+     * $\beta_2 \neq 0$ because corresponding p-value is $p = 0.000513 < 0.05$
+     
+- F-test for overall significance coincides with t-test for paramter $\beta_2$
+     * Recall: This is always true for simple regression
+     * Hence, F-test is redundant in this case
+
+:::
+
+
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+```verbatim
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 269.71246   24.31239  11.094 0.000104 ***
+height        0.33334    0.04203   7.931 0.000513 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 33.68 on 5 degrees of freedom
+Multiple R-squared:  0.9264,	Adjusted R-squared:  0.9116 
+F-statistic: 62.91 on 1 and 5 DF,  p-value: 0.0005132
+
+```
+
+<br>
+
+- The coefficient of determination is $R^2 = 0.9264$
+    * This is quite high (close to $1$)
+
+- **Conclusion:** Every indicator shows that the linear model fits quite well
+
+:::
+
+
+
+
+
+
+## Fit quadratic model {.smaller}
+
+$$
+{\rm distance} = \beta_1 + \beta_2 \, {\rm height } + \beta_3  
+\, {\rm height }^2 + \e
+$$
+
+<br>
+
+**Note:** To specify powers, we need to type $\,\, \texttt{I}$
+
+<br>
+
+```r
+# Fit quadratic model
+quadratic <- lm(distance ~ height + I( height^2 ))
+
+# Print summary
+summary(quadratic)
+```
+
+
+
+
+## {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+```verbatim
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  1.999e+02  1.676e+01  11.928 0.000283 ***
+height       7.083e-01  7.482e-02   9.467 0.000695 ***
+I(height^2) -3.437e-04  6.678e-05  -5.147 0.006760 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 13.64 on 4 degrees of freedom
+Multiple R-squared:  0.9903,	Adjusted R-squared:  0.9855 
+F-statistic:   205 on 2 and 4 DF,  p-value: 9.333e-05
+```
+
+<br>
+
+
+- Individual t-tests show that all coefficients are non-zero
+     * $\beta_1 \neq 0$ because corresponding p-value is $p = 0.000283 < 0.05$
+     * $\beta_2 \neq 0$ because corresponding p-value is $p = 0.000695 < 0.05$
+     * $\beta_3 \neq 0$ because corresponding p-value is $p = 0.006760 < 0.05$
+
+- In particular, this shows that the *extra quadratic term* is significant
+
+
+:::
+
+
+## {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+```verbatim
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  1.999e+02  1.676e+01  11.928 0.000283 ***
+height       7.083e-01  7.482e-02   9.467 0.000695 ***
+I(height^2) -3.437e-04  6.678e-05  -5.147 0.006760 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 13.64 on 4 degrees of freedom
+Multiple R-squared:  0.9903,	Adjusted R-squared:  0.9855 
+F-statistic:   205 on 2 and 4 DF,  p-value: 9.333e-05
+```
+
+<br>
+
+- F-test for overall significance gives a p-value of $p = 9.333 \times 10^{-05} < 0.05$
+    * This means we reject the null hypothesis that
+    $$
+    \beta_2 = \beta_3 = 0
+    $$
+    * Hence, we have confirmation that at least one of the parameters is significant
+
+:::
+
+
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+```verbatim
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  1.999e+02  1.676e+01  11.928 0.000283 ***
+height       7.083e-01  7.482e-02   9.467 0.000695 ***
+I(height^2) -3.437e-04  6.678e-05  -5.147 0.006760 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 13.64 on 4 degrees of freedom
+Multiple R-squared:  0.9903,	Adjusted R-squared:  0.9855 
+F-statistic:   205 on 2 and 4 DF,  p-value: 9.333e-05
+```
+
+<br>
+
+
+- The coefficient of determination is $R^2 = 0.9903$
+    * This is quite high (close to $1$)
+    * The quadratic trajectory explains $99\%$ of variability in the data
+
+- **Conclusion:** Every indicator shows that the quadratic model fits quite well
+
+:::
+
+
+
+
+## Linear Vs Quadratic {.smaller}
+
+- We have seen that both linear and quadratic models fit well
+
+- In particular, the coefficients of determination are
+$$
+R^2 \text{ for quadratic model} = 0.9903 > R^2 \text{ for linear model} = 0.9264
+$$
+
+- This confirms that the Quadratic model offers a better fit
+
+- However, need to confirm that Quadratic model makes **better predictions**
+    * Can be done with *F-test for Model Selection*
+
+
+::: {style="font-size: 0.25em"}
+
+<br>
+
+:::
+
+```r
+# F-test for Model Selection
+anova(linear, quadratic)
+```
+
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+```verbatim
+Analysis of Variance Table
+
+Model 1: distance ~ height
+Model 2: distance ~ height + I(height^2)
+  Res.Df    RSS Df Sum of Sq      F  Pr(>F)   
+1      5 5671.2                               
+2      4  744.1  1    4927.1 26.487 0.00676 **
+```
+
+<br>
+
+- First two lines say that the following 2 models are being compared
+\begin{align*}
+    \textbf{Model 1:} & \quad {\rm distance} = \beta_1 + \beta_2 \, {\rm height } + \e \\[10pt]
+    \textbf{Model 2:} & \quad {\rm distance} = \beta_1 + \beta_2 \, {\rm height } + \beta_3  
+\, {\rm height }^2 + \e
+\end{align*}
+
+- The null hypothesis favors Model 1; The alternative favors Model 2
+\begin{align*}
+H_0 \colon & \,  \beta_{3}  = 0 \\[5pt]
+H_1 \colon & \,  \beta_{3} \neq 0 
+\end{align*}
+
+:::
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+```verbatim
+Analysis of Variance Table
+
+Model 1: distance ~ height
+Model 2: distance ~ height + I(height^2)
+  Res.Df    RSS Df Sum of Sq      F  Pr(>F)   
+1      5 5671.2                               
+2      4  744.1  1    4927.1 26.487 0.00676 **
+```
+
+<br>
+
+
+- **Note:** Hypothesis for Model Selection coincides with hypothesis of significance of $\beta_3$
+\begin{align*}
+H_0 \colon & \,  \beta_{3}  = 0 \\[5pt]
+H_1 \colon & \,  \beta_{3} \neq 0 
+\end{align*}
+
+- In this case, t-test for significance of $\beta_3$ and F-test for Model Selection coincide
+
+- They both give a p-value of $p = 0.00676 < 0.05$
+
+- This means we reject $H_0 \quad \implies$  the Quadratic term is needed
+
+- **Quadratic model has to be preferred to the linear one**
+
+:::
+
+
+
+
+
+## Why not try a Cubic model? {.smaller}
+
+
+<br>
+
+$$
+{\rm distance} = \beta_1 + \beta_2 \, {\rm height } + \beta_3  
+\, {\rm height }^2 + \beta_4 \, {\rm height }^3 + \e
+$$
+
+<br>
+
+```r
+# Fit cubic model
+cubic <- lm(distance ~ height + I( height^2 ) + I (height^3))
+
+# Print Summary
+summary(cubic)
+```
+
+
+
+
+## {.smaller}
+
+::: {style="font-size: 0.93em"}
+
+```verbatim
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  1.558e+02  8.326e+00  18.710 0.000333 ***
+height       1.115e+00  6.567e-02  16.983 0.000445 ***
+I(height^2) -1.245e-03  1.384e-04  -8.994 0.002902 ** 
+I(height^3)  5.477e-07  8.327e-08   6.577 0.007150 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.011 on 3 degrees of freedom
+Multiple R-squared:  0.9994,	Adjusted R-squared:  0.9987 
+F-statistic:  1595 on 3 and 3 DF,  p-value: 2.662e-05
+```
+
+<br>
+
+
+- Individual t-tests show that all coefficients are non-zero (p-values $< 0.05$)
+    * In particular, this shows that the *extra cubic term* is significant
+
+- F-test for overall significance gives a p-value of $p = 2.662 \times 10^{-05} < 0.05$
+    * We have confirmation that at least one of the parameters is non-zero
+
+:::
+
+
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.93em"}
+
+```verbatim
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  1.558e+02  8.326e+00  18.710 0.000333 ***
+height       1.115e+00  6.567e-02  16.983 0.000445 ***
+I(height^2) -1.245e-03  1.384e-04  -8.994 0.002902 ** 
+I(height^3)  5.477e-07  8.327e-08   6.577 0.007150 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.011 on 3 degrees of freedom
+Multiple R-squared:  0.9994,	Adjusted R-squared:  0.9987 
+F-statistic:  1595 on 3 and 3 DF,  p-value: 2.662e-05
+```
+
+<br>
+
+
+- The coefficient of determination is $R^2 = 0.9994$
+    * This is quite high (close to $1$)
+
+- **Conclusion:** Every indicator shows that the Cubic model fits quite well
+
+:::
+
+
+
+
+
+## Quadratic vs Cubic {.smaller}
+
+- Both Quadratic and Cubic models fit well
+
+- In particular, the coefficients of determination are
+$$
+R^2 \text{ for Cubic model} = 0.9994 > R^2 \text{ for Quadratic model} =  0.9903
+$$
+
+- This confirms that the Cubic model offers a better fit
+    * Falling bodies follow cubic trajectories???
+    * What is going on? 
+
+- Need to confirm that Cubic model makes **better predictions**
+    * Can be done with *F-test for Model Selection*
+
+
+::: {style="font-size: 0.25em"}
+
+<br>
+
+:::
+
+```r
+# F-test for Model Selection
+anova(quadratic, cubic)
+```
+
+
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.93em"}
+
+```verbatim
+
+Analysis of Variance Table
+
+Model 1: distance ~ height + I(height^2)
+Model 2: distance ~ height + I(height^2) + I(height^3)
+  Res.Df    RSS Df Sum of Sq     F  Pr(>F)   
+1      4 744.08                              
+2      3  48.25  1    695.82 43.26 0.00715 **
+```
+
+
+<br>
+
+- First two lines say that the following 2 models are being compared
+\begin{align*}
+    \textbf{Model 1:} & \quad {\rm distance} = \beta_1 + \beta_2 \, {\rm height } +  \beta_3  
+\, {\rm height }^2  + \e \\[10pt]
+    \textbf{Model 2:} & \quad {\rm distance} = \beta_1 + \beta_2 \, {\rm height } + \beta_3  
+\, {\rm height }^2  + \beta_4  
+\, {\rm height }^3 + \e
+\end{align*}
+
+- The null hypothesis favors Model 1; The alternative favors Model 2
+\begin{align*}
+H_0 \colon & \,  \beta_{4}  = 0 \\[5pt]
+H_1 \colon & \,  \beta_{4} \neq 0 
+\end{align*}
+
+:::
+
+
+
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.93em"}
+
+```verbatim
+
+Analysis of Variance Table
+
+Model 1: distance ~ height + I(height^2)
+Model 2: distance ~ height + I(height^2) + I(height^3)
+  Res.Df    RSS Df Sum of Sq     F  Pr(>F)   
+1      4 744.08                              
+2      3  48.25  1    695.82 43.26 0.00715 **
+```
+
+<br>
+
+- **Note:** Hypothesis for Model Selection coincides with hypothesis of significance of $\beta_4$
+\begin{align*}
+H_0 \colon & \,  \beta_{4}  = 0 \\[5pt]
+H_1 \colon & \,  \beta_{4} \neq 0 
+\end{align*}
+
+- In this case, t-test for significance of $\beta_4$ and F-test for Model Selection coincide
+
+- They both give a p-value of $p = 0.00715 < 0.05$
+
+- This means we reject $H_0 \quad \implies$ the Cubic term is needed
+
+- **Cubic model has to be preferred to the Quadratic one**
+
+:::
+
+
+
+## Conclusion {.smaller}
+
+
+::: {.column width="48%"}
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Click here to show the full code"
+#| fig-asp: 1
+
+# Enter the data
+height <- c(100, 200, 300, 450, 600, 800, 1000)
+distance <- c(253, 337, 395, 451, 495, 534, 573)
+
+# Scatter plot of data
+plot(height, distance, xlab = "", ylab = "", pch = 16, cex = 2)
+
+# Add labels
+mtext("Initial height", side = 1, line = 3, cex = 2.1)
+mtext("Horizontal distance", side = 2, line = 2.5, cex = 2.1)
+
+# Fit quadratic model
+quadratic <- lm(distance ~ height + I( height^2 ))
+
+# Fit cubic model
+cubic <- lm(distance ~ height + I( height^2 ) + I (height^3))
+
+# Plot quadratic Vs Cubic
+polynomial <- Vectorize(function(x, ps) {
+  n <- length(ps)
+  sum(ps*x^(1:n-1))
+}, "x")
+curve(polynomial(x, coef(quadratic)), add=TRUE, col = "red", lwd = 2)
+curve(polynomial(x, coef(cubic)), add=TRUE, col = "blue", lty = 2, lwd = 2)
+legend("topleft", legend = c("quadratic", "cubic"), 
+       col = c("red", "blue"), lty = c(1,2), lwd = 2, cex = 2.5)
+```
+
+
+:::
+
+
+::: {.column width="50%"}
+
+::: {style="font-size: 0.95em"}
+
+- Cubic model works better than Quadratic model
+
+- The underlying relationship from Galileo’s data is Cubic and not Quadratic
+
+- Probably the *inclined plane* introduced *drag*
+
+- Code can be downloaded here [galileo.R](codes/galileo.R)
+
+:::
+
+:::
+
+
+
+
+
+## Why not try higher degree polynomials? {.smaller}
+
+
+<br>
+
+
+$$
+{\rm distance} = \beta_1 + \beta_2 \, {\rm height } + \beta_3  
+\, {\rm height }^2 + \beta_4 \, {\rm height }^3 
++ \beta_5 \, {\rm height }^4 + \e
+$$
+
+<br>
+
+```r
+# Fit Quartic model
+quartic <- lm(distance ~ height + I( height^2 ) + I (height^3) 
+                                                + I (height^4))
+# Print summary
+summary(quartic)
+```
+
+
+
+
+
+## {.smaller}
+
+::: {style="font-size: 0.93em"}
+
+```verbatim
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)   
+(Intercept)  1.383e+02  9.066e+00  15.254  0.00427 **
+height       1.346e+00  1.061e-01  12.690  0.00615 **
+I(height^2) -2.117e-03  3.793e-04  -5.582  0.03063 * 
+I(height^3)  1.766e-06  5.186e-07   3.406  0.07644 . 
+I(height^4) -5.610e-10  2.375e-10  -2.362  0.14201   
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 2.523 on 2 degrees of freedom
+Multiple R-squared:  0.9998,	Adjusted R-squared:  0.9995 
+F-statistic:  3024 on 4 and 2 DF,  p-value: 0.0003306
+```
+
+<br>
+
+
+- Individual t-tests show that:
+    * Coefficients for **Intercept**, **Linear** and **Quadratic** terms are non-zero ($p < 0.05$)
+    * Coefficients for **Cubic** and **Quartic** term are zero ($p > 0.05$)
+
+- F-test for overall significance gives a p-value of $p = 0.0003306 < 0.05$
+    * We have confirmation that at least one of the coefficients is non-zero
+
+:::
+
+
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.93em"}
+
+```verbatim
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)   
+(Intercept)  1.383e+02  9.066e+00  15.254  0.00427 **
+height       1.346e+00  1.061e-01  12.690  0.00615 **
+I(height^2) -2.117e-03  3.793e-04  -5.582  0.03063 * 
+I(height^3)  1.766e-06  5.186e-07   3.406  0.07644 . 
+I(height^4) -5.610e-10  2.375e-10  -2.362  0.14201   
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 2.523 on 2 degrees of freedom
+Multiple R-squared:  0.9998,	Adjusted R-squared:  0.9995 
+F-statistic:  3024 on 4 and 2 DF,  p-value: 0.0003306
+```
+
+<br>
+
+
+- The coefficient of determination is $R^2 = 0.9998$
+    * This is almost $1$
+
+- **Conclusion:** There are signs that the model is overfitting
+    * Coefficient $R^2$ extremely high
+    * However, some terms (Cubic and Quartic) are not significant
+
+:::
+
+
+
+
+
+## Cubic vs Quartic {.smaller}
+
+::: {style="font-size: 0.96em"}
+
+- We saw that the Cubic model fits data well
+
+- Quartic model shows some issues:
+    * Extremely high $R^2$ coefficient
+    * However, some paramteres are non-significant
+
+- Nevertheless, the coefficients of determination are
+$$
+R^2 \text{ for Quartic model} = 0.9998 > R^2 \text{ for Cubic model} =  0.9994
+$$
+
+- Maybe the Quartic model is actually better?
+
+
+- To compare predictions, use F-test for Model Selection
+
+
+::: {style="font-size: 0.25em"}
+
+<br>
+
+:::
+
+```r
+# F-test for Model Selection
+anova(cubic, quartic)
+```
+
+:::
+
+
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.93em"}
+
+```verbatim
+
+Analysis of Variance Table
+
+Model 1: distance ~ height + I(height^2) + I(height^3)
+Model 2: distance ~ height + I(height^2) + I(height^3) + I(height^4)
+  Res.Df    RSS Df Sum of Sq      F Pr(>F)
+1      3 48.254                           
+2      2 12.732  1    35.522 5.5799  0.142
+```
+
+
+<br>
+
+
+- The null hypothesis favors Model 1; The alternative favors Model 2
+\begin{align*}
+H_0 \colon & \,  \beta_{5}  = 0 \\[5pt]
+H_1 \colon & \,  \beta_{5} \neq 0 
+\end{align*}
+
+- The p-value is $p = 0.142 > 0.05 \quad \implies \quad$ do not reject $H_0$
+
+- This means $\beta_5 = 0$, showing that the Quartic term is not improving predictions
+
+:::
+
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.93em"}
+
+```verbatim
+
+Analysis of Variance Table
+
+Model 1: distance ~ height + I(height^2) + I(height^3)
+Model 2: distance ~ height + I(height^2) + I(height^3) + I(height^4)
+  Res.Df    RSS Df Sum of Sq      F Pr(>F)
+1      3 48.254                           
+2      2 12.732  1    35.522 5.5799  0.142
+```
+
+
+<br>
+
+**Conclusion:** Cubic model has to be preferred to the Quartic one
+
+- The Cubic model makes better predictions, despite lower $R^2$ coefficient
+
+- The underlying relationship from Galileo’s data is indeed cubic!
+
+
+:::
+
+
+
+
+
+
+## Example 3: Debunking fake news {.smaller}
+
+Screenshot of a Daily Mirror article [(link)](https://www.mirror.co.uk/news/uk-news/second-year-of-marriage-is-peak-time-337551?int_source=amp_continue_reading&int_medium=amp&int_campaign=continue_reading_button#amp-readmore-target)
+
+
+![](images/mirror.png){width=100%}
+
+
+
+## {.smaller}
+
+- All the hallmarks of fake news are present
+    * Bold claim
+    * No precise references
+    * No actual data
+
+
+- The original "study" on [Divorce-Online.co.uk](https://www.divorce-online.co.uk) seems unavailable at present (2025)
+
+- However, the Daily Mirror article [(link)](https://www.mirror.co.uk/news/uk-news/second-year-of-marriage-is-peak-time-337551?int_source=amp_continue_reading&int_medium=amp&int_campaign=continue_reading_button#amp-readmore-target) states the following:
+    * *The poll [from Divorce-Online.co.uk] backs Office for National Statistics figures*
+
+- The dataset in question can be found on the ONS Website [(Link to the Dataset)](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/divorce/datasets/divorcesinenglandandwalesageatmarriagedurationofmarriageandcohortanalyses)
+
+
+
+
+
+## The divorces dataset {.smaller}
+
+
+::: {.column width="48%"}
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Click here to show the full code"
+#| fig-asp: 1
+
+# Divorces data
+year <- c(1, 2, 3, 4, 5, 6,7, 8, 9, 10, 15, 20, 25, 30)
+percent <- c(3.51, 9.5, 8.91, 9.35, 8.18, 6.43, 5.31, 
+             5.07, 3.65, 3.8, 2.83, 1.51, 1.27, 0.49)
+
+# Scatter plot of data
+plot(year, percent, xlab = "", ylab = "", pch = 16, cex = 2)
+
+# Add labels
+mtext("Years of marriage", side = 1, line = 3, cex = 2.1)
+mtext("Risk of divorce", side = 2, line = 2.5, cex = 2.1)
+```
+:::
+
+
+
+::: {.column width="48%"}
+
+::: {style="font-size: 0.72em"}
+
+| **Years of Marriage**  |  **\% divorces** | 
+|:---------------------- |:---              |
+| 1                      | 3.51             |
+| 2                      | 9.50             |
+| 3                      | 8.91             |
+| 4                      | 9.35             |
+| 5                      | 8.18             |
+| 6                      | 6.43             |
+| 7                      | 5.31             |
+| 8                      | 5.07             |
+| 9                      | 3.65             |
+| 10                     | 3.80             |
+| 15                     | 2.83             |
+| 20                     | 1.51             |
+| 25                     | 1.27             |
+| 30                     | 0.49             |
+: {tbl-colwidths="[30,20]"}
+
+:::
+
+
+:::
+
+
+
+
+## The divorces dataset {.smaller}
+
+::: {.column width="48%"}
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Click here to show the full code"
+#| fig-asp: 1
+
+# Divorces data
+year <- c(1, 2, 3, 4, 5, 6,7, 8, 9, 10, 15, 20, 25, 30)
+percent <- c(3.51, 9.5, 8.91, 9.35, 8.18, 6.43, 5.31, 
+             5.07, 3.65, 3.8, 2.83, 1.51, 1.27, 0.49)
+
+# Scatter plot of data
+plot(year, percent, xlab = "", ylab = "", pch = 16, cex = 2)
+
+# Add labels
+mtext("Years of marriage", side = 1, line = 3, cex = 2.1)
+mtext("Risk of divorce", side = 2, line = 2.5, cex = 2.1)
+```
+:::
+
+
+
+::: {.column width="48%"}
+
+::: {style="font-size: 0.95em"}
+
+
+- From the plot: Divorce-risk is
+    * First low 
+    * then peaks at year 2
+    * then decreases
+
+- *Daily Mirror* claimed:
+    * Divorce-risk peaks at year 2, then decreases thereafter
+    * From the plot, the claim seems credible
+
+
+:::
+
+:::
+
+
+
+
+## The divorces dataset {.smaller}
+
+::: {.column width="48%"}
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Click here to show the full code"
+#| fig-asp: 1
+
+# Divorces data
+year <- c(1, 2, 3, 4, 5, 6,7, 8, 9, 10, 15, 20, 25, 30)
+percent <- c(3.51, 9.5, 8.91, 9.35, 8.18, 6.43, 5.31, 
+             5.07, 3.65, 3.8, 2.83, 1.51, 1.27, 0.49)
+
+# Scatter plot of data
+plot(year, percent, xlab = "", ylab = "", pch = 16, cex = 2)
+
+# Add labels
+mtext("Years of marriage", side = 1, line = 3, cex = 2.1)
+mtext("Risk of divorce", side = 2, line = 2.5, cex = 2.1)
+```
+:::
+
+
+
+::: {.column width="48%"}
+
+::: {style="font-size: 0.95em"}
+
+- We can fact check the claim with regression:
+    * A peak in the data means there is a change of trend
+    * This can only be explained by a polynomial model
+    * Fit quadratic model 
+
+- If claim is to be believed:
+    * quadratic model should do better than a linear one
+
+
+:::
+
+
+:::
+
+
+
+
+## Fitting linear model  {.smaller}
+
+<br>
+
+```r
+# Divorces data
+year <- c(1, 2, 3, 4, 5, 6,7, 8, 9, 10, 15, 20, 25, 30)
+percent <- c(3.51, 9.5, 8.91, 9.35, 8.18, 6.43, 5.31, 
+             5.07, 3.65, 3.8, 2.83, 1.51, 1.27, 0.49)
+
+# Fit linear model
+linear <- lm(percent ~ year)
+
+# Plot summary
+summary(linear)
+```
+
+
+## {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+```verbatim
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  7.88575    0.78667  10.024 3.49e-07 ***
+year        -0.27993    0.05846  -4.788 0.000442 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.879 on 12 degrees of freedom
+Multiple R-squared:  0.6564,	Adjusted R-squared:  0.6278 
+F-statistic: 22.93 on 1 and 12 DF,  p-value: 0.0004422
+```
+
+<br>
+
+- t-test for $\beta_2$ is significant, since $p = 0.0004 < 0.05$
+- Therefore $\beta_2 \neq 0$, and the estimate is $\hat \beta_2 = -0.27993$
+- The risk of divorce decreases with years of marriage (because $\hat \beta_2 < 0$)
+- Coefficient of determination is $R^2 = 0.6564$, which is reasonably high
+
+- **Conclusion:** The linear model provides a good fit
+
+:::
+
+
+## Fitting quadratic model  {.smaller}
+
+- Linear model offered a reasonable explanation of the divorce data
+
+- Is a quadratic model better?
+
+<br>
+
+```r
+# Fit quadratic model
+quadratic <- lm(percent ~ year + I( year^2 ))
+
+# Print summary
+summary(quadratic)
+```
+
+
+
+## {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+```verbatim
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  8.751048   1.258038   6.956  2.4e-05 ***
+year        -0.482252   0.235701  -2.046   0.0654 .  
+I(year^2)    0.006794   0.007663   0.887   0.3943    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.896 on 11 degrees of freedom
+Multiple R-squared:  0.6794,	Adjusted R-squared:  0.6211 
+F-statistic: 11.65 on 2 and 11 DF,  p-value: 0.001919
+```
+
+<br>
+
+- t-test for $\beta_3$ is not significant, since $p = 0.3943 > 0.05$
+
+- Cannot reject null hypothesis that $\beta_3 = 0 \quad \implies \quad$ Quadratic term not needed! 
+
+- **Note:** No need to run Model Selection to compare linear and quadratic models
+    * This is because, when comparing linear and quadratic models, the extra term corresponds to the parameter $\beta_3$
+    * Therefore, F-test for Model Selection would give same p-value as t-test for $\beta_3$
+
+:::
+
+
+
+
+## Conclusions {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+- Daily Mirror's Claim: Divorce-risk peaks at year 2 then decreases thereafter
+    * Claim suggests higher order model needed to explain change in trend
+
+
+- Analysis conducted by us: 
+    * Fit linear and quadratic regression models 
+    * t-test of significance discarded quadratic term
+    * This is equivalent to F-test for Model Selection: Quadratic model is discarded
+
+
+- Our Findings: Claim in Daily Mirror article is **misleading**
+    * Linear model is clearly better than quadratic model
+    * This suggests divorce-risk generally decreases over time
+    * Peak in year 2 can be explained by unusually low divorce-risk in 1st year
+    * This means data for 1st year is *outlier*
+
+
+:::
+
+
+## Visual confirmation {.smaller}
+
+
+::: {.column width="48%"}
+
+```{r} 
+#| echo: true
+#| code-fold: true
+#| code-summary: "Click here to show the full code"
+#| fig-asp: 1
+
+# Divorces data
+year <- c(1, 2, 3, 4, 5, 6,7, 8, 9, 10, 15, 20, 25, 30)
+percent <- c(3.51, 9.5, 8.91, 9.35, 8.18, 6.43, 5.31, 
+             5.07, 3.65, 3.8, 2.83, 1.51, 1.27, 0.49)
+
+# Fit linear model
+linear <- lm(percent ~ year)
+
+# Fit quadratic model
+quadratic <- lm(percent ~ year + I( year^2 ))
+
+# Scatter plot of data
+plot(year, percent, xlab = "", ylab = "", pch = 16, cex = 2)
+
+# Add labels
+mtext("Years of marriage", side = 1, line = 3, cex = 2.1)
+mtext("Risk of divorce", side = 2, line = 2.5, cex = 2.1)
+
+# Plot Linear Vs Quadratic
+polynomial <- Vectorize(function(x, ps) {
+  n <- length(ps)
+  sum(ps*x^(1:n-1))
+}, "x")
+curve(polynomial(x, coef(linear)), add=TRUE, col = "red", lwd = 2)
+curve(polynomial(x, coef(quadratic)), add=TRUE, col = "blue", lty = 2, lwd = 2)
+legend("topright", legend = c("Linear", "Quadratic"), 
+       col = c("red", "blue"), lty = c(1,2), cex = 3, lwd = 3)
+```
+
+:::
+
+
+
+
+::: {.column width="48%"}
+
+<br>
+<br>
+
+::: {style="font-size: 0.95em"}
+
+- Linear model is evidently better at explaining decreasing divorce-risk
+
+- Peak in year 2 should be explained by unusually low divorce-risk in 1st year
+
+- This means Year 1 data is *outlier*
+
+- Code is available here [divorces.R](codes/divorces.R)
+
+:::
+
+:::
+
+
+
+
+
+
+
+
+## Why not try higher order polynomials? {.smaller}
+
+- We can try fitting higher-order polynomial models to explain *peak in Year 2*
+
+- The lowest-order polynomial that provides a good fit is degree 6 (try it yourself!)
+
+- Let us compare the *linear model* with the *degree 6 polynomial model*
+
+<br>
+
+```r
+# Fit order 6 model
+degree.6 <- lm(percent ~ year + I( year^2 ) + I( year^3 ) + 
+                              + I( year^4 ) + I( year^5 ) +
+                              + I( year^6 ))
+
+# F-test for Model Selection
+anova(linear, degree.6)
+```
+
+
+
+## {.smaller}
+
+```verbatim
+Model 1: percent ~ year
+Model 2: percent ~ year + I(year^2) + I(year^3) + I(year^4) + I(year^5) + 
+    +I(year^6)
+  Res.Df    RSS Df Sum of Sq      F   Pr(>F)   
+1     12 42.375                                
+2      7  3.724  5    38.651 14.531 0.001404 **
+```
+
+<br>
+
+- F-test for Model Selection is significant, since $p = 0.001 < 0.05$
+
+- This means we reject the null hypothesis that
+$$
+\beta_3 = \beta_4 = \beta_5 = \beta_6 = 0
+$$
+
+- The degree 6 model is better than the Linear model
+
+- Peak divorce-rate in Year 2 is well explained by order 6 regression
+
+- What is going on? Was the Daily Mirror right?
+    * Let us plot the fitted regression functions
+
+
+
+
+## {.smaller}
+
+
+
+
+::: {.column width="49%"}
+
+```{r} 
+#| echo: true
+#| code-fold: true
+#| code-summary: "Click here to show the full code"
+#| fig-asp: 1
+
+# Divorces data
+year <- c(1, 2, 3, 4, 5, 6,7, 8, 9, 10, 15, 20, 25, 30)
+percent <- c(3.51, 9.5, 8.91, 9.35, 8.18, 6.43, 5.31, 
+             5.07, 3.65, 3.8, 2.83, 1.51, 1.27, 0.49)
+
+# Fit linear model
+linear <- lm(percent ~ year)
+
+# Fit degree 6 model
+degree.6 <- lm(percent ~ year  + I( year^2 ) + I( year^3 ) + 
+                                I( year^4 ) + I( year^5 ) +
+                                I( year^6 ))
+
+# Scatter plot of data
+plot(year, percent, xlab = "", ylab = "", pch = 16, cex = 2)
+
+# Add labels
+mtext("Years of marriage", side = 1, line = 3, cex = 2.1)
+mtext("Risk of divorce", side = 2, line = 2.5, cex = 2.1)
+
+# Plot Linear Vs Quadratic
+polynomial <- Vectorize(function(x, ps) {
+  n <- length(ps)
+  sum(ps*x^(1:n-1))
+}, "x")
+curve(polynomial(x, coef(linear)), add=TRUE, col = "red", lwd = 2)
+curve(polynomial(x, coef(degree.6)), add=TRUE, col = "blue", lty = 2, lwd = 3)
+legend("topright", legend = c("Linear", "Degree 6"), 
+       col = c("red", "blue"), lty = c(1,2), cex = 3, lwd = 3)
+```
+
+:::
+
+
+
+
+::: {.column width="49%"}
+
+::: {style="font-size: 0.92em"}
+
+
+- Degree 6 model explains Peak at Year 2
+
+- However, the model introduces new peaks! 
+    * We observe a decreasing risk of divorce for 23 years
+    * But marriage gets boring after 27 years!
+
+- **Degree 6 Model overfits**:
+    * No, the Daily Mirror is not right 
+    * Data is very well explained
+    * but predictions are not realistic
+
+- Linear model should be preferred
+    * We will justify this rigorously with **Stepwise Regression**
+
+:::
+
+:::
+
+
+
+
+
+# Part 3: <br> Regression Assumptions <br> {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+## Regression modelling assumptions {.smaller}
+
+In Lecture 8 we have introduced the general linear regression model
+
+$$
+Y_i = \beta_1 z_{i1} + \beta_2 z_{i2} + \ldots + \beta_p z_{ip} + \e_i
+$$
+
+
+- There are $p$ predictor random variables
+
+$$
+Z_1 \, , \,\, \ldots \, , \, Z_p
+$$
+
+
+- $Y_i$ is the conditional distribution
+
+$$
+Y | Z_1 = z_{i1} \,, \,\, \ldots \,, \,\, Z_p = z_{ip}
+$$
+
+- The errors $\e_i$ are random variables 
+
+
+
+## Regression assumptions on $Y_i$ {.smaller}
+
+1. **Predictor is known:** The values $z_{i1}, \ldots, z_{ip}$ are known
+
+2. **Normality:** The distribution of $Y_i$ is normal
+
+3. **Linear mean:** There are parameters $\beta_1,\ldots,\beta_p$ such that
+$$
+\Expect[Y_i] = \beta_1 z_{i1} + \ldots + \beta_p z_{ip}  
+$$
+
+4. **Homoscedasticity:** There is a parameter $\sigma^2$ such that
+$$
+\Var[Y_i] = \sigma^2
+$$
+
+5. **Independence:** rv $Y_1 , \ldots , Y_n$ are independent, and thus uncorrelated
+
+$$
+\Cor (Y_i,Y_j) = 0 \qquad \forall \,\, i \neq j
+$$
+
+
+
+
+## Equivalent assumptions on $\e_i$ {.smaller}
+
+1. **Predictor is known:** The values $z_{i1}, \ldots, z_{ip}$ are known
+
+2. **Normality:** The distribution of $\e_i$ is normal
+
+3. **Linear mean:** The errors have zero mean
+$$
+\Expect[\e_i] = 0
+$$
+
+4. **Homoscedasticity:** There is a parameter $\sigma^2$ such that
+$$
+\Var[\e_i] = \sigma^2
+$$
+
+5. **Independence:** Errors $\e_1 , \ldots , \e_n$ are independent, and thus uncorrelated
+
+$$
+\Cor (\e_i, \e_j) = 0 \qquad \forall \,\, i \neq j
+$$
+
+
+## Extra assumption on design matrix {.smaller}
+
+
+6. The design matrix $Z$ is such that
+
+$$
+Z^T Z  \, \text{ is invertible}
+$$
+
+
+- Assumptions 1-6 allowed us to estimate the parameters
+
+$$
+\beta = (\beta_1, \ldots, \beta_p)
+$$
+
+- By maximizing the likelihood, we obtained the MLE
+
+$$
+\hat \beta = (Z^T Z)^{-1} Z^T y
+$$
+
+
+
+## Violation of Regression Assumptions {.smaller}
+### We consider 3 scenarios
+
+i. **Heteroscedasticity:** The violation of Assumption 4 of homoscedasticity
+
+$$
+\Var [\e_i] \neq \Var[\e_j] \qquad \text{ for some } \,\, i \neq j
+$$
+
+ii. **Autocorrelation:** The violation of Assumption 5 of no-correlation
+
+$$
+\Cor( \e_i, \e_j ) \neq 0  \qquad \text{ for some } \,\, i \neq j
+$$
+
+
+iii. **Multicollinearity:** The violation of Assumption 6 of invertibilty of the matrix
+
+$$
+Z^T Z
+$$
+
+
+
+
+
+# Part 4: <br>Heteroscedasticity {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+## Heteroscedasticity {.smaller}
+
+- The general linear regression model is 
+
+$$
+Y_i = \beta_1 z_{i1} + \beta_2 z_{i2} + \ldots + \beta_p z_{ip} + \e_i
+$$
+
+
+- Consider Assumption 4
+    * **Homoscedasticity:** There is a parameter $\sigma^2$ such that
+    $$
+    \Var[\e_i] = \sigma^2 \qquad \forall \,\, i
+    $$
+
+- **Heteroscedasticity:** The violation of Assumption 4
+
+$$
+\Var [\e_i] \neq \Var[\e_j] \qquad \text{ for some } \,\, i \neq j
+$$
+
+
+
+
+## Why is homoscedasticity important? {.smaller}
+
+- In Lectures 9-10 we presented 4 methods to assess linear models 
+
+    * Coefficient $R^2$
+    * $t$-tests for individual parameters significance
+    * $F$-test for Overall Significance
+    * $F$-test for Model Selection
+
+- The above methods **rely heavily** on homoscedasticity
+
+
+
+
+##  {.smaller}
+
+- For example, the maximum likelihood estimation relied on the calculation
+    \begin{align*}
+    L & = \prod_{i=1}^n  f_{Y_i} (y_i)  
+        = \prod_{i=1}^n \frac{1}{\sqrt{2\pi \sigma^2}} \exp \left( -\frac{(y_i - \hat y_i)^2}{2\sigma^2} \right) \\[15pts]
+      & = \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left(   -\frac{\sum_{i=1}^n(y_i- \hat y_i)^2}{2\sigma^2}      \right) \\[15pts]
+      & = \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left(   -\frac{ \RSS }{2\sigma^2}      \right)
+    \end{align*}
+
+
+- The calculation is only possible thanks to homoscedasticity
+
+$$
+\Var[Y_i] = \sigma^2 \qquad \forall \,\, i
+$$
+
+
+
+##  {.smaller}
+
+- Suppose the calculation in previous slide holds
+
+$$
+L = \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left(   -\frac{ \RSS }{2\sigma^2}      \right)
+$$
+
+
+- Then maximizing the likelihood is equivalent to solving
+
+$$
+\min_{\beta} \ \RSS
+$$
+
+- The above has the closed form solution
+
+$$
+\hat \beta = (Z^T Z)^{-1} Z^T y
+$$
+
+
+
+
+##  {.smaller}
+
+- Without homoscedasticity we would have
+
+$$
+L \neq \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left(   -\frac{ \RSS }{2\sigma^2}      \right)
+$$
+
+
+- Therefore, $\hat \beta$ would no longer maximize the likelihood!
+
+
+- But $\hat \beta$ would still be an unbiased estimator for $\beta$
+
+$$
+\Expect [\hat \beta ] = \beta
+$$
+
+
+
+##  {.smaller}
+
+- However, the quantity
+$$
+S^2 = \frac{ \RSS(\hat \beta) }{n-p}
+$$
+is not anymore unbiased estimator for the population variance $\sigma^2$
+$$
+\Expect[S^2] \neq \sigma^2
+$$
+
+
+- This is a problem because the estimated standard error for $\beta_j$ involves $S^2$
+$$
+\ese (\beta_j) = \xi_{jj}^{1/2} \, S  
+$$
+
+- Therefore $\ese$ become **unreliable**
+
+
+
+
+##  {.smaller}
+
+
+- Then, also t-statistic for significance of $\beta_j$ becomes unreliable
+
+- This is because the t-statistic depends on $\ese$
+
+$$
+t = \frac{ \hat\beta_j - \beta_j }{ \ese } 
+$$
+
+- **Without homoscedasticity the regression maths does not work!**
+    * t-tests for significance of $\beta_j$
+    * confidence intervals for $\beta_j$
+    * $F$-tests for Model Selection
+    * They all break down and become unreliable!
+
+
+
+
+## Is heteroscedastcity a serious problem? {.smaller}
+
+- Heteroscedasticity in linear regression is no longer a big problem
+
+- This is thanks to 1980s research on *robust standard errors* ([more info here](https://en.wikipedia.org/wiki/Heteroskedasticity-consistent_standard_errors))
+
+
+- Moreover, heteroscedasticity only becomes a problem when it is **severe**
+
+
+
+## How to detect Heteroscedasticity {.smaller}
+
+Heteroscedasticity is commonly present in real-world datasets. We should be able to detect it
+
+
+1. Graphical methods
+    * Simple, robust and informative
+
+
+2. Statistical tests (see [@gujarati_porter])
+    * Goldfeldt-Quant test
+    * White's test for heteroscedasticity
+
+
+**We do not cover statistical tests, only Graphical methods**
+
+
+
+
+
+
+## Graphical methods for Heteroscedasticity {.smaller}
+
+
+- They involve studying the model **residuals**
+
+$$
+\hat{\e}_i := y_i - \hat y_i
+$$
+
+
+- By definition, $\hat{\e}_i$ is sampled from the error $\e_i$
+
+- We have heteroscedasticity if 
+
+$$
+\Var [\e_i] \neq \Var [\e_j] \, \quad \, \text{ for some } \, i \neq j
+$$
+
+- Hence, under heteroscedasticity, the residuals $\hat{\e}_i$ have **different variance**
+
+
+
+
+
+
+
+## First method: Histogram of residuals {.smaller}
+
+- Yes Heteroscedasticity:
+    * Residuals $\e_i$ have different variance
+    * Histogram of $\hat{\e}_i$ will display **asymetric pattern**
+
+- No Heteroscedasticity:
+    * Homoscedasticity assumption holds
+    * Residuals $\e_i$ have same variance, with $\e_i \sim N(0, \sigma^2)$
+    * Histogram of $\hat{\e}_i$ will look like **normal** distribution $N(0,\sigma^2)$
+
+
+
+
+## Interpretation of Histograms {.smaller}
+### Left: Homoscedastic $\qquad\quad\quad$ Right: Heteroscedastic
+
+
+::: {.column width="48%"}
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Generate random N(0,1) vector
+data <- rnorm(300)
+
+# Plot histogram of transformed data
+hist(data, 
+     xlab = "", 
+     ylab = "", 
+     col = "skyblue", 
+     border = "white")
+
+# Increase label size
+mtext("Residuals", side=1, line=2.5, cex=2.5)
+```
+
+:::
+
+
+::: {.column width="48%"}
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Generate random N(0,1) vector
+data <- rnorm(300)
+
+trend <- seq(-6, 3, length.out = length(data))
+
+# Add quadratic trend
+data <- data + trend ^ 2
+
+# Plot histogram of transformed data
+hist(data, 
+     xlab = "", 
+     ylab = "", 
+     col = "skyblue", 
+     border = "white")
+
+# Increase label size
+mtext("Residuals", side=1, line=2.5, cex=2.5)
+```
+
+
+:::
+
+
+
+
+
+## Second method: Residual graphs {.smaller}
+
+- Residual graphs are plots of
+    * Residuals $\hat{\e}_i$ against fitted values $\hat{y}_i$
+
+
+
+- Important:
+    * No Heteroscedasticity $\implies$ Plots will look **random**
+    * Yes Heteroscedasticity $\implies$ Plots will show certain **patterns**
+
+- Good reference is the book [@draper_smith]
+
+
+
+
+## Interepretation of Residual Graphs {.smaller}
+
+::: {.column width="47%"}
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Generate random N(0,1) vector
+set.seed(1)
+data <- rnorm(300)
+
+# Threshold at 2.5 standard deviation for 
+# better plot
+
+data <- data[abs(data) <= 2.5]
+
+plot(data, 
+    xlab = "", 
+    ylab = "", 
+    pch = 16,
+    cex = 1.2)
+
+mtext("Fitted Values", side=1, line=3, cex=2.1)
+mtext("Residuals", side=2, line=2.5, cex=2.1)
+
+abline(0, 0, col = "red", lwd = 4)
+```
+
+:::
+
+
+::: {.column width="50%"}
+
+- **No systematic pattern:**
+    * Suggests no heteroscedasticity
+    * Corresponds to constant variance 
+    * Homoscedasticity assumption holds
+
+- Residuals resemble sample $N(0,\sigma^2)$
+    * About half residuals negative and half positive
+    * Vertical spread is comparable
+
+:::
+
+
+
+
+## Interepretation of Residual Graphs {.smaller}
+### Patterns implying Heteroscedasticity
+
+1. Funnelling out of residuals: 
+    * Residuals close to 0 for small $\hat{y}_i$ values, and more spread out for large $\hat{y}_i$
+
+2. Funnelling in of residuals
+    * Residuals spread out for small $\hat{y}_i$ values, and close to 0 for large $\hat{y}_i$
+
+3. Linear residuals
+    * Residuals are proportional to $\hat y_i$
+
+4. Quadratic residuals
+    * Residuals are proportional to $\hat{y}^2_i$
+
+
+**In these special cases we can transform the data to avoid heteroscedasticity**
+
+
+
+
+
+## Funnelling Out and Funnelling In residuals {.smaller}
+
+
+::: {.column width="48%"}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+
+# Generate sample data
+set.seed(1)
+x <- runif(1000, -1, 1)
+
+# Generate residuals with increasing variance as |x| is larger
+errors <- rnorm(1000, mean = 0, sd = abs(x))
+
+# Define response variable with slight heteroscedasticity
+y <- 3 * x + errors
+
+# Fit a linear model
+model <- lm(y ~ x)
+
+# Extract fitted values and residuals
+fitted_values <- fitted(model)
+residuals <- resid(model)
+
+# Plot fitted values vs residuals
+plot(fitted_values, residuals,
+     xlab = "", 
+     ylab = "", 
+     pch = 16)
+
+mtext("Fitted Values", side = 1, line = 3, cex = 2.1)
+mtext("Residuals", side = 2, line = 2.5, cex = 2.1)
+
+# Add reference line
+abline(0, 0, col = "red", lwd = 4)
+```
+
+:::
+
+
+::: {.column width="48%"}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+
+# Generate sample data
+set.seed(1)
+x <- runif(1000, -7, 7)
+
+# Small constant to prevent division by zero
+epsilon <- 0.05  
+
+# Generate residuals with increasing variance as |x| close to zero
+errors <- rnorm(1000, mean = 0, sd = 1 / (abs(x) + epsilon))
+
+# Define response variable with slight heteroscedasticity
+y <- 3 * x + errors
+
+# Fit a linear model
+model <- lm(y ~ x)
+
+# Extract fitted values and residuals
+fitted_values <- fitted(model)
+residuals <- resid(model)
+
+# Plot fitted values vs residuals
+plot(fitted_values, residuals,
+     xlab = "", 
+     ylab = "", 
+     pch = 16, 
+     ylim = c(-2, 2))
+
+mtext("Fitted Values", side = 1, line = 3, cex = 2.1)
+mtext("Residuals", side = 2, line = 2.5, cex = 2.1)
+
+# Add reference line
+abline(0, 0, col = "red", lwd = 4)
+```
+
+:::
+
+
+## Linear and Quadratic residuals
+
+
+::: {.column width="48%"}
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Generate random N(0,1) vector
+data <- rnorm(300)
+
+# Threshold at 2.5 standard deviation for 
+# better plot
+
+data <- data[abs(data) <= 2.5]
+
+trend <- seq(-6, 3, length.out = length(data))
+
+# Add linear trend
+data <- data + trend
+
+plot(data, 
+    xlab = "", 
+    ylab = "", 
+    pch = 16)
+
+mtext("Fitted Values", side=1, line=3, cex=2.1)
+mtext("Residuals", side=2, line=2.5, cex=2.1)
+
+abline(0, 0, col = "red", lwd = 4)
+```
+
+:::
+
+
+::: {.column width="48%"}
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Generate random N(0,1) vector
+data <- rnorm(300)
+
+# Threshold at 2.5 standard deviation for 
+# better plot
+
+data <- data[abs(data) <= 2.5]
+
+trend <- seq(-6, 3, length.out = length(data))
+
+# Add quadratic trend
+data <- data + trend ^ 2
+
+plot(data, 
+    xlab = "", 
+    ylab = "", 
+    pch = 16)
+
+mtext("Fitted Values", side=1, line=3, cex=2.1)
+mtext("Residuals", side=2, line=2.5, cex=2.1)
+
+abline(0, 0, col = "red", lwd = 4)
+```
+
+
+:::
+
+
+
+
+
+## What to do in case of Heteroscedasticity? {.smaller}
+
+Assume you fitted the model
+
+$$
+Y = \beta_1 + \beta_2 X_2 + \ldots + \beta_p X_p + \e
+$$
+
+
+If heteroscedasticity is detected, we can transform the data:
+
+1. Remedial transformations for $Y$
+    * Transform the data $Y$
+
+2. Remedial transformations for $X_i$
+    * Divide through by a suitable power of $X_i$
+
+
+
+
+
+## Remedial transformations for $Y$ {.smaller}
+
+To try and reduce heteroscedasticity we can **transform the data $y$** 
+
+- A tranformation which often helps is
+    * $\, \log y$
+
+- For linear and quadratic patterns you can try
+    * $\, y^2$
+    * $\, \sqrt{y}$
+
+
+
+
+## Remedial transformations for $X$ {.smaller}
+
+Heteroscedasticity can also be associated with some of the $X$-variables
+
+- To detect it, plot the residuals $\hat{\e}_i$ against $X$
+
+The book [@gujarati_porter] discusses two cases
+
+1. The error variance is proportional to $X^2_i$
+$$
+\Var [\e_i] \, \approx \, \sigma^2 \, X^2_i
+$$
+
+2. The error variance is proportional to $X_i$
+$$
+\Var [\e_i] \, \approx \, \sigma^2 \, X_i
+$$
+**In each case, divide through by the square root of the offending $X$-term**
+
+
+
+## Error variance proportional to $X_i^2$ {.smaller}
+
+- For example, consider the model
+
+$$
+Y_i = \beta_1 + \beta_2 X_{i} + \e_i
+$$
+
+- Assume that error variance is proportional to $X_i^2$, that is, 
+
+$$
+\e_i \,\, \text{ independent } \,\, N(0,\sigma^2 X_i^2)
+$$
+
+- Divide through by $X_i$
+
+\begin{equation} \tag{1}
+\frac{Y_i}{X_i} = \frac{\beta_1}{X_i}+\beta_2+\frac{\e_i}{X_i}
+\end{equation}
+
+
+
+## {.smaller}
+
+- Consider the substitutions
+
+$$
+\widetilde{Y}_i = \frac{Y_i}{X_i} \,, \qquad \widetilde{X}_i = \frac{1}{X_i} \,, \qquad  \tilde{\e}_i = \frac{\e_i}{X_i}
+$$
+
+- The model in (1) is therefore equivalent to 
+
+\begin{equation} \tag{2}
+\widetilde{Y}_i = \beta_1 + \beta_2 \widetilde{X}_i + \tilde{\e}_i 
+\end{equation}
+
+- By assumption, we have $\e_i$ independent and $N(0,\sigma^2 X_i^2)$. Therefore,
+
+$$
+\tilde{\e}_i \,\, \text{ iid } \,\, N(0,\sigma^2)
+$$
+
+
+- Thus, the model in (2) satisfies all the Regression Assumptions
+
+
+## {.smaller}
+
+- Assume we now want to make predictions for the value $x$
+
+- First, fit the simple regression model in (2). This gives MLEs $\hat{\beta}_1, \hat{\beta}_2$
+
+- Recalling the substitution $\widetilde{X} = 1 / X$, we define
+
+$$
+\widetilde{x} = 1/x
+$$
+
+- The prediction of Model (2) for such value is
+
+$$
+\widetilde{y} = \hat{\beta}_1 + \hat{\beta}_2 \widetilde{x}
+$$
+
+- Now, recall that $\widetilde{Y} = Y / X$. Therefore, $Y = \widetilde{Y}X$, and the prediction is
+
+$$
+\hat{y} = \widetilde{y} \cdot x
+$$
+
+
+
+## Error variance proportional to $X_i$ {.smaller}
+
+- For example, consider the model
+
+$$
+Y_i = \beta_1 + \beta_2 X_{i} + \e_i
+$$
+
+- Assume error variance is proportional to $X_i$, that is, 
+
+$$
+\e_i \,\, \text{ independent } \,\, N(0,\sigma^2 X_i)
+$$
+
+- Divide through by $\sqrt{X_i}$
+
+\begin{equation} \tag{3}
+\frac{Y_i}{\sqrt{X_i}} = \frac{\beta_1}{\sqrt{X_i}}+\beta_2 \sqrt{X_i} + \frac{\e_i}{\sqrt{X_i}}
+\end{equation}
+
+- With suitable substitutions, we can fit simple regression to the model in (3)
+
+
+
+
+## Analysis of regression residuals in R {.smaller}
+
+We need R commands to compute **residuals** and **fitted values**
+
+
+1. Fit linear model as usual
+
+```r
+# Fit a linear model
+model <- lm(formula)
+```
+
+<br>
+
+2. To obtain fitted values $\hat y_i$ and residual values $\hat{\e}_i = y_i - \hat y_i$
+
+```r
+# Compute fitted values
+fitted.values <- model$fitted
+
+# Compute residual values
+residuals <- model$resid
+```
+
+
+
+## Example: Stock Vs Gold prices {.smaller}
+
+- The full code for the example is available here [heteroscedasticity.R](codes/heteroscedasticity.R)
+
+- Stock Vs Gold prices data is available here [stock_gold.txt](datasets/stock_gold.txt)
+
+- Read data into R and fit simple regression
+
+```r
+# Load dataset on Stock Vs Gold prices
+prices <- read.table(file = "stock_gold.txt",
+                    header = TRUE)
+
+# Store data-frame into 2 vectors
+stock.price <- prices[ , 1]
+gold.price <- prices[ , 2]
+
+# Fit regression model
+model <- lm(gold.price ~ stock.price)
+```
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.93em"}
+
+**Scatter Plot:** of $y$ against $x$, with regression line
+
+- Most points are below the line
+- Points under the line appear more distant
+- This means errors have different variance $\implies$ heteroscedasticity
+
+:::
+
+
+::::: {.columns style='display: flex !important; height: 60%;'}
+
+::: {.column width="38%" style='display: flex; justify-content: center; align-items: center;'}
+
+```r
+# Scatter plot
+plot(stock.price, 
+     gold.price, 
+     xlab = "Stock Price", 
+     ylab = "Gold Price",
+     pch = 16,
+     cex = 2) 
+
+# Plot regression line
+abline(model, 
+      col = "red", 
+      lwd = 4)
+```
+
+:::
+
+::: {.column width="61%" style='display: flex; justify-content: center; align-items: center;'}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Read the data
+prices <- read.table(file = "datasets/stock_gold.txt",
+                   header = TRUE
+                  )
+
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Fit regression model
+model <- lm(gold.price ~ stock.price)
+
+# Create the plot
+plot(stock.price,
+     gold.price, 
+     xlab = "", 
+     ylab= "",
+     pch = 16,
+     cex = 2)
+
+# Add labels
+mtext("Stock Price", side=1, line=3, cex=2.1)
+mtext("Gold Price", side=2, line=2.5, cex=2.1)
+
+# Plot regression line
+abline(model, col = "red", lwd = 4)
+```
+
+:::
+:::::
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.93em"}
+
+**Histogram of residuals:** Confirms initial intuition of heteroscedasticity
+
+- Residuals are not normally distributed
+- Residuals have different variance (skewed histogram)
+
+:::
+
+
+::::: {.columns style='display: flex !important; height: 60%;'}
+
+::: {.column width="38%" style='display: flex; justify-content: center; align-items: center;'}
+
+```r
+# Compute residuals
+residuals <- model$resid
+
+# Histogram of residuals
+hist(residuals,
+xlab = "Residuals",
+ylab = "Frequency",
+col = "skyblue")
+```
+
+:::
+
+::: {.column width="61%" style='display: flex; justify-content: center; align-items: center;'}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Read the data
+prices <- read.table(file = "datasets/stock_gold.txt",
+                   header = TRUE
+                  )
+
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Fit regression model
+model <- lm(gold.price ~ stock.price)
+
+# Compute residuals
+residuals <- model$resid
+
+# Histogram of residuals
+hist(residuals,
+xlab = "",
+ylab = "",
+col = "skyblue")
+
+# Increase label size
+mtext("Residuals", side = 1, line = 2.5, cex = 2.5)
+mtext("Frequency", side = 2, line = 2.5, cex = 2.5)
+```
+
+:::
+:::::
+
+
+
+## {.smaller}
+
+::: {style="font-size: 0.93em"}
+
+**Residual Graph:** Plot residuals against fitted values 
+
+- Displays funnelling out pattern
+- We definitely have **heteroscedasticity**
+
+:::
+
+
+::::: {.columns style='display: flex !important; height: 65%;'}
+
+::: {.column width="38%" style='display: flex; justify-content: center; align-items: center;'}
+
+```r
+# Compute fitted values
+fitted <- model$fitted
+
+# Plot the residual graph
+plot(fitted, residuals,
+     xlab = "Fitted Values", 
+     ylab = "Residuals",
+     pch = 16,
+     cex = 2)
+
+# Add y = 0 line for reference
+abline(0, 0, col = "red", lwd = 4)
+```
+
+:::
+
+::: {.column width="61%" style='display: flex; justify-content: center; align-items: center;'}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Read the data
+prices <- read.table(file = "datasets/stock_gold.txt",
+                   header = TRUE
+                  )
+
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Fit regression model
+model <- lm(gold.price ~ stock.price)
+
+# Compute residuals
+residuals <- model$resid
+
+# Compute fitted values
+fitted <- model$fitted
+
+# Plot the residual graph
+plot(fitted, residuals,
+     xlab = "", 
+     ylab = "",
+     pch = 16,
+     cex = 2)
+
+# Increase label size
+mtext("Fitted Values", side = 1, line = 2.5, cex = 2.5)
+mtext("Residuals", side = 2, line = 2.5, cex = 2.5)
+
+# Add y = 0 line for reference
+abline(0, 0, col = "red", lwd = 4)
+```
+
+:::
+:::::
+
+
+
+
+##  {.smaller}
+
+- **Remedial transformation:** To try and reduce heteroscedasticity take
+    * $\, \log y$
+
+- This means, we fit the model
+
+$$
+\log Y_i = \alpha + \beta X_i + \e_i
+$$
+
+
+```r 
+# Transform data via log(y)
+log.gold.price <- log(gold.price)
+
+# Fit linear model with log(y) data
+log.model <- lm(log.gold.price ~ stock.price)
+
+# Compute residuals for log model
+log.residuals <- log.model$resid
+
+# Compute fitted values for log model
+log.fitted <- log.model$fitted
+```
+
+
+
+# {.smaller}
+
+Heteroscedasticity has definitely reduced
+
+- Left: Residual plot for original model
+- Right: Residual plot for $\log y$ data model
+
+
+
+::::: {.columns style='display: flex !important; height: 50%;'}
+
+::: {.column width="47%" style='display: flex; justify-content: center; align-items: center;'}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Read the data
+prices <- read.table(file = "datasets/stock_gold.txt",
+                   header = TRUE
+                  )
+
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Fit regression model
+model <- lm(gold.price ~ stock.price)
+
+# Compute residuals
+residuals <- model$resid
+
+# Compute fitted values
+fitted <- model$fitted
+
+# Plot the residual graph
+plot(fitted, residuals,
+     xlab = "", 
+     ylab = "",
+     pch = 16,
+     cex = 2)
+
+# Increase label size
+mtext("Fitted Values", side = 1, line = 2.5, cex = 2.5)
+mtext("Residuals", side = 2, line = 2.5, cex = 2.5)
+
+# Add y = 0 line for reference
+abline(0, 0, col = "red", lwd = 3)
+```
+
+:::
+
+::: {.column width="47%" style='display: flex; justify-content: center; align-items: center;'}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Read the data
+prices <- read.table(file = "datasets/stock_gold.txt",
+                   header = TRUE
+                  )
+
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Transform data via log(y)
+log.gold.price <- log(gold.price)
+
+# Fit linear model with log(y) data
+log.model <- lm(log.gold.price ~ stock.price)
+
+# Compute residuals for log model
+log.residuals <- log.model$resid
+
+# Compute fitted values for log model
+log.fitted <- log.model$fitted
+
+# Plot the residual graph
+plot(log.fitted, log.residuals,
+     xlab = "", 
+     ylab = "",
+     pch = 16,
+     cex = 2)
+
+# Increase label size
+mtext("Fitted Values", side = 1, line = 2.5, cex = 2.5)
+mtext("Residuals", side = 2, line = 2.5, cex = 2.5)
+
+# Add y = 0 line for reference
+abline(0, 0, col = "red", lwd = 3)
+```
+
+:::
+:::::
+
+
+
+# {.smaller}
+
+Heteroscedasticity has definitely reduced
+
+- Left: Histogram of residuals for original model
+- Right: Histogram of residuals for $\log y$ data model
+
+
+
+::::: {.columns style='display: flex !important; height: 50%;'}
+
+::: {.column width="48%" style='display: flex; justify-content: center; align-items: center;'}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Read the data
+prices <- read.table(file = "datasets/stock_gold.txt",
+                   header = TRUE
+                  )
+
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Fit regression model
+model <- lm(gold.price ~ stock.price)
+
+# Compute residuals
+residuals <- model$resid
+
+# Compute fitted values
+fitted <- model$fitted
+
+# Histogram of residuals
+hist(residuals,
+xlab = "",
+ylab = "",
+col = "skyblue")
+
+# Increase label size
+mtext("Residuals", side = 1, line = 2.5, cex = 2.5)
+mtext("Frequency", side = 2, line = 2.5, cex = 2.5)
+```
+
+:::
+
+::: {.column width="48%" style='display: flex; justify-content: center; align-items: center;'}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Read the data
+prices <- read.table(file = "datasets/stock_gold.txt",
+                   header = TRUE
+                  )
+
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Transform data via log(y)
+log.gold.price <- log(gold.price)
+
+# Fit linear model with log(y) data
+log.model <- lm(log.gold.price ~ stock.price)
+
+# Compute residuals for log model
+log.residuals <- log.model$resid
+
+# Compute fitted values for log model
+log.fitted <- log.model$fitted
+
+# Histogram of residuals
+hist(log.residuals,
+xlab = "",
+ylab = "",
+col = "skyblue")
+
+# Increase label size
+mtext("Residuals", side = 1, line = 2.5, cex = 2.5)
+mtext("Frequency", side = 2, line = 2.5, cex = 2.5)
+```
+
+:::
+:::::
+
+
+
+## {.smaller}
+
+**Conclusion:** The log model seems to better satisfy the Regression Assumptions  
+(due to less heteroschedasticity)
+
+- Predictions should be done using the second model
+
+$$
+\log Y = \alpha + \beta X + \e 
+$$
+
+- Given a data point $x$, the log model predicts
+$$
+\widetilde{y} = \log y
+$$
+
+- The actual prediction is 
+$$
+y = e^{\widetilde{y}}
+$$
+
+
+- How do we make predictions on new values?
+
+
+
+## Predictions for linear models {.smaller}
+
+The function ``predict`` is used to make different types of predictions
+
+$$
+\text{predict(model, newdata = ..., interval = ..., level = ...)}
+$$
+
+- ``model`` is the output of an *lm model*
+
+- Predictors are given as argument in ``newdata`` 
+    * newdata has to be a data frame
+    * names of predictors have to match those used in the model formula
+
+- The optional argument ``interval`` requests a prediction confidence interval
+    * This is a confidence interval around the prediction value
+
+- The optional argument ``level`` specifies the amplitude of the confidence interval
+    * Default in $0.95$, which computes a $95\%$ prediction interval
+
+
+## Back to the Example: Stock Vs Gold prices {.smaller}
+
+
+- We want to predict the price of *Gold* for the following stock prices
+
+|               |     |   |      |    |   |
+|:----------    |:--  |:--|:--   |:-- |:--|
+ **Stock price**| 1.2 | 2 |  3.1 | 4  | 6 |
+
+
+- Predictions will be done with the logarithmic model
+
+$$
+\log(Y) = \alpha + \beta X + \e
+$$
+
+- This is because the log model shows less heteroscedasticity
+
+- Recall that 
+    * $X =$ Stock Price, which is stored in ``stock.price`` 
+    * $Y =$ Gold Price, which is stored in ``gold.price``
+    * $\log(Y)$ is stored in ``log.gold.price``
+
+
+## {.smaller}
+
+
+```r
+# Fit log model
+log.model <- lm(log.gold.price ~ stock.price)
+
+# Create dataframe for predictors
+predictors <- data.frame(stock.price = c(1.2, 2, 3.1, 4, 6))
+
+# Make predictions
+log.predictions <- predict(log.model, predictors, inter = "pred")
+
+# Print predictions
+print(log.predictions)
+```
+
+
+```{r}
+prices <- read.table(file = "datasets/stock_gold.txt",
+                   header = TRUE
+                  )
+
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Transform data via log(y)
+log.gold.price <- log(gold.price)
+
+# Fit linear model with log(y) data
+log.model <- lm(log.gold.price ~ stock.price)
+
+# Create a dataframe for the predictors
+
+predictors <- data.frame(stock.price = c(1.2, 2, 3.1, 4, 6))
+
+
+# Make predictions
+ 
+log.predictions <- predict(log.model, predictors, inter = "pred")
+
+log.predictions
+```
+
+
+- These are predictions for the log model, that is, $\widetilde{y} = \log y$ 
+
+- We need to rescale to obtain the desired predictions $y = e^{\widetilde{y}}$
+
+
+
+
+## {.smaller}
+
+
+::: {style="font-size: 0.95em"}
+
+- Predictions with log model are in vector ``log.predictions``
+
+
+```r
+# Rescale log predictions
+predictions <- exp(log.predictions)
+
+print(predictions)
+```
+
+
+```{r}
+prices <- read.table(file = "datasets/stock_gold.txt",
+                   header = TRUE
+                  )
+
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Transform data via log(y)
+log.gold.price <- log(gold.price)
+
+# Fit linear model with log(y) data
+log.model <- lm(log.gold.price ~ stock.price)
+
+# Create dataframe of predictors
+predictors <- data.frame(stock.price = c(1.2, 2, 3.1, 4, 6))
+
+
+# Make predictions
+log.predictions <- predict(log.model, predictors, inter = "pred")
+
+# Rescale log predictions
+predictions <- exp(log.predictions)
+
+print(predictions)
+```
+
+
+**Reading the output:** For example, the first line says that:
+
+- For Stock Price of $1.2$, the model predicts Gold Price of $29.84797$
+- $95\%$ confidence interval for the predicted Gold Price is $[11.804051, 75.47422]$
+- When Stock Price is $1.2$, the interval contains the true Gold Price $95\%$ of the times
+
+
+:::
+
+
+
+
+
+
+
+
+# Part 5: <br>Autocorrelation {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+## Autocorrelation {.smaller}
+
+- The general linear regression model is 
+
+$$
+Y_i = \beta_1 z_{i1} + \beta_2 z_{i2} + \ldots + \beta_p z_{ip} + \e_i
+$$
+
+
+- Consider Assumption 5
+    * **Independence:** Errors $\e_1, \ldots, \e_n$ are independent, and thus uncorrelated
+    $$
+    \Cor(\e_i , \e_j) = 0 \qquad \forall \,\, i \neq j
+    $$
+
+- **Autocorrelation:** The violation of Assumption 5
+
+$$
+\Cor(\e_i , \e_j) = 0 \qquad \text{ for some } \,\, i \neq j
+$$
+
+
+
+
+## Why is independence important? {.smaller}
+
+- Recall the methods to assess linear models 
+
+    * Coefficient $R^2$
+    * $t$-tests for parameters significance
+    * $F$-test for model selection
+
+- The above methods **rely heavily** on independence
+
+
+
+## Why is independence important? {.smaller}
+
+- Once again, let us consider the likelihood calculation
+    \begin{align*}
+    L & = f(y_1, \ldots, y_n) =  \prod_{i=1}^n  f_{Y_i} (y_i)  
+         \\[15pts]
+      & = \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left(   -\frac{\sum_{i=1}^n(y_i- \hat y_i)^2}{2\sigma^2}      \right) \\[15pts]
+      & = \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left(   -\frac{ \RSS }{2\sigma^2}      \right)
+    \end{align*}
+
+
+- The second equality is only possible thanks to independence of 
+
+$$
+Y_1 , \ldots, Y_n
+$$
+
+
+
+## Why is independence important? {.smaller}
+
+- If we have **autocorrelation** then
+
+$$
+\Cor (\e_i,\e_j) \neq 0 \quad \text{ for some } \, i \neq j
+$$
+
+- In particualar we would have
+
+$$
+\e_i \, \text{ and } \, \e_j \, \text{ dependent } \quad \implies \quad Y_i \, \text{ and } \, Y_j \, \text{ dependent }
+$$
+
+
+- Therefore the calculation in previous slide breaks down
+
+$$
+L \neq \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left(   -\frac{ \RSS }{2\sigma^2}      \right)
+$$
+
+
+
+## Why is independence important? {.smaller}
+
+- In this case $\hat \beta$ does no longer maximize the likelihood!
+
+- As already seen, this implies that 
+
+$$
+\ese (\beta_j) \,\, \text{ is unreliable}
+$$
+
+- **Without independence, the regression maths does not work!**
+    * t-tests for significance of $\beta_j$
+    * confidence intervals for $\beta_j$
+    * $F$-tests for Model Selection
+    * They all break down and become unreliable!
+
+
+
+
+## Causes of Autocorrelation {.smaller}
+### Time-series data
+
+- Autocorrelation means that
+
+$$
+\Cor (\e_i,\e_j) \neq 0 \quad \text{ for some } \, i \neq j
+$$
+
+- Autocorrelation if often unavoidable
+
+- Typically associated with **time series data**
+    * Observations ordered wrt time or space are usually correlated
+    * This is because observations taken close together may take similar values
+
+
+## Example: Financial data {.smaller}
+
+- Autocorrelation is especially likely for datasets in 
+    * Accounting
+    * Finance
+    * Economics
+
+- Autocorrelation is likely if the data have been recorded over time
+    * E.g. daily, weekly, monthly, quarterly, yearly
+
+- Example: Datasetet on *Stock prices* and *Gold prices*
+    * General linear regression model assumes uncorrelated errors
+    * Not realistic to assume that price observations for say 2020 and 2021 would be independent
+
+
+## Causes of Autocorrelation  {.smaller}
+### Inertia
+
+- Economic time series tend to exhibit **cyclical behaviour**
+
+- Examples: GNP, price indices, production figures, employment statistics etc.
+
+- These series tend to be quite slow moving
+    * Effect of inertia is that successive observations are highly correlated
+
+**This is an extremely common phenomenon in financial and economic time series**
+
+
+## Causes of Autocorrelation  {.smaller}
+### Cobweb Phenomenon
+
+- Characteristic of industries in which a large amount of time passes between
+    * the decision to produce something 
+    * and its arrival on the market
+
+- Cobweb phenomenon is common with agricultural commodities
+
+- Economic agents (e.g. farmers) decide
+    * how many goods to supply to the market
+    * based on previous year price 
+
+
+## Causes of Autocorrelation  {.smaller}
+### Cobweb Phenomenon
+
+- **Example:** the amount of crops farmers supply to the market at time $t$ might be
+
+\begin{equation} \tag{3}
+{\rm Supply}_t = \beta_1 + \beta_2 \, {\rm Price}_{t-1} + \e_t
+\end{equation}
+
+- Errors $\e_t$ in equation (3) are unlikely to be completely random and patternless
+
+- This is because 
+    1. They represent actions of intelligent economic agents (e.g. farmers)
+    2. Price from previous year influences supply for current year
+
+**Error terms are likely to be autocorrelated**
+
+
+
+## Causes of Autocorrelation  {.smaller}
+### Data manipulation
+
+
+**Examples:** 
+
+- Quarterly data may smooth out the wild fluctuations in monthly sales figures
+
+- Low frequency economic survey data may be interpolated
+
+**However:** Such data transformations may be inevitable
+
+- In social sciences data quality may be variable
+
+- This may induce systematic patterns and autocorrelation
+    
+
+**No magic solution -- Autocorrelation is unavoidable and must be considered**
+
+
+
+
+## How to detect Autocorrelation {.smaller}
+
+Autocorrelation is often unavoidable. We should be able to detect it:
+
+1. Graphical methods
+    * Simple, robust and informative
+
+2. Statistical tests
+    * Runs test
+    * Durbin-Watson test
+
+
+
+**Graphical and statistical methods can be useful cross-check of each other!**
+
+
+
+
+## Graphical methods for Autocorrelation {.smaller}
+
+1. Time-series plot of residuals:
+    * Plot residuals $\hat{\e}_t$ over time
+
+2. Autocorrelation plot of residuals:
+    * Plot residuals $\hat{\e}_t$ against lagged residuals $\hat{\e}_{t-1}$
+
+
+
+Check to see if any evidence of a systematic pattern exists:
+
+- No Autocorrelation: Plots will look **random**
+- Yes Autocorrelation: Plots will show certain **patterns**
+
+
+
+## Example: Stock Vs Gold prices {.smaller}
+
+- Code for this example is available here [autocorrelation.R](codes/autocorrelation.R)
+
+- Stock Vs Gold prices data is available here [stock_gold.txt](datasets/stock_gold.txt)
+
+- Read data into R and fit simple regression
+
+```r
+# Load dataset
+prices <- read.table(file = "stock_gold.txt",
+                    header = TRUE)
+
+# Store data-frame into 2 vectors
+stock.price <- prices[ , 1]
+gold.price <- prices[ , 2]
+
+# Fit regression model
+model <- lm(gold.price ~ stock.price)
+```
+
+
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.94em"}
+
+**Time-series plot of residuals:** Plot the residuals $\hat{\e}_i$
+
+- Time series plot suggests some evidence for autocorrelation
+- Look for successive *runs* of residuals either side of line $y = 0 \,$ (see $t = 15$)
+
+:::
+
+
+::::: {.columns style='display: flex !important; height: 60%;'}
+
+::: {.column width="38%" style='display: flex; justify-content: center; align-items: center;'}
+
+```r
+# Compute residuals
+residuals <- model$resid
+
+# Time-series plot of residuals
+plot(residuals,
+     xlab = "Time", 
+     ylab = "Residuals",
+     pch = 16,
+     cex = 2)
+
+# Add line y = 0 for reference
+abline(0, 0, col = "red", lwd = 4)
+```
+
+:::
+
+::: {.column width="61%" style='display: flex; justify-content: center; align-items: center;'}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Read the data
+prices <- read.table(file = "datasets/stock_gold.txt",
+                   header = TRUE
+                  )
+
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Fit regression model
+model <- lm(gold.price ~ stock.price)
+
+# Compute residuals
+residuals <- model$resid
+
+# Time-series plot of residuals
+plot(residuals, 
+     xlab = "", 
+     ylab= "",
+     pch = 16,
+     cex = 2)
+
+# Add labels
+mtext("Time", side=1, line=3, cex=2.1)
+mtext("Residuals", side=2, line=2.5, cex=2.1)
+
+# Add line y = 0 for reference
+abline(0, 0, col = "red", lwd = 4)
+```
+
+:::
+:::::
+
+
+
+
+## {.smaller}
+
+
+::::: {.columns style='display: flex !important; height: 90%;'}
+
+::: {.column width="27%" style='display: flex; align-items: center;'}
+
+::: {style="font-size: 0.94em"}
+
+**Autocorrelation plot of residuals:**
+
+- Want to plot $\hat{\e}_t$ against $\hat{\e}_{t-1}$
+- Shift $\hat{\e}_t$ by 1 to get $\hat{\e}_{t-1}$
+- Can only plot magenta pairs
+- We have 1 pair less than the actual number of residuals
+
+:::
+
+
+:::
+
+::: {.column width="72%" style='display: flex; justify-content: center; align-items: center;'}
+
+![](images/shifted_vectors.png){width=110%}
+![](images/shifted_vectors_2.png){width=110%}
+
+:::
+:::::
+
+
+
+
+
+##  {.smaller}
+
+
+- We want to plot $\hat{\e}_t$ against $\hat{\e}_{t-1}$
+    * Residuals $\hat{\e}_t$ are stored in vector $\,\, \texttt{residuals}$
+    * We need to create a shifted version of $\,\, \texttt{residuals}$
+    * First compute the length of $\,\, \texttt{residuals}$
+
+```r
+# Compute length of residuals
+length(residuals)
+```
+```{r}
+# Read the data
+prices <- read.table(file = "datasets/stock_gold.txt",
+                   header = TRUE
+                  )
+
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Fit regression model
+model <- lm(gold.price ~ stock.price)
+
+# Compute residuals
+residuals <- model$resid
+
+# Compute length of residuals
+length(residuals)
+```
+
+
+- Need to generate the $33-1$ pairs for plotting
+
+
+##  {.smaller}
+
+
+- **Lag 0:** 
+    * This is the original vector with no lag
+    * Lose one observation from $\,\, \texttt{residuals}$ -- the first observation
+
+```r 
+residuals.lag.0 <- residuals[2:33]
+```
+
+
+- **Lag 1:** 
+    * This is the original vector, shifted by 1
+    * Lose one observation from $\,\, \texttt{residuals}$ -- the last observation
+
+```r 
+residuals.lag.1 <- residuals[1:32]
+```
+
+
+
+##  {.smaller}
+
+::: {style="font-size: 0.94em"}
+
+**Autocorrelation plot of residuals:** Plot $\hat{\e}_t$ against $\hat{\e}_{t-1}$
+
+- Plot suggests positive autocorrelation of residuals
+- This means $\, \hat{\e}_t \, \approx \, a + b \, \hat{\e}_{t-1} \,$ with $b > 0$ 
+    
+:::
+
+::::: {.columns style='display: flex !important; height: 60%;'}
+
+::: {.column width="38%" style='display: flex; justify-content: center; align-items: center;'}
+
+```r
+# Plot Lag0 against Lag1 residuals
+
+plot(residuals.lag.1, 
+     residuals.lag.0,
+     xlab = "Residuals Lag 1", 
+     ylab = "Residuals Lag 0",
+     pch = 16,
+     cex = 2)
+```
+
+:::
+
+::: {.column width="61%" style='display: flex; justify-content: center; align-items: center;'}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Read the data
+prices <- read.table(file = "datasets/stock_gold.txt",
+                   header = TRUE
+                  )
+
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Fit regression model
+model <- lm(gold.price ~ stock.price)
+
+# Compute residuals
+residuals <- model$resid
+
+# Generate lagged version of residuals
+residuals.lag.0 <- residuals[2:33]
+residuals.lag.1 <-residuals[1:32]
+
+# Plot Lag0 against Lag 1 residuals
+plot(residuals.lag.1, 
+     residuals.lag.0,
+     xlab = "", 
+     ylab= "",
+     pch = 16,
+     cex = 2)
+
+# Add labels
+mtext("Residuals Lag 1", side=1, line=3, cex=2.1)
+mtext("Residuals Lag 0", side=2, line=2.5, cex=2.1)
+```
+
+:::
+:::::
+
+
+
+## {.smaller}
+
+**Conclusions:** The dataset Gold Price vs Stock Price exhibits Autocorrelation
+
+- Autocorrelation was detected by both graphical methods:
+    * Time-series of residuals
+    * Autocorrelation plot of residuals
+
+
+- This was expected, given that the dataset represents a time-series of prices
+
+
+
+
+## Statistical tests for Autocorrelation {.smaller}
+
+- Runs test:
+    * If Regression Assumptions are satisfied, the residuals are $\e_i \sim N(0,\sigma^2)$
+    * This means residuals $\hat{\e}_i$ are equally likely to be positive or negative
+    * The runs test uses this observation to formulate a test for autocorrelation
+
+
+- Durbin-Watson test:
+    * Test to see if residuals are AR(1) - Auto-regressive of order 1
+    * This means testing if there exists a linear relation of the form
+    $$
+    \hat{\e}_t = a + b \hat{\e}_{t-1} + \delta_t
+    $$
+    where $\delta_t \sim N(0,\sigma^2)$ is an error term
+ 
+
+**We do not cover these tests**
+
+
+
+
+
+## What to do in case of Autocorrelation? {.smaller}
+
+- Consider the simple regression model
+
+$$
+Y_i = \alpha + \beta x_i + \e_i
+$$
+
+- Suppose that autocorrelation occurs
+
+$$
+\Cor (\hat{\e}_i, \hat{\e}_j ) \neq 0 \quad \text{ for some } \, i \neq j
+$$
+
+- Also, suppose that autocorrelation is Auto-Regressive of Order 1
+
+$$
+\hat{\e}_t = a + b \, \hat{\e}_{t-1} + \delta_t \,, \qquad
+\delta_t \,\, \text{ iid } \,\, N(0,\sigma^2)
+$$
+
+- Example: This is the case for dataset *Stock prices* Vs *Gold prices*
+
+
+##  {.smaller}
+
+- In this case, predictions from the simple linear model are not reliable
+
+$$
+Y_i = \alpha + \beta x_i + \e_i
+$$
+
+
+- Instead, substitute into the model the relation $\hat{\e}_t = a + b \, \hat{\e}_{t-1} + \delta_t$
+
+- We obtain the new linear model (up to relabelling coefficients)
+
+$$
+Y_t = \alpha + \beta x_t + \rho \hat{\e}_{t-1} + \delta_t  \,, \qquad
+\delta_t \,\, \text{ iid } \,\, N(0,\sigma^2)
+$$
+
+- The above is an **Autoregressive linear Model** of order 1  
+(because time $t-1$ influences time $t$)
+    * These models couple regression with time-series analysis (ARIMA models)
+    * Good reference is book by Shumway and Stoffer [@shumway]
+
+**You will see ARIMA models next year**
+
+
+
+::: {.content-hidden}
+
+Do next time
+
+- Statistical tests for autocorrelation: You can do
+both Runs test and Durbin Watson. It is not clear what d_L is in Durbin Watson: ask John
+
+- This is Lecture 9 John Fry slides Section 4 onwards
+
+- Do also ARIMA for time series (good reference is Shumway, Stoffer - Time Series Analysis and Its Applications 4th edition)
+
+- You can just fit arima to the example following John Fry. I don't understand the output, and for some reason the command
+
+arima(gold.price , xreg = stock.price, order = c(1, 0, 0))
+
+saying non-stationary AR part from CSS
+
+gives error 
+
+
+- Below is Rcode for Lecture 9 of John Fry
+
+#R example Section 4
+#need to load the tseries package
+residsign<-1*(resid01>0)
+residsign<-factor(residsign)
+runs.test(residsign)
+#durbin-watson example
+#need to load the lmtest package
+dwtest(a.lm)
+#R example Section 5
+arima(realgoldprice, xreg=realstockprice, order=c(1, 0, 0))
+coeff<-c(0.5578,     3.9406,         -0.0487)
+ese<-c(0.1545,     0.5675,          0.0247)
+t<-abs(coeff)/ese
+2*(1-pt(t, 30))
+
+:::
+
+
+
+
+
+## References
