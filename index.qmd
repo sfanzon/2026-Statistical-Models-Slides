@@ -15,7 +15,7 @@ author:
         department: Department of Mathematics
         state: United Kingdom
     email: J.M.Fry@hull.ac.uk
-date: 2025-01-15 
+date: 2026-01-15 
 # To enter today's date replace by today
 # Enter date formatted as dd MM yyyy
 date-format: "D MMM YYYY"
@@ -24,7 +24,7 @@ date-format: "D MMM YYYY"
 
 # Welcome 
 
-These are the Slides of the module **Statistical Models 551305** for T2 2024/25 at the University of Hull. 
+These are the Slides of the module **Statistical Models 551305** for T2 2025/26 at the University of Hull. 
 If you have any question or find any typo, please email me at
 
 
@@ -40,7 +40,7 @@ Up to date information about the module will be published on the University of H
 
 ::: {.content-visible when-format="html"}
 <div style="text-align: center;">
-**[canvas.hull.ac.uk/courses/75082](https://canvas.hull.ac.uk/courses/75082)**
+**[canvas.hull.ac.uk/courses/75082](hhttps://canvas.hull.ac.uk/courses/77772)**
 </div>
 :::
 
@@ -50,7 +50,7 @@ and on the **Course Webpage** hosted on my website
 
 ::: {.content-visible when-format="html"}
 <div style="text-align: center;">
-**[silviofanzon.com/blog/2025/Statistical-Models/](https://www.silviofanzon.com/blog/2025/Statistical-Models/)**
+**[silviofanzon.com/blog/2025/Statistical-Models/](https://www.silviofanzon.com/blog/2026/Statistical-Models/)**
 </div>
 :::
 
