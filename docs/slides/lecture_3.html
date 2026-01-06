@@ -425,29 +425,13 @@
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-  .DONE {
-    --color1: #cce7b1;
-    --color2: #86b754;
-  }
-  .Theorem {
+  .Lemma {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Corollary {
+  .Problem {
     --color1: #f4cce0;
     --color2: #db4d92;
-  }
-  .Warning {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Axiom {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Definition {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
   }
   .Conjecture {
     --color1: #f4cce0;
@@ -457,29 +441,45 @@
     --color1: #c6e6ed;
     --color2: #1995ad;
   }
-  .Proof {
-    --color1: #f1f1f2;
-    --color2: #c0c0c1;
+  .Definition {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
   }
   .Example {
     --color1: #bce5de;
     --color2: #21aa93;
   }
-  .Important {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
   .Remark {
     --color1: #bce5de;
     --color2: #21aa93;
   }
-  .Problem {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
   .Proposition {
     --color1: #f4cce0;
     --color2: #db4d92;
+  }
+  .Theorem {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Corollary {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Important {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Idea {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Axiom {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Proof {
+    --color1: #f1f1f2;
+    --color2: #c0c0c1;
   }
   .TODO {
     --color1: #e7b1b4;
@@ -489,13 +489,13 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Idea {
+  .Warning {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Lemma {
-    --color1: #f4cce0;
-    --color2: #db4d92;
+  .DONE {
+    --color1: #cce7b1;
+    --color2: #86b754;
   }
   </style>
 </head>
@@ -813,7 +813,7 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1]  1.6509050 -0.3167645  1.1590946  0.3281329 -1.4503781</code></pre>
+<pre><code>[1] -2.2261531 -0.7864301 -0.1608056 -1.3034188  0.7583150</code></pre>
 </div>
 </div>
 <p>The above values can be plotted by concatenating the <code>plot</code> command</p>
@@ -3309,10 +3309,10 @@ y = x^2 \,, \qquad x \in [-1, 1]
 <span id="cb106-12"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"They coincide!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Mean of x computed with my_mean is: 0.04598271</code></pre>
+<pre><code>Mean of x computed with my_mean is: 0.004674559</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Mean of x computed with R mean is: 0.04598271</code></pre>
+<pre><code>Mean of x computed with R mean is: 0.004674559</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>They coincide!</code></pre>
@@ -3492,7 +3492,7 @@ y = x^2 \,, \qquad x \in [-1, 1]
 <span id="cb133-8"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"This is pretty close to 500!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Number of entries which are above the average 0 is 495</code></pre>
+<pre><code>Number of entries which are above the average 0 is 489</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>This is pretty close to 500!</code></pre>

@@ -1,6 +1,62 @@
 \providecommand{\Pageref}[1]{\hfill p.\pageref{#1}}
  [**Definition**](#Definition*-2.1)\Pageref{Definition*-2.1}
 
- [**Definition**](#Definition*-2.2)\Pageref{Definition*-2.2}
+ [**Idea**](#Idea*-2.2)\Pageref{Idea*-2.2}
 
- [**Proposition**](#Proposition*-2.3)\Pageref{Proposition*-2.3}
+ [**Problem**](#Problem*-2.3)\Pageref{Problem*-2.3}
+
+ [**Definition**](#Definition*-2.4)\Pageref{Definition*-2.4}
+
+ [**Definition**](#Definition*-2.5)\Pageref{Definition*-2.5}
+
+ [**Proposition**](#Proposition*-2.6)\Pageref{Proposition*-2.6}
+
+ [**Problem**](#Problem*-2.7)\Pageref{Problem*-2.7}
+
+ [**Question**](#Question*-2.8)\Pageref{Question*-2.8}
+
+ [**Definition**](#Definition*-3.1)\Pageref{Definition*-3.1}
+
+ [**Idea**](#Idea*-3.2)\Pageref{Idea*-3.2}
+
+ [**Problem**](#Problem*-3.3)\Pageref{Problem*-3.3}
+
+ [**Definition**](#Definition*-3.4)\Pageref{Definition*-3.4}
+
+ [**Definition**](#Definition*-3.5)\Pageref{Definition*-3.5}
+
+ [**Proposition**](#Proposition*-3.6)\Pageref{Proposition*-3.6}
+
+ [**Theorem**](#Theorem*-3.7)\Pageref{Theorem*-3.7}
+
+ [**Definition**](#Definition*-3.8)\Pageref{Definition*-3.8}
+
+ [**Definition**](#Definition*-3.9)\Pageref{Definition*-3.9}
+
+ [**Problem**](#Problem*-3.10)\Pageref{Problem*-3.10}
+
+ [**Question**](#Question*-3.11)\Pageref{Question*-3.11}
+
+ [**Theorem**](#Theorem*-3.12)\Pageref{Theorem*-3.12}
+
+ [**Lemma**](#Lemma*-3.13)\Pageref{Lemma*-3.13}
+
+ [**Lemma**](#Lemma*-3.14)\Pageref{Lemma*-3.14}
+
+ [**Theorem**](#Theorem*-3.15)\Pageref{Theorem*-3.15}
+
+ [**Definition**](#Definition*-5.1)\Pageref{Definition*-5.1}
+
+ [**Problem**](#Problem*-6.1)\Pageref{Problem*-6.1}
+
+ [**Lemma**](#Lemma*-6.2)\Pageref{Lemma*-6.2}
+
+ [**Theorem**](#Theorem*-6.3)\Pageref{Theorem*-6.3}
+
+ [**Theorem**](#Theorem*-6.4)\Pageref{Theorem*-6.4}
+
+ [**Definition**](#Definition*-6.5)\Pageref{Definition*-6.5}
+
+ [**Proposition**](#Proposition*-6.6)\Pageref{Proposition*-6.6}
+
+ [**Proposition**](#Proposition*-6.7)\Pageref{Proposition*-6.7}
