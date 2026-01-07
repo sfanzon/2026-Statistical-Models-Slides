@@ -40,7 +40,7 @@ Up to date information about the module will be published on the University of H
 
 ::: {.content-visible when-format="html"}
 <div style="text-align: center;">
-**[canvas.hull.ac.uk/courses/75082](hhttps://canvas.hull.ac.uk/courses/77772)**
+**[canvas.hull.ac.uk/courses/77772](hhttps://canvas.hull.ac.uk/courses/77772)**
 </div>
 :::
 
@@ -50,7 +50,7 @@ and on the **Course Webpage** hosted on my website
 
 ::: {.content-visible when-format="html"}
 <div style="text-align: center;">
-**[silviofanzon.com/blog/2025/Statistical-Models/](https://www.silviofanzon.com/blog/2026/Statistical-Models/)**
+**[silviofanzon.com/blog/2026/Statistical-Models/](https://www.silviofanzon.com/blog/2026/Statistical-Models/)**
 </div>
 :::
 
@@ -67,9 +67,9 @@ There are 11 lectures in this module. Links to the slides and lecture titles are
 | **Slides** | **Title** | 
 |:------      |:------     |
 | <a href="slides/lecture_1.qmd">Lecture 1</a>   | An introduction to Statistics                 |
-| <a href="slides/lecture_2.qmd">Lecture 2</a>   | Random samples                                |
-| <a href="slides/lecture_3.qmd">Lecture 3</a>   | The t-test & Introduction to R                |
-| <a href="slides/lecture_4.qmd">Lecture 4</a>   | The variance ratio & Two-sample t-test        |
+| <a href="slides/lecture_2.qmd">Lecture 2</a>   | Random samples & The t-test                   |
+| <a href="slides/lecture_3.qmd">Lecture 3</a>   | Introduction to R & The variance ratio test   |
+| <a href="slides/lecture_4.qmd">Lecture 4</a>   | Two-sample hypothesis tests                   |
 | <a href="slides/lecture_5.qmd">Lecture 5</a>   | The two-sample F-test & Goodness-of-fit test  |
 | <a href="slides/lecture_6.qmd">Lecture 6</a>   | Contingency tables & Simulation               |
 | <a href="slides/lecture_7.qmd">Lecture 7</a>   | Bootstrap & Least Squares                     |
@@ -90,9 +90,9 @@ There are 11 lectures in this module. Links to the slides and lecture titles are
 
 | **Lecture** | **Codes**                                                                                                                 | 
 |:------      |:------                                                                                                                    |
-| Lecture 3   | [One-Sample t-test](slides/codes/one_sample_t_test.R)                                                                     | 
-| Lecture 4   | [Variance ratio test](slides/codes/variance_ratio_test.R) <br> [Two-Sample t-test](slides/codes/two_sample_t_test.R)      |
-| Lecture 5   | [F-test](slides/codes/F_test.R) <br> [F-test First Principles](slides/codes/F_test_first_principles.R) <br> [Goodness-of-fit](slides/codes/good_fit.R) <br> [Goodness-of-fit First Principles](slides/codes/good_fit_first_principles.R)  |
+| Lecture 3   | [One-Sample t-test](slides/codes/one_sample_t_test.R)  <br> [Variance ratio test](slides/codes/variance_ratio_test.R)     | 
+| Lecture 4   | [Two-Sample t-test](slides/codes/two_sample_t_test.R) <br>  [F-test](slides/codes/F_test.R) <br> [F-test First Principles](slides/codes/F_test_first_principles.R)  |
+| Lecture 5   | [Goodness-of-fit](slides/codes/good_fit.R) <br> [Goodness-of-fit First Principles](slides/codes/good_fit_first_principles.R)  |
 | Lecture 6   | [Goodness-of-fit Contingency](slides/codes/good_fit_contingency.R) <br> [Independence Test](slides/codes/independence_test.R) <br> [Monte Carlo $\pi$](slides/codes/monte_carlo_pi.R)  |
 | Lecture 7   | [Bootstrap CI](slides/codes/bootstrap_CI.R) <br> [Bootstrap t-test](slides/codes/bootstrap_t_test.R) <br> [Bootstrap F-test](slides/codes/bootstrap_F_test.R) <br> [2008 Crisis](slides/codes/2008_crisis_code.R) <br> [Least-squares Solution 1](slides/codes/least_squares_1.R) <br>  [Least-squares Solution 2](slides/codes/least_squares_2.R)  |
 | Lecture 8   | [Multiple Regression](slides/codes/multiple_regression.R) <br> [R2 multiple regression](slides/codes/R2_multiple_regression.R) |

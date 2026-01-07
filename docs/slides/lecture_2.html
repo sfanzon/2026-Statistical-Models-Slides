@@ -360,27 +360,19 @@
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-  .Example {
-    --color1: #bce5de;
-    --color2: #21aa93;
-  }
   .Definition {
     --color1: #c6e6ed;
     --color2: #1995ad;
   }
+  .Theorem {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Lemma {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
   .Axiom {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Conjecture {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Important {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Problem {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -388,33 +380,9 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .DONE {
-    --color1: #cce7b1;
-    --color2: #86b754;
-  }
-  .Idea {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .TODO {
-    --color1: #e7b1b4;
-    --color2: #8c3236;
-  }
-  .Remark {
+  .Example {
     --color1: #bce5de;
     --color2: #21aa93;
-  }
-  .Warning {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Question {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Proof {
-    --color1: #f1f1f2;
-    --color2: #c0c0c1;
   }
   .Proposition {
     --color1: #f4cce0;
@@ -424,13 +392,45 @@
     --color1: #c6e6ed;
     --color2: #1995ad;
   }
-  .Lemma {
+  .TODO {
+    --color1: #e7b1b4;
+    --color2: #8c3236;
+  }
+  .Problem {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Theorem {
+  .Question {
     --color1: #f4cce0;
     --color2: #db4d92;
+  }
+  .Conjecture {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Idea {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Warning {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .DONE {
+    --color1: #cce7b1;
+    --color2: #86b754;
+  }
+  .Important {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Remark {
+    --color1: #bce5de;
+    --color2: #21aa93;
+  }
+  .Proof {
+    --color1: #f1f1f2;
+    --color2: #c0c0c1;
   }
   </style>
 </head>
@@ -458,8 +458,8 @@
 
 </section>
 <section>
-<section id="lecture-2-random-samples" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
-<h1>Lecture 2: <br>Random samples<br></h1>
+<section id="lecture-2-random-samples-the-t-test" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Lecture 2: <br>Random samples &amp; <br> The t-test<br></h1>
 <div class="footer">
 <div color="#cc0164">
 
@@ -469,502 +469,19 @@
 <section id="outline-of-lecture-2" class="slide level2">
 <h2>Outline of Lecture 2</h2>
 <ol type="1">
-<li>Probability revision III</li>
 <li>Multivariate random vectors</li>
 <li>Random samples</li>
 <li>Unbiased estimators</li>
 <li>Chi-squared distribution</li>
 <li>Sampling from normal distribution</li>
 <li>t-distribution</li>
+<li>Hypothesis testing</li>
+<li>The one-sample t-test</li>
 </ol>
 </section></section>
 <section>
-<section id="part-1-probability-revision-iii" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
-<h1>Part 1: <br>Probability revision III</h1>
-<div class="footer">
-<div color="#cc0164">
-
-</div>
-</div>
-</section>
-<section id="probability-revision-iii" class="slide level2 smaller">
-<h2>Probability revision III</h2>
-<ul>
-<li><p>You are expected to be familiar with the main concepts from Y1 module<br>
-<strong>Introduction to Probability &amp; Statistics</strong></p></li>
-<li><p>Self-contained revision material available in <a href="../slides/appendix_A.html">Appendix A</a></p></li>
-</ul>
-<p><strong>Topics to review</strong>: Sections 6–7 of <a href="../slides/appendix_A.html">Appendix A</a></p>
-<div class="column" style="width:38%;">
-<ul>
-<li>Independence of random variables</li>
-<li>Covariance and correlation</li>
-</ul>
-</div><div class="column" style="width:58%;">
-
-</div></section>
-<section id="independence-of-random-variables" class="slide level2 smaller">
-<h2>Independence of random variables</h2>
-<div id="independence" class="Definition" title="Independence">
-<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition: </strong>Independence</summary><div><span class="math inline">(X,Y)</span> random vector with joint pdf or pmf <span class="math inline">f_{X,Y}</span> and marginal pdfs or pmfs <span class="math inline">f_X,f_Y</span>. We say that <span class="math inline">X</span> and <span class="math inline">Y</span> are <strong>independent</strong> random variables if <span class="math display">
-f_{X,Y}(x,y)  =  f_X(x)f_Y(y) \,, \quad \forall \, (x,y) \in \mathbb{R}^2
-</span><p></p>
-</div></details>
-</div>
-</section>
-<section id="independence-of-random-variables-1" class="slide level2 smaller">
-<h2>Independence of random variables</h2>
-<h3 id="conditional-distributions-and-probabilities">Conditional distributions and probabilities</h3>
-<p>If <span class="math inline">X</span> and <span class="math inline">Y</span> are <strong>independent</strong> then <span class="math inline">X</span> gives no information on <span class="math inline">Y</span> (and vice-versa):</p>
-<ul>
-<li><p>Conditional distribution: <span class="math inline">Y|X</span> is same as <span class="math inline">Y</span> <span class="math display">
-f(y|x) = \frac{f_{X,Y}(x,y)}{f_X(x)} = \frac{f_X(x)f_Y(y)}{f_X(x)} = f_Y(y)
-</span></p></li>
-<li><p>Conditional probabilities: From the above we also obtain <span class="math display">\begin{align*}
-P(Y \in A | x) &amp; = \sum_{y \in A} f(y|x) = \sum_{y \in A} f_Y(y) = P(Y \in A)  &amp; \, \text{ discrete rv} \\
-P(Y \in A | x) &amp; = \int_{y \in A} f(y|x) \, dy = \int_{y \in A} f_Y(y) \, dy = P(Y \in A)  &amp;  \, \text{ continuous rv}
-\end{align*}</span></p></li>
-</ul>
-</section>
-<section id="independence-of-random-variables-2" class="slide level2 smaller">
-<h2>Independence of random variables</h2>
-<h3 id="characterization-of-independence---densities">Characterization of independence - Densities</h3>
-<div id="Theorem*-2.2" class="Theorem">
-<details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>
-<p><span class="math inline">(X,Y)</span> random vector with joint pdf or pmf <span class="math inline">f_{X,Y}</span>. They are equivalent:</p>
-<ul>
-<li><span class="math inline">X</span> and <span class="math inline">Y</span> are independent random variables</li>
-<li>There exist functions <span class="math inline">g(x)</span> and <span class="math inline">h(y)</span> such that <span class="math display">
-f_{X,Y}(x,y) = g(x)h(y) \,, \quad \forall \, (x,y) \in \mathbb{R}^2
-</span></li>
-</ul>
-</div></details>
-</div>
-<p><strong>Note:</strong></p>
-<ul>
-<li><span class="math inline">g(x)</span> and <span class="math inline">h(y)</span> are not necessarily the pdfs or pmfs of <span class="math inline">X</span> and <span class="math inline">Y</span></li>
-<li>However they coincide with <span class="math inline">f_X</span> and <span class="math inline">f_Y</span>, up to rescaling by a constant</li>
-</ul>
-</section>
-<section id="exercise" class="slide level2 smaller">
-<h2>Exercise</h2>
-<p>A student leaves for class between 8 AM and 8:30 AM and takes between 40 and 50 minutes to get there</p>
-<ul>
-<li><p>Denote by <span class="math inline">X</span> the time of departure</p>
-<ul>
-<li><span class="math inline">X = 0</span> corresponds to 8 AM</li>
-<li><span class="math inline">X = 30</span> corresponds to 8:30 AM</li>
-</ul></li>
-<li><p>Denote by <span class="math inline">Y</span> the travel time</p></li>
-<li><p>Assume that <span class="math inline">X</span> and <span class="math inline">Y</span> are independent and uniformly distributed</p></li>
-</ul>
-<p><strong>Question:</strong> Find the probability that the student arrives to class before 9 AM</p>
-</section>
-<section id="solution" class="slide level2 smaller">
-<h2>Solution</h2>
-<ul>
-<li><p>By assumption <span class="math inline">X</span> is uniform on <span class="math inline">(0,30)</span>. Therefore <span class="math display">
-f_X(x)  =
-\begin{cases}
-\frac{1}{30} &amp; \text{ if } \, x \in (0,30)  \\
-0 &amp; \text{ otherwise }
-\end{cases}
-</span></p></li>
-<li><p>By assumption <span class="math inline">Y</span> is uniform on <span class="math inline">(40,50)</span>. Therefore <span class="math display">
-f_Y(y) =
-\begin{cases}
-\frac{1}{10} &amp; \text{ if } \, y \in (40,50)  \\
-0 &amp; \text{ otherwise }
-\end{cases}
-</span> where we used that <span class="math inline">50 - 40 = 10</span></p></li>
-</ul>
-</section>
-<section id="solution-1" class="slide level2 smaller">
-<h2>Solution</h2>
-<ul>
-<li><p>Define the rectangle <span class="math display">
-R = (0,30) \times (40,50)
-</span></p></li>
-<li><p>Since <span class="math inline">X</span> and <span class="math inline">Y</span> are independent, we get</p></li>
-</ul>
-<p><span class="math display">
-f_{X,Y}(x,y) = f_X(x)f_Y(y) =
-\begin{cases}
-\frac{1}{300} &amp; \text{ if } \, (x,y) \in R  \\
-0 &amp; \text{ otherwise }
-\end{cases}
-</span></p>
-</section>
-<section id="solution-2" class="slide level2 smaller">
-<h2>Solution</h2>
-<ul>
-<li><p>The arrival time is given by <span class="math inline">X + Y</span></p></li>
-<li><p>Therefore, the student arrives to class before 9 AM iff <span class="math inline">X + Y &lt; 60</span></p></li>
-<li><p>Notice that <span class="math display">
-\{X + Y &lt; 60 \}  = \{ (x,y) \in \mathbb{R}^2 \, \colon \, 0 \leq x &lt; 60 - y,  40 \leq y &lt; 50 \}
-</span></p></li>
-</ul>
-</section>
-<section id="solution-3" class="slide level2 smaller">
-<h2>Solution</h2>
-<p>Therefore, the probability of arriving before 9 AM is</p>
-<p><span class="math display">\begin{align*}
-P(\text{arrives before 9 AM}) &amp; = P(X + Y &lt; 60) \\
-                              &amp; = \int_{\{X+Y &lt; 60\}} f_{X,Y} (x,y) \, dxdy  \\
-                              &amp; = \int_{40}^{50} \left( \int_0^{60-y} \frac{1}{300} \, dx
-                              \right) \, dy  \\
-                              &amp; = \frac{1}{300}  \int_{40}^{50} (60 - y) \, dy \\
-                              &amp; = \frac{1}{300} \ y \left(  60 - \frac{y}{2} \right) \Bigg|_{y=40}^{y=50} \\
-                              &amp; = \frac{1}{300} \cdot (1750 - 1600) = \frac12
-\end{align*}</span></p>
-</section>
-<section id="consequences-of-independence" class="slide level2 smaller">
-<h2>Consequences of independence</h2>
-<div id="Theorem*-2.3" class="Theorem">
-<details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>
-<p>Suppose <span class="math inline">X</span> and <span class="math inline">Y</span> are independent random variables. Then</p>
-<ul>
-<li><p>For any <span class="math inline">A,B \subset \mathbb{R}</span> we have <span class="math display">
-P(X \in A, Y \in B) = P(X \in A) P(Y \in B)
-</span></p></li>
-<li><p>Suppose <span class="math inline">g(x)</span> is a function of (only) <span class="math inline">x</span>, <span class="math inline">h(y)</span> is a function of (only) <span class="math inline">y</span>. Then <span class="math display">
-{\rm I\kern-.3em E}[g(X)h(Y)] = {\rm I\kern-.3em E}[g(X)]{\rm I\kern-.3em E}[h(Y)]  
-</span></p></li>
-</ul>
-</div></details>
-</div>
-</section>
-<section id="application-mgf-of-sums" class="slide level2 smaller">
-<h2>Application: MGF of sums</h2>
-<div id="Theorem*-2.4" class="Theorem">
-<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Suppose <span class="math inline">X</span> and <span class="math inline">Y</span> are independent random variables and denote by <span class="math inline">M_X</span> and <span class="math inline">M_Y</span> their MGFs. Then <span class="math display">
-M_{X + Y} (t) = M_X(t) M_Y(t)
-</span><p></p>
-</div></details>
-</div>
-<p><strong>Proof</strong>: Follows by previous Theorem <span class="math display">\begin{align*}
-M_{X + Y} (t) &amp; = {\rm I\kern-.3em E}[e^{t(X+Y)}] = {\rm I\kern-.3em E}[e^{tX}e^{tY}] \\
-              &amp; = {\rm I\kern-.3em E}[e^{tX}] {\rm I\kern-.3em E}[e^{tY}] \\
-              &amp; = M_X(t) M_Y(t)
-\end{align*}</span></p>
-</section>
-<section id="example---sum-of-independent-normals" class="slide level2 smaller">
-<h2>Example - Sum of independent normals</h2>
-<ul>
-<li><p>Suppose <span class="math inline">X \sim N (\mu_1, \sigma_1^2)</span> and <span class="math inline">Y \sim N (\mu_2, \sigma_2^2)</span> are independent normal random variables</p></li>
-<li><p>We have seen in Lecture 1 that for normal distributions <span class="math display">
-M_X(t) = \exp \left( \mu_1 t + \frac{t^2 \sigma_1^2}{2} \right) \,, \qquad
-M_Y(t) = \exp \left( \mu_2 t + \frac{t^2 \sigma_2^2}{2} \right)
-</span></p></li>
-<li><p>Since <span class="math inline">X</span> and <span class="math inline">Y</span> are independent, from previous Theorem we get <span class="math display">\begin{align*}
-M_{X+Y}(t) &amp; =  M_{X}(t) M_{Y}(t) =
-\exp \left( \mu_1 t + \frac{t^2 \sigma_1^2}{2} \right)
-\exp \left( \mu_2 t + \frac{t^2 \sigma_2^2}{2} \right)   \\
-&amp; = \exp \left( (\mu_1 + \mu_2) t + \frac{t^2 (\sigma_1^2 + \sigma_2^2)}{2} \right)
-\end{align*}</span></p></li>
-</ul>
-</section>
-<section id="example---sum-of-independent-normals-1" class="slide level2 smaller">
-<h2>Example - Sum of independent normals</h2>
-<ul>
-<li><p>Therefore <span class="math inline">Z := X + Y</span> has moment generating function <span class="math display">
-M_{Z}(t) = M_{X+Y}(t) = \exp \left( (\mu_1 + \mu_2) t + \frac{t^2 (\sigma_1^2 + \sigma_2^2)}{2} \right)
-</span></p></li>
-<li><p>The above is the mgf of a <strong>normal distribution</strong> with <span class="math display">
-\text{mean }\quad \mu_1 + \mu_2 \quad \text{ and variance} \quad  \sigma_1^2 + \sigma_2^2
-</span></p></li>
-<li><p>By the Theorem in Slide 68 of Lecture 1 we have <span class="math display">
-Z \sim N(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)
-</span></p></li>
-<li><p><strong>Sum of independent normals is normal</strong></p></li>
-</ul>
-</section>
-<section id="covariance-correlation" class="slide level2 smaller">
-<h2>Covariance &amp; Correlation</h2>
-<h3 id="relationship-between-rv">Relationship between RV</h3>
-<p>Given two random variables <span class="math inline">X</span> and <span class="math inline">Y</span> we said that</p>
-<ul>
-<li><p><span class="math inline">X</span> and <span class="math inline">Y</span> are <strong>independent</strong> if <span class="math display">
-f_{X,Y}(x,y) = f_X(x) g_Y(y)
-</span></p></li>
-<li><p>In this case there is no relationship between <span class="math inline">X</span> and <span class="math inline">Y</span></p></li>
-<li><p>This is reflected in the conditional distributions: <span class="math display">
-X|Y \sim X \qquad \qquad Y|X \sim Y
-</span></p></li>
-</ul>
-</section>
-<section id="covariance-correlation-1" class="slide level2 smaller">
-<h2>Covariance &amp; Correlation</h2>
-<h3 id="relationship-between-rv-1">Relationship between RV</h3>
-<p>If <span class="math inline">X</span> and <span class="math inline">Y</span> are <strong>not independent</strong> then there is a <strong>relationship</strong> between them</p>
-<div id="Question*-2.5" class="Question">
-<p></p><details class="Question fbx-simplebox fbx-default" open=""><summary><strong>Question</strong></summary><div>How do we measure the strength of such dependence?<p></p>
-</div></details>
-</div>
-<p><strong>Answer</strong>: By introducing the notions of</p>
-<ul>
-<li>Covariance</li>
-<li>Correlation</li>
-</ul>
-</section>
-<section id="covariance" class="slide level2 smaller">
-<h2>Covariance</h2>
-<h3 id="definition">Definition</h3>
-<p><strong>Notation</strong>: Given two rv <span class="math inline">X</span> and <span class="math inline">Y</span> we denote <span class="math display">\begin{align*}
-&amp; \mu_X := {\rm I\kern-.3em E}[X]   \qquad &amp; \mu_Y &amp; := {\rm I\kern-.3em E}[Y] \\
-&amp; \sigma^2_X := {\rm Var}[X] \qquad  &amp; \sigma^2_Y &amp; := {\rm Var}[Y]
-\end{align*}</span></p>
-<div id="Definition*-2.6" class="Definition">
-<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>covariance</strong> of <span class="math inline">X</span> and <span class="math inline">Y</span> is the number <span class="math display">
-{\rm Cov}(X,Y) := {\rm I\kern-.3em E}[  (X - \mu_X) (Y - \mu_Y)  ]
-</span><p></p>
-</div></details>
-</div>
-</section>
-<section id="covariance-1" class="slide level2 smaller">
-<h2>Covariance</h2>
-<h3 id="alternative-formula">Alternative Formula</h3>
-<div id="Theorem*-2.7" class="Theorem">
-<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>The covariance of <span class="math inline">X</span> and <span class="math inline">Y</span> can be computed via <span class="math display">
-{\rm Cov}(X,Y) = {\rm I\kern-.3em E}[XY] - {\rm I\kern-.3em E}[X]{\rm I\kern-.3em E}[Y]
-</span><p></p>
-</div></details>
-</div>
-</section>
-<section id="correlation" class="slide level2 smaller">
-<h2>Correlation</h2>
-<p><strong>Remark</strong>:</p>
-<ul>
-<li><p><span class="math inline">{\rm Cov}(X,Y)</span> encodes only <strong>qualitative</strong> information about the relationship between <span class="math inline">X</span> and <span class="math inline">Y</span></p></li>
-<li><p>To obtain <strong>quantitative</strong> information we introduce the <strong>correlation</strong></p></li>
-</ul>
-<div id="Definition*-2.8" class="Definition">
-<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>correlation</strong> of <span class="math inline">X</span> and <span class="math inline">Y</span> is the number <span class="math display">
-\rho_{XY} := \frac{{\rm Cov}(X,Y)}{\sigma_X \sigma_Y}
-</span><p></p>
-</div></details>
-</div>
-</section>
-<section id="correlation-detects-linear-relationships" class="slide level2 smaller">
-<h2>Correlation detects linear relationships</h2>
-<div id="Theorem*-2.9" class="Theorem">
-<details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>
-<p>For any random variables <span class="math inline">X</span> and <span class="math inline">Y</span> we have</p>
-<ul>
-<li><span class="math inline">- 1\leq \rho_{XY} \leq 1</span></li>
-<li><span class="math inline">|\rho_{XY}|=1</span> if and only if there exist <span class="math inline">a,b \in \mathbb{R}</span> such that <span class="math display">
-P(Y = aX + b) = 1
-</span>
-<ul>
-<li>If <span class="math inline">\rho_{XY}=1</span> then <span class="math inline">a&gt;0</span> <span class="math inline">\qquad \qquad \quad</span> (positive linear correlation)</li>
-<li>If <span class="math inline">\rho_{XY}=-1</span> then <span class="math inline">a&lt;0</span> <span class="math inline">\qquad \qquad</span> (negative linear correlation)</li>
-</ul></li>
-</ul>
-</div></details>
-</div>
-<p><strong>Proof</strong>: Omitted, see page 172 of <span class="citation" data-cites="casella-berger">[<a href="#/references" role="doc-biblioref" onclick="">1</a>]</span></p>
-</section>
-<section id="correlation-covariance" class="slide level2 smaller">
-<h2>Correlation &amp; Covariance</h2>
-<h3 id="independent-random-variables">Independent random variables</h3>
-<div id="Theorem*-2.10" class="Theorem">
-<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>If <span class="math inline">X</span> and <span class="math inline">Y</span> are independent random variables then <span class="math display">
-{\rm Cov}(X,Y) = 0 \,, \qquad \rho_{XY}=0
-</span><p></p>
-</div></details>
-</div>
-<p><strong>Proof</strong>:</p>
-<ul>
-<li>If <span class="math inline">X</span> and <span class="math inline">Y</span> are independent then <span class="math inline">{\rm I\kern-.3em E}[XY]={\rm I\kern-.3em E}[X]{\rm I\kern-.3em E}[Y]</span></li>
-<li>Therefore <span class="math inline">{\rm Cov}(X,Y)= {\rm I\kern-.3em E}[XY]-{\rm I\kern-.3em E}[X]{\rm I\kern-.3em E}[Y] = 0</span></li>
-<li>Moreover <span class="math inline">\rho_{XY}=0</span> by definition</li>
-</ul>
-</section>
-<section id="formula-for-variance" class="slide level2 smaller">
-<h2>Formula for Variance</h2>
-<h3 id="variance-is-quadratic">Variance is quadratic</h3>
-<div id="Theorem*-2.11" class="Theorem">
-<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>For any two random variables <span class="math inline">X</span> and <span class="math inline">Y</span> and <span class="math inline">a,b \in \mathbb{R}</span> <span class="math display">
-{\rm Var}[aX + bY] = a^2 {\rm Var}[X] + b^2 {\rm Var}[Y] + 2 {\rm Cov}(X,Y)
-</span> If <span class="math inline">X</span> and <span class="math inline">Y</span> are independent then <span class="math display">
-{\rm Var}[aX + bY] = a^2 {\rm Var}[X] + b^2 {\rm Var}[Y]
-</span><p></p>
-</div></details>
-</div>
-<p><strong>Proof</strong>: Exercise</p>
-</section>
-<section id="example-1" class="slide level2 smaller">
-<h2>Example 1</h2>
-<ul>
-<li><p>Assume <span class="math inline">X</span> and <span class="math inline">Z</span> are independent, and <span class="math display">
-X  \sim {\rm uniform} \left( 0,1 \right)  \,, \qquad
-Z  \sim {\rm uniform} \left( 0, \frac{1}{10} \right)
-</span></p></li>
-<li><p>Consider the random variable <span class="math display">
-Y = X + Z
-</span></p></li>
-<li><p>Since <span class="math inline">X</span> and <span class="math inline">Z</span> are independent, and <span class="math inline">Z</span> is uniform, we have that <span class="math display">
-Y | X = x  \, \sim \,  {\rm uniform} \left( x, x + \frac{1}{10} \right)
-</span> (adding <span class="math inline">x</span> to <span class="math inline">Z</span> simply shifts the uniform distribution of <span class="math inline">Z</span> by <span class="math inline">x</span>)</p></li>
-<li><p><strong>Question:</strong> Is the correlation <span class="math inline">\rho_{XY}</span> between <span class="math inline">X</span> and <span class="math inline">Y</span> high or low?</p></li>
-</ul>
-</section>
-<section id="example-1-1" class="slide level2 smaller">
-<h2>Example 1</h2>
-<ul>
-<li><p>As <span class="math inline">Y | X  \, \sim \,  {\rm uniform} \left( X, X + \frac{1}{10} \right)</span>, the conditional pdf of <span class="math inline">Y</span> given <span class="math inline">X = x</span> is <span class="math display">
-f(y|x) =
-\begin{cases}
-10 &amp; \text{ if } \, y \in \left( x , x + \frac{1}{10} \right) \\
-0  &amp; \text{ otherwise}
-\end{cases}
-</span></p></li>
-<li><p>As <span class="math inline">X  \sim {\rm uniform} (0,1)</span>, its pdf is <span class="math display">
-f_X(x) =
-\begin{cases}
-1 &amp; \text{ if } \, x \in \left( 0 , 1  \right) \\
-0  &amp; \text{ otherwise}
-\end{cases}
-</span></p></li>
-<li><p>Therefore, the joint distribution of <span class="math inline">(X,Y)</span> is <span class="math display">
-f_{X,Y}(x,y) = f(y|x)f_X(x) = \begin{cases}
-10 &amp; \text{ if } \, x \in (0,1) \, \text{ and } \, y \in \left( x , x + \frac{1}{10} \right) \\
-0  &amp; \text{ otherwise}
-\end{cases}
-</span></p></li>
-</ul>
-</section>
-<section id="example-1-2" class="slide level2 smaller">
-<h2>Example 1</h2>
-<p>In gray: the region where <span class="math inline">f_{X,Y}(x,y)&gt;0</span></p>
-<ul>
-<li>When <span class="math inline">X</span> increases, <span class="math inline">Y</span> increases linearly (not surprising, since <span class="math inline">Y = X + Z</span>)</li>
-<li>We expect the correlation <span class="math inline">\rho_{XY}</span> to be close to <span class="math inline">1</span></li>
-</ul>
-
-<img data-src="lecture_2_files/figure-revealjs/unnamed-chunk-1-1.png" width="960" class="r-stretch"></section>
-<section id="example-1-computing-rho_xy" class="slide level2 smaller">
-<h2>Example 1 – Computing <span class="math inline">\rho_{XY}</span></h2>
-<ul>
-<li><p>For a random variable <span class="math inline">W \sim {\rm uniform} (a,b)</span>, we have <span class="math display">
-{\rm I\kern-.3em E}[W] = \frac{a+b}{2} \,, \qquad
-{\rm Var}[W] = \frac{(b-a)^2}{12}
-</span></p></li>
-<li><p>Since <span class="math inline">X \sim {\rm uniform} (0,1)</span> and <span class="math inline">Z \sim {\rm uniform} (0,1/10)</span>, we have <span class="math display">
-{\rm I\kern-.3em E}[X] = \frac12 \,, \qquad
-{\rm Var}[X] = \frac{1}{12} \,, \qquad
-{\rm I\kern-.3em E}[Z] = \frac{1}{20} \,, \qquad
-{\rm Var}[Z] = \frac{1}{1200}
-</span></p></li>
-<li><p>Since <span class="math inline">X</span> and <span class="math inline">Z</span> are independent, we also have <span class="math display">
-{\rm Var}[Y] = {\rm Var}[X + Z] =  {\rm Var}[X] + {\rm Var}[Z] = \frac{1}{12} + \frac{1}{1200}
-</span></p></li>
-</ul>
-</section>
-<section id="example-1-computing-rho_xy-1" class="slide level2 smaller">
-<h2>Example 1 – Computing <span class="math inline">\rho_{XY}</span></h2>
-<ul>
-<li><p>Since <span class="math inline">X</span> and <span class="math inline">Z</span> are independent, we have <span class="math display">
-{\rm I\kern-.3em E}[XZ] = {\rm I\kern-.3em E}[X]{\rm I\kern-.3em E}[Z]
-</span></p></li>
-<li><p>We conclude that <span class="math display">\begin{align*}
-{\rm Cov}(X,Y) &amp; = {\rm I\kern-.3em E}[XY] -  {\rm I\kern-.3em E}[X] {\rm I\kern-.3em E}[Y] \\
-        &amp; = {\rm I\kern-.3em E}[X(X + Z)] -  {\rm I\kern-.3em E}[X] {\rm I\kern-.3em E}[X + Z] \\
-        &amp; = {\rm I\kern-.3em E}[X^2] - {\rm I\kern-.3em E}[X]^2 + {\rm I\kern-.3em E}[XZ] - {\rm I\kern-.3em E}[X]{\rm I\kern-.3em E}[Z] \\
-        &amp; = {\rm Var}[X] = \frac{1}{12}
-\end{align*}</span></p></li>
-</ul>
-</section>
-<section id="example-1-computing-rho_xy-2" class="slide level2 smaller">
-<h2>Example 1 – Computing <span class="math inline">\rho_{XY}</span></h2>
-<ul>
-<li><p>The correlation between <span class="math inline">X</span> and <span class="math inline">Y</span> is <span class="math display">\begin{align*}
-\rho_{XY} &amp; = \frac{{\rm Cov}(X,Y)}{\sqrt{{\rm Var}[X]}\sqrt{{\rm Var}[Y]}} \\
-        &amp; = \frac{\frac{1}{12}}{\sqrt{\frac{1}{12}}  \sqrt{ \frac{1}{12} + \frac{1}{1200}} } = \sqrt{\frac{100}{101}}
-\end{align*}</span></p></li>
-<li><p>As expected, we have very high correlation <span class="math inline">\rho_{XY} \approx 1</span></p></li>
-<li><p>This confirms a very strong <strong>linear</strong> relationship between <span class="math inline">X</span> and <span class="math inline">Y</span></p></li>
-</ul>
-</section>
-<section id="example-2" class="slide level2 smaller">
-<h2>Example 2</h2>
-<ul>
-<li><p>Assume <span class="math inline">X</span> and <span class="math inline">Z</span> are independent, and <span class="math display">
-X  \sim {\rm uniform} \left( -1,1 \right)  \,, \qquad
-Z  \sim {\rm uniform} \left( 0, \frac{1}{10} \right)
-</span></p></li>
-<li><p>Define the random variable <span class="math display">
-Y = X^2 + Z
-</span></p></li>
-<li><p>Since <span class="math inline">X</span> and <span class="math inline">Z</span> are independent, and <span class="math inline">Z</span> is uniform, we have that <span class="math display">
-Y | X = x  \, \sim \,  {\rm uniform} \left( x^2, x^2 + \frac{1}{10} \right)
-</span> (adding <span class="math inline">x^2</span> to <span class="math inline">Z</span> simply shifts the uniform distribution of <span class="math inline">Z</span> by <span class="math inline">x^2</span>)</p></li>
-<li><p><strong>Question:</strong> Is the correlation <span class="math inline">\rho_{XY}</span> between <span class="math inline">X</span> and <span class="math inline">Y</span> high or low?</p></li>
-</ul>
-</section>
-<section id="example-2-1" class="slide level2 smaller">
-<h2>Example 2</h2>
-<ul>
-<li><p>As <span class="math inline">Y | X  \, \sim \,  {\rm uniform} \left( X^2, X^2 + \frac{1}{10} \right)</span>, the conditional pdf of <span class="math inline">Y</span> given <span class="math inline">X = x</span> is <span class="math display">
-f(y|x) =
-\begin{cases}
-10 &amp; \text{ if } \, y \in \left( x^2 , x^2 + \frac{1}{10} \right) \\
-0  &amp; \text{ otherwise}
-\end{cases}
-</span></p></li>
-<li><p>As <span class="math inline">X  \sim {\rm uniform} (-1,1)</span>, its pdf is <span class="math display">
-f_X(x) =
-\begin{cases}
-\frac12 &amp; \text{ if } \, x \in \left( -1 , 1  \right) \\
-0  &amp; \text{ otherwise}
-\end{cases}
-</span></p></li>
-<li><p>Therefore, the joint distribution of <span class="math inline">(X,Y)</span> is <span class="math display">
-f_{X,Y}(x,y) = f(y|x)f_X(x) = \begin{cases}
-10 &amp; \text{ if } \, x \in (-1,1) \, \text{ and } \, y \in \left( x^2 , x^2 + \frac{1}{10} \right) \\
-0  &amp; \text{ otherwise}
-\end{cases}
-</span></p></li>
-</ul>
-</section>
-<section id="example-2-2" class="slide level2 smaller">
-<h2>Example 2</h2>
-<p>In gray: the region where <span class="math inline">f_{X,Y}(x,y)&gt;0</span></p>
-<ul>
-<li>When <span class="math inline">X</span> increases, <span class="math inline">Y</span> increases quadratically (not surprising, as <span class="math inline">Y = X^2 + Z</span>)</li>
-<li>There is no linear relationship between <span class="math inline">X</span> and <span class="math inline">Y</span> <span class="math inline">\,\, \implies \,\,</span> we expect <span class="math inline">\, \rho_{XY} \approx 0</span></li>
-</ul>
-
-<img data-src="lecture_2_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
-<section id="example-2-computing-rho_xy" class="slide level2 smaller">
-<h2>Example 2 – Computing <span class="math inline">\rho_{XY}</span></h2>
-<ul>
-<li><p>Since <span class="math inline">X \sim {\rm uniform} (-1,1)</span>, we can compute that <span class="math display">
-{\rm I\kern-.3em E}[X] = {\rm I\kern-.3em E}[X^3] = 0
-</span></p></li>
-<li><p>Since <span class="math inline">X</span> and <span class="math inline">Z</span> are independent, we have <span class="math display">
-{\rm I\kern-.3em E}[XZ] = {\rm I\kern-.3em E}[X]{\rm I\kern-.3em E}[Z] = 0
-</span></p></li>
-</ul>
-</section>
-<section id="example-2-computing-rho_xy-1" class="slide level2 smaller">
-<h2>Example 2 – Computing <span class="math inline">\rho_{XY}</span></h2>
-<ul>
-<li><p>Compute the covariance <span class="math display">\begin{align*}
-{\rm Cov}(X,Y) &amp; = {\rm I\kern-.3em E}[XY] -  {\rm I\kern-.3em E}[X] {\rm I\kern-.3em E}[Y] \\
-        &amp; = {\rm I\kern-.3em E}[XY] \\
-        &amp; = {\rm I\kern-.3em E}[X(X^2 + Z)]  \\
-        &amp; = {\rm I\kern-.3em E}[X^3] + {\rm I\kern-.3em E}[XZ] = 0
-\end{align*}</span></p></li>
-<li><p>The correlation between <span class="math inline">X</span> and <span class="math inline">Y</span> is <span class="math display">
-\rho_{XY}  = \frac{{\rm Cov}(X,Y)}{\sqrt{{\rm Var}[X]}\sqrt{{\rm Var}[Y]}} = 0
-</span></p></li>
-<li><p>This confirms there is <strong>no linear</strong> relationship between <span class="math inline">X</span> and <span class="math inline">Y</span></p></li>
-</ul>
-</section></section>
-<section>
-<section id="part-2-multivariate-random-vectors" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
-<h1>Part 2: <br>Multivariate random vectors</h1>
+<section id="part-1-multivariate-random-vectors" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 1: <br>Multivariate random vectors</h1>
 <div class="footer">
 <div color="#cc0164">
 
@@ -990,7 +507,7 @@ f_{X,Y}(x,y) = f(y|x)f_X(x) = \begin{cases}
 <section id="discrete-and-continuous-multivariate-random-vectors" class="slide level2 smaller">
 <h2>Discrete and Continuous Multivariate Random Vectors</h2>
 <p>Everything we defined for <strong>bivariate</strong> vectors extends to <strong>multivariate</strong> vectors</p>
-<div id="Definition*-3.1" class="Definition">
+<div id="Definition*-2.1" class="Definition">
 <details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>
 <p>The random vector <span class="math inline">\mathbf{X}\colon \Omega \to \mathbb{R}^n</span> is:</p>
 <ul>
@@ -1002,7 +519,7 @@ f_{X,Y}(x,y) = f(y|x)f_X(x) = \begin{cases}
 </section>
 <section id="joint-pmf" class="slide level2 smaller">
 <h2>Joint pmf</h2>
-<div id="Definition*-3.2" class="Definition">
+<div id="Definition*-2.2" class="Definition">
 <p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>joint pmf</strong> of a continuous random vector <span class="math inline">\mathbf{X}</span> is <span class="math inline">f_{\mathbf{X}} \colon \mathbb{R}^n \to \mathbb{R}</span> defined by <span class="math display">
 f_{\mathbf{X}} (\mathbf{x}) = f_{\mathbf{X}}(x_1,\ldots,x_n) := P(X_1 = x_1 , \ldots , X_n = x_n ) \,, \qquad \forall \, \mathbf{x}\in \mathbb{R}^n
 </span><p></p>
@@ -1014,7 +531,7 @@ P(\mathbf{X}\in A) = \sum_{\mathbf{x}\in A} f_{\mathbf{X}}(\mathbf{x})
 </section>
 <section id="joint-pdf" class="slide level2 smaller">
 <h2>Joint pdf</h2>
-<div id="Definition*-3.3" class="Definition">
+<div id="Definition*-2.3" class="Definition">
 <p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>joint pdf</strong> of a continuous random vector <span class="math inline">\mathbf{X}</span> is a function <span class="math inline">f_{\mathbf{X}} \colon \mathbb{R}^n \to \mathbb{R}</span> such that <span class="math display">
 P (\mathbf{X}\in A) := \int_A f_{\mathbf{X}}(x_1 ,\ldots, x_n) \, dx_1 \ldots dx_n = \int_{A} f_{\mathbf{X}}(\mathbf{x}) \, d\mathbf{x}\,, \quad \forall \, A \subset \mathbb{R}^n
 </span><p></p>
@@ -1024,7 +541,7 @@ P (\mathbf{X}\in A) := \int_A f_{\mathbf{X}}(x_1 ,\ldots, x_n) \, dx_1 \ldots dx
 </section>
 <section id="expected-value" class="slide level2 smaller">
 <h2>Expected Value</h2>
-<div id="Definition*-3.4" class="Definition">
+<div id="Definition*-2.4" class="Definition">
 <p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div><span class="math inline">\mathbf{X}\colon \Omega \to \mathbb{R}^n</span> random vector and <span class="math inline">g \colon \mathbb{R}^n \to \mathbb{R}</span> function. The <strong>expected value</strong> of the random variable <span class="math inline">g(X)</span> is <span class="math display">\begin{align*}
 {\rm I\kern-.3em E}[g(\mathbf{X})] &amp; := \sum_{x \in \mathbb{R}^n} g(\mathbf{x}) f_{\mathbf{X}} (\mathbf{x})  \qquad &amp; (\mathbf{X}\text{ discrete}) \\
 {\rm I\kern-.3em E}[g(\mathbf{X})] &amp; := \int_{\mathbb{R}^n} g(\mathbf{x}) f_{\mathbf{X}} (\mathbf{x}) \, d\mathbf{x}\qquad &amp; \qquad  (\mathbf{X}\text{ continuous})
@@ -1038,7 +555,7 @@ P (\mathbf{X}\in A) := \int_A f_{\mathbf{X}}(x_1 ,\ldots, x_n) \, dx_1 \ldots dx
 <li><p><strong>Marginal pmf or pdf</strong> of any <strong>subset</strong> of the coordinates <span class="math inline">(X_1,\ldots,X_n)</span> can be computed by integrating or summing the remaining coordinates</p></li>
 <li><p>To ease notations, we only define maginals wrt the first <span class="math inline">k</span> coordinates</p></li>
 </ul>
-<div id="Definition*-3.5" class="Definition">
+<div id="Definition*-2.5" class="Definition">
 <p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>marginal pmf</strong> or <strong>marginal pdf</strong> of the random vector <span class="math inline">\mathbf{X}</span> with respect to the first <span class="math inline">k</span> coordinates is the function <span class="math inline">f \colon \mathbb{R}^k \to \mathbb{R}</span> defined by <span class="math display">\begin{align*}
 f(x_1,\ldots,x_k) &amp; := \sum_{ (x_{k+1}, \ldots, x_n) \in \mathbb{R}^{n-k} }  
 f_{\mathbf{X}} (x_1 , \ldots , x_n)  \quad &amp; (\mathbf{X}\text{ discrete}) \\
@@ -1050,7 +567,7 @@ f(x_1,\ldots,x_k) &amp; := \int_{\mathbb{R}^{n-k}}f_{\mathbf{X}} (x_1 , \ldots, 
 <section id="marginal-distributions-1" class="slide level2 smaller">
 <h2>Marginal distributions</h2>
 <p>We use a special notation for <strong>marginal pmf or pdf</strong> wrt a single coordinate</p>
-<div id="Definition*-3.6" class="Definition">
+<div id="Definition*-2.6" class="Definition">
 <p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>marginal pmf</strong> or <strong>pdf</strong> of the random vector <span class="math inline">\mathbf{X}</span> with respect to the <span class="math inline">i</span>-th coordinate is the function <span class="math inline">f_{X_i} \colon \mathbb{R}\to \mathbb{R}</span> defined by <span class="math display">\begin{align*}
 f_{X_i}(x_i) &amp; := \sum_{ \tilde{x} \in \mathbb{R}^{n-1} }  
 f_{\mathbf{X}} (x_1, \ldots, x_n)  \quad &amp; (\mathbf{X}\text{ discrete}) \\
@@ -1064,7 +581,7 @@ f_{X_i}(x_i) &amp; := \int_{\mathbb{R}^{n-1}}f_{\mathbf{X}} (x_1, \ldots, x_n) \
 <section id="conditional-distributions" class="slide level2 smaller">
 <h2>Conditional distributions</h2>
 <p>We now define conditional distributions given the first <span class="math inline">k</span> coordinates</p>
-<div id="Definition*-3.7" class="Definition">
+<div id="Definition*-2.7" class="Definition">
 <p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>Let <span class="math inline">\mathbf{X}</span> be a random vector and suppose that the marginal pmf or pdf wrt the first <span class="math inline">k</span> coordinates satisfies <span class="math display">
 f(x_1,\ldots,x_k) &gt; 0 \,, \quad \forall \, (x_1,\ldots,x_k ) \in \mathbb{R}^k
 </span> The <strong>conditional pmf</strong> or <strong>pdf</strong> of <span class="math inline">(X_{k+1},\ldots,X_n)</span> given <span class="math inline">X_1 = x_1, \ldots , X_k = x_k</span> is the function of <span class="math inline">(x_{k+1},\ldots,x_{n})</span> defined by <span class="math display">
@@ -1076,7 +593,7 @@ f(x_{k+1},\ldots,x_n | x_1 , \ldots , x_k) := \frac{f_{\mathbf{X}}(x_1,\ldots,x_
 <section id="conditional-distributions-1" class="slide level2 smaller">
 <h2>Conditional distributions</h2>
 <p>Similarly, we can define the conditional distribution given the <span class="math inline">i</span>-th coordinate</p>
-<div id="Definition*-3.8" class="Definition">
+<div id="Definition*-2.8" class="Definition">
 <p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>Let <span class="math inline">\mathbf{X}</span> be a random vector and suppose that for a given <span class="math inline">x_i \in \mathbb{R}</span> <span class="math display">
 f_{X_i}(x_i) &gt; 0
 </span> The <strong>conditional pmf or pdf</strong> of <span class="math inline">\tilde{X}</span> given <span class="math inline">X_i = x_i</span> is the function of <span class="math inline">\tilde{x}</span> defined by <span class="math display">
@@ -1088,25 +605,25 @@ f(\tilde{x} | x_i ) := \frac{f_{\mathbf{X}}(x_1,\ldots,x_n)}{f_{X_i}(x_i)}
 </div></details>
 </div>
 </section>
-<section id="independence-1" class="slide level2 smaller">
+<section id="independence" class="slide level2 smaller">
 <h2>Independence</h2>
-<div id="Definition*-3.9" class="Definition">
+<div id="Definition*-2.9" class="Definition">
 <p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div><span class="math inline">\mathbf{X}=(X_1,\ldots,X_n)</span> random vector with joint pmf or pdf <span class="math inline">f_{\mathbf{X}}</span> and marginals <span class="math inline">f_{X_i}</span>. We say that the random variables <span class="math inline">X_1,\ldots,X_n</span> are <strong>mutually independent</strong> if <span class="math display">
 f_{\mathbf{X}}(x_1,\ldots,x_n) = f_{X_1}(x_1) \cdot \ldots \cdot f_{X_n}(x_n) = \prod_{i=1}^n f_{X_i}(x_i)
 </span><p></p>
 </div></details>
 </div>
-<div id="Proposition*-3.10" class="Proposition">
+<div id="Proposition*-2.10" class="Proposition">
 <p></p><details class="Proposition fbx-simplebox fbx-default" open=""><summary><strong>Proposition</strong></summary><div>If <span class="math inline">X_1,\ldots,X_n</span> are mutually independent then for all <span class="math inline">A_i \subset \mathbb{R}</span> <span class="math display">
 P(X_1 \in A_1 , \ldots , X_n \in A_n) = \prod_{i=1}^n P(X_i \in A_i)
 </span><p></p>
 </div></details>
 </div>
 </section>
-<section id="independence-2" class="slide level2 smaller">
+<section id="independence-1" class="slide level2 smaller">
 <h2>Independence</h2>
 <h3 id="characterization-result">Characterization result</h3>
-<div id="Theorem*-3.11" class="Theorem">
+<div id="Theorem*-2.11" class="Theorem">
 <details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>
 <p><span class="math inline">\mathbf{X}=(X_1,\ldots,X_n)</span> random vector with joint pmf or pdf <span class="math inline">f_{\mathbf{X}}</span>. They are equivalent:</p>
 <ul>
@@ -1118,10 +635,10 @@ f_{\mathbf{X}}(x_1,\ldots,x_n) =  \prod_{i=1}^n g_{i}(x_i)
 </div></details>
 </div>
 </section>
-<section id="independence-3" class="slide level2 smaller">
+<section id="independence-2" class="slide level2 smaller">
 <h2>Independence</h2>
 <h3 id="a-very-useful-theorem">A very useful theorem</h3>
-<div id="Theorem*-3.12" class="Theorem">
+<div id="Theorem*-2.12" class="Theorem">
 <p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Let <span class="math inline">X_1,\ldots,X_n</span> be mutually independent random variables and <span class="math inline">g_i(x_i)</span> function only of <span class="math inline">x_i</span>. Then the random variables <span class="math display">
 g_1(X_1) \,, \ldots \,, g_n(X_n)
 </span> are mutually independent<p></p>
@@ -1130,19 +647,19 @@ g_1(X_1) \,, \ldots \,, g_n(X_n)
 <p><strong>Proof</strong>: Omitted. See <span class="citation" data-cites="casella-berger">[<a href="#/references" role="doc-biblioref" onclick="">1</a>]</span> page 184</p>
 <p><strong>Example</strong>: <span class="math inline">X_1,\ldots,X_n \,</span> independent <span class="math inline">\,\, \implies \,\, X_1^2, \ldots, X_n^2 \,</span> independent</p>
 </section>
-<section id="independence-4" class="slide level2 smaller">
+<section id="independence-3" class="slide level2 smaller">
 <h2>Independence</h2>
 <h3 id="expectation-of-product">Expectation of product</h3>
-<div id="Theorem*-3.13" class="Theorem">
+<div id="Theorem*-2.13" class="Theorem">
 <p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Let <span class="math inline">X_1,\ldots,X_n</span> be mutually independent random variables and <span class="math inline">g_i(x_i)</span> functions. Then <span class="math display">
 {\rm I\kern-.3em E}[ g_1(X_1) \cdot \ldots \cdot g_n(X_n) ] = \prod_{i=1}^n {\rm I\kern-.3em E}[g_i(X_i)]
 </span><p></p>
 </div></details>
 </div>
 </section>
-<section id="application-mgf-of-sums-1" class="slide level2 smaller">
+<section id="application-mgf-of-sums" class="slide level2 smaller">
 <h2>Application: MGF of sums</h2>
-<div id="Theorem*-3.14" class="Theorem">
+<div id="Theorem*-2.14" class="Theorem">
 <p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Let <span class="math inline">X_1,\ldots,X_n</span> be mutually independent random variables, with mgfs <span class="math inline">M_{X_1}(t),\ldots, M_{X_n}(t)</span>. Define the random variable <span class="math display">
 Z := X_1 + \ldots + X_n
 </span> The mgf of <span class="math inline">Z</span> satisfies <span class="math display">
@@ -1151,7 +668,7 @@ M_Z(t) = \prod_{i=1}^n M_{X_i}(t)
 </div></details>
 </div>
 </section>
-<section id="application-mgf-of-sums-2" class="slide level2 smaller">
+<section id="application-mgf-of-sums-1" class="slide level2 smaller">
 <h2>Application: MGF of sums</h2>
 <h3 id="proof-of-theorem">Proof of Theorem</h3>
 <p>Follows by the previous Theorem</p>
@@ -1165,7 +682,7 @@ M_{Z} (t) &amp; = {\rm I\kern-.3em E}[e^{tZ}] \\
 </section>
 <section id="example-sum-of-independent-normals" class="slide level2 smaller">
 <h2>Example – Sum of independent Normals</h2>
-<div id="Theorem*-3.15" class="Theorem">
+<div id="Theorem*-2.15" class="Theorem">
 <p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Let <span class="math inline">X_1,\ldots,X_n</span> be mutually independent random variables with normal distribution <span class="math inline">X_i \sim N (\mu_i,\sigma_i^2)</span>. Define <span class="math display">
 Z := X_1 + \ldots + X_n
 </span> and <span class="math display">
@@ -1209,7 +726,7 @@ Z \sim N(\mu, \sigma^2 )
 </section>
 <section id="example-sum-of-independent-gammas" class="slide level2 smaller">
 <h2>Example – Sum of independent Gammas</h2>
-<div id="Theorem*-3.16" class="Theorem">
+<div id="Theorem*-2.16" class="Theorem">
 <p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Let <span class="math inline">X_1,\ldots,X_n</span> be mutually independent random variables with Gamma distribution <span class="math inline">X_i \sim \Gamma (\alpha_i,\beta)</span>. Define <span class="math display">
 Z := X_1 + \ldots + X_n
 </span> and <span class="math display">
@@ -1253,7 +770,7 @@ Z \sim \Gamma(\alpha, \beta )
 <section id="expectation-of-sums" class="slide level2 smaller">
 <h2>Expectation of sums</h2>
 <h3 id="expectation-is-linear">Expectation is linear</h3>
-<div id="Theorem*-3.17" class="Theorem">
+<div id="Theorem*-2.17" class="Theorem">
 <p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>For random variables <span class="math inline">X_1,\ldots,X_n</span> and scalars <span class="math inline">a_1,\ldots,a_n</span> we have <span class="math display">
 {\rm I\kern-.3em E}[a_1X_1 + \ldots + a_nX_n] = a_1 {\rm I\kern-.3em E}[X_1] + \ldots + a_n {\rm I\kern-.3em E}[X_n]
 </span><p></p>
@@ -1262,8 +779,8 @@ Z \sim \Gamma(\alpha, \beta )
 </section>
 <section id="variance-of-sums" class="slide level2 smaller">
 <h2>Variance of sums</h2>
-<h3 id="variance-is-quadratic-1">Variance is quadratic</h3>
-<div id="Theorem*-3.18" class="Theorem">
+<h3 id="variance-is-quadratic">Variance is quadratic</h3>
+<div id="Theorem*-2.18" class="Theorem">
 <p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>For random variables <span class="math inline">X_1,\ldots,X_n</span> and scalars <span class="math inline">a_1,\ldots,a_n</span> we have <span class="math display">\begin{align*}
 {\rm Var}[a_1X_1 + \ldots + a_nX_n] = a_1^2 {\rm Var}[X_1] &amp; + \ldots + a^2_n {\rm Var}[X_n] \\
                                                  &amp; + 2 \sum_{i \neq j} {\rm Cov}(X_i,X_j)
@@ -1274,8 +791,8 @@ Z \sim \Gamma(\alpha, \beta )
 </div>
 </section></section>
 <section>
-<section id="part-3-random-samples" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
-<h1>Part 3: <br>Random samples</h1>
+<section id="part-2-random-samples" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 2: <br>Random samples</h1>
 <div class="footer">
 <div color="#cc0164">
 
@@ -1284,7 +801,7 @@ Z \sim \Gamma(\alpha, \beta )
 </section>
 <section id="iid-random-variables" class="slide level2 smaller">
 <h2>iid random variables</h2>
-<div id="Definition*-4.1" class="Definition">
+<div id="Definition*-3.1" class="Definition">
 <details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>
 <p>The random variables <span class="math inline">X_1,\ldots,X_n</span> are <strong>independent identically distributed</strong> or <strong>iid</strong> with pdf or pmf <span class="math inline">f(x)</span> if</p>
 <ul>
@@ -1306,7 +823,7 @@ f_{X_i}(x) = f(x) \,, \quad \forall \, x \in \mathbb{R}
 <li>Therefore each <span class="math inline">X_i</span> has distribution <span class="math inline">f(x)</span></li>
 <li>We also assume the observations are <strong>independent</strong></li>
 </ul>
-<div id="Definition*-4.2" class="Definition">
+<div id="Definition*-3.2" class="Definition">
 <p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The random variables <span class="math inline">X_1,\ldots,X_n</span> are a <strong>random sample</strong> of size <span class="math inline">n</span> from the population <span class="math inline">f(x)</span> if <span class="math inline">X_1,\ldots,X_n</span> are iid with pdf or pmf <span class="math inline">f(x)</span><p></p>
 </div></details>
 </div>
@@ -1316,7 +833,7 @@ f_{X_i}(x) = f(x) \,, \quad \forall \, x \in \mathbb{R}
 <p><strong>Remark</strong>: Let <span class="math inline">X_1,\ldots,X_n</span> be a random sample of size <span class="math inline">n</span> from the population <span class="math inline">f(x)</span>. The joint distribution of <span class="math inline">\mathbf{X}= (X_1,\ldots,X_n)</span> is <span class="math display">
 f_{\mathbf{X}}(x_1,\ldots,x_n) = f(x_1) \cdot \ldots \cdot f(x_n) = \prod_{i=1}^n f(x_i)
 </span> (since the <span class="math inline">X_is</span> are mutually independent with distribution <span class="math inline">f</span>)</p>
-<div id="Definition*-4.3" class="Definition">
+<div id="Definition*-3.3" class="Definition">
 <p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>We call <span class="math inline">f_{\mathbf{X}}</span> the <strong>joint sample distribution</strong><p></p>
 </div></details>
 </div>
@@ -1347,7 +864,7 @@ f_{\mathbf{X}}(x_1,\ldots,x_n | \beta) &amp; = \prod_{i=1}^n f(x_i|\beta) \\
 \end{align*}</span></li>
 </ul>
 </section>
-<section id="example-3" class="slide level2 smaller">
+<section id="example-1" class="slide level2 smaller">
 <h2>Example</h2>
 <ul>
 <li><p>We have <span class="math display">
@@ -1363,8 +880,8 @@ P(X_1 &gt; 2 , \ldots, X_n &gt; 2) &amp; = \prod_{i=1}^n P(X_i &gt; 2) \\
 </ul>
 </section></section>
 <section>
-<section id="part-4-unbiased-estimators" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
-<h1>Part 4: <br>Unbiased estimators</h1>
+<section id="part-3-unbiased-estimators" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 3: <br>Unbiased estimators</h1>
 <div class="footer">
 <div color="#cc0164">
 
@@ -1408,7 +925,7 @@ W(X_1,\ldots,X_n)
 </section>
 <section id="unbiased-estimator" class="slide level2 smaller">
 <h2>Unbiased estimator</h2>
-<div id="Definition*-5.1" class="Definition">
+<div id="Definition*-4.1" class="Definition">
 <details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>
 <p>Suppose <span class="math inline">W</span> is a point estimator of a parameter <span class="math inline">\theta</span></p>
 <ul>
@@ -1436,7 +953,7 @@ W = W(X_1, \ldots, X_n)
 </section>
 <section id="estimating-the-population-mean" class="slide level2 smaller">
 <h2>Estimating the population mean</h2>
-<div id="Problem*-5.2" class="Problem">
+<div id="Problem*-4.2" class="Problem">
 <p></p><details class="Problem fbx-simplebox fbx-default" open=""><summary><strong>Problem</strong></summary><div>Suppose to have a population with distribution <span class="math display">
 f(x|\theta)
 </span> We want to estimate the <strong>population mean</strong> <span class="math display">
@@ -1447,7 +964,7 @@ f(x|\theta)
 </section>
 <section id="sample-mean" class="slide level2 smaller">
 <h2>Sample mean</h2>
-<div id="Definition*-5.3" class="Definition">
+<div id="Definition*-4.3" class="Definition">
 <p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>sample mean</strong> of a random sample <span class="math inline">X_1,\ldots,X_n</span> is the statistic <span class="math display">
 W(X_1,\ldots,X_n) := \overline{X} := \frac{1}{n} \sum_{i=1}^n X_i
 </span><p></p>
@@ -1457,7 +974,7 @@ W(X_1,\ldots,X_n) := \overline{X} := \frac{1}{n} \sum_{i=1}^n X_i
 <section id="sample-mean-1" class="slide level2 smaller">
 <h2>Sample mean</h2>
 <h3 id="sample-mean-is-unbiased-estimator-of-mean">Sample mean is unbiased estimator of mean</h3>
-<div id="Theorem*-5.4" class="Theorem">
+<div id="Theorem*-4.4" class="Theorem">
 <p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>The sample mean <span class="math inline">\overline{X}</span> is an unbiased estimator of the population mean <span class="math inline">\mu</span>, that is, <span class="math display">
 {\rm I\kern-.3em E}[\overline{X}] = \mu
 </span><p></p>
@@ -1483,7 +1000,7 @@ W(X_1,\ldots,X_n) := \overline{X} := \frac{1}{n} \sum_{i=1}^n X_i
 <section id="variance-of-sample-mean" class="slide level2 smaller">
 <h2>Variance of Sample mean</h2>
 <p>For reasons clear later, it is useful to compute the variance of the sample mean <span class="math inline">\overline{X}</span></p>
-<div id="Lemma*-5.5" class="Lemma">
+<div id="Lemma*-4.5" class="Lemma">
 <p></p><details class="Lemma fbx-simplebox fbx-default" open=""><summary><strong>Lemma</strong></summary><div><span class="math inline">X_1,\ldots,X_n</span> random sample from population with mean <span class="math inline">\mu</span> and variance <span class="math inline">\sigma^2</span>. Then <span class="math display">
 {\rm Var}[\overline{X}] = \frac{\sigma^2}{n}
 </span><p></p>
@@ -1508,7 +1025,7 @@ W(X_1,\ldots,X_n) := \overline{X} := \frac{1}{n} \sum_{i=1}^n X_i
 </section>
 <section id="estimating-the-population-variance" class="slide level2 smaller">
 <h2>Estimating the population variance</h2>
-<div id="Problem*-5.6" class="Problem">
+<div id="Problem*-4.6" class="Problem">
 <p></p><details class="Problem fbx-simplebox fbx-default" open=""><summary><strong>Problem</strong></summary><div>Suppose to have a population <span class="math display">
 f(x|\theta)
 </span> with mean <span class="math inline">\mu</span> and variance <span class="math inline">\sigma^2</span>. We want to estimate the <strong>population variance</strong><p></p>
@@ -1517,7 +1034,7 @@ f(x|\theta)
 </section>
 <section id="sample-variance" class="slide level2 smaller">
 <h2>Sample variance</h2>
-<div id="Definition*-5.7" class="Definition">
+<div id="Definition*-4.7" class="Definition">
 <p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The <strong>sample variance</strong> of a random sample <span class="math inline">X_1,\ldots,X_n</span> is the statistic <span class="math display">
 S^2 := \frac{1}{n-1} \sum_{i=1}^n \left( X_i - \overline{X}  \right)^2
 </span> where <span class="math inline">\overline{X}</span> is the sample mean <span class="math display">
@@ -1529,7 +1046,7 @@ S^2 := \frac{1}{n-1} \sum_{i=1}^n \left( X_i - \overline{X}  \right)^2
 <section id="sample-variance-1" class="slide level2 smaller">
 <h2>Sample variance</h2>
 <h3 id="equivalent-formulation">Equivalent formulation</h3>
-<div id="Proposition*-5.8" class="Proposition">
+<div id="Proposition*-4.8" class="Proposition">
 <p></p><details class="Proposition fbx-simplebox fbx-default" open=""><summary><strong>Proposition</strong></summary><div>It holds that <span class="math display">
 S^2 := \frac{ \sum_{i=1}^n \left( X_i - \overline{X}  \right)^2}{n-1}  =
 \frac{ \sum_{i=1}^n  X_i^2  - n\overline{X}^2  }{n-1}
@@ -1556,7 +1073,7 @@ S^2 = \frac{ \sum_{i=1}^n X_i^2 -n \overline{X}^2 }{n-1}
 <section id="sample-variance-3" class="slide level2 smaller">
 <h2>Sample variance</h2>
 <h3 id="sample-variance-is-unbiased-estimator-of-variance">Sample variance is unbiased estimator of variance</h3>
-<div id="Theorem*-5.9" class="Theorem">
+<div id="Theorem*-4.9" class="Theorem">
 <p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>The sample variance <span class="math inline">S^2</span> is an unbiased estimator of the population variance <span class="math inline">\sigma^2</span>, that is, <span class="math display">
 {\rm I\kern-.3em E}[S^2] = \sigma^2
 </span><p></p>
@@ -1653,7 +1170,7 @@ s^2=\frac{\sum_{i=1}^{n}(x_i-\overline{x})^2}{n-1}=\frac{\sum_{i=1}^n x_i^2-n{\o
 <li><p><strong>Capital letters denote random variables, while lowercase letters denote specific values (realizations) of those variables</strong></p></li>
 </ul>
 </section>
-<section id="exercise-1" class="slide level2 smaller">
+<section id="exercise" class="slide level2 smaller">
 <h2>Exercise</h2>
 <p>Wage data on 10 Mathematicians</p>
 <p><br></p>
@@ -1720,8 +1237,8 @@ s^2 &amp; = \frac{29435-10(53.5)^2}{9} = 90.2778
 </ul>
 </section></section>
 <section>
-<section id="part-5-chi-squared-distribution" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
-<h1>Part 5: <br>Chi-squared distribution</h1>
+<section id="part-4-chi-squared-distribution" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 4: <br>Chi-squared distribution</h1>
 <div class="footer">
 <div color="#cc0164">
 
@@ -1768,8 +1285,8 @@ X \sim N(\mu,\sigma^2)
 </section>
 <section id="chi-squared-distribution" class="slide level2 smaller">
 <h2>Chi-squared distribution</h2>
-<h3 id="definition-1">Definition</h3>
-<div id="Definition*-6.1" class="Definition">
+<h3 id="definition">Definition</h3>
+<div id="Definition*-5.1" class="Definition">
 <p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>Let <span class="math inline">Z_1,\ldots,Z_r</span> be iid <span class="math inline">N(0, 1)</span> random variables. The <strong>chi-squared distribution</strong> with <strong><span class="math inline">r</span> degrees of freedom</strong> is the distribution <span class="math display">
 \chi^2_r \sim  Z^2_1+...+Z^2_r
 </span><p></p>
@@ -1779,7 +1296,7 @@ X \sim N(\mu,\sigma^2)
 <section id="chi-squared-distribution-1" class="slide level2 smaller">
 <h2>Chi-squared distribution</h2>
 <h3 id="pdf-characterization">Pdf characterization</h3>
-<div id="Theorem*-6.2" class="Theorem">
+<div id="Theorem*-5.2" class="Theorem">
 <p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>The <span class="math inline">\chi^2_r</span> distribution is equivalent to a Gamma distribution <span class="math display">
 \chi^2_r \sim \Gamma(r/2, 1/2)
 </span> Therefore the pdf of <span class="math inline">\chi^2_r</span> can be written in closed form as <span class="math display">
@@ -1792,7 +1309,7 @@ f_{\chi^2_r}(x)=\frac{x^{(r/2)-1} \, e^{-x/2}}{\Gamma(r/2) 2^{r/2}} \,, \quad x&
 <h2>Chi-squared distribution</h2>
 <h3 id="plots-of-chi-squared-pdf-for-different-choices-of-r">Plots of chi-squared pdf for different choices of r</h3>
 
-<img data-src="lecture_2_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
+<img data-src="lecture_2_files/figure-revealjs/unnamed-chunk-1-1.png" width="960" class="r-stretch"></section>
 <section id="proof-of-theorem-case-r-1" class="slide level2 smaller">
 <h2>Proof of Theorem – Case <span class="math inline">r =1</span></h2>
 <ul>
@@ -1897,8 +1414,8 @@ Y_1 + \ldots + Y_n \sim \Gamma(\alpha,\beta)
 </ul>
 </section></section>
 <section>
-<section id="part-6-sampling-from-normal-distribution" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
-<h1>Part 6: <br>Sampling from normal distribution</h1>
+<section id="part-5-sampling-from-normal-distribution" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 5: <br>Sampling from normal distribution</h1>
 <div class="footer">
 <div color="#cc0164">
 
@@ -1911,7 +1428,7 @@ Y_1 + \ldots + Y_n \sim \Gamma(\alpha,\beta)
 S^2 := \frac{1}{n-1} \sum_{i=1}^n \left( X_i - \overline{X}  \right)^2 \,, \qquad
 \overline{X} := \frac{1}{n} \sum_{i=1}^n X_i
 </span></p>
-<div id="Question*-7.1" class="Question">
+<div id="Question*-6.1" class="Question">
 <p></p><details class="Question fbx-simplebox fbx-default" open=""><summary><strong>Question</strong></summary><div>Assume the sample is normal <span class="math display">
 X_i \sim N(\mu,\sigma^2) \,, \quad \forall \, i = 1 , \ldots, n
 </span> What are the distributions of <span class="math inline">\overline{X}</span> and <span class="math inline">S^2</span>?<p></p>
@@ -1920,7 +1437,7 @@ X_i \sim N(\mu,\sigma^2) \,, \quad \forall \, i = 1 , \ldots, n
 </section>
 <section id="properties-of-sample-mean-and-variance" class="slide level2 smaller">
 <h2>Properties of Sample Mean and Variance</h2>
-<div id="Theorem*-7.2" class="Theorem">
+<div id="Theorem*-6.2" class="Theorem">
 <details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>
 <p>Let <span class="math inline">X_1,\ldots,X_n</span> be a random sample from <span class="math inline">N(\mu,\sigma^2)</span>. Then</p>
 <ul>
@@ -1941,7 +1458,7 @@ X_i \sim N(\mu,\sigma^2) \,, \quad \forall \, i = 1 , \ldots, n
 <li>Proof of this Lemma is technical and omitted</li>
 <li>For a proof see Lemma 5.3.3 in <span class="citation" data-cites="casella-berger">[<a href="#/references" role="doc-biblioref" onclick="">1</a>]</span></li>
 </ul>
-<div id="Lemma*-7.3" class="Lemma">
+<div id="Lemma*-6.3" class="Lemma">
 <p></p><details class="Lemma fbx-simplebox fbx-default" open=""><summary><strong>Lemma</strong></summary><div>Let <span class="math inline">X</span> and <span class="math inline">Y</span> be normal random variables. Then <span class="math display">
 X \text{ and } Y \text{ independent } \quad \iff \quad
 {\rm Cov}(X,Y) = 0
@@ -2061,8 +1578,8 @@ When replacing <span class="math inline">\mu</span> with <span class="math inlin
 </ul>
 </section></section>
 <section>
-<section id="part-7-t-distribution" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
-<h1>Part 7: <br>t-distribution</h1>
+<section id="part-6-t-distribution" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 6: <br>t-distribution</h1>
 <div class="footer">
 <div color="#cc0164">
 
@@ -2071,7 +1588,7 @@ When replacing <span class="math inline">\mu</span> with <span class="math inlin
 </section>
 <section id="estimating-the-mean" class="slide level2 smaller">
 <h2>Estimating the Mean</h2>
-<div id="Problem*-8.1" class="Problem">
+<div id="Problem*-7.1" class="Problem">
 <p></p><details class="Problem fbx-simplebox fbx-default" open=""><summary><strong>Problem</strong></summary><div>Estimate the mean <span class="math inline">\mu</span> of a <strong>normal population</strong><p></p>
 </div></details>
 </div>
@@ -2086,7 +1603,7 @@ When replacing <span class="math inline">\mu</span> with <span class="math inlin
 </section>
 <section id="overline-x-approximates-mu" class="slide level2 smaller">
 <h2><span class="math inline">\overline X</span> approximates <span class="math inline">\mu</span></h2>
-<div id="Question*-8.2" class="Question">
+<div id="Question*-7.2" class="Question">
 <p></p><details class="Question fbx-simplebox fbx-default" open=""><summary><strong>Question</strong></summary><div>How good is this approximation? How to quantify it?<p></p>
 </div></details>
 </div>
@@ -2149,7 +1666,7 @@ T \sim N(0,1)
 </section>
 <section id="unknown-variance" class="slide level2 smaller">
 <h2>Unknown variance</h2>
-<div id="Problem*-8.3" class="Problem">
+<div id="Problem*-7.3" class="Problem">
 <p></p><details class="Problem fbx-simplebox fbx-default" open=""><summary><strong>Problem</strong></summary><div>In general, the population variance <span class="math inline">\sigma^2</span> is unknown. What to do?<p></p>
 </div></details>
 </div>
@@ -2161,7 +1678,7 @@ T := \frac{\overline{X}-\mu}{S/\sqrt{n}}
 </section>
 <section id="distribution-of-the-test-statistic" class="slide level2 smaller">
 <h2>Distribution of the test statistic</h2>
-<div id="Question*-8.4" class="Question">
+<div id="Question*-7.4" class="Question">
 <p></p><details class="Question fbx-simplebox fbx-default" open=""><summary><strong>Question</strong></summary><div>What is the distribution of<p></p>
 <p><span class="math display">
 T := \frac{\overline{X}-\mu}{S/\sqrt{n}} \qquad ?
@@ -2178,7 +1695,7 @@ T := \frac{\overline{X}-\mu}{S/\sqrt{n}} \qquad ?
 </section>
 <section id="t-distribution" class="slide level2 smaller">
 <h2>t-distribution</h2>
-<div id="Definition*-8.5" class="Definition">
+<div id="Definition*-7.5" class="Definition">
 <p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>A random variable <span class="math inline">T</span> has <strong>Student’s t-distribution</strong> with <strong>p degrees of freedom</strong>, denoted by <span class="math display">
 T \sim t_p \,,
 </span> if the pdf of <span class="math inline">T</span> is <span class="math display">
@@ -2191,7 +1708,7 @@ t \in \mathbb{R}
 </section>
 <section id="characterization-of-the-t-distribution" class="slide level2 smaller">
 <h2>Characterization of the t-distribution</h2>
-<div id="Theorem*-8.6" class="Theorem">
+<div id="Theorem*-7.6" class="Theorem">
 <p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Let <span class="math inline">U \sim N(0,1)</span> and <span class="math inline">V \sim \chi_p^2</span> be independent random variables. Then <span class="math display">
 T := \frac{U}{\sqrt{V/p}}  \, \sim  \, t_p \,,
 </span> that is, <span class="math inline">T</span> has t-distribution with <span class="math inline">p</span> degrees of freedom.<p></p>
@@ -2202,7 +1719,7 @@ T := \frac{U}{\sqrt{V/p}}  \, \sim  \, t_p \,,
 <section id="distribution-of-t-statistic" class="slide level2 smaller">
 <h2>Distribution of t-statistic</h2>
 <p>As a consequence of the Theorem in previous slide we obtain:</p>
-<div id="Theorem*-8.7" class="Theorem">
+<div id="Theorem*-7.7" class="Theorem">
 <p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Let <span class="math inline">X_1,\ldots,X_n</span> be a random sample from <span class="math inline">N(\mu,\sigma^2)</span>. Then the random variable <span class="math display">
 T = \frac{\overline{X}-\mu}{S/\sqrt{n}}
 </span> has <strong>t-distribution</strong> with <span class="math inline">n-1</span> degrees of freedom, that is, <span class="math display">
@@ -2271,7 +1788,819 @@ t_p \to N(0,1) \quad \text{as} \quad p \to \infty
 <section id="plot-comparison-with-standard-normal" class="slide level2 smaller">
 <h2>Plot: Comparison with Standard Normal</h2>
 
+<img data-src="lecture_2_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section></section>
+<section>
+<section id="part-7-hypothesis-testing" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 7: <br>Hypothesis testing</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="definition-of-hypothesis" class="slide level2 smaller">
+<h2>Definition of Hypothesis</h2>
+<ul>
+<li><strong>Idea</strong>:
+<ul>
+<li>Interested in knowing a population parameter <span class="math inline">\theta</span></li>
+<li><span class="math inline">\theta</span> cannot be measured directly</li>
+<li>We can sample the population and draw conclusions on <span class="math inline">\theta</span></li>
+<li>Such conclusions are called <strong>hypotheses</strong></li>
+</ul></li>
+</ul>
+<div id="Definition*-8.1" class="Definition">
+<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>A <strong>hypothesis</strong> is a statement about a population parameter<p></p>
+</div></details>
+</div>
+</section>
+<section id="complementary-hypotheses" class="slide level2 smaller">
+<h2>Complementary hypotheses</h2>
+<ul>
+<li><p>Two hypotheses are <strong>complementary</strong> if exactly one of them can be true</p></li>
+<li><p>Complementary hypotheses are called:</p>
+<ul>
+<li><span class="math inline">H_0</span> the <strong>null hypothesis</strong></li>
+<li><span class="math inline">H_1</span> the <strong>alternative hypothesis</strong></li>
+</ul></li>
+<li><p><strong>Goal</strong>: Find a way to decide which between <span class="math inline">H_0</span> and <span class="math inline">H_1</span> is true</p></li>
+</ul>
+</section>
+<section id="how-to-model-hypotheses" class="slide level2 smaller">
+<h2>How to model hypotheses</h2>
+<p>We denote by:</p>
+<ul>
+<li><span class="math inline">\theta</span> a population parameter</li>
+<li><span class="math inline">\Theta</span> the space of all population parameters</li>
+</ul>
+<p>For <span class="math inline">\Theta_0 \subset \Theta</span> we define the associated null and alternative hypotheses as <span class="math display">\begin{align*}
+H_0 \colon &amp; \theta \in \Theta_0  &amp; \qquad \text{ null hypothesis} \\
+H_1 \colon &amp; \theta \in \Theta_0^c  &amp; \qquad \text{ alternative hypothesis}
+\end{align*}</span></p>
+</section>
+<section id="definition-of-hypothesis-test" class="slide level2 smaller">
+<h2>Definition of Hypothesis test</h2>
+<div id="Definition*-8.2" class="Definition">
+<details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>
+<p>A <strong>hypothesis test</strong> is a rule to decide:</p>
+<ul>
+<li>For which sample values we decide to <strong>accept</strong> <span class="math inline">H_0</span> as true</li>
+<li>For which sample values we <strong>reject</strong> <span class="math inline">H_0</span> and accept <span class="math inline">H_1</span> as true</li>
+</ul>
+</div></details>
+</div>
+</section>
+<section id="acceptance-and-critical-regions" class="slide level2 smaller">
+<h2>Acceptance and Critical regions</h2>
+<p>The sample space is partitioned into two regions:</p>
+<ul>
+<li><strong>Acceptance region:</strong> For samples <span class="math inline">\mathbf{x}</span> in this region we <strong>accept</strong> <span class="math inline">H_0</span></li>
+<li><strong>Critical region:</strong> For samples <span class="math inline">\mathbf{x}</span> in this region we <strong>reject</strong> <span class="math inline">H_0</span></li>
+</ul>
+<p><strong>In most cases:</strong> Critical region is defined in terms of a test statistic <span class="math inline">W(\mathbf{x})</span></p>
+<p><strong>Example</strong>: We could decide to reject <span class="math inline">H_0</span> if <span class="math display">
+W(\mathbf{x}) \in R
+</span> with <span class="math inline">R \subset \mathbb{R}</span> some rejection region</p>
+</section>
+<section id="one-sided-vs-two-sided-tests" class="slide level2 smaller">
+<h2>One-sided vs Two-sided Tests</h2>
+<p>Let <span class="math inline">\theta</span> be one dimensional parameter. A hypothesis test is:</p>
+<ul>
+<li><p><strong>One-sided:</strong> if the null and alternative hypotheses are of the form <span class="math display">
+H_0 \colon \theta \leq \theta_0 \,, \qquad
+H_1 \colon \theta &gt; \theta_0
+</span> or also <span class="math display">
+H_0 \colon \theta \geq \theta_0 \,, \qquad
+H_1 \colon \theta &lt; \theta_0
+</span></p></li>
+<li><p><strong>Two-sided:</strong> if the null and alternative hypotheses are of the form <span class="math display">
+H_0 \colon \theta = \theta_0  \,, \qquad   
+H_1 \colon \theta \neq \theta_0
+</span></p></li>
+</ul>
+</section>
+<section id="example-1-two-sided-test" class="slide level2 smaller">
+<h2>Example 1: Two-sided test</h2>
+<p>We want to assess whether a <strong>coin is fair</strong></p>
+<ul>
+<li><p>To test fairness, toss the coin many times and record outcome</p></li>
+<li><p><span class="math inline">\theta =</span> proportion of Heads</p></li>
+<li><p>The decision is between:</p>
+<ul>
+<li>Null hypothesis: The coin is fair <span class="math inline">\,\, \implies \,\, \theta = \frac12</span></li>
+<li>Alternative hypothesis: The coin is not fair <span class="math inline">\,\, \implies \,\, \theta \neq \frac12</span></li>
+</ul></li>
+</ul>
+<p><strong>Hypothesis test</strong>: <span class="math inline">\qquad \quad H_0 \colon \theta = \frac12  \,, \qquad
+H_1 \colon \theta \neq \frac12</span></p>
+</section>
+<section id="example-2-one-sided-test" class="slide level2 smaller">
+<h2>Example 2: One-sided test</h2>
+<p>A <em>University</em> wants to advertise its MBA Program: <span class="math display">
+\text{ MBA } = \text{ higher salary }
+</span></p>
+<ul>
+<li><p>Is this a true or false statement?</p></li>
+<li><p>The University has only access to incomplete data (could not ask all former students). Need hypothesis testing</p></li>
+<li><p><span class="math inline">\theta =</span> average change in salary after <strong>completing the MBA program</strong></p>
+<ul>
+<li>Null hypothesis: No improvement in salary <span class="math inline">\,\, \implies \,\, \theta \leq 0</span></li>
+<li>Alternative hypothesis: Salary increases <span class="math inline">\,\, \implies \,\, \theta &gt; 0</span></li>
+</ul></li>
+</ul>
+<p><strong>Hypothesis test</strong>: <span class="math inline">\qquad \quad H_0 \colon \theta \leq 0 \,, \qquad
+H_1 \colon \theta &gt; 0</span></p>
+</section></section>
+<section>
+<section id="part-8-the-one-sample-t-test" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 8: <br>The one-sample t-test</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="one-sample-two-sided-t-test" class="slide level2 smaller">
+<h2>One-sample Two-sided t-test</h2>
+<p><strong>Goal</strong>: estimate the mean <span class="math inline">\mu</span> of a normal population <span class="math inline">N(\mu,\sigma^2)</span>. If <span class="math inline">\mu_0</span> is guess for <span class="math inline">\mu</span> <span class="math display">
+H_0 \colon \mu = \mu_0 \qquad H_1 \colon \mu \neq \mu_0
+</span></p>
+<ul>
+<li><strong>One-sample</strong> means we sample only from one population</li>
+<li>The variance <span class="math inline">\sigma</span> is unknown</li>
+<li>Suppose the sample size is <span class="math inline">n</span>, with sample <span class="math inline">X_1 ,\ldots,X_n</span></li>
+<li>We consider the t-statistics <span class="math display">
+T = \frac{\overline{X}-\mu_0}{S/\sqrt{n}}
+</span></li>
+<li>Recall: <span class="math inline">T \sim t_{n-1}</span> Student’s t-distribution with <span class="math inline">n-1</span> degrees of freedom</li>
+</ul>
+</section>
+<section id="procedure-for-all-tests" class="slide level2 smaller">
+<h2>Procedure for all tests</h2>
+<ol type="1">
+<li>Calculation</li>
+<li>Reference statistical tables or numerical values</li>
+<li>Interpretation</li>
+</ol>
+</section>
+<section id="one-sample-two-sided-t-test-1" class="slide level2 smaller">
+<h2>One-sample Two-sided t-test</h2>
+<h3 id="calculation">Calculation</h3>
+<ul>
+<li>We have <span class="math inline">n</span> samples available <span class="math inline">x_1,\ldots,x_n</span></li>
+<li>Compute <strong>sample mean</strong> <span class="math display">
+\overline{x} = \frac{1}{n} \sum_{i=1}^n x_i
+</span></li>
+<li>Compute the <strong>sample standard deviation</strong> <span class="math display">
+s = \sqrt{\frac{\sum_{i=1}^n x_i^2 - n \overline{x}^2}{n-1}}
+</span></li>
+</ul>
+</section>
+<section id="one-sample-two-sided-t-test-2" class="slide level2 smaller">
+<h2>One-sample Two-sided t-test</h2>
+<h3 id="calculation-1">Calculation</h3>
+<ul>
+<li><p>Compute the <strong>estimated standard error</strong> <span class="math display">
+\mathop{\mathrm{e.s.e.}}= \frac{s}{\sqrt{n}}
+</span></p></li>
+<li><p>Compute the sample <strong>t-statistic</strong> <span class="math display">
+t = \frac{\text{estimate } - \text{ hypothesised value}}{\mathop{\mathrm{e.s.e.}}}
+= \frac{\overline x - \mu_0}{s/\sqrt{n}}
+</span></p></li>
+<li><p><span class="math inline">\mu_0</span> is the value of the null hypothesis <span class="math inline">H_0</span></p></li>
+</ul>
+</section>
+<section id="one-sample-two-sided-t-test-3" class="slide level2 smaller">
+<h2>One-sample Two-sided t-test</h2>
+<h3 id="p-value">p-value</h3>
+<ul>
+<li><p>In alternative to computing the <strong>t-statistic</strong>, we can compute the <strong>p-value</strong></p></li>
+<li><p><strong>p-value</strong> is a measure of likely we are to observe the data if we assume the null hypothesis is true</p></li>
+<li><p>We have 2 options:</p>
+<ul>
+<li><strong>LOW</strong> p-value <span class="math inline">\quad \implies \quad</span> <strong>reject</strong> <span class="math inline">H_0</span></li>
+<li><strong>HIGH</strong> p-value <span class="math inline">\quad \implies \quad</span> <strong>do not reject</strong> <span class="math inline">H_0</span></li>
+</ul></li>
+<li><p>In this module we reject <span class="math inline">H_0</span> for p-values <span class="math display">
+p&lt;0.05
+</span></p></li>
+</ul>
+</section>
+<section id="one-sample-two-sided-t-test-4" class="slide level2 smaller">
+<h2>One-sample Two-sided t-test</h2>
+<h3 id="p-value-1">p-value</h3>
+<ul>
+<li><p>For the two-sided t-test, the p-value is defined as <span class="math display">
+p := 2P(t_{n-1} &gt; |t| \, | \, H_0)
+</span> where <span class="math inline">t_{n-1}</span> follows the t-distribution with <span class="math inline">n-1</span> degrees of freedom</p></li>
+<li><p>In other words, the p-value is <span class="math display">
+p = 2P(\text{Observing values more extreme than |t| }| \, \mu=\mu_0)
+</span></p></li>
+</ul>
+</section>
+<section id="one-sample-two-sided-t-test-5" class="slide level2 smaller">
+<h2>One-sample Two-sided t-test</h2>
+<h3 id="p-value-2">p-value</h3>
+<ul>
+<li><p><span class="math inline">p&lt;0.05</span> means that the test statistic <span class="math inline">t</span> is <strong>extreme</strong>: <span class="math inline">\,\, P(t_{n-1} &gt; |t|)&lt;0.025</span></p></li>
+<li><p><span class="math inline">t</span> falls in the <strong>grey areas</strong> in the <span class="math inline">t_{n-1}</span> plot below: Each grey area measures <span class="math inline">0.025</span></p></li>
+</ul>
+
+<img data-src="lecture_2_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
+<section id="one-sample-two-sided-t-test-6" class="slide level2 smaller">
+<h2>One-sample Two-sided t-test</h2>
+<h3 id="p-value-3">p-value</h3>
+<ul>
+<li>How to compute <span class="math inline">p</span>?
+<ul>
+<li>Use statistical tables – Available <a href="files/Statistics_Tables.pdf">here</a></li>
+<li>Use R – Next sections</li>
+</ul></li>
+</ul>
+</section>
+<section id="one-sample-two-sided-t-test-7" class="slide level2 smaller">
+<h2>One-sample Two-sided t-test</h2>
+<h3 id="reference-statistical-tables">Reference statistical tables</h3>
+<ul>
+<li><p>Find Table 1 in this <a href="files/Statistics_Tables.pdf">file</a></p></li>
+<li><p>Look at the row with Degree of Freedom <span class="math inline">n-1</span> (or its closest value)</p></li>
+<li><p>Find <strong>critical value</strong> <span class="math inline">t^* := t_{n-1}(0.025)</span> in column <span class="math inline">\alpha = 0.025</span></p></li>
+<li><p><strong>Example</strong>: <span class="math inline">n=10</span>, DF <span class="math inline">=9</span>, <span class="math inline">t^*=t_{9}(0.025)=2.262</span></p></li>
+</ul>
+
+<img data-src="images/t_test_statistic_table.png" style="width:85.0%" class="r-stretch"></section>
+<section id="one-sample-two-sided-t-test-8" class="slide level2 smaller">
+<h2>One-sample Two-sided t-test</h2>
+<h3 id="reference-statistical-tables-1">Reference statistical tables</h3>
+<ul>
+<li><p>The critical value <span class="math inline">t^* = t_{n-1}(0.025)</span> found in the table satisfies <span class="math display">
+P(t_{n-1}&gt;t^*) = 0.025
+</span></p></li>
+<li><p>By definition of <span class="math inline">p</span>-value for two-sided t-test we have <span class="math display">
+p := 2P(t_{n-1}&gt;|t|)
+</span></p></li>
+<li><p>Therefore, for <span class="math inline">|t|&gt;t^*</span> <span class="math display">\begin{align*}
+p &amp; := 2P(t_{n-1}&gt;|t|) \\
+&amp; &lt;  2P(t_{n-1}&gt;t^*) = 2 \cdot (0.025) = 0.05
+\end{align*}</span></p></li>
+<li><p><strong>Conclusion</strong>: <span class="math inline">\quad |t|&gt;t^*  \iff  p&lt;0.05 \qquad</span> (Extreme <span class="math inline">t</span> <span class="math inline">\iff</span> low p-value)</p></li>
+</ul>
+</section>
+<section id="one-sample-two-sided-t-test-9" class="slide level2 smaller">
+<h2>One-sample Two-sided t-test</h2>
+<h3 id="interpretation">Interpretation</h3>
+<p>Recall that <span class="math inline">p = 2P ( \text{Observing values more extreme than t } | \mu = \mu_0)</span></p>
+<p>We have two possibilities:</p>
+<ul>
+<li><span class="math inline">|t|&gt;t^*</span>
+<ul>
+<li>In this case <span class="math inline">p&lt;0.05</span></li>
+<li>The observed statistic <span class="math inline">t</span> is very unlikely under <span class="math inline">H_0 \,\, \implies \,\,</span> <strong>reject</strong> <span class="math inline">H_0</span></li>
+</ul></li>
+<li><span class="math inline">|t| \leq t^*</span>
+<ul>
+<li>In this case <span class="math inline">p&gt;0.05</span></li>
+<li>The observed statistic <span class="math inline">t</span> is not unlikely under <span class="math inline">H_0 \,\, \implies \,\,</span> <strong>do not reject</strong> <span class="math inline">H_0</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="example-2008-crisis" class="slide level2 smaller">
+<h2>Example: 2008 crisis</h2>
+<ul>
+<li><strong>Data:</strong> Monthly Consumer Confidence Index (CCI) in 2007 and 2009</li>
+<li><strong>Question:</strong> Did the crash of 2008 have lasting impact upon CCI?</li>
+<li><strong>Observation</strong>: Data shows a massive drop in CCI between 2009 and 2007</li>
+<li><strong>Method:</strong> Use <span class="math inline">t</span>-test to see whether there was a change in CCI</li>
+</ul>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 41%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Month</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">F</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">S</th>
+<th style="text-align: center;">O</th>
+<th style="text-align: center;">N</th>
+<th style="text-align: center;">D</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">CCI 2007</td>
+<td style="text-align: center;">86</td>
+<td style="text-align: center;">86</td>
+<td style="text-align: center;">88</td>
+<td style="text-align: center;">90</td>
+<td style="text-align: center;">99</td>
+<td style="text-align: center;">97</td>
+<td style="text-align: center;">97</td>
+<td style="text-align: center;">96</td>
+<td style="text-align: center;">99</td>
+<td style="text-align: center;">97</td>
+<td style="text-align: center;">90</td>
+<td style="text-align: center;">90</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">CCI 2009</td>
+<td style="text-align: center;">24</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">19</td>
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">17</td>
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">23</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: center;">21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Difference</td>
+<td style="text-align: center;">62</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">67</td>
+<td style="text-align: center;">69</td>
+<td style="text-align: center;">80</td>
+<td style="text-align: center;">79</td>
+<td style="text-align: center;">80</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">74</td>
+<td style="text-align: center;">68</td>
+<td style="text-align: center;">69</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="example-2008-crisis-1" class="slide level2 smaller">
+<h2>Example: 2008 crisis</h2>
+<ul>
+<li>This is really a <strong>two-sample</strong> problem – CCI data in 2 populations: 2007 and 2009</li>
+<li>It reduces to a <strong>one-sample</strong> problem because we have directly comparable units</li>
+<li>If units cannot be compared, then we must use a two-sample approach</li>
+<li>Two-sample approach will be discussed later</li>
+</ul>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 41%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Month</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">F</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">S</th>
+<th style="text-align: center;">O</th>
+<th style="text-align: center;">N</th>
+<th style="text-align: center;">D</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">CCI 2007</td>
+<td style="text-align: center;">86</td>
+<td style="text-align: center;">86</td>
+<td style="text-align: center;">88</td>
+<td style="text-align: center;">90</td>
+<td style="text-align: center;">99</td>
+<td style="text-align: center;">97</td>
+<td style="text-align: center;">97</td>
+<td style="text-align: center;">96</td>
+<td style="text-align: center;">99</td>
+<td style="text-align: center;">97</td>
+<td style="text-align: center;">90</td>
+<td style="text-align: center;">90</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">CCI 2009</td>
+<td style="text-align: center;">24</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">19</td>
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">17</td>
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">23</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: center;">21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Difference</td>
+<td style="text-align: center;">62</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">67</td>
+<td style="text-align: center;">69</td>
+<td style="text-align: center;">80</td>
+<td style="text-align: center;">79</td>
+<td style="text-align: center;">80</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">74</td>
+<td style="text-align: center;">68</td>
+<td style="text-align: center;">69</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="setting-up-the-test" class="slide level2 smaller">
+<h2>Setting up the test</h2>
+<ul>
+<li>We want to test if there was a change in CCI from 2007 to 2009</li>
+<li>We are really only interested in the difference in CCI</li>
+<li>Let <span class="math inline">\mu</span> be the (unknown) average difference in CCI</li>
+<li>The <strong>null hypothesis</strong> is that there was (on average) no change in CCI <span class="math display">
+H_0 \colon \mu = 0
+</span></li>
+<li>The <strong>alternative hypothesis</strong> is that there was some change: <span class="math display">
+H_1 \colon \mu \neq 0
+</span></li>
+<li>Note that this is a <strong>two-sided</strong> test</li>
+</ul>
+</section>
+<section id="calculation-2" class="slide level2 smaller">
+<h2>Calculation</h2>
+<p>Using the available data, we need to compute:</p>
+<ul>
+<li><p>Sample mean and standard deviation <span class="math display">
+\overline{x} = \frac{1}{n} \sum_{i=1}^n x_i \qquad
+s = \sqrt{\frac{\sum_{i=1}^n x_i^2 - n \overline{x}^2}{n-1}}
+</span></p></li>
+<li><p>Test statistic <span class="math display">
+t = \frac{\overline x - \mu_0}{s/\sqrt{n}}
+</span></p></li>
+</ul>
+</section>
+<section id="calculation-3" class="slide level2 smaller">
+<h2>Calculation</h2>
+<p><br></p>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 41%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">CCI</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">F</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">J</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">S</th>
+<th style="text-align: center;">O</th>
+<th style="text-align: center;">N</th>
+<th style="text-align: center;">D</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Difference</td>
+<td style="text-align: center;">62</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">67</td>
+<td style="text-align: center;">69</td>
+<td style="text-align: center;">80</td>
+<td style="text-align: center;">79</td>
+<td style="text-align: center;">80</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">74</td>
+<td style="text-align: center;">68</td>
+<td style="text-align: center;">69</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math display">\begin{align*}
+\overline{x} &amp; =\frac{1}{n} \sum_{i=1}^{n} x_i=\frac{1}{12} \left(62+64+67+{\ldots}+68+69\right)=\frac{868}{12}=72.33 \\
+\sum_{i=1}^{n} x_i^2 &amp; = 62^2+64^2+67^2+{\ldots}+68^2+69^2 = 63260 \\
+s &amp; = \sqrt{ \frac{\sum_{i=1}^n x_i^2 - n \overline{x}^2}{n-1} } = \sqrt{\frac{63260-12\left(\frac{868}{12}\right)^2}{11}} = \sqrt{\frac{474.666}{11}} = 6.5689
+\end{align*}</span></p>
+</section>
+<section id="calculation-4" class="slide level2 smaller">
+<h2>Calculation</h2>
+<ul>
+<li>The sample size is <span class="math inline">n=12</span></li>
+<li>The sample mean is <span class="math inline">\overline{x}=72.33</span></li>
+<li>The sample standard deviation is <span class="math inline">s = 6.5689</span></li>
+<li>The <strong>hypothesized mean</strong> is <span class="math inline">\mu_0 = 0</span></li>
+<li>The <strong>t-statistic</strong> is <span class="math display">
+t = \frac{\overline{x} - \mu_0}{s/\sqrt{n}} =
+\frac{72.33 - 0}{6.5689/\sqrt{12}} = 38.145
+</span></li>
+</ul>
+</section>
+<section id="reference-statistical-tables-2" class="slide level2 smaller">
+<h2>Reference statistical tables</h2>
+<p>Find Table 1 in this <a href="files/Statistics_Tables.pdf">file</a></p>
+<ul>
+<li>Find row with DF <span class="math inline">= n-1</span> (or closest). Find critical value <span class="math inline">t^*</span> in column <span class="math inline">\alpha = 0.025</span></li>
+<li>In our case: <span class="math inline">n=12</span>, DF <span class="math inline">=11</span>, <span class="math inline">t^*=  t_{11}(0.025) =2.201</span></li>
+</ul>
+
+<img data-src="images/t_test_statistic_table_bis.png" style="width:85.0%" class="r-stretch"></section>
+<section id="reference-statistical-tables-3" class="slide level2 smaller">
+<h2>Reference statistical tables</h2>
+<ul>
+<li>Plot of <span class="math inline">t_{11}</span> distribution. White area is <span class="math inline">0.95</span>, total shaded area is <span class="math inline">0.05</span></li>
+<li>Probability of observing <span class="math inline">|t|&gt;t^* = 2.201</span> is <span class="math inline">p&lt;0.025</span></li>
+</ul>
+
 <img data-src="lecture_2_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
+<section id="interpretation-1" class="slide level2 smaller">
+<h2>Interpretation</h2>
+<ul>
+<li><p>We have computed:</p>
+<ul>
+<li>Test statistic <span class="math inline">t = 38.145</span></li>
+<li>Critical value <span class="math inline">t^* = 2.201</span></li>
+</ul></li>
+<li><p>Therefore <span class="math display">
+|t| = 38.145 &gt; 2.201 = t^*
+</span></p></li>
+<li><p>This implies <strong>rejecting</strong> the null hypothesis <span class="math display">
+H_0 \colon \mu = 0
+</span></p></li>
+</ul>
+</section>
+<section id="interpretation-2" class="slide level2 smaller">
+<h2>Interpretation</h2>
+<ul>
+<li><p>t-test implies that mean difference in CCI is <span class="math display">
+\mu \neq 0
+</span></p></li>
+<li><p>The sample mean difference is positive (<span class="math inline">\bar{x}=72.33</span>)</p></li>
+<li><p><strong>Conclusions</strong>:</p>
+<ul>
+<li>CCI has changed from 2007 to 2009 (backed by t-test)</li>
+<li>CCI seems higher in 2007 than in 2009 (backed by sample mean)</li>
+<li>The 2008 crash seems to have reduced consumer confidence</li>
+</ul></li>
+</ul>
+</section>
+<section id="one-sided-t-tests" class="slide level2 smaller">
+<h2>One-sided t-tests</h2>
+<ul>
+<li><p>Suppose given a hypothesized value <span class="math inline">\mu_0</span> for the mean <span class="math inline">\mu</span> of a normal population</p></li>
+<li><p>In certain situations, if the true mean differs from <span class="math inline">\mu_0</span> (<span class="math inline">\mu \neq \mu_0</span>), you may have reason to believe specifically that <span class="math display">
+\mu &lt; \mu_0 \qquad \text{or} \qquad \mu &gt; \mu_0
+</span></p></li>
+<li><p>In such cases, you would support these conclusions if, respectively, <span class="math display">
+t \ll 0 \qquad \text{or} \qquad t \gg 0 \, ,
+</span> where <span class="math inline">t</span> is the <span class="math inline">t</span>-statistic defined as <span class="math display">
+t = \frac{\overline{x} - \mu_0}{\mathop{\mathrm{e.s.e.}}}
+</span> <strong>Reject <span class="math inline">H_0</span> if the <span class="math inline">t</span>-statistic is sufficiently extreme to the left OR right</strong></p></li>
+</ul>
+</section>
+<section id="summary-the-one-sample-t-test" class="slide level2 smaller">
+<h2>Summary: The one-sample t-test</h2>
+<p>Suppose given a sample</p>
+<ul>
+<li><span class="math inline">x_1, \ldots, x_n</span> from <span class="math inline">N(\mu_X,\sigma^2)</span> of size <span class="math inline">n</span></li>
+</ul>
+<p>The <em>two-sided</em> hypothesis for testing if <span class="math inline">\mu = \mu_0</span> is <span class="math display">
+H_0 \colon \mu = \mu_0 \,, \quad \qquad
+H_1 \colon \mu \neq \mu_0
+</span></p>
+<p>The <em>one-sided</em> alternative hypotheses are <span class="math display">
+H_1 \colon \mu &lt; \mu_0 \quad  \text{ or } \quad
+H_1 \colon \mu &gt; \mu_0
+</span></p>
+</section>
+<section id="procedure-3-steps" class="slide level2 smaller">
+<h2>Procedure: 3 Steps</h2>
+<ol type="1">
+<li><strong>Calculation</strong>: Compute the t-statistic <span class="math display">
+t = \frac{ \overline{x} - \mu_0}{  s/\sqrt{n} }
+</span> where <span class="math inline">\mu_0</span> is the <em>null hypothesis</em>, and <em>sample mean</em> and <em>standard deviation</em> are <span class="math display">
+\overline{x} = \frac{1}{n} \sum_{i=1}^n x_i  \,, \qquad
+s = \sqrt{\frac{\sum_{i=1}^n x_i^2 - n \overline{x}^2}{n-1} }
+</span></li>
+</ol>
+</section>
+<section id="section" class="slide level2 smaller">
+<h2></h2>
+<ol start="2" type="1">
+<li><strong>Statistical Tables or R</strong>: Find either
+<ul>
+<li>Critical value <span class="math inline">t^*</span> in <a href="files/Statistics_Tables.pdf">Table 1</a></li>
+<li>p-value in R (later)</li>
+</ul></li>
+</ol>
+<p><br></p>
+<ol start="3" type="1">
+<li><strong>Interpretation</strong>: Reject <span class="math inline">H_0</span> when either <span class="math display">
+p &lt; 0.05 \qquad \text{ or } \qquad t \in \,\,\text{Rejection Region}
+\qquad \qquad \qquad \qquad
+(T \, \sim \, t_{n-1})
+</span></li>
+</ol>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Alternative</th>
+<th>Rejection Region</th>
+<th><span class="math inline">t^*</span></th>
+<th>p-value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\mu \neq \mu_0</span></td>
+<td><span class="math inline">|t| &gt; t^*</span></td>
+<td><span class="math inline">t_{n-1}(0.025)</span></td>
+<td><span class="math inline">2P(T &gt; |t|)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\mu &lt; \mu_0</span></td>
+<td><span class="math inline">t &lt; - t^*</span></td>
+<td><span class="math inline">t_{n-1}(0.05)</span></td>
+<td><span class="math inline">P(T &lt; t)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\mu &gt; \mu_0</span></td>
+<td><span class="math inline">t &gt; t^*</span></td>
+<td><span class="math inline">t_{n-1}(0.05)</span></td>
+<td><span class="math inline">P(T &gt; t)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="section-1" class="slide level2 smaller">
+<h2></h2>
+
+<img data-src="lecture_2_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"><p>Reject <span class="math inline">H_0</span> if t-statistic <span class="math inline">t</span> falls in the <em>Rejection Region</em> (the gray areas)</p>
+</section>
+<section id="example-rising-textbook-costs" class="slide level2 smaller">
+<h2>Example: Rising textbook costs</h2>
+<ul>
+<li><p>The University Bookstore claims that, on average, a student will pay <span class="math inline">500</span>£ per semester for textbooks and supplies</p></li>
+<li><p>The Student Union does not believe the University Bookstore’s claims: They think the students <strong>spend more</strong></p></li>
+<li><p>They interviewed 10 students, asking each how much they spent on textbooks and supplies. The answers are below.</p></li>
+</ul>
+<table class="caption-top">
+<tbody>
+<tr class="odd">
+<td><strong>Costs</strong></td>
+<td>304</td>
+<td>431</td>
+<td>385</td>
+<td>987</td>
+<td>303</td>
+<td>480</td>
+<td>455</td>
+<td>724</td>
+<td>642</td>
+<td>506</td>
+</tr>
+</tbody>
+</table>
+<p>To test whether the students spend more than <span class="math inline">500</span>£, we consider the one-sided alternative hypothesis</p>
+<p><span class="math display">
+H_0 \colon \mu = 500 \,, \qquad
+H_1 \colon \mu &gt; 500
+</span></p>
+</section>
+<section id="calculation-5" class="slide level2 smaller">
+<h2>Calculation</h2>
+<p><br></p>
+<table class="caption-top">
+<tbody>
+<tr class="odd">
+<td><strong>Costs</strong></td>
+<td>304</td>
+<td>431</td>
+<td>385</td>
+<td>987</td>
+<td>303</td>
+<td>480</td>
+<td>455</td>
+<td>724</td>
+<td>642</td>
+<td>506</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><span class="math display">\begin{align*}
+\overline{x} &amp; =\frac{1}{n} \sum_{i=1}^{n} x_i=\frac{1}{10} \left(304+431+{\ldots}+642+506\right)=\frac{5217}{10}=521.7 \\
+\sum_{i=1}^{n} x_i^2 &amp; = 304^2+431^2+{\ldots}+642^2+506^2 = 3122181 \\
+s &amp; = \sqrt{ \frac{\sum_{i=1}^n x_i^2 - n \overline{x}^2}{n-1} } = \sqrt{\frac{3122181-10\left(\frac{5217}{10}\right)^2}{9}} =  210.9429
+\end{align*}</span></p>
+</section>
+<section id="calculation-6" class="slide level2 smaller">
+<h2>Calculation</h2>
+<ul>
+<li>The sample size is <span class="math inline">n=10</span></li>
+<li>The sample mean is <span class="math inline">\overline{x}=521.7</span></li>
+<li>The sample standard deviation is <span class="math inline">s = 210.9429</span></li>
+<li>The <strong>hypothesized mean</strong> is <span class="math inline">\mu_0 = 500</span></li>
+<li>The <strong>t-statistic</strong> is</li>
+</ul>
+<p><span class="math display">
+t = \frac{\overline{x} - \mu_0}{s/\sqrt{n}} =
+\frac{521.7 - 500}{210.9429/\sqrt{10}}  \approx 0.325
+</span></p>
+</section>
+<section id="reference-statistical-tables-4" class="slide level2 smaller">
+<h2>Reference statistical tables</h2>
+<p>Find Table 1 in this <a href="files/Statistics_Tables.pdf">file</a></p>
+<ul>
+<li><p>We are conducting a one-sided test <span class="math inline">\quad \implies \quad \alpha = 0.05</span></p></li>
+<li><p>Degrees of freedom are DF <span class="math inline">= n-1 = 9</span></p></li>
+<li><p>Therefore, the required critical value is <span class="math inline">t^*=  t_{9}(0.05) = 1.833</span></p></li>
+</ul>
+
+<img data-src="images/t_test_statistic_table_tris.png" style="width:85.0%" class="r-stretch"></section>
+<section id="the-rejection-region" class="slide level2 smaller">
+<h2>The Rejection Region</h2>
+<ul>
+<li><p>Plot of <span class="math inline">t_{9}</span> distribution. White area is <span class="math inline">0.95</span>, gray area is <span class="math inline">0.05</span></p></li>
+<li><p>The grey zone is the <em>Rejection Region</em></p></li>
+</ul>
+
+<img data-src="lecture_2_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<section id="interpretation-3" class="slide level2 smaller">
+<h2>Interpretation</h2>
+<ul>
+<li>We have computed:
+<ul>
+<li>Test statistic <span class="math inline">t = 0.325</span></li>
+<li>Critical value <span class="math inline">t^* = 1.833</span></li>
+</ul></li>
+<li>Therefore, we see that <span class="math inline">t</span> does not belong to the rejection region</li>
+</ul>
+<p><span class="math display">
+t = 0.325 &lt; 1.833 = t^*
+</span></p>
+<ul>
+<li><p>There is <strong>not enough evidence</strong> to reject the null hypothesis <span class="math display">
+H_0 \colon \mu = 500
+</span></p></li>
+<li><p><strong>Conclusion:</strong> The data gives us little reason to doubt that students spend more than 500£ per semester</p></li>
+</ul>
+</section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
 

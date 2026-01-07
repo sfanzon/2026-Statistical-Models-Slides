@@ -40,6 +40,7 @@ $
 3. Probability revision I
 4. Moment generating functions
 5. Probability revision II
+6. Probability revision III
 
 
 
@@ -2185,6 +2186,766 @@ $$
         & = n \Expect[X] - n\Expect[X^2] + n^2\Var[X] \\
         & = \frac{n}{2} - \frac{n}{3} + \frac{n^2}{12} = \frac{n}{6}  + \frac{n^2}{12} 
 \end{align*}
+
+
+
+
+
+
+# Part 6: <br>Probability revision III {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## Probability revision III {.smaller}
+
+- You are expected to be familiar with the main concepts from Y1 module    
+**Introduction to Probability & Statistics**
+
+- Self-contained revision material available in <a href="appendix_A.qmd">Appendix A</a> 
+
+
+**Topics to review**: Sections 6--7 of <a href="appendix_A.qmd">Appendix A</a>
+    
+::: {.column width="38%"}
+    
+- Independence of random variables
+- Covariance and correlation
+
+:::
+
+::: {.column width="58%"}
+
+
+:::
+
+
+
+
+
+
+## Independence of random variables  {.smaller}
+
+
+
+::: Definition
+### Independence
+$(X,Y)$ random vector with joint pdf or pmf $f_{X,Y}$ and marginal pdfs or pmfs $f_X,f_Y$. We say that $X$ and $Y$ are **independent** random variables if
+$$
+f_{X,Y}(x,y)  =  f_X(x)f_Y(y) \,, \quad \forall \, (x,y) \in \R^2 
+$$
+
+:::
+
+
+
+
+## Independence of random variables {.smaller}
+### Conditional distributions and probabilities
+
+
+If $X$ and $Y$ are **independent** then $X$ gives no information on $Y$ (and vice-versa):
+
+- Conditional distribution: $Y|X$ is same as $Y$
+$$
+f(y|x) = \frac{f_{X,Y}(x,y)}{f_X(x)} = \frac{f_X(x)f_Y(y)}{f_X(x)} = f_Y(y)
+$$
+
+- Conditional probabilities: From the above we also obtain
+\begin{align*}
+P(Y \in A | x) & = \sum_{y \in A} f(y|x) = \sum_{y \in A} f_Y(y) = P(Y \in A)  & \, \text{ discrete rv} \\
+P(Y \in A | x) & = \int_{y \in A} f(y|x) \, dy = \int_{y \in A} f_Y(y) \, dy = P(Y \in A)  &  \, \text{ continuous rv}
+\end{align*}
+
+
+
+
+
+## Independence of random variables {.smaller}
+### Characterization of independence - Densities
+
+::: Theorem
+
+$(X,Y)$ random vector with joint pdf or pmf $f_{X,Y}$. They are equivalent:
+
+- $X$ and $Y$ are independent random variables
+- There exist functions $g(x)$ and $h(y)$ such that
+$$
+f_{X,Y}(x,y) = g(x)h(y) \,, \quad \forall \, (x,y) \in \R^2
+$$
+
+::: 
+
+**Note:**
+
+- $g(x)$ and $h(y)$ are not necessarily the pdfs or pmfs of $X$ and $Y$
+- However they coincide with $f_X$ and $f_Y$, up to rescaling by a constant 
+
+
+
+## Exercise {.smaller}
+
+A student leaves for class between 8 AM and 8:30 AM and takes between 40 and 50 minutes to get there
+
+- Denote by $X$ the time of departure 
+    * $X = 0$ corresponds to 8 AM
+    * $X = 30$ corresponds to 8:30 AM
+- Denote by $Y$ the travel time
+
+- Assume that $X$ and $Y$ are independent and uniformly distributed
+
+
+**Question:** Find the probability that the student arrives to class before 9 AM
+
+
+
+
+
+## Solution {.smaller}
+
+
+- By assumption $X$ is uniform on $(0,30)$. Therefore
+$$
+f_X(x)  = 
+\begin{cases}
+\frac{1}{30} & \text{ if } \, x \in (0,30)  \\
+0 & \text{ otherwise }
+\end{cases}
+$$
+
+- By assumption $Y$ is uniform on $(40,50)$. Therefore
+$$
+f_Y(y) = 
+\begin{cases}
+\frac{1}{10} & \text{ if } \, y \in (40,50)  \\
+0 & \text{ otherwise }
+\end{cases}
+$$
+where we used that $50 - 40 = 10$
+
+
+
+## Solution {.smaller}
+
+
+- Define the rectangle
+$$
+R = (0,30) \times (40,50)
+$$
+
+- Since $X$ and $Y$ are independent, we get
+
+$$
+f_{X,Y}(x,y) = f_X(x)f_Y(y) = 
+\begin{cases}
+\frac{1}{300} & \text{ if } \, (x,y) \in R  \\
+0 & \text{ otherwise }
+\end{cases}
+$$
+
+
+
+## Solution {.smaller}
+
+- The arrival time is given by $X + Y$
+
+- Therefore, the student arrives to class before 9 AM iff $X + Y < 60$
+
+- Notice that 
+$$
+\{X + Y < 60 \}  = \{ (x,y) \in \R^2 \, \colon \, 0 \leq x < 60 - y,  40 \leq y < 50 \} 
+$$
+
+## Solution {.smaller}
+
+Therefore, the probability of arriving before 9 AM is
+
+\begin{align*}
+P(\text{arrives before 9 AM}) & = P(X + Y < 60) \\
+                              & = \int_{\{X+Y < 60\}} f_{X,Y} (x,y) \, dxdy  \\
+                              & = \int_{40}^{50} \left( \int_0^{60-y} \frac{1}{300} \, dx 
+                              \right) \, dy  \\
+                              & = \frac{1}{300}  \int_{40}^{50} (60 - y) \, dy \\
+                              & = \frac{1}{300} \ y \left(  60 - \frac{y}{2} \right) \Bigg|_{y=40}^{y=50} \\
+                              & = \frac{1}{300} \cdot (1750 - 1600) = \frac12
+\end{align*}
+
+
+
+
+
+
+
+## Consequences of independence {.smaller}
+
+::: Theorem
+
+Suppose $X$ and $Y$ are independent random variables. Then
+
+- For any $A,B \subset \R$ we have
+$$
+P(X \in A, Y \in B) = P(X \in A) P(Y \in B)
+$$
+
+- Suppose $g(x)$ is a function of (only) $x$,
+$h(y)$ is a function of (only) $y$. Then
+$$
+\Expect[g(X)h(Y)] = \Expect[g(X)]\Expect[h(Y)]  
+$$
+
+::: 
+
+
+
+
+
+## Application: MGF of sums {.smaller}
+
+::: Theorem
+
+Suppose $X$ and $Y$ are independent random variables and denote by 
+$M_X$ and $M_Y$ their MGFs. Then
+$$
+M_{X + Y} (t) = M_X(t) M_Y(t)
+$$
+
+:::
+
+
+**Proof**: Follows by previous Theorem
+\begin{align*}
+M_{X + Y} (t) & = \Expect[e^{t(X+Y)}] = \Expect[e^{tX}e^{tY}] \\
+              & = \Expect[e^{tX}] \Expect[e^{tY}] \\
+              & = M_X(t) M_Y(t)
+\end{align*}
+
+
+
+
+
+
+
+## Example - Sum of independent normals {.smaller}
+
+- Suppose $X \sim N (\mu_1, \sigma_1^2)$ and $Y \sim N (\mu_2, \sigma_2^2)$ 
+are independent normal random variables
+
+- We have seen in Lecture 1 that for normal distributions
+$$
+M_X(t) = \exp \left( \mu_1 t + \frac{t^2 \sigma_1^2}{2} \right) \,, \qquad
+M_Y(t) = \exp \left( \mu_2 t + \frac{t^2 \sigma_2^2}{2} \right)
+$$
+
+- Since $X$ and $Y$ are independent, from previous Theorem we get
+\begin{align*}
+M_{X+Y}(t) & =  M_{X}(t) M_{Y}(t) =
+\exp \left( \mu_1 t + \frac{t^2 \sigma_1^2}{2} \right)
+\exp \left( \mu_2 t + \frac{t^2 \sigma_2^2}{2} \right)   \\
+& = \exp \left( (\mu_1 + \mu_2) t + \frac{t^2 (\sigma_1^2 + \sigma_2^2)}{2} \right)
+\end{align*}
+
+
+
+
+
+## Example - Sum of independent normals {.smaller}
+
+- Therefore $Z := X + Y$ has moment generating function
+$$
+M_{Z}(t) = M_{X+Y}(t) = \exp \left( (\mu_1 + \mu_2) t + \frac{t^2 (\sigma_1^2 + \sigma_2^2)}{2} \right)
+$$
+
+- The above is the mgf of a **normal distribution** with 
+$$
+\text{mean }\quad \mu_1 + \mu_2 \quad \text{ and variance} \quad  \sigma_1^2 + \sigma_2^2
+$$
+
+- By the Theorem in Slide 68 of Lecture 1 we have
+$$
+Z \sim N(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)
+$$
+
+- **Sum of independent normals is normal**
+
+
+
+
+
+
+
+
+## Covariance & Correlation {.smaller}
+### Relationship between RV
+
+Given two random variables $X$ and $Y$ we said that
+
+- $X$ and $Y$ are **independent** if
+$$
+f_{X,Y}(x,y) = f_X(x) g_Y(y)
+$$
+
+- In this case there is no relationship between $X$ and $Y$
+
+- This is reflected in the conditional distributions:
+$$
+X|Y \sim X \qquad \qquad Y|X \sim Y
+$$
+
+
+
+
+
+## Covariance & Correlation {.smaller}
+### Relationship between RV
+
+
+If $X$ and $Y$ are **not independent** then there is a **relationship** between them
+
+::: Question 
+
+How do we measure the strength of such dependence?
+
+:::
+
+
+**Answer**: By introducing the notions of
+
+- Covariance
+- Correlation
+
+
+
+
+## Covariance {.smaller}
+### Definition
+
+
+**Notation**: Given two rv $X$ and $Y$ we denote
+\begin{align*}
+& \mu_X := \Expect[X]   \qquad & \mu_Y & := \Expect[Y] \\
+& \sigma^2_X := \Var[X] \qquad  & \sigma^2_Y & := \Var[Y] 
+\end{align*}
+
+
+::: Definition 
+
+The **covariance** of $X$ and $Y$ is the number
+$$
+\Cov(X,Y) := \Expect[  (X - \mu_X) (Y - \mu_Y)  ]
+$$
+
+:::
+
+
+
+
+## Covariance {.smaller}
+### Alternative Formula
+
+::: Theorem 
+
+The covariance of $X$ and $Y$ can be computed via
+$$
+\Cov(X,Y) = \Expect[XY] - \Expect[X]\Expect[Y]
+$$
+
+:::
+
+
+
+
+
+
+
+## Correlation {.smaller}
+
+**Remark**:
+
+- $\Cov(X,Y)$ encodes only **qualitative** information about the relationship between $X$ and $Y$
+
+- To obtain **quantitative** information we introduce the **correlation**
+
+
+
+::: Definition 
+
+The **correlation** of $X$ and $Y$ is the number
+$$
+\rho_{XY} := \frac{\Cov(X,Y)}{\sigma_X \sigma_Y} 
+$$
+
+:::
+
+
+
+
+## Correlation detects linear relationships  {.smaller}
+
+
+::: Theorem
+
+For any random variables $X$ and $Y$ we have
+
+- $- 1\leq \rho_{XY} \leq 1$
+- $|\rho_{XY}|=1$ if and only if there exist $a,b \in \R$ such that
+$$
+P(Y = aX + b) = 1
+$$
+    * If $\rho_{XY}=1$ then $a>0$  $\qquad \qquad \quad$ (positive linear correlation)
+    * If $\rho_{XY}=-1$ then $a<0$ $\qquad \qquad$ (negative linear correlation)
+
+:::
+
+
+**Proof**: Omitted, see page 172 of [@casella-berger]
+
+
+
+
+
+## Correlation \& Covariance {.smaller}
+### Independent random variables
+
+
+::: Theorem
+
+If $X$ and $Y$ are independent random variables then
+$$
+\Cov(X,Y) = 0 \,, \qquad \rho_{XY}=0
+$$
+
+:::
+
+
+**Proof**: 
+
+- If $X$ and $Y$ are independent then $\Expect[XY]=\Expect[X]\Expect[Y]$
+- Therefore $\Cov(X,Y)= \Expect[XY]-\Expect[X]\Expect[Y] = 0$
+- Moreover $\rho_{XY}=0$ by definition
+
+
+
+## Formula for Variance {.smaller}
+### Variance is quadratic
+
+::: Theorem
+
+For any two random variables $X$ and $Y$ and $a,b \in \R$
+$$
+\Var[aX + bY] = a^2 \Var[X] + b^2 \Var[Y] + 2 \Cov(X,Y)
+$$
+If $X$ and $Y$ are independent then
+$$
+\Var[aX + bY] = a^2 \Var[X] + b^2 \Var[Y]
+$$
+
+:::
+
+
+**Proof**: Exercise
+
+
+
+
+
+
+## Example 1 {.smaller}
+
+- Assume $X$ and $Z$ are independent, and
+$$
+X  \sim {\rm uniform} \left( 0,1 \right)  \,, \qquad 
+Z  \sim {\rm uniform} \left( 0, \frac{1}{10} \right) 
+$$
+
+
+- Consider the random variable 
+$$
+Y = X + Z
+$$
+
+- Since $X$ and $Z$ are independent, and $Z$ is uniform, we have that
+$$
+Y | X = x  \, \sim \,  {\rm uniform} \left( x, x + \frac{1}{10} \right) 
+$$
+(adding $x$ to $Z$ simply shifts the uniform distribution of $Z$ by $x$)
+
+- **Question:** Is the correlation $\rho_{XY}$ between $X$ and $Y$ high or low?
+
+
+
+## Example 1 {.smaller}
+
+- As $Y | X  \, \sim \,  {\rm uniform} \left( X, X + \frac{1}{10} \right)$, the conditional pdf of $Y$ given $X = x$ is
+$$
+f(y|x) = 
+\begin{cases}
+10 & \text{ if } \, y \in \left( x , x + \frac{1}{10} \right) \\
+0  & \text{ otherwise}
+\end{cases}
+$$
+
+- As $X  \sim {\rm uniform} (0,1)$, its pdf is
+$$
+f_X(x) = 
+\begin{cases}
+1 & \text{ if } \, x \in \left( 0 , 1  \right) \\
+0  & \text{ otherwise}
+\end{cases}
+$$
+
+- Therefore, the joint distribution of $(X,Y)$ is
+$$
+f_{X,Y}(x,y) = f(y|x)f_X(x) = \begin{cases}
+10 & \text{ if } \, x \in (0,1) \, \text{ and } \, y \in \left( x , x + \frac{1}{10} \right) \\
+0  & \text{ otherwise}
+\end{cases}
+$$
+
+
+
+## Example 1 {.smaller}
+
+In gray: the region where $f_{X,Y}(x,y)>0$
+
+- When $X$ increases, $Y$ increases linearly (not surprising, since $Y = X + Z$)
+- We expect the correlation $\rho_{XY}$ to be close to $1$
+
+```{r}
+# Load necessary library
+library(ggplot2)
+
+# Define the function to check where f_{X,Y}(x,y) is nonzero
+f_XY <- function(x, y) {
+  if (x >= 0 & x <= 1 & y >= x & y <= x + 1/10) {
+    return(1)  # Nonzero region (1 means presence)
+  } else {
+    return(0)  # Zero region (0 means absence)
+  }
+}
+
+# Generate a finer grid of (x, y) values
+x_values <- seq(0, 1, length.out = 300)  
+y_values <- seq(0, 1.1, length.out = 300)  
+
+# Create a matrix to store function values
+z_matrix <- outer(x_values, y_values, Vectorize(f_XY))
+
+# Convert to a data frame for ggplot2
+df <- expand.grid(x = x_values, y = y_values)
+df$z <- as.vector(z_matrix)
+
+# Plot the filled region with 1:1 aspect ratio
+ggplot(df, aes(x, y, fill = factor(z))) +
+  geom_tile() +  
+  scale_fill_manual(values = c("white", "gray30")) +  # White for 0, dark gray for nonzero
+  labs(x = "X", y = "Y") +  # Remove title
+  theme_minimal() +
+  theme(legend.position = "none",  # Remove legend for clarity
+        aspect.ratio = 1)  # Set aspect ratio to 1:1
+
+```
+
+
+
+## Example 1 -- Computing $\rho_{XY}${.smaller}
+
+- For a random variable $W \sim {\rm uniform} (a,b)$, we have
+$$
+\Expect[W] = \frac{a+b}{2} \,, \qquad 
+\Var[W] = \frac{(b-a)^2}{12}
+$$
+
+- Since $X \sim {\rm uniform} (0,1)$ and $Z \sim {\rm uniform} (0,1/10)$, we have
+$$
+\Expect[X] = \frac12 \,, \qquad 
+\Var[X] = \frac{1}{12} \,, \qquad 
+\Expect[Z] = \frac{1}{20} \,, \qquad 
+\Var[Z] = \frac{1}{1200}
+$$
+
+
+- Since $X$ and $Z$ are independent, we also have
+$$
+\Var[Y] = \Var[X + Z] =  \Var[X] + \Var[Z] = \frac{1}{12} + \frac{1}{1200} 
+$$
+
+
+
+
+
+## Example 1 -- Computing $\rho_{XY}${.smaller}
+
+- Since $X$ and $Z$ are independent, we have
+$$
+\Expect[XZ] = \Expect[X]\Expect[Z]
+$$
+
+- We conclude that
+\begin{align*}
+\Cov(X,Y) & = \Expect[XY] -  \Expect[X] \Expect[Y] \\
+          & = \Expect[X(X + Z)] -  \Expect[X] \Expect[X + Z] \\
+          & = \Expect[X^2] - \Expect[X]^2 + \Expect[XZ] - \Expect[X]\Expect[Z] \\
+          & = \Var[X] = \frac{1}{12}
+\end{align*}
+
+
+
+## Example 1 -- Computing $\rho_{XY}${.smaller}
+
+
+- The correlation between $X$ and $Y$ is
+\begin{align*}
+\rho_{XY} & = \frac{\Cov(X,Y)}{\sqrt{\Var[X]}\sqrt{\Var[Y]}} \\
+          & = \frac{\frac{1}{12}}{\sqrt{\frac{1}{12}}  \sqrt{ \frac{1}{12} + \frac{1}{1200}} } = \sqrt{\frac{100}{101}}
+\end{align*}
+
+- As expected, we have very high correlation $\rho_{XY} \approx 1$
+
+- This confirms a very strong **linear** relationship between $X$ and $Y$
+
+
+
+
+
+
+
+## Example 2 {.smaller}
+
+- Assume $X$ and $Z$ are independent, and
+$$
+X  \sim {\rm uniform} \left( -1,1 \right)  \,, \qquad 
+Z  \sim {\rm uniform} \left( 0, \frac{1}{10} \right) 
+$$
+
+
+- Define the random variable 
+$$
+Y = X^2 + Z
+$$
+
+- Since $X$ and $Z$ are independent, and $Z$ is uniform, we have that
+$$
+Y | X = x  \, \sim \,  {\rm uniform} \left( x^2, x^2 + \frac{1}{10} \right) 
+$$
+(adding $x^2$ to $Z$ simply shifts the uniform distribution of $Z$ by $x^2$)
+
+- **Question:** Is the correlation $\rho_{XY}$ between $X$ and $Y$ high or low?
+
+
+
+## Example 2 {.smaller}
+
+- As $Y | X  \, \sim \,  {\rm uniform} \left( X^2, X^2 + \frac{1}{10} \right)$, the conditional pdf of $Y$ given $X = x$ is
+$$
+f(y|x) = 
+\begin{cases}
+10 & \text{ if } \, y \in \left( x^2 , x^2 + \frac{1}{10} \right) \\
+0  & \text{ otherwise}
+\end{cases}
+$$
+
+- As $X  \sim {\rm uniform} (-1,1)$, its pdf is
+$$
+f_X(x) = 
+\begin{cases}
+\frac12 & \text{ if } \, x \in \left( -1 , 1  \right) \\
+0  & \text{ otherwise}
+\end{cases}
+$$
+
+- Therefore, the joint distribution of $(X,Y)$ is
+$$
+f_{X,Y}(x,y) = f(y|x)f_X(x) = \begin{cases}
+10 & \text{ if } \, x \in (-1,1) \, \text{ and } \, y \in \left( x^2 , x^2 + \frac{1}{10} \right) \\
+0  & \text{ otherwise}
+\end{cases}
+$$
+
+
+
+## Example 2 {.smaller}
+
+In gray: the region where $f_{X,Y}(x,y)>0$
+
+- When $X$ increases, $Y$ increases quadratically (not surprising, as $Y = X^2 + Z$)
+- There is no linear relationship between $X$ and $Y$ $\,\, \implies \,\,$ we expect $\, \rho_{XY} \approx 0$
+
+```{r}
+# Load necessary library
+library(ggplot2)
+
+# Define the function to check where f_{X,Y}(x,y) is nonzero
+f_XY <- function(x, y) {
+  if (x > -1 & x < 1 & y > x^2 & y < x^2 + 1/10) {
+    return(1)  # Nonzero region (1 means presence)
+  } else {
+    return(0)  # Zero region (0 means absence)
+  }
+}
+
+# Generate a finer grid of (x, y) values
+x_values <- seq(-1, 1, length.out = 300)  # x in (-1,1)
+y_values <- seq(0, 1.1, length.out = 300)  # y in a reasonable range
+
+# Create a matrix to store function values
+z_matrix <- outer(x_values, y_values, Vectorize(f_XY))
+
+# Convert to a data frame for ggplot2
+df <- expand.grid(x = x_values, y = y_values)
+df$z <- as.vector(z_matrix)
+
+# Plot the filled region with 1:1 aspect ratio
+ggplot(df, aes(x, y, fill = factor(z))) +
+  geom_tile() +  
+  scale_fill_manual(values = c("white", "gray30")) +  # White for 0, dark gray for nonzero
+  labs(x = "X", y = "Y") +
+  theme_minimal() +
+  theme(legend.position = "none",  # Remove legend for clarity
+        aspect.ratio = 1)  # Set aspect ratio to 1:1
+
+```
+
+
+
+## Example 2 -- Computing $\rho_{XY}${.smaller}
+
+- Since $X \sim {\rm uniform} (-1,1)$, we can compute that
+$$
+\Expect[X] = \Expect[X^3] = 0
+$$
+
+
+- Since $X$ and $Z$ are independent, we have
+$$
+\Expect[XZ] = \Expect[X]\Expect[Z] = 0
+$$
+
+
+
+
+## Example 2 -- Computing $\rho_{XY}${.smaller}
+
+- Compute the covariance
+\begin{align*}
+\Cov(X,Y) & = \Expect[XY] -  \Expect[X] \Expect[Y] \\
+          & = \Expect[XY] \\
+          & = \Expect[X(X^2 + Z)]  \\
+          & = \Expect[X^3] + \Expect[XZ] = 0
+\end{align*}
+
+
+- The correlation between $X$ and $Y$ is
+$$
+\rho_{XY}  = \frac{\Cov(X,Y)}{\sqrt{\Var[X]}\sqrt{\Var[Y]}} = 0 
+$$
+
+
+- This confirms there is **no linear** relationship between $X$ and $Y$
 
 
 

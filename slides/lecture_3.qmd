@@ -19,7 +19,7 @@ $
 :::
 
 
-# Lecture 3: <br>The t-test & <br>Introduction to R {background-color="#cc0164" visibility="uncounted"}
+# Lecture 3: <br>Introduction to R & <br> The variance ratio test <br> {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -35,21 +35,24 @@ $
 
 
 
-::: {.column width="50%"}
+::: {.column width="64%"}
 
 1. The basics of R
 2. Vectors
-3. Hypothesis testing
-4. The one-sample t-test
-5. The t-test in R
+3. The t-test in R
+4. One-sample variance ratio test
+5. Worked example
+6. One-sample variance ratio test in R
 
 :::
 
-::: {.column width="45%"}
 
-6. Graphics
-7. Functions
-8. More on Vectors
+
+::: {.column width="35%"}
+
+7. Graphics in R
+8. Functions in R
+9. More on vectors
 
 :::
 
@@ -1018,887 +1021,7 @@ sum(abs(rivers - mean(rivers))) / length(rivers)
 
 
 
-
-
-# Part 3: <br>Hypothesis testing{background-color="#cc0164" visibility="uncounted"}
-
-::: footer
-
-<div color="#cc0164">  </div>
-
-:::
-
-
-
-## Definition of Hypothesis {.smaller}
-
-- **Idea**:
-  * Interested in knowing a population parameter $\theta$
-  * $\theta$ cannot be measured directly
-  * We can sample the population and draw conclusions on $\theta$
-  * Such conclusions are called **hypotheses**
-
-
-::: Definition
-
-A **hypothesis** is a statement about a population parameter
-
-:::
-
-
-
-
-## Complementary hypotheses {.smaller}
-
-
-- Two hypotheses are **complementary** if exactly one of them can be true
-
-- Complementary hypotheses are called:
-    * $H_0$ the **null hypothesis** 
-    * $H_1$ the **alternative hypothesis**
-
-- **Goal**: Find a way to decide which between $H_0$ and $H_1$ is true
-
-
-
-
-## How to model hypotheses {.smaller}
-
-We denote by:
-
-- $\theta$ a population parameter
-- $\Theta$ the space of all population parameters
-
-For $\Theta_0 \subset \Theta$ we define the associated 
-null and alternative hypotheses as
-\begin{align*}
-H_0 \colon & \theta \in \Theta_0  & \qquad \text{ null hypothesis} \\
-H_1 \colon & \theta \in \Theta_0^c  & \qquad \text{ alternative hypothesis}
-\end{align*}
-
-
-
-
-
-## Definition of Hypothesis test {.smaller}
-
-::: Definition
-
-A **hypothesis test** is a rule to decide:
-
-- For which sample values we decide to **accept** $H_0$ as true
-- For which sample values we **reject** $H_0$ and accept $H_1$ as true
-
-:::
-
-
-## Acceptance and Critical regions {.smaller}
-
-The sample space is partitioned into two regions:
-
-- **Acceptance region:** For samples $\xx$ in this region we **accept** $H_0$
-- **Critical region:** For samples $\xx$ in this region we **reject** $H_0$
-
-**In most cases:** Critical region is defined in terms of a test statistic $W(\xx)$
-
-
-**Example**: We could decide to reject $H_0$ if 
-$$
-W(\xx) \in R
-$$ 
-with $R \subset \R$ some rejection region
-
-
-
-## One-sided vs Two-sided Tests {.smaller}
-
-Let $\theta$ be one dimensional parameter. A hypothesis test is:
-
-- **One-sided:** if the null and alternative hypotheses are of the form
-  $$ 
-  H_0 \colon \theta \leq \theta_0 \,, \qquad 
-  H_1 \colon \theta > \theta_0 
-  $$
-  or also
-  $$ 
-  H_0 \colon \theta \geq \theta_0 \,, \qquad 
-  H_1 \colon \theta < \theta_0 
-  $$
-
-- **Two-sided:** if the null and alternative hypotheses are of the form
-  $$ 
-  H_0 \colon \theta = \theta_0  \,, \qquad   
-  H_1 \colon \theta \neq \theta_0 
-  $$
-
-
-
-
-
-## Example 1: Two-sided test {.smaller}
-
-We want to assess whether a **coin is fair**
-
-- To test fairness, toss the coin many times and record outcome
-
-- $\theta =$ proportion of Heads
-
-- The decision is between:
-    * Null hypothesis: The coin is fair $\,\, \implies \,\, \theta = \frac12$
-    * Alternative hypothesis: The coin is not fair $\,\, \implies \,\, \theta \neq \frac12$
-
-**Hypothesis test**:
-$\qquad \quad H_0 \colon \theta = \frac12  \,, \qquad 
-H_1 \colon \theta \neq \frac12$
- 
-
-
-
-
-## Example 2: One-sided test {.smaller}
-
-A *University* wants to advertise its MBA Program: 
-$$
-\text{ MBA } = \text{ higher salary }
-$$
-
-- Is this a true or false statement? 
-
-- The University has only access to incomplete data (could not ask all former students). Need hypothesis testing
-
-- $\theta =$ average change in salary after **completing the MBA program**
-  * Null hypothesis: No improvement in salary $\,\, \implies \,\, \theta \leq 0$
-  * Alternative hypothesis: Salary increases $\,\, \implies \,\, \theta > 0$
-
-**Hypothesis test**: 
-$\qquad \quad H_0 \colon \theta \leq 0 \,, \qquad 
-H_1 \colon \theta > 0$
-
-
-
-
-
-
-# Part 4: <br>The one-sample t-test {background-color="#cc0164" visibility="uncounted"}
-
-::: footer
-
-<div color="#cc0164">  </div>
-
-:::
-
-
-## One-sample Two-sided t-test {.smaller}
-
-**Goal**: estimate the mean $\mu$ of a normal population $N(\mu,\sigma^2)$. If $\mu_0$ is guess for $\mu$
-$$
-H_0 \colon \mu = \mu_0 \qquad H_1 \colon \mu \neq \mu_0
-$$
-
-- **One-sample** means we sample only from one population
-- The variance $\sigma$ is unknown
-- Suppose the sample size is $n$, with sample $X_1 ,\ldots,X_n$
-- We consider the t-statistics
-$$
-T = \frac{\overline{X}-\mu_0}{S/\sqrt{n}}
-$$
-- Recall: $T \sim t_{n-1}$ Student's t-distribution with $n-1$ degrees of freedom
-
-
-
-
-
-
-## Procedure for all tests {.smaller}
-
-1. Calculation
-2. Reference statistical tables or numerical values
-3. Interpretation
-
-
-
-
-
-## One-sample Two-sided t-test {.smaller}
-### Calculation
-
-- We have $n$ samples available $x_1,\ldots,x_n$
-- Compute **sample mean**
-$$
-\overline{x} = \frac{1}{n} \sum_{i=1}^n x_i
-$$
-- Compute the **sample standard deviation**
-$$
-s = \sqrt{\frac{\sum_{i=1}^n x_i^2 - n \overline{x}^2}{n-1}}
-$$
-
-
-
-
-## One-sample Two-sided t-test {.smaller}
-### Calculation
-
-
-- Compute the **estimated standard error**
-$$
-\ese = \frac{s}{\sqrt{n}}
-$$
-
-- Compute the sample **t-statistic**
-$$
-t = \frac{\text{estimate } - \text{ hypothesised value}}{\ese}
-= \frac{\overline x - \mu_0}{s/\sqrt{n}}
-$$
-
-- $\mu_0$ is the value of the null hypothesis $H_0$ 
-
-
-
-
-## One-sample Two-sided t-test {.smaller}
-### p-value
-
-
-- In alternative to computing the **t-statistic**, we can compute the **p-value**
-
-
-- **p-value** is a measure of likely we are to observe the data if we assume the null hypothesis is true
-
-
-- We have 2 options:
-    * **LOW** p-value $\quad \implies \quad$  **reject** $H_0$
-    * **HIGH** p-value $\quad \implies \quad$  **do not reject** $H_0$
-
-- In this module we reject $H_0$ for p-values 
-$$
-p<0.05
-$$
-
-
-
-
-## One-sample Two-sided t-test {.smaller}
-### p-value
-
-- For the two-sided t-test, the p-value is defined as
-$$
-p := 2P(t_{n-1} > |t| \, | \, H_0)
-$$
-where $t_{n-1}$ follows the t-distribution with $n-1$ degrees of freedom
-
-- In other words, the p-value is
-$$
-p = 2P(\text{Observing values more extreme than |t| }| \, \mu=\mu_0)
-$$
-
-
-
-
-
-
-
-## One-sample Two-sided t-test {.smaller}
-### p-value
-
-- $p<0.05$ means that the test statistic $t$ is **extreme**: $\,\, P(t_{n-1} > |t|)<0.025$
-
-- $t$ falls in the **grey areas** in the $t_{n-1}$ plot below: Each grey area measures $0.025$
-
-
-```{r}
-# Degrees of freedom
-df <- 11
-
-# Values for x-axis
-x <- seq(-4, 4, length.out = 1000)
-
-# Calculate PDF of t-distribution
-pdf <- dt(x, df)
-
-# Plot PDF
-plot(x, pdf, type = "l", col = "blue", lwd = 2, xlab = "x", ylab = "Density")
-
-# Shade area where p-value < 0.025
-x_fill_left <- x[x <= qt(0.025, df)]
-y_fill_left <- pdf[x <= qt(0.025, df)]
-polygon(c(x_fill_left, rev(x_fill_left)), c(y_fill_left, rep(0, length(y_fill_left))), col = "gray", border = NA)
-
-# Shade area where p-value > 0.975
-x_fill_right <- x[x >= qt(0.975, df)]
-y_fill_right <- pdf[x >= qt(0.975, df)]
-polygon(c(x_fill_right, rev(x_fill_right)), c(y_fill_right, rep(0, length(y_fill_right))), col = "gray", border = NA)
-
-# Add legend
-legend("topright", legend = c("area = 0.025 x 2"), fill = "gray", cex = 1.3)
-
-
-```
-
-
-
-
-
-
-## One-sample Two-sided t-test {.smaller}
-### p-value
-
-
-- How to compute $p$?
-    * Use statistical tables -- Available [here](files/Statistics_Tables.pdf)
-    * Use R -- Next sections
-
-
-
-
-## One-sample Two-sided t-test {.smaller}
-### Reference statistical tables
-
-
-- Find Table 1 in this
-[file](files/Statistics_Tables.pdf)
-
-- Look at the row with Degree of Freedom $n-1$ (or its closest value)
-- Find **critical value** $t^* := t_{n-1}(0.025)$ in column $\alpha = 0.025$
-- **Example**: $n=10$, DF $=9$, $t^*=t_{9}(0.025)=2.262$
-
-![](images/t_test_statistic_table.png){width=85%}
-
-
-
-
-
-## One-sample Two-sided t-test {.smaller}
-### Reference statistical tables 
-
-
-- The critical value $t^* = t_{n-1}(0.025)$ found in the table satisfies
-$$
-P(t_{n-1}>t^*) = 0.025
-$$
-
-- By definition of $p$-value for two-sided t-test we have
-$$
-p := 2P(t_{n-1}>|t|) 
-$$
-
-- Therefore, for $|t|>t^*$
-\begin{align*}
-p & := 2P(t_{n-1}>|t|) \\
-  & <  2P(t_{n-1}>t^*) = 2 \cdot (0.025) = 0.05
-\end{align*}
-
-- **Conclusion**: $\quad |t|>t^*  \iff  p<0.05 \qquad$ (Extreme $t$ $\iff$ low p-value)
-
-
-
-
-
-
-## One-sample Two-sided t-test {.smaller}
-### Interpretation
-
-
-Recall that $p = 2P ( \text{Observing values more extreme than t } | \mu = \mu_0)$
-
-We have two possibilities: 
-
-- $|t|>t^*$
-  * In this case $p<0.05$
-  * The observed statistic $t$ is very unlikely under $H_0 \,\, \implies \,\,$ **reject** $H_0$
-
-
-- $|t| \leq t^*$
-  * In this case $p>0.05$
-  * The observed statistic $t$ is not unlikely under $H_0 \,\, \implies \,\,$ **do not reject** $H_0$
-
-
-
-
-
-
-
-## Example: 2008 crisis {.smaller}
-
-- **Data:** Monthly Consumer Confidence Index (CCI) in 2007 and 2009
-- **Question:** Did the crash of 2008 have lasting impact upon CCI?
-- **Observation**: Data shows a massive drop in CCI between 2009 and 2007 
-- **Method:** Use $t$-test to see whether there was a change in CCI
-
-| Month                    | J | F | M | A | M | J | J | A | S | O | N | D |
-|:------------------------:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| CCI 2007                 |86 | 86| 88| 90| 99| 97| 97| 96| 99| 97| 90| 90|
-| CCI 2009                 |24 | 22| 21| 21| 19| 18| 17| 18| 21| 23| 22| 21|
-| Difference               |62 | 64| 67| 69| 80| 79| 80| 78| 78| 74| 68| 69|
-
-
-
-
-
-
-## Example: 2008 crisis {.smaller}
-
-- This is really a **two-sample** problem -- CCI data in 2 populations: 2007 and 2009 
-- It reduces to a **one-sample** problem because we have directly comparable units
-- If units cannot be compared, then we must use a two-sample approach
-- Two-sample approach will be discussed later
-
-
-| Month                    | J | F | M | A | M | J | J | A | S | O | N | D |
-|:------------------------:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| CCI 2007                 |86 | 86| 88| 90| 99| 97| 97| 96| 99| 97| 90| 90|
-| CCI 2009                 |24 | 22| 21| 21| 19| 18| 17| 18| 21| 23| 22| 21|
-| Difference               |62 | 64| 67| 69| 80| 79| 80| 78| 78| 74| 68| 69|
-
-
-
-
-## Setting up the test {.smaller}
-
-
-
-- We want to test if there was a change in CCI from 2007 to 2009
-- We are really only interested in the difference in CCI
-- Let $\mu$ be the (unknown) average difference in CCI
-- The **null hypothesis** is that there was (on average) no change in CCI
-$$
-H_0 \colon \mu = 0 
-$$
-- The **alternative hypothesis** is that there was some change:
-$$
-H_1 \colon \mu \neq 0 
-$$
-- Note that this is a **two-sided** test
-
-
-
-
-## Calculation {.smaller}
-
-
-Using the available data, we need to compute:
-
-- Sample mean and standard deviation
-$$
-\overline{x} = \frac{1}{n} \sum_{i=1}^n x_i \qquad 
-s = \sqrt{\frac{\sum_{i=1}^n x_i^2 - n \overline{x}^2}{n-1}}
-$$
-
-- Test statistic
-$$
-t = \frac{\overline x - \mu_0}{s/\sqrt{n}}
-$$
-
-
-
-## Calculation {.smaller}
-
-<br>
-
-|CCI                       | J | F | M | A | M | J | J | A | S | O | N | D |
-|:------------------------:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| Difference               |62 | 64| 67| 69| 80| 79| 80| 78| 78| 74| 68| 69|
-
-
-\begin{align*}
-\overline{x} & =\frac{1}{n} \sum_{i=1}^{n} x_i=\frac{1}{12} \left(62+64+67+{\ldots}+68+69\right)=\frac{868}{12}=72.33 \\
-\sum_{i=1}^{n} x_i^2 & = 62^2+64^2+67^2+{\ldots}+68^2+69^2 = 63260 \\
-s & = \sqrt{ \frac{\sum_{i=1}^n x_i^2 - n \overline{x}^2}{n-1} } = \sqrt{\frac{63260-12\left(\frac{868}{12}\right)^2}{11}} = \sqrt{\frac{474.666}{11}} = 6.5689
-\end{align*}
-
-
-
-## Calculation {.smaller}
-
-
-- The sample size is $n=12$
-- The sample mean is $\overline{x}=72.33$
-- The sample standard deviation is $s = 6.5689$
-- The **hypothesized mean** is $\mu_0 = 0$
-- The **t-statistic** is
-$$
-t = \frac{\overline{x} - \mu_0}{s/\sqrt{n}} =
-\frac{72.33 - 0}{6.5689/\sqrt{12}} = 38.145
-$$
-
-
-
-
-
-
-
-## Reference statistical tables {.smaller}
-
-
-Find Table 1 in this [file](files/Statistics_Tables.pdf)
-
-- Find row with DF $= n-1$ (or closest). Find critical value $t^*$ in column $\alpha = 0.025$
-- In our case: $n=12$, DF $=11$, $t^*=  t_{11}(0.025) =2.201$
-
-![](images/t_test_statistic_table_bis.png){width=85%}
-
-
-
-
-
-
-## Reference statistical tables {.smaller}
-
-
-- Plot of $t_{11}$ distribution. White area is $0.95$, total shaded area is $0.05$
-- Probability of observing $|t|>t^* = 2.201$ is $p<0.025$
-
-
-```{r}
-# Degrees of freedom
-df <- 11
-
-# Values for x-axis
-x <- seq(-4, 4, length.out = 1000)
-
-# Calculate PDF of t-distribution
-pdf <- dt(x, df)
-
-# Plot PDF
-plot(x, pdf, type = "l", col = "blue", lwd = 2, xlab = "x", ylab = "Density")
-
-# Shade area where p-value < 0.025
-x_fill_left <- x[x <= qt(0.025, df)]
-y_fill_left <- pdf[x <= qt(0.025, df)]
-polygon(c(x_fill_left, rev(x_fill_left)), c(y_fill_left, rep(0, length(y_fill_left))), col = "gray", border = NA)
-
-# Shade area where p-value > 0.975
-x_fill_right <- x[x >= qt(0.975, df)]
-y_fill_right <- pdf[x >= qt(0.975, df)]
-polygon(c(x_fill_right, rev(x_fill_right)), c(y_fill_right, rep(0, length(y_fill_right))), col = "gray", border = NA)
-
-# Add annotations for p value = 0.025 on both sides
-text(qt(0.025, df), dt(qt(0.025, df), df) + 0.05, paste("t* =", round(qt(0.025, df), 4)), pos = 3, col = "red", cex = 1.3, adj = c(8.5, 4.5))
-text(qt(0.975, df), dt(qt(0.975, df), df) + 0.05, paste("t* =", round(qt(0.975, df), 4)), pos = 3, col = "red", cex = 1.3, adj = c(5.5, 4.5))
-
-# Add legend
-legend("topright", legend = c("area = 0.025 x 2"), fill = "gray", cex = 1.3)
-
-
-```
-
-
-
-
-## Interpretation {.smaller}
-
-- We have computed:
-  * Test statistic $t = 38.145$
-  * Critical value $t^* = 2.201$
-
-- Therefore
-$$
-|t| = 38.145 > 2.201 = t^*
-$$
-
-- This implies **rejecting** the null hypothesis
-$$
-H_0 \colon \mu = 0
-$$
-
-
-
-## Interpretation {.smaller}
-
-
-- t-test implies that mean difference in CCI is 
-$$
-\mu \neq 0
-$$
-
-- The sample mean difference is positive ($\bar{x}=72.33$) 
-
-- **Conclusions**: 
-  * CCI has changed from 2007 to 2009 (backed by t-test)
-  * CCI seems higher in 2007 than in 2009 (backed by sample mean)
-  * The 2008 crash seems to have reduced consumer confidence
-
-
-
-## One-sided t-tests {.smaller}
-
-- Suppose given a hypothesized value $\mu_0$ for the mean $\mu$ of a normal population
-
-- In certain situations, if the true mean differs from $\mu_0$ ($\mu \neq \mu_0$), you may have reason to believe specifically that
-$$
-\mu < \mu_0 \qquad \text{or} \qquad \mu > \mu_0
-$$
-
-- In such cases, you would support these conclusions if, respectively,
-$$
-t \ll 0 \qquad \text{or} \qquad t \gg 0 \, ,
-$$
-where $t$ is the $t$-statistic defined as
-$$
-t = \frac{\overline{x} - \mu_0}{\ese}
-$$
-**Reject $H_0$ if the $t$-statistic is sufficiently extreme to the left OR right**
-
-
-## Summary: The one-sample t-test {.smaller}
-
-Suppose given a sample
-
-- $x_1, \ldots, x_n$ from $N(\mu_X,\sigma^2)$ of size $n$
-
-The *two-sided* hypothesis for testing if $\mu = \mu_0$ is
-$$
-H_0 \colon \mu = \mu_0 \,, \quad \qquad 
-H_1 \colon \mu \neq \mu_0
-$$
-
-The *one-sided* alternative hypotheses are
-$$
-H_1 \colon \mu < \mu_0 \quad  \text{ or } \quad 
-H_1 \colon \mu > \mu_0
-$$
-
-
-
-## Procedure: 3 Steps {.smaller}
-
-1. **Calculation**: Compute the t-statistic
-$$
-t = \frac{ \overline{x} - \mu_0}{  s/\sqrt{n} }
-$$
-where $\mu_0$ is the *null hypothesis*, and *sample mean* and *standard deviation* are
-$$
-\overline{x} = \frac{1}{n} \sum_{i=1}^n x_i  \,, \qquad 
-s = \sqrt{\frac{\sum_{i=1}^n x_i^2 - n \overline{x}^2}{n-1} }
-$$
-
-
-
-## {.smaller}
-
-2. **Statistical Tables or R**: Find either
-    * Critical value $t^*$ in [Table 1](files/Statistics_Tables.pdf)
-    * p-value in R (later)
-
-<br>
-
-3. **Interpretation**: Reject $H_0$ when either
-$$
-p < 0.05 \qquad \text{ or } \qquad t \in \,\,\text{Rejection Region} 
-\qquad \qquad \qquad \qquad
-(T \, \sim \, t_{n-1})
-$$
-
-
-| Alternative                      | Rejection Region  | $t^*$             | p-value         |
-|----------------------------------|-------------------|-------------------|-----------------|
-| $\mu \neq \mu_0$                 | $|t| > t^*$       | $t_{n-1}(0.025)$| $2P(T > |t|)$   |
-| $\mu < \mu_0$                    | $t < - t^*$       | $t_{n-1}(0.05)$ | $P(T < t)$      |
-| $\mu > \mu_0$                    | $t > t^*$         | $t_{n-1}(0.05)$ | $P(T > t)$      |
-: {tbl-colwidths="[25,25,25,25]"}
-
-
-
-
-## {.smaller}
-
-```{r}
-# Degrees of freedom
-df <- 11
-
-# Values for x-axis
-x <- seq(-4, 4, length.out = 1000)
-
-# Calculate PDF of t-distribution
-pdf <- dt(x, df)
-
-# Set layout for 3 plots side by side
-par(mfrow = c(1, 3))
-
-# Left-tailed test
-plot(x, pdf, type = "l", col = "blue", lwd = 2, xlab = "", ylab = "", main = expression("Left-Tailed Test: " ~ mu < mu[0]))
-x_fill_left <- x[x <= qt(0.05, df)]
-y_fill_left <- pdf[x <= qt(0.05, df)]
-polygon(c(x_fill_left, rev(x_fill_left)), c(y_fill_left, rep(0, length(y_fill_left))), col = "gray", border = NA)
-text(qt(0.05, df) - 1.3, dt(qt(0.05, df), df) - 0.01, expression(-t[n](0.05)), pos = 3, col = "red", cex = 1.1)
-legend("topright", legend = c("Rej. Region area = 0.05"), fill = "gray", cex = 1)
-
-# Two-tailed test
-plot(x, pdf, type = "l", col = "blue", lwd = 2, xlab = "", ylab = "", main = expression("Two-Tailed Test: " ~ mu != mu[0]))
-x_fill_left <- x[x <= qt(0.025, df)]
-y_fill_left <- pdf[x <= qt(0.025, df)]
-polygon(c(x_fill_left, rev(x_fill_left)), c(y_fill_left, rep(0, length(y_fill_left))), col = "gray", border = NA)
-
-x_fill_right <- x[x >= qt(0.975, df)]
-y_fill_right <- pdf[x >= qt(0.975, df)]
-polygon(c(x_fill_right, rev(x_fill_right)), c(y_fill_right, rep(0, length(y_fill_right))), col = "gray", border = NA)
-
-text(qt(0.025, df) - 1.0, dt(qt(0.025, df), df) + 0.0, expression(-t[n](0.025)), pos = 3, col = "red", cex = 1.1)
-text(qt(0.975, df) + 1.0, dt(qt(0.975, df), df) + 0.0, expression(t[n](0.025)), pos = 3, col = "red", cex = 1.1)
-legend("topright", legend = c("Rej. Region area = 0.025 x 2"), fill = "gray", cex = 1)
-
-# Right-tailed test
-plot(x, pdf, type = "l", col = "blue", lwd = 2, xlab = "", ylab = "", main = expression("Right-Tailed Test: " ~ mu > mu[0]))
-x_fill_right <- x[x >= qt(0.95, df)]
-y_fill_right <- pdf[x >= qt(0.95, df)]
-polygon(c(x_fill_right, rev(x_fill_right)), c(y_fill_right, rep(0, length(y_fill_right))), col = "gray", border = NA)
-text(qt(0.95, df) + 1.3, dt(qt(0.95, df), df) - 0.01, expression(t[n](0.05)), pos = 3, col = "red", cex = 1.1)
-legend("topright", legend = c("Rej. Region area = 0.05"), fill = "gray", cex = 1)
-
-# Reset layout
-par(mfrow = c(1, 1))
-```
-
-
-Reject $H_0$ if t-statistic $t$ falls in the *Rejection Region* (the gray areas)
-
-
-
-
-
-## Example: Rising textbook costs {.smaller}
-
-- The University Bookstore claims that, on average, a student will pay $500$£ per semester for textbooks and supplies
-
-- The Student Union does not believe the University Bookstore's claims: They think the students **spend more**
-
-- They interviewed 10 students, asking each how much they spent on textbooks and supplies. The answers are below.
-
-
-|     |     |     |     |     |     |     |     |     |     |     |
-|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-|**Costs**| 304 | 431 | 385 | 987 | 303 | 480 | 455 | 724 | 642 | 506 |
-
-
-To test whether the students spend more than $500$£, we consider the one-sided alternative hypothesis
-
-$$
-H_0 \colon \mu = 500 \,, \qquad 
-H_1 \colon \mu > 500
-$$
-
-
-
-
-## Calculation {.smaller}
-
-
-<br>
-
-|     |     |     |     |     |     |     |     |     |     |     |
-|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-|**Costs**| 304 | 431 | 385 | 987 | 303 | 480 | 455 | 724 | 642 | 506 |
-
-<br>
-
-\begin{align*}
-\overline{x} & =\frac{1}{n} \sum_{i=1}^{n} x_i=\frac{1}{10} \left(304+431+{\ldots}+642+506\right)=\frac{5217}{10}=521.7 \\
-\sum_{i=1}^{n} x_i^2 & = 304^2+431^2+{\ldots}+642^2+506^2 = 3122181 \\
-s & = \sqrt{ \frac{\sum_{i=1}^n x_i^2 - n \overline{x}^2}{n-1} } = \sqrt{\frac{3122181-10\left(\frac{5217}{10}\right)^2}{9}} =  210.9429
-\end{align*}
-
-
-
-## Calculation {.smaller}
-
-
-- The sample size is $n=10$
-- The sample mean is $\overline{x}=521.7$
-- The sample standard deviation is $s = 210.9429$
-- The **hypothesized mean** is $\mu_0 = 500$
-- The **t-statistic** is
-
-$$
-t = \frac{\overline{x} - \mu_0}{s/\sqrt{n}} =
-\frac{521.7 - 500}{210.9429/\sqrt{10}}  \approx 0.325
-$$
-
-
-
-
-
-
-
-## Reference statistical tables {.smaller}
-
-
-Find Table 1 in this [file](files/Statistics_Tables.pdf)
-
-- We are conducting a one-sided test $\quad \implies \quad \alpha = 0.05$
-
-- Degrees of freedom are DF $= n-1 = 9$
-
-- Therefore, the required critical value is $t^*=  t_{9}(0.05) = 1.833$
-
-![](images/t_test_statistic_table_tris.png){width=85%}
-
-
-
-
-
-## The Rejection Region {.smaller}
-
-
-- Plot of $t_{9}$ distribution. White area is $0.95$, gray area is $0.05$
-
-- The grey zone is the *Rejection Region*
-
-
-```{r}
-# Degrees of freedom
-df <- 9
-
-# Values for x-axis
-x <- seq(-4, 4, length.out = 1000)
-
-# Calculate PDF of t-distribution
-pdf <- dt(x, df)
-
-# Plot PDF
-plot(x, pdf, type = "l", col = "blue", lwd = 2, xlab = "x", ylab = "Density")
-
-# Shade area where p-value > 0.95
-x_fill_right <- x[x >= qt(0.95, df)]
-y_fill_right <- pdf[x >= qt(0.95, df)]
-polygon(c(x_fill_right, rev(x_fill_right)), c(y_fill_right, rep(0, length(y_fill_right))), col = "gray", border = NA)
-
-# Add annotations for p value = 0.05 on both sides
-text(qt(0.95, df) + 0.3, dt(qt(0.95, df), df) + 0.05, paste("t* =", round(qt(0.95, df), 3)), pos = 3, col = "red", cex = 1.3, adj = c(5.5, 4.5))
-
-# Add legend
-legend("topright", legend = c("area = 0.05"), fill = "gray", cex = 1.3)
-
-
-```
-
-
-
-
-## Interpretation {.smaller}
-
-- We have computed:
-  * Test statistic $t = 0.325$
-  * Critical value $t^* = 1.833$
-
-- Therefore, we see that $t$ does not belong to the rejection region
-
-$$
-t = 0.325 < 1.833 = t^*
-$$
-
-- There is **not enough evidence** to reject the null hypothesis
-$$
-H_0 \colon \mu = 500 
-$$
-
-- **Conclusion:** The data gives us little reason to doubt that students spend more than 500£ per semester
-
-
-
-
-
-
-
-# Part 5: <br>The t-test in R {background-color="#cc0164" visibility="uncounted"}
+# Part 3: <br>The t-test in R {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -1910,12 +1033,11 @@ $$
 
 ## The t-test in R {.smaller}
 
-- We are now ready to do some statistics in R
-- We start by looking at the **one-sample t-test**
+- We are ready to do some statistics in R $\quad \leadsto \quad$ **one-sample t-test**
 
 Suppose given a sample
 
-- $x_1, \ldots, x_n$ from $N(\mu_X,\sigma^2)$ of size $n$
+- $x_1, \ldots, x_n$ from $N(\mu,\sigma^2)$ of size $n$
 
 The *two-sided* hypothesis for testing if $\mu = \mu_0$ is
 $$
@@ -1930,24 +1052,16 @@ H_1 \colon \mu > \mu_0
 $$
 
 
-1. **Calculation**: Compute the t-statistic
-$$
-t = \frac{ \overline{x} - \mu_0}{  s/\sqrt{n} }
-$$
-where $\mu_0$ is the *null hypothesis*, and *sample mean* and *standard deviation* are
-$$
-\overline{x} = \frac{1}{n} \sum_{i=1}^n x_i  \,, \qquad 
-s = \sqrt{\frac{\sum_{i=1}^n x_i^2 - n \overline{x}^2}{n-1} }
-$$
 
 
 
 
-## Reminder: The two-sided t-test by hand {.smaller}
+## Reminder: The t-test by hand {.smaller}
 
-
-1. **Calculation**: Compute the **t-statistic** $t = \dfrac{\overline x - \mu_0}{s/\sqrt{n}}$
-
+1. **Calculation**: Compute the t-statistic $t = \displaystyle \frac{ \overline{x} - \mu_0}{  s/\sqrt{n} }$  
+$\mu_0 = \,$ *null hypothesis* $\qquad$ 
+$\overline{x} = \,$ *sample mean* 
+$\qquad$ $s = \,$sample *std deviation*
 
 2. **Statistical Tables or R**: Find either
     * Critical value $t^*$ in [Table 1](files/Statistics_Tables.pdf) $\qquad$ or $\qquad$ p-value
@@ -1979,8 +1093,7 @@ $$
 
 1. Given the sample $x_1,\ldots,x_n$, R can compute the **t-statistic**
 $$
-t = \frac{\text{estimate } - \text{ hypothesised value}}{\ese}
-= \frac{\overline x - \mu_0}{s/\sqrt{n}}
+t =\frac{\overline x - \mu_0}{s/\sqrt{n}}
 $$
 
 2. R can compute the precise p-value (no need for Statistical Tables)
@@ -2454,8 +1567,796 @@ print(answer)
 
 
 
+# Part 4: <br>One-sample variance <br> ratio test{background-color="#cc0164" visibility="uncounted"}
 
-# Part 6: <br>Graphics {background-color="#cc0164" visibility="uncounted"}
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## Task: Estimating mean and variance {.smaller}
+
+- Assume the population has normal distribution $N(\mu,\sigma^2)$
+    * Mean $\mu$ and variance $\sigma^2$ are **unknown**
+
+
+- **Questions** about $\mu$ and $\sigma^2$
+    1. What is my best guess of the value?
+    2. How far away from the true value am I likely to be?
+
+
+- **Answers:**
+    * The one-sample **t-test** answers questions about $\mu$ (seen in Lecture 3)
+    * The one-sample **variance ratio test** answers questions about $\sigma^2$
+
+
+
+
+
+## Reminder {.smaller}
+
+- The-one sample variance test uses **chi-squared distribution**
+
+- **Recall:** Chi-squared distribution with $p$ degrees of freedom is
+$$
+\chi_p^2 = Z_1^2 + \ldots + Z_p^2
+$$
+where $Z_1, \ldots, Z_p$ are iid $N(0, 1)$
+
+
+
+
+
+## One-sample one-sided variance ratio test {.smaller}
+
+**Assumption:** Suppose given sample $X_1,\ldots, X_n$ iid from $N(\mu,\sigma^2)$
+
+
+**Goal:** Estimate variance $\sigma^2$ of population
+
+
+**Test:** 
+
+- Suppose $\sigma_0$ is guess for $\sigma$ 
+
+- The one-sided hypothesis test for $\sigma$ is
+$$
+H_0 \colon \sigma = \sigma_0 \qquad H_1 \colon \sigma > \sigma_0
+$$
+
+
+
+## What to do? {.smaller}
+
+- Consider the sample variance
+$$
+S^2 = \frac{ \sum_{i=1}^n  X_i^2 - n \overline{X}^2 }{n-1}
+$$
+
+- Since we believe $H_0$, the variance is 
+$$
+\sigma = \sigma_0
+$$
+
+- $S^2$ cannot be too far from the true variance $\sigma$
+
+- Therefore we **cannot** have that 
+$$
+S^2 \gg \sigma^2 = \sigma_0^2 
+$$
+
+
+
+## What to do? {.smaller}
+
+- If we observe $S^2 \gg \sigma_0^2$ then our guess $\sigma_0$ is probably wrong
+
+- Therefore we **reject** $H_0$ if
+$$
+S^2 \gg \sigma_0^2
+$$
+
+
+- The **rejection** condition $S^2 \gg \sigma_0^2$ is equivalent to 
+$$
+\frac{(n-1)S^2}{\sigma_0^2}  \gg 1
+$$
+where $n$ is the sample size
+
+
+
+## What to do? {.smaller}
+
+- We define our **test statistic** as
+$$
+\chi^2 := \frac{(n-1)S^2}{\sigma_0^2}
+$$
+
+
+- The **rejection** condition is hence
+$$
+\chi^2 \gg 1
+$$
+
+
+
+## What to do? {.smaller}
+
+- In Lecture 2, we have proven that
+$$
+\frac{(n-1)S^2}{\sigma^2} \sim \chi_{n-1}^2
+$$
+
+
+- Assuming $\sigma=\sigma_0$, we therefore have
+$$
+\chi^2 = \frac{(n-1)S^2}{\sigma_0^2} = \frac{(n-1)S^2}{\sigma^2} \sim \chi_{n-1}^2
+$$
+
+
+
+## Summary: Rejection condition {.smaller}
+
+- We **reject** $H_0$ if 
+$$
+\chi^2 = \frac{(n-1)S^2}{\sigma_0^2} \gg 1 
+$$
+
+- This means we do not want $\chi^2$ to be too extreme to the right
+
+- As $\chi^2 \sim \chi_{n-1}^2$, we decide to rejct $H_0$ if
+$$
+\chi^2 > \chi_{n-1}^2(0.05)   
+$$
+
+
+- By definition, the **critical value** $\chi_{n-1}^2(0.05)$ is such that
+$$
+P(\chi_{n-1}^2 > \chi_{n-1}^2(0.05) ) = 0.05
+$$
+
+
+
+
+## Critical values of chi-squared {.smaller}
+
+- $x^* := \chi_{n-1}^2(0.05)$ is point on $x$-axis such that $P(\chi_{n-1}^2 > x^* ) = 0.05$
+
+- Therefore, the semi-open interval $(x^*,+\infty)$ is the *rejection region*
+
+- In the picture we have $n = 12$ and $\chi_{11}^2(0.05) = 19.68$
+
+```{r}
+# Degrees of freedom
+df <- 11
+
+# Values for x-axis
+x <- seq(0, 30, length.out = 1000)  # Adjust the range according to chi-squared distribution
+
+# Calculate PDF of chi-squared distribution
+pdf <- dchisq(x, df)
+
+# Plot PDF
+plot(x, pdf, type = "l", col = "blue", lwd = 2, xlab = "x", ylab = "Density")
+
+
+# Shade area where p-value > 0.95
+x_fill_right <- x[x >= qchisq(0.95, df)]
+y_fill_right <- pdf[x >= qchisq(0.95, df)]
+polygon(c(x_fill_right, rev(x_fill_right)), c(y_fill_right, rep(0, length(y_fill_right))), col = "gray", border = NA)
+
+# Add critical value for 0.95 quantile
+x_star <- qchisq(0.95, df)
+points(x_star, dchisq(x_star, df), col = "red", pch = 19, cex = 1.3)
+
+# Add text above x_star containing its value
+text(x_star * 1.05, dchisq(x_star, df) * 1.35, paste("x* =", round(x_star, 2)), pos = 3, col = "red", cex = 1.3)
+
+# Add legend
+legend("topright", legend = c("area of rejection region = 0.05"), fill = "gray", cex = 1.3)
+
+```
+
+
+## Critical values of chi-squared -- Tables {.smaller}
+
+- Find Table 2 in this [file](files/Statistics_Tables.pdf)
+- Look at the row with Degree of Freedom $n-1$ (or its closest value)
+- Find **critical value** $\chi^2_{n-1}(0.05)$ in column $\alpha = 0.05$
+- **Example**: $n=12$, DF $=11$, $\chi^2_{11}(0.05) = 19.68$
+
+![](images/chi_squared_test_statistic_table.png){width=82%}
+
+
+
+
+## The p-value {.smaller}
+
+- Given the test statistic $\chi^2$, the **p-value** is defined as
+$$
+p := P( \chi_{n-1}^2 > \chi^2 )
+$$
+
+
+- Notice that 
+$$
+p < 0.05 \qquad \iff \qquad  \chi^2 > \chi_{n-1}^2(0.05)
+$$
+
+> This is because $\chi^2 > \chi_{n-1}^2(0.05)$ iff
+> $$
+> p = P(\chi_{n-1}^2 > \chi^2)
+>  < P(\chi_{n-1}^2 > \chi_{n-1}^2(0.05) )
+>  = 0.05
+> $$
+
+
+
+
+## One-sample one-sided variance ratio test {.smaller}
+
+Suppose given
+
+- Sample $x_1, \ldots, x_n$ of size $n$ from $N(\mu,\sigma^2)$
+- Guess $\sigma_0$ for $\sigma$
+
+The one-sided hypothesis test is
+$$
+H_0 \colon \sigma = \sigma_0 \qquad H_1 \colon \sigma > \sigma_0
+$$
+
+
+
+## Procedure: 3 steps {.smaller}
+
+1. **Calculation**: Compute the chi-squared statistic
+$$
+\chi^2 = \frac{(n-1) s^2}{\sigma_0^2}
+$$
+where sample mean and variance are
+$$
+\overline{x} = \frac{1}{n} \sum_{i=1}^n x_i \,, \qquad 
+s^2 = \frac{\sum_{i=1}^n x_i^2 - n \overline{x}^2}{n-1}
+$$
+
+
+
+##  {.smaller}
+
+2. **Statistical Tables or R**: Find either
+    * Critical value in [Table 2](files/Statistics_Tables.pdf)
+    $$
+    \chi_{n-1}^2(0.05)
+    $$
+    * p-value in R
+    $$
+    p := P( \chi_{n-1}^2 > \chi^2 )
+    $$
+    (more on this later)
+
+<br>
+
+3. **Interpretation**: Reject $H_0$ if either
+$$
+\chi^2 > \chi_{n-1}^2(0.05)  \qquad \text{ or } \qquad p < 0.05
+$$
+
+
+
+
+
+
+# Part 5: <br>Worked example {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## One-sample variance ratio test: Example {.smaller}
+
+
+| Month                    | J | F | M | A | M | J | J | A | S | O | N | D |
+|:------------------------ |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| Cons. Expectation        |66 | 53| 62| 61| 78| 72| 65| 64| 61| 50| 55| 51|
+| Cons. Spending           |72 | 55| 69| 65| 82| 77| 72| 78| 77| 75| 77| 77|
+| Difference               |-6 | -2| -7| -4| -4| -5| -7|-14|-16|-25|-22|-26|
+
+
+<br>
+
+- **Data:** *Consumer Expectation* (CE) and *Consumer Spending* (CS) in 2011
+- **Assumption:** CE and CS are normally distributed
+
+
+
+
+
+## One-sample variance ratio test: Example {.smaller}
+
+
+| Month                    | J | F | M | A | M | J | J | A | S | O | N | D |
+|:------------------------ |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| Cons. Expectation        |66 | 53| 62| 61| 78| 72| 65| 64| 61| 50| 55| 51|
+| Cons. Spending           |72 | 55| 69| 65| 82| 77| 72| 78| 77| 75| 77| 77|
+| Difference               |-6 | -2| -7| -4| -4| -5| -7|-14|-16|-25|-22|-26|
+
+<br>
+
+- **Remark**: Monthly data on CE and CS can be matched 
+    * Hence consider: $\quad$ Difference $=$ CE $-$ CS 
+    * CE and CS normal $\quad \implies \quad$ Difference $\sim N(\mu,\sigma^2)$
+
+- **Question:** Test the following hypothesis:
+$$
+H_0 \colon \sigma = 1 \qquad 
+H_1 \colon \sigma > 1
+$$
+
+
+
+
+## Motivation of test {.smaller}
+
+- If $X \sim N(\mu,\sigma^2)$ then
+$$
+P( \mu - 2 \sigma \leq X \leq \mu + 2\sigma ) \approx 0.95 
+$$
+
+- Recall: $\quad$ Difference $=$ (CE $-$ CS) $\sim N(\mu,\sigma^2)$
+
+- Hence if $\sigma = 1$
+$$
+P( \mu - 2 \leq {\rm CE} - {\rm CS} \leq \mu + 2 ) \approx 0.95 
+$$
+
+- **Meaning of variance ratio test:** 
+$$
+\sigma=1
+\quad \implies \quad 
+\text{CS index is within } \pm{2} \text{ of CE index with probability } 0.95  
+$$
+
+
+
+
+
+## The variance ratio test by hand {.smaller}
+
+
+| Month                    | J | F | M | A | M | J | J | A | S | O | N | D |
+|:------------------------ |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| Difference               |-6 | -2| -7| -4| -4| -5| -7|-14|-16|-25|-22|-26|
+
+<br>
+
+1. **Calculations**: Using the above data, compute 
+
+- Sample mean:
+$$
+\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n} =  \frac{-6-2-7-4- \ldots -22-26}{12} = -\frac{138}{12} = -11.5
+$$
+
+
+
+
+## The variance ratio test by hand {.smaller}
+
+| Month                    | J | F | M | A | M | J | J | A | S | O | N | D |
+|:------------------------ |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| Difference               |-6 | -2| -7| -4| -4| -5| -7|-14|-16|-25|-22|-26|
+
+<br>
+
+1. **Calculations**: Using the above data, compute 
+
+- Sample variance:
+\begin{align*}
+\sum_{i=1}^{n} x_i^2 & = (-6)^2 + (-2)^2 + (-7)^2 + \ldots + (-22)^2 + (-26)^2 = 2432 \\
+s^2 & = \frac{\sum_{i=1}^n x^2_i- n \bar{x}^2}{n-1}
+      = \frac{2432-12(-11.5)^2}{11} = \frac{845}{11} = 76.8182
+\end{align*}
+
+
+
+
+
+## The variance ratio test by hand {.smaller}
+
+| Month                    | J | F | M | A | M | J | J | A | S | O | N | D |
+|:------------------------ |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| Difference               |-6 | -2| -7| -4| -4| -5| -7|-14|-16|-25|-22|-26|
+
+<br>
+
+1. **Calculations**: Using the above data, compute 
+
+- Chi-squared statistic:
+$$
+\chi^2 = \frac{(n-1)s^2}{\sigma_0^2} 
+       = \frac{11 \left(\frac{845}{11}\right) }{1} 
+       = 845
+$$
+
+
+
+
+
+## The variance ratio test by hand {.smaller}
+
+2. **Statistical Tables**:
+    * Sample size is $n = 12$
+    * Degrees of freedom are ${\rm df} = n-1 = 11$
+    * In [Table 2](files/Statistics_Tables.pdf) find
+    $$
+    \chi_{11}^2(0.05) = 19.68
+    $$
+
+3. **Interpretation**:
+    * Test statistic is $\chi^2 = 845$
+    * This falls in the *rejection region*
+    $$
+    \chi^2 = 845 > 19.68 = \chi_{11}^2(0.05)
+    $$
+    * We **reject** $H_0$
+
+
+
+## The variance ratio test by hand {.smaller}
+
+4. **Conclusion**:
+    * We reject $H_0$: The standard deviation satisfies $\sigma > 1$
+    * A better estimate for $\sigma$ could be sample standard deviation
+    $$
+    s=\sqrt{\frac{845}{11}}=8.765
+    $$
+    * This suggests: With probability $0.95$
+    $$
+    \text{CS index is within } \pm{2 \times 8.765 = \pm 17.53 } \text{ of CE index}  
+    $$
+
+
+
+
+# Part 6: <br>One-sample variance <br> ratio test in R{background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## The variance ratio test in R {.smaller}
+
+**Goal**: Perform chi-squared variance ratio test in R
+
+- For this, we need to compute p-value
+$$
+p = P(\chi_{n-1}^2 > \chi^2)
+$$
+
+- Thus, we need to compute probabilities for chi-squared distribution in R
+
+
+
+
+
+## Probability Distributions in R {.smaller}
+
+- R can natively do calculations with known probability distrubutions
+- Example: Let $X$ be r.v. with $N(\mu,\sigma^2)$ distribution
+
+| **R command**         |   **Computes**                                |
+|:--------------------  |:------------------------------               |
+| ``pnorm(x, mean = mu, sd = sig)`` |   $P(X \leq x)$                              |
+| ``qnorm(p, mean = mu, sd = sig)`` |   $q$ such that $P(X \leq q) = p$                          |
+| ``dnorm(x, mean = mu, sd = sig)`` |   $f(x)$, where $f$ is pdf of $X$    |
+| ``rnorm(n, mean = mu, sd = sig)`` |   $n$ random samples from distr. of $X$|
+: {tbl-colwidths="[50,50]"}
+
+
+**Note**: Syntax of commands
+
+**norm** $=$ normal $\qquad$ **p** $=$ probability $\qquad$ **q** $=$ quantile 
+
+**d** $=$ density $\qquad \quad \,\,\,\,$  **r** $=$ random
+  
+
+
+## Example {.smaller}
+
+- Suppose average height of women is normally distributed $N(\mu,\sigma^2)$
+- Assume mean $\mu = 163$ cm and standard deviation $\sigma = 8$ cm
+
+<br>
+
+```{r}
+#| echo: true
+
+# Probability woman exceeds 180cm in height
+# P(X > 180) = 1 - P(X <= 180)
+
+1 - pnorm(180, mean = 163, sd = 8)
+```
+
+
+## {.smaller}
+
+```{r}
+#| echo: true
+
+# The upper 10th percentile for women height, that is,
+# height q such that P(X <= q) = 0.9
+
+qnorm(0.90, mean = 163, sd = 8)
+```
+
+<br>
+
+
+
+```{r}
+#| echo: true
+
+# Value of pdf at 163
+
+dnorm(163, mean = 163, sd = 8)
+```
+
+
+<br>
+
+```{r}
+#| echo: true
+
+# Generate random sample of size 5
+
+rnorm(5, mean = 163, sd = 8)
+```
+
+
+## {.smaller}
+
+**Question:** What is the height of the tallest woman, according to the model?
+
+
+- The tallest woman could be found using quantiles
+- There are roughly 3.5 billion women
+- The tallest would be in the top 1/(3.5 billion) quantile
+
+```{r}
+#| echo: true
+
+# Find the top 1/(3.5 billion) quantile
+
+p = 1 - 1 / (3.5e9)
+qnorm(p, mean = 163, sd = 8)
+```
+
+
+- The current (living) tallest woman is Rumeysa Gelci at $215$ cm ([Wikipedia Page](https://en.m.wikipedia.org/wiki/Rumeysa_Gelgi))
+
+
+
+
+## Probability Distributions in R {.smaller}
+### Chi-squared distribution
+
+- Commands for chi-squared distrubution are similar
+- ``df = n`` denotes $n$ degrees of feedom
+
+| **R command**         |   **Computes**                                |
+|:--------------------  |:------------------------------               |
+| ``pchisq(x, df = n)`` |   $P(X \leq x)$                              |
+| ``qchisq(p, df = n)`` |   $q$ such that $P(X \leq q) = p$                          |
+| ``dchisq(x, df = n)``  |   $f(x)$, where $f$ is pdf of $X$    |
+| ``rchisq(m, df = n)``  |   $m$ random samples from distr. of $X$|
+: {tbl-colwidths="[40,60]"}
+
+
+
+## Example 1 {.smaller}
+
+- From Tables we found quantile $\chi_{11}^2 (0.05) = 19.68$
+- **Question:** Compute such quantile in R
+
+
+
+
+
+## Example 1 -- Solution {.smaller}
+
+- From Tables we found quantile $\chi_{11}^2 (0.05) = 19.68$
+- **Question:** Compute such quantile in R
+
+
+<br>
+
+```{r}
+#| echo: true
+# Compute 0.95 quantile for chi-squared with 11 degrees of freedom
+
+quantile <- qchisq(0.95, df = 11)
+
+cat("The 0.95 quantile for chi-squared with df = 11 is", quantile)
+```
+
+
+## Example 2 {.smaller}
+
+- The $\chi^2$ statistic for variance ratio test has distribution $\chi_{n-1}^2$
+
+- **Question:** Compute the p-value
+$$
+p := P(\chi_{n-1}^2 > \chi^2)
+$$
+
+
+
+## Example 2 -- Solution {.smaller}
+
+- The $\chi^2$ statistic for variance ratio test has distribution $\chi_{n-1}^2$
+
+- **Question:** Compute the p-value
+$$
+p := P(\chi_{n-1}^2 > \chi^2)
+$$
+
+
+- Observe that
+$$
+p := P(\chi_{n-1}^2 > \chi^2) = 1 - P(\chi_{n-1}^2  \leq  \chi^2)
+$$
+
+- The code is therefore
+
+```r
+# Compute p-value for chi^2 = chi_squared and df = n
+
+p_value <- 1 - pchisq(chi_squared, df = n)
+```
+
+
+
+
+## The variance ratio test in R {.smaller}
+
+
+| Month                    | J | F | M | A | M | J | J | A | S | O | N | D |
+|:------------------------ |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| Cons. Expectation        |66 | 53| 62| 61| 78| 72| 65| 64| 61| 50| 55| 51|
+| Cons. Spending           |72 | 55| 69| 65| 82| 77| 72| 78| 77| 75| 77| 77|
+| Difference               |-6 | -2| -7| -4| -4| -5| -7|-14|-16|-25|-22|-26|
+
+<br>
+
+- **Back to the Worked Example:** Monthly data on CE and CS
+
+- **Question:** Test the following hypothesis:
+$$
+H_0 \colon \sigma = 1 \qquad 
+H_1 \colon \sigma > 1
+$$
+
+
+
+
+## The variance ratio test in R {.smaller}
+
+| Month                    | J | F | M | A | M | J | J | A | S | O | N | D |
+|:------------------------ |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| Cons. Expectation        |66 | 53| 62| 61| 78| 72| 65| 64| 61| 50| 55| 51|
+| Cons. Spending           |72 | 55| 69| 65| 82| 77| 72| 78| 77| 75| 77| 77|
+| Difference               |-6 | -2| -7| -4| -4| -5| -7|-14|-16|-25|-22|-26|
+
+<br>
+
+- Start by entering data into R
+
+```r
+# Enter Consumer Expectation and Consumer Spending data
+CE <- c(66, 53, 62, 61, 78, 72, 65, 64, 61, 50, 55, 51)
+CS <- c(72, 55, 69, 65, 82, 77, 72, 78, 77, 75, 77, 77)
+
+# Compute difference
+difference <- CE - CS
+``` 
+
+
+
+## The variance ratio test in R {.smaller}
+
+- Compute chi-squared statistic
+$$
+\chi^2 = \frac{(n-1) s^2}{\sigma^2_0}
+$$
+
+
+```r
+# Compute sample size
+n <- length(difference)
+
+# Enter null hypothesis
+sigma_0 <- 1
+
+# Compute sample standard deviation
+s <- sd(difference)
+
+# Compute chi-squared statistic
+chi_squared <- (n - 1) * s ^ 2 / sigma_0 ^ 2
+```
+
+
+
+## The variance ratio test in R {.smaller}
+
+- Compute the p-value, and print to screen
+$$
+p = P(\chi_{n-1}^2 > \chi^2) = 1 - P(\chi_{n-1}^2 \leq \chi^2)
+$$
+
+
+```r
+# Compute p-value
+p_value <- 1 - pchisq(chi_squared, df = n - 1)
+
+# Print p-value
+cat("The p-value for one-sided variance test is", p_value)
+```
+
+<br>
+
+- The full code can be downloaded here [variance_ratio_test.R](codes/variance_ratio_test.R)
+
+
+
+## Running the code {.smaller}
+
+- Running [variance_ratio_test.R](codes/variance_ratio_test.R) gives the following output:
+```{r}
+# Enter Consumer Expectation and Consumer Spending data
+CE <- c(66, 53, 62, 61, 78, 72, 65, 64, 61, 50, 55, 51)
+CS <- c(72, 55, 69, 65, 82, 77, 72, 78, 77, 75, 77, 77)
+
+# Compute difference
+difference <- CE - CS
+
+# Compute sample size
+n <- length(difference)
+
+# Enter null hypothesis
+sigma_0 <- 1
+
+# Compute sample standard deviation
+s <- sd(difference)
+
+# Compute chi-squared statistic
+chi_squared <- (n - 1) * s ^ 2 / sigma_0 ^ 2
+
+# Compute p-value
+p_value <- 1 - pchisq(chi_squared, df = n - 1)
+
+# Print p-value
+cat("The p-value for one-sided variance test is", p_value)
+```
+
+<br>
+
+- Since $p = 0 < 0.05$ we **reject** $H_0$
+- Therefore the true variance seems to be $\sigma^2 > 1$
+
+
+
+
+# Part 7: <br>Graphics in R {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -2713,7 +2614,7 @@ plot(x)
 
 
 
-# Part 7: <br>Functions in R {background-color="#cc0164" visibility="uncounted"}
+# Part 8: <br>Functions in R {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -2973,7 +2874,7 @@ cat("They coincide!")
 
 
 
-# Part 8: <br>More on Vectors {background-color="#cc0164" visibility="uncounted"}
+# Part 9: <br>More on Vectors {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -3749,6 +3650,7 @@ y <- rep(x, c(3, 4))     # 1st entry of x is replicated 3 times
 
 cat("Vector of labels is:", y)
 ```
+
 
 
 
