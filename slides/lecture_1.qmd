@@ -60,8 +60,8 @@ $
 
 - **Lecturer:** Dr. Silvio Fanzon
 - **Email:** S.Fanzon@hull.ac.uk
-- **Office:** Room 104a, Larkin Building
-- **Office hours:** Thursday 15:00-16:00
+- **Office:** Room 311C, Robert Blackburn Building
+- **Office hours:** Monday 12:00-13:00
 - **Meetings**: in my office or send me an Email
 
 
@@ -88,9 +88,9 @@ Each week we have
 
 |    Session    |      Date        |      Place        |
 |---------------|------------------|-------------------|
-|  Lecture 1    |  Thu 16:00-18:00 | Wilberforce LR 4 |
-|  Lecture 2    |  Fri 12:00-14:00 | Robert Blackburn LTC |
-|  Tutorial     |  Fri 15:00-16:00 | Wilberforce LR 3  |
+|  Lecture 1    |  Mon 16:00-18:00 | Wilberforce LR 16 |
+|  Lecture 2    |  Thu 16:00-18:00 | Wilberforce LR 16 |
+|  Tutorial     |  Tue 12:00-13:00 | Wilberforce LR 21 |
 
 
 
@@ -117,9 +117,9 @@ This module will be assessed as follows:
 
 - Coursework available on Canvas from Week 9
 
-- Coursework must be submitted on **[Canvas](https://canvas.hull.ac.uk/courses/75082)**
+- Coursework must be submitted on **[Canvas](https://canvas.hull.ac.uk/courses/77772)**
 
-- Deadline: **14:00 on Thursday 1st May**
+- Deadline: **14:00 on Thursday 30th April**
 
 - **No Late Submission allowed**
 
@@ -131,7 +131,7 @@ This module will be assessed as follows:
 ## Rules for Homework {.smaller}
 
 
-- 10 Homework papers, posted weekly on **[Canvas](https://canvas.hull.ac.uk/courses/75082)** 
+- 10 Homework papers, posted weekly on **[Canvas](https://canvas.hull.ac.uk/courses/77772)** 
 
 - Each Homework paper is worth 14 points
 
@@ -139,7 +139,7 @@ This module will be assessed as follows:
     * Sum the top 7 scores (max score 98 points)
     * Rescale to 100
 
-- Homework must be submitted on **[Canvas](https://canvas.hull.ac.uk/courses/75082)**
+- Homework must be submitted on **[Canvas](https://canvas.hull.ac.uk/courses/77772)**
 
 - Deadline: **14:00 on Thursday**
 
@@ -149,7 +149,7 @@ This module will be assessed as follows:
 
 ## How to submit assignments {.smaller}
 
-- Submit **PDFs only** on **[Canvas](https://canvas.hull.ac.uk/courses/75082)**
+- Submit **PDFs only** on **[Canvas](https://canvas.hull.ac.uk/courses/77772)**
 
 - You have two options:
 	* Write on tablet and submit PDF Output
@@ -171,12 +171,12 @@ This module will be assessed as follows:
 
 |  **Assignment** |**Due date** |
 |:--------        |:----------- |
-| Homework 1      | 6 Feb       |
-| Homework 2      | 13 Feb      |
-| Homework 3      | 20 Feb      |
-| Homework 4      | 27 Feb      |
-| Homework 5      | 6 Mar       |
-| Homework 6      | 13 Mar      |
+| Homework 1      | 5 Feb       |
+| Homework 2      | 12 Feb      |
+| Homework 3      | 19 Feb      |
+| Homework 4      | 26 Feb      |
+| Homework 5      | 5 Mar       |
+| Homework 6      | 12 Mar      |
 
 
 :::
@@ -187,12 +187,12 @@ This module will be assessed as follows:
 
 |  **Assignment** |**Due date** |
 |:--------        |:----------- |
-| Homework 7      | 20 Mar      |
-| Homework 8      | 27 Mar      |
-| Homework 9      | 3 Apr       |
-| Homework 10     | 10 Apr      |
-| Easter :sunglasses:    | 14-25 Apr   |
-| Coursework      | 1 May       |
+| Homework 7      | 19 Mar      |
+| Homework 8      | 26 Mar      |
+| Easter :sunglasses:    | 30 Mar - 10 Apr   |
+| Homework 9      | 16 Apr      |
+| Homework 10     | 23 Apr      |
+| Coursework      | 30 Apr      |
 
 :::
 
@@ -345,37 +345,35 @@ Slides are self-contained and based on the book
 
 Module has **11 Lectures**, divided into two parts:
 
-- **Part I** - Mathematical statistics
+- **Part I** - Hypothesis tests
 
-- **Part II** - Applied statistics
+- **Part II** - Regression
 
 
 
 
 
 ## Overview of the module {.smaller}
-### Part I - Mathematical statistics
+### Part I - Hypothesis tests
 
 1. Introduction to statistics
-2. Normal distribution family and one-sample hypothesis tests
-3. Two-sample hypothesis tests
-4. The chi-squared test
-5. Non-parametric statistics
-6. The maths of regression
-
+2. Normal distribution family and the t-test
+3. Introduction to R and one-sample hypothesis tests
+4. Two-sample hypothesis tests
+5. The chi-squared test
+6. Non-parametric statistics
 
 
 
 
 ## Overview of the module {.smaller}
-### Part II - Applied statistics
+### Part II - Regression
 
-
-7. An introduction to practical regression
-8. The extra sum of squares principle and regression modelling assumptions
-9. Violations of regression assumptions -- Autocorrelation
-10. Violation of regression assumptions -- Multicollinearity
-10. ANOVA -- Dummy variable regression models 
+7. The maths of regression
+8. An introduction to practical regression
+9. The extra sum of squares principle and regression modelling assumptions
+10. Violations of regression assumptions
+11. ANOVA -- Dummy variable regression models 
 
 
 
@@ -388,7 +386,7 @@ Module has **11 Lectures**, divided into two parts:
 
 ::: {.column width="48%"}
 
-**1. Generic data:**
+**1. Hypothesis tests:**
 
 - What is a *typical* observation
   * What is the **mean**?
@@ -420,7 +418,7 @@ Module has **11 Lectures**, divided into two parts:
 
 
 
-## Question 1 -- Analysing a general dataset {.smaller}
+## Question 1 -- Hypothesis tests {.smaller}
 
 **Two basic questions:**
 

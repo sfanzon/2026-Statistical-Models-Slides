@@ -21,7 +21,7 @@ $
 
 
 
-# Lecture 5: <br>Two-sample F-test & <br> Goodness-of-fit test  {background-color="#cc0164" visibility="uncounted"}
+# Lecture 5: <br>Goodness-of-fit test & <br> Contingency tables  {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
