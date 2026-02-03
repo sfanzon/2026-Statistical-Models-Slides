@@ -21,7 +21,7 @@ $
 
 
 
-# Lecture 4: <br> Two-sample <br> hypothesis tests {background-color="#cc0164" visibility="uncounted"}
+# Lecture 4: <br>More on R & <br> Two-sample t-test {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -36,21 +36,1075 @@ $
 ## Outline of Lecture 4
 
 
-1. Two-sample hypothesis tests
-2. Two-sample t-test
-3. Two-sample t-test: Example
-4. The Welch t-test
-5. The t-test for paired samples
-6. The F-distribution
-7. Two-sample F-test
-8. Worked Example
+::: {.column width="45%"}
+
+1. Functions in R
+2. More on vectors
+
+:::
+
+
+
+::: {.column width="54%"}
+
+3. Two-sample hypothesis tests
+4. Two-sample t-test
+5. Two-sample t-test: Example
+6. The Welch t-test
+7. The t-test for paired samples
+
+:::
 
 
 
 
 
 
-# Part 4: <br>Two-sample<br> hypothesis tests {background-color="#cc0164" visibility="uncounted"}
+
+# Part 1: <br>Functions in R {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## Expressions and objects {.smaller}
+
+- Basic way to interact with R is through **expression evaluation**:
+  * You enter an epression
+  * The system evaluates it and prints the result
+
+- Expressions work on **objects**
+- **Object**: anything that can be assigned to a variable
+- Objects encountered so far are:
+  * Scalars
+  * Vectors
+
+
+
+## Functions and arguments {.smaller}
+
+- **Functions** are a class of objects
+
+- Format of a function is **name** followed by parentheses containing **arguments**
+
+- Functions take **arguments** and **return** a result
+
+- We already encountered several built in functions:
+  * ``plot(x, y)``
+  * ``lines(x, y)``
+  * ``seq(x)``
+  * ``print("Stats is great!")``
+  * ``cat("R is great!")``
+  * ``mean(x)``
+  * ``sin(x)``
+
+
+## Functions and arguments {.smaller}
+
+- Functions have **actual arguments** and **formal arguments**
+- Example: 
+  * ``plot(x, y)`` has formal arguments two vectors ``x`` and ``y``
+  * ``plot(height, weight)`` has actual arguments ``height`` and ``weight``
+
+- When you write ``plot(height, weight)`` the arguments are matched:
+  * ``height`` corresponds to x-variable
+  * ``weight`` corresponds to y-variable
+  * This is called **positional matching**
+  
+  
+
+## Functions and arguments {.smaller}
+
+- If a function has a lot of arguments, positional matching is tedious
+
+- For example ``plot()`` accepts the following (and more!) arguments
+
+| Argument |                        Description    |
+|:--------:|:-------------------------------------:|
+| ``x``    | x coordinate of points in the plot    |
+| ``y``    | y coordinate of points in the plot    |
+| ``type`` | Type of plot to be drawn              |
+| ``main`` | Title of the plot                     |
+| ``xlab`` | Label of x axis                       |
+| ``ylab`` | Label of y axis                       | 
+| ``pch``  | Shape of points                       |
+
+
+
+
+
+## Functions and arguments {.smaller}
+
+Issue with having too many arguments is the following:
+
+- We might want to specify ``pch = 2``
+- But then we would have to match all the arguments preceding
+``pch``
+  * ``x``
+  * ``y``
+  * ``type``
+  * ``xlab``
+  * ``ylab``
+
+
+
+## Functions and arguments {.smaller}
+
+- Thankfully we can use **named actual arguments**:
+  * The name of a formal argument can be matched to an actual argument
+  * This is independent of position
+
+- For example we can specify ``pch = 2`` by the call
+  * ``plot(weight, height, pch = 2)``
+
+- In the above:
+  * ``weight`` is implicitly matched to ``x``
+  * ``height`` is implicitly matched to ``y``
+  * ``pch`` is explicitly matched to ``2``
+  
+- Note that the following call would give same output
+  * ``plot(x = weight, y = height, pch = 2)``
+
+
+
+
+
+
+## Functions and arguments {.smaller}
+
+- Named actual arguments **override** positional arguments
+- Example: The following commands yield the same plot
+  * ``plot(height, weight)``
+  * ``plot(x = height, y = weight)``
+  * ``plot(y = weight, x = height)``
+
+
+
+
+
+## Functions and arguments {.smaller}
+
+We have already seen another example of **named actual arguments**
+
+- ``seq(from = 1, to = 11, by = 2)``
+- ``seq(1, 11, 2)``
+- These yield the same output. Why?
+- Because in this case **named actual arguments** match **positional arguments**
+
+
+
+
+## Functions and arguments {.smaller}
+
+If however we want to divide the interval $[1, 11]$ in $5$ equal parts:
+
+- Have to use ``seq(1, 11, length.out = 6)``
+
+
+```{r}
+#| echo: true
+seq(1, 11, length.out = 6)
+```
+
+- The above is different from ``seq(1, 11, 6)``
+```{r}
+#| echo: true
+seq(1, 11, 6)
+```
+
+- They are different because:
+  * The 3rd positional argument of ``seq()`` is ``by``
+  * Hence the command ``seq(1, 11, 6)`` assumes that ``by = 6``
+
+
+
+## Functions and arguments {.smaller}
+### Warning
+
+- You can call functions without specifying arguments
+- However you have to use brackets ``()``
+- Example:
+  * ``getwd()`` -- which outputs current working directory
+  * ``ls()`` -- which outputs names of objects currently in memory
+
+
+
+
+## Custom functions {.smaller}
+
+- You can define your own functions in R
+- Syntax for definining custom function ``my_function`` is below
+- You can call your custom function by typing
+    * ``my_function(arguments)``
+
+```r
+my_function <- function(first = "1st argument", 
+                        ... ,
+                        nth = "n-th argument") {
+  
+  # Code here: This is where you tell the function what to do
+
+  return(object)      # Object to be returned  
+}
+```
+
+
+## Custom functions -- Example {.smaller}
+
+- The R function ``mean(x)`` computes the sample mean of vector ``x``
+- We want to define our own function to compute the mean
+
+- **Example:** The mean of ``x`` could be computed via
+    * ``sum(x) / length(x)``
+- We want to implement this code into the function ``my_mean(x)``
+    * ``my_mean`` takes vector ``x`` as argument
+    * ``my_mean`` returns a scalar -- the mean of ``x``
+
+```r
+# Definition of custom function my_mean(x)
+my_mean <- function(vector = x) {
+  
+  mean_of_x <- sum(x) / length(x)
+  
+  return(mean_of_x)  
+}
+```
+
+
+
+## Custom functions -- Example {.smaller}
+
+
+- Let us use our function ``my_mean`` on an example
+
+```r
+# Generate a random vector of 1000 entries from N(0,1)
+x <- rnorm(1000)
+
+# Compute mean of x with my_mean
+xbar <- my_mean(x)
+
+# Compute mean of x with built in function mean
+xbar_check <- mean(x)
+  
+cat("Mean of x computed with my_mean is:", xbar)
+cat("Mean of x computed with R mean is:", xbar_check)
+cat("They coincide!")
+```
+
+```{r}
+my_mean <- function(vector = x) {
+  
+  mean_of_x <- sum(x) / length(x)
+  
+  return(mean_of_x)  
+}
+
+# Generate a random vector of 1000 entries from N(0,1)
+x <- rnorm(1000)
+
+# Compute mean of x with my_mean
+xbar <- my_mean(x)
+
+# Compute mean of x with built in function mean
+xbar_check <- mean(x)
+  
+cat("Mean of x computed with my_mean is:", xbar)
+cat("Mean of x computed with R mean is:", xbar_check)
+cat("They coincide!")
+```
+
+
+
+
+# Part 2: <br>More on Vectors {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## More on vectors {.smaller}
+
+- We have seen vectors of numbers
+- Further type of vectors are:
+  * Character vectors
+  * Logical vectors
+
+
+## Character vectors {.smaller}
+
+- A character vector is a vector of text strings
+- Elements are specified and printed in quotes
+
+```{r}
+#| echo: true
+x <- c("Red", "Green", "Blue")
+print(x)
+```
+
+- You can use single- or double-quote symbols to specify strings
+- This is as long as the left quote is the same as the right quote
+
+```{r}
+#| echo: true
+x <- c('Red', 'Green', 'Blue')
+print(x)
+```
+
+
+
+## Character vectors {.smaller}
+
+``Print`` and ``cat`` produce different output on character vectors:
+
+- ``print(x)`` prints all the strings in ``x`` separately
+- ``cat(x)`` concatenates strings. There is no way to tell how many were there
+
+
+::: {.column width="45%"}
+
+```r
+x <- c("Red", "Green", "Blue")
+print(x)
+cat(x)
+```
+
+```{r}
+x <- c("Red", "Green", "Blue")
+print(x)
+cat(x)
+```
+
+:::
+
+
+
+::: {.column width="45%"}
+
+```r
+y <- c("Red Green", "Blue")
+print(y)
+cat(y)
+```
+
+```{r}
+y <- c("Red Green", "Blue")
+print(y)
+cat(y)
+```
+
+:::
+
+
+## Logical vectors {.smaller}
+
+- Logical vectors can take the values ``TRUE``, ``FALSE`` or ``NA``
+- ``TRUE`` and ``FALSE`` can be abbreviated with ``T`` and ``F``
+- ``NA`` stands for **not available**
+
+```{r}
+#| echo: true
+
+# Create logical vector
+x <- c(T, T, F, T, NA)
+
+# Print the logical vector
+print(x)
+```
+
+
+## Logical vectors {.smaller}
+
+- Logical vectors are extremely useful to evaluate conditions
+
+- Example:
+  * given a numerical vector ``x``
+  * we want to count how many entries are above a value ``t``
+
+
+```r
+# Generate a vector containing sequence 1 to 8
+x <- seq(from = 1 , to = 8, by = 1)
+
+# Generate vector of flags for entries strictly above 5
+y <- ( x > 5 )
+
+cat("Vector x is: (", x, ")")
+cat("Entries above 5 are: (", y, ")")
+```
+
+
+```{r}
+# Generate a vector containing sequence 1 to 8
+x <- seq(from = 1 , to = 8, by = 1)
+
+# Generate vector of flags for entries strictly above 5
+y <- ( x > 5 )
+
+cat("Vector x is: (", x, ")")
+cat("Entries above 5 are: (", y, ")")
+```
+
+
+
+## Logical vectors -- Application {.smaller}
+
+- Generate a vector of 1000 numbers from $N(0,1)$
+- Count how many entries are above the mean $0$
+- Since there are many (1000) entries, we expect a result close to 500
+    * This is because *sample mean* converges to *true mean* $0$
+
+**Question**: How to do this?
+
+**Hint**: ``T/F`` are interpreted as ``1/0`` in arithmetic operations
+
+
+::: {.column width="45%"}
+```{r}
+#| echo: true
+T + T
+T + F
+```
+
+:::
+
+::: {.column width="45%"}
+```{r}
+#| echo: true
+F + F
+F + T + 3
+```
+
+:::
+
+
+
+## Logical vectors -- Application {.smaller}
+
+- The function ``sum(x)`` sums the entries of a vector ``x``
+- We can use ``sum(x)`` to count the number of ``T`` entries in a logical vector ``x``
+
+
+
+```r
+x <- rnorm(1000)       # Generates vector with 1000 normal entries
+
+y <- (x > 0)           # Generates logical vector of entries above 0
+
+above_zero <- sum(y)   # Counts entries above zero
+
+cat("Number of entries which are above the average 0 is", above_zero)
+cat("This is pretty close to 500!")
+```
+
+
+```{r}
+# Generate vector with 1000 normal entries
+x <- rnorm(1000)
+
+# Generate logical vector of entries above 0
+y <- (x > 0)
+
+# Count entries above zero
+above_zero <- sum(y)
+
+cat("Number of entries which are above the average 0 is", above_zero)
+cat("This is pretty close to 500!")
+```
+
+
+
+## Missing values {.smaller}
+
+- In practical data analysis, a data point is frequently unavailable
+- Statistical software needs ways to deal with this
+- R allows vectors to contain a special ``NA`` value - Not Available
+- ``NA`` is carried through in computations: operations on ``NA`` yield ``NA`` as the result
+
+
+```{r}
+#| echo: true
+
+2 * NA
+NA + NA
+T + NA
+```
+
+
+
+
+## Indexing vectors {.smaller}
+
+- Components of a vector can be retrieved by **indexing**
+
+- ``vector[k]`` returns k-th component of ``vector``
+
+<br>
+
+```{r}
+#| echo: true
+
+vector <- c("Cat", "Dog", "Mouse")
+
+second_element <- vector[2]           # Access 2nd entry of vector
+
+print(second_element)
+```
+
+
+
+
+## Replacing vector elements {.smaller}
+
+To modify an element of a vector use the following:
+
+- ``vector[k] <- value`` stores ``value`` in k-th component of ``vector``
+
+<br>
+
+```{r}
+#| echo: true
+
+vector <- c("Cat", "Dog", "Mouse")
+
+# We replace 2nd entry of vector with string "Horse"
+vector[2] <- "Horse"
+
+print(vector)
+```
+
+
+
+
+## Vector slicing {.smaller}
+
+Returning multiple items of a vactor is known as **slicing**
+
+- ``vector[c(k1, ..., kn)]`` returns components ``k1, ..., kn``
+- ``vector[k1:k2]`` returns components ``k1`` to ``k2``
+
+```{r}
+#| echo: true
+
+vector <- c(11, 22, 33, 44, 55, 66, 77, 88, 99, 100)
+
+# We store 1st, 3rd, 5th entries of vector in slice
+slice <- vector[c(1, 3, 5)]   
+
+print(slice)
+
+```
+
+
+## Vector slicing {.smaller}
+
+```{r}
+#| echo: true
+
+vector <- c(11, 22, 33, 44, 55, 66, 77, 88, 99, 100)
+
+# We store 2nd to 7th entries of vector in slice
+slice <- vector[2:7]
+
+print(slice)
+```
+
+
+
+## Deleting vector elements {.smaller}
+
+- Elements of a vector ``x`` can be deleted by using
+    * ``x[ -c(k1, ..., kn) ]`` which deletes entries ``k1, ..., kn``
+    
+```r
+# Create a vector x
+x <- c(11, 22, 33, 44, 55, 66, 77, 88, 99, 100)
+
+# Print vector x
+cat("Vector x is:", x)
+
+# Delete 2nd, 3rd and 7th entries of x
+x <- x[ -c(2, 3, 7) ]
+
+# Print x again
+cat("Vector x with 2nd, 3rd and 7th entries removed:", x)
+```
+
+
+```{r}
+# Create a vector x
+x <- c(11, 22, 33, 44, 55, 66, 77, 88, 99, 100)
+
+# Print vector x
+cat("Vector x is:", x)
+
+# Delete 2nd, 3rd and 7th entries of x
+x <- x[ -c(2, 3, 7) ]
+
+# Print x again
+cat("Vector x with 2nd, 3rd and 7th entries removed:", x)
+```
+
+
+
+## Logical Subsetting {.smaller}
+
+
+- You can index or slice vectors by entering explicit indices
+- You can also index vectors, or **subset**, by using **logical flag vectors**:
+    * Element is extracted if corresponding entry in the flag vector is TRUE 
+    * Logical flag vectors should be the same length as vector to subset
+
+**Code**: Suppose given a vector ``x``
+
+- Create a flag vector by using 
+    * ``flag <- condition(x)``
+
+- ``condition()`` is any function which returns ``T/F`` vector of same length as ``x``
+
+- Subset ``x`` by using 
+    * ``x[flag]``  
+
+
+
+
+## Logical Subsetting {.smaller}
+### Example
+
+- The following code extracts negative components from a numeric vector
+- This can be done by using
+    * ``x[ x < 0 ]``
+
+```r
+# Create numeric vector x
+x <- c(5, -2.3, 4, 4, 4, 6, 8, 10, 40221, -8)
+
+# Get negative components from x and store them in neg_x
+neg_x <- x[ x < 0 ]
+
+cat("Vector x is:", x)
+cat("Negative components of x are:", neg_x)
+```
+
+
+```{r} 
+# Create numeric vector x
+x <- c(5, -2.3, 4, 4, 4, 6, 8, 10, 40221, -8)
+
+# Get negative components from x and store them in neg_x
+neg_x <- x[ x < 0 ]
+
+cat("Vector x is:", x)
+cat("Negative components of x are:", neg_x)
+```
+
+
+
+## Logical Subsetting {.smaller}
+### Example
+
+- The following code extracts components falling between ``a`` and ``b``
+- This can be done by using logical operator and ``&``
+    * ``x[ (x > a) & (x < b) ]``
+
+```r
+# Create numeric vector
+x <- c(5, -2.3, 4, 4, 4, 6, 8, 10, 40221, -8)
+
+# Get components between 0 and 100
+range_x <- x[ (x > 0) & (x < 100) ]
+
+cat("Vector x is:", x)
+cat("Components of x between 0 and 100 are:", range_x)
+```
+
+
+```{r} 
+# Create numeric vector
+x <- c(5, -2.3, 4, 4, 4, 6, 8, 10, 40221, -8)
+
+# Get components between 0 and 100
+range_x <- x[ (x > 0) & (x < 100) ]
+
+cat("Vector x is:", x)
+cat("Components of x between 0 and 100 are:", range_x)
+```
+
+
+
+
+
+
+## The function Which {.smaller}
+
+- ``which()`` allows to convert a logical vector ``flag`` into a numeric index vector 
+    * ``which(flag)`` is vector of indices of ``flag`` which correspond to ``TRUE``
+
+
+```r
+# Create a logical flag vector
+flag <- c(T, F, F, T, F)
+
+# Indices for  flag which
+true_flag <- which(flag)
+
+cat("Flag vector is:", flag)
+cat("Positions for which Flag is TRUE are:", true_flag)
+```
+
+
+```{r}
+# Create a logical flag vector
+flag <- c(T, F, F, T, F)
+
+# Indices for  flag which
+true_flag <- which(flag)
+
+cat("Flag vector is:", flag)
+cat("Positions for which Flag is TRUE are:", true_flag)
+```
+
+
+
+## The function Which -- Application {.smaller}
+
+``which()`` can be used to delete certain entries from a vector ``x``
+
+- Create a flag vector by using 
+    * ``flag <- condition(x)``
+
+- ``condition()`` is any function which returns ``T/F`` vector of same length as ``x``
+
+- Delete entries flagged by ``condition`` using the code
+    * ``x[ -which(flag) ]``
+
+
+
+
+## The function Which -- Application {.smaller}
+### Example
+
+```r
+# Create numeric vector x
+x <- c(5, -2.3, 4, 4, 4, 6, 8, 10, 40221, -8)
+
+# Print x
+cat("Vector x is:", x)
+
+# Flag positive components of x
+flag_pos_x <- (x > 0)
+
+# Remove positive components from x
+ x <- x[ -which(flag_pos_x) ]
+
+# Print x again
+cat("Vector x with positive components removed:", x)
+```
+
+
+```{r} 
+# Create numeric vector x
+x <- c(5, -2.3, 4, 4, 4, 6, 8, 10, 40221, -8)
+
+# Print x
+cat("Vector x is:", x)
+
+# Flag positive components of x
+flag_pos_x <- (x > 0)
+
+# Remove positive components from x
+ x <- x[ -which(flag_pos_x) ]
+
+# Print x again
+cat("Vector x with positive components removed:", x)
+```
+
+
+
+
+
+## Functions that create vectors {.smaller}
+
+The main functions to generate vectors are
+
+- ``c()`` concatenate
+- ``seq()`` sequence
+- ``rep()`` replicate
+
+We have already met ``c()`` and ``seq()`` but there are more details to discuss
+
+
+
+## Concatenate {.smaller}
+
+**Recall:** ``c()`` generates a vector containing the input values
+
+```{r}
+#| echo: true
+
+# Generate a vector of values 1, 2, 3, 4, 5
+x <- c(1, 2, 3, 4, 5)
+
+# Print the vector
+print(x)
+```
+
+
+## Concatenate {.smaller}
+
+- ``c()`` can also concatenate vectors 
+- This was you can **add** entries to an **existing vector**
+
+```{r}
+#| echo: true
+
+# Create 2 vectors
+x <- c(1, 2, 3, 4, 5)
+y <- c(6, 7, 8)
+
+# Concatenate vectors x and y, and also add element 9
+z <- c(x, y, 9)
+
+# Print the resulting vector
+print(z)
+```
+
+
+
+
+## Concatenate {.smaller}
+
+
+- You can assign names to vector elements
+
+- This modiﬁes the way the vector is printed
+
+```{r}
+#| echo: true
+
+# We specify a vector with 3 named entries
+x <- c(first = "Red", second = "Green", third = "Blue")
+
+# Print the named vector
+print(x)
+```
+
+
+## Concatenate {.smaller}
+
+Given a named vector ``x``
+
+- Names can be extracted with ``names(x)``
+- Values can be extracted with ``unname(x)``
+
+```r
+# Create named vector
+x <- c(first = "Red", second = "Green", third = "Blue")
+
+# Access names of x via names(x)
+names_x <- names(x)
+
+# Access values of x via unname(x)
+values_x <- unname(x)
+
+cat("Names of x are:", names(x))
+cat("Values of x are:", unname(x))
+```
+
+
+```{r}
+# Create named vector
+x <- c(first = "Red", second = "Green", third = "Blue")
+
+# Names of componenents of x are accessed via names(x)
+names_x <- names(x)
+
+# Values of componenents of x are accessed via unname(x)
+values_x <- unname(x)
+
+cat("Names of x are:", names(x))
+cat("Values of x are:", unname(x))
+```
+
+
+## Concatenate {.smaller}
+
+- All elements of a vector have the **same** type
+- Concatenating vectors of different types leads to conversion
+
+
+```{r}
+#| echo: true
+
+c(FALSE, 2)        # Converts FALSE to 0
+```
+
+<br>
+
+```{r}
+#| echo: true
+
+c(pi, "stats")     # Converts pi to string 
+
+```
+
+<br>
+
+```{r}
+#| echo: true
+
+c(TRUE, "stats")   # Converts TRUE to string
+```
+
+
+
+## Sequence {.smaller}
+
+- Recall the syntax of ``seq`` is
+  * ``seq(from =, to =, by =, length.out =)``
+
+- Omitting the third argument assumes that ``by = 1``
+
+```{r}
+#| echo: true
+
+# The following generates a vector of integers from 1 to 6
+x <- seq(1, 6)
+
+print(x)
+```
+
+
+## Sequence {.smaller}
+
+
+- ``seq(x1, x2)`` is equivalent to ``x1:x2``
+- Syntax ``x1:x2`` is **preferred** to ``seq(x1, x2)``
+
+
+```r
+# Generate two vectors of integers from 1 to 6
+x <- seq(1, 6)
+y <- 1:6
+
+cat("Vector x is:", x)
+cat("Vector y is:", y)
+cat("They are the same!")
+```
+
+
+```{r}
+# Generate two vectors of integers from 1 to 6
+x <- seq(1, 6)
+y <- 1:6
+
+cat("Vector x is:", x)
+cat("Vector y is:", y)
+cat("They are the same!")
+```
+
+
+
+
+
+
+## Replicate {.smaller}
+
+``rep`` generates repeated values from a vector:
+
+- ``x`` vector 
+- ``n`` integer
+- ``rep(x, n)`` repeats ``n`` times the vector ``x``
+
+```r
+# Create a vector with 3 components
+x <- c(2, 1, 3)
+
+# Repeats 4 times the vector x
+y <- rep(x, 4)
+
+cat("Original vector is:", x)
+cat("Original vector repeated 4 times:", y)
+```
+
+```{r}
+# Create a vector with 3 components
+x <- c(2, 1, 3)
+
+# Repeats 4 times the vector x
+y <- rep(x, 4)
+
+cat("Original vector is:", x)
+cat("Original vector repeated 4 times:", y)
+```
+  
+
+## Replicate {.smaller}
+
+
+The second argument of ``rep()`` can also be a vector:
+
+- Given ``x`` and ``y`` vectors
+- ``rep(x, y)`` repeats entries of ``x`` as many times as corresponding entries of ``y``
+
+
+```r
+x <- c(2, 1, 3)         # Vector to replicate
+y <- c(1, 2, 3)         # Vector saying how to replicate 
+
+z <- rep(x, y)          # 1st entry of x is replicated 1 time
+                        # 2nd entry of x is replicated 2 times
+                        # 3rd entry of x is replicated 3 times
+
+cat("Original vector is:", x)
+cat("Original vector repeated is:", z)
+```
+
+
+```{r}
+x <- c(2, 1, 3)         # Vector to replicate
+y <- c(1, 2, 3)         # Vector saying how to replicate 
+
+z <- rep(x, y)          # 1st entry of x is replicated 1 time
+                        # 2nd entry of x is replicated 2 times
+                        # 3rd entry of x is replicated 3 times
+
+cat("Original vector is:", x)
+cat("Original vector repeated is:", z)
+```
+
+## Replicate {.smaller}
+
+- ``rep()`` can be useful to create vectors of labels
+- **Example**: Suppose we want to collect some numeric data on 3 Cats and 4 Dogs
+
+
+```{r}
+#| echo: true
+
+x <- c("Cat", "Dog")     # Vector to replicate
+
+y <- rep(x, c(3, 4))     # 1st entry of x is replicated 3 times
+                         # 2nd entry of x is replicated 4 times
+
+cat("Vector of labels is:", y)
+```
+
+
+
+
+
+
+
+# Part 3: <br>Two-sample<br> hypothesis tests {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -157,7 +1211,7 @@ $$
 
 
 
-# Part 5: <br>Two-sample t-test {background-color="#cc0164" visibility="uncounted"}
+# Part 4: <br>Two-sample t-test {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -785,7 +1839,7 @@ is **NOT** t-distributed
 
 
 
-# Part 6: <br>Two-sample t-test<br>Example {background-color="#cc0164" visibility="uncounted"}
+# Part 5: <br>Two-sample t-test<br>Example {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -1303,7 +2357,7 @@ legend("topleft",                               # Add legend at top-left
 
 
 
-# Part 7: <br>The Welch t-test {background-color="#cc0164" visibility="uncounted"}
+# Part 6: <br>The Welch t-test {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -1750,7 +2804,7 @@ $$
 
 
 
-# Part 8: <br> The t-test for <br> paired samples{background-color="#cc0164" visibility="uncounted"}
+# Part 7: <br> The t-test for <br> paired samples{background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -2016,1339 +3070,4 @@ ans$p.val
 
 
 **Bottom line:** The data is paired, therefore a paired t-test **must** be used
-
-
-
-
-
-
-# Part 1: <br>The F-distribution {background-color="#cc0164" visibility="uncounted"}
-
-::: footer
-
-<div color="#cc0164">  </div>
-
-:::
-
-
-
-## Recall {.smaller}
-
-The chi-squared distribution with $p$ degrees of freedom is
-$$
-\chi_p^2 = Z_1^2 + \ldots + Z_p^2  \qquad \text{where} \qquad  Z_1, \ldots, Z_n \,\,\, \text{iid} \,\,\, N(0, 1)
-$$
-
-Chi-squared distribution was used to:
-
-- Describe distribution of sample variance $S^2$:
-$$
-\frac{(n-1)S^2}{\sigma^2} \sim \chi_{n-1}^2
-$$
-
-- Define t-distribution with $p$ degrees of freedom:
-$$
-t_p \sim \frac{U}{\sqrt{V/p}} \qquad \text{where} \qquad
-U \sim N(0,1) \,, \quad V \sim \chi_p^2 \quad \text{ independent}
-$$
-
-
-
-## The F-distribution {.smaller}
-
-::: Definition
-
-The r.v. $F$ has F-distribution with $p$ and $q$ degrees of freedom
-if the pdf is
-$$
-f_F(x) = \frac{ \Gamma \left(\frac{p+q}{2} \right) }{ \Gamma \left( \frac{p}{2} \right) \Gamma \left( \frac{q}{2} \right) } 
-\left( \frac{p}{q} \right)^{p/2} \, 
-\frac{ x^{ (p/2) - 1 } }{ [ 1 + (p/q) x ]^{(p+q)/2} } \,, \quad x > 0
-$$
-
-
-:::
-
-
-**Notation**:  F-distribution with $p$ and $q$ degrees of freedom is denoted by $F_{p,q}$
-
-
-**Remark:** Used to describes **variance estimators** for independent samples
-
-
-
-
-## Plot of F-distributions {.smaller}
-
-
-```{r}
-# Set the degrees of freedom
-df1_num <- 1; df1_den <- 5
-df2_num <- 5; df2_den <- 5
-df3_num <- 10; df3_den <- 20
-
-# Generate values for the x-axis
-x_values <- seq(0.1, 8, by = 0.01)
-
-# Calculate the probability density function (PDF) values for each x for the 3 distributions
-pdf_values1 <- df(x_values, df1_num, df1_den)
-pdf_values2 <- df(x_values, df2_num, df2_den)
-pdf_values3 <- df(x_values, df3_num, df3_den)
-
-
-# Plot the gamma PDFs
-plot(x_values, 
-    pdf_values1, 
-    type = "l", 
-    col = "blue", lwd = 2,
-    xlab = "", 
-    ylab = "",
-    ylim = c(0, max(pdf_values2, pdf_values3) + 0.1))
-
-lines(x_values, 
-      pdf_values2, 
-      col = "red", 
-      lwd = 2)
-
-lines(x_values, 
-      pdf_values3, 
-      col = "black", 
-      lwd = 2)
-
-mtext("x", side=1, line=3, cex=2)
-mtext("pdf", side=2, line=2.5, cex=2)
-
-# Add a legend
-legend("topright", legend = c(paste("F(", df1_num, ",", df1_den, ")", sep = ""),
-                              paste("F(", df2_num, ",", df2_den, ")", sep = ""),
-                              paste("F(", df3_num, ",", df3_den, ")", sep = "")),
-       col = c("blue", "red", "black"), lty = 1, lwd = 2, cex = 1.5)
-
-``` 
-
-
-
-
-## Characterization of F-distribution {.smaller}
-
-The F-distribution is obtained as ratio of 2 independent chi-squared distributions
-
-::: Theorem
-
-Suppose that $U \sim \chi_p^2$ and $V \sim \chi_q^2$ are independent. Then
-$$
-X := \frac{U/p}{V/q} \sim F_{p,q}
-$$
-
-:::
-
-
-
-## Idea of Proof {.smaller}
-
-- This is similar to the proof (seen in Homework 2) that 
-$$
-\frac{U}{\sqrt{V/p}} \sim t_p
-$$
-where $U \sim N(0,1)$ and $V \sim \chi_p^2$ are independent 
-
-- In our case we need to prove
-$$
-X := \frac{U/p}{V/q} \sim F_{p,q}
-$$
-where $U \sim \chi_p^2$ and $V \sim \chi_q^2$ are independent
-
-
-
-
-## Idea of Proof {.smaller}
-
-- $U \sim \chi_{p}^2$ and $V \sim \chi_q^2$ are independent. Therefore
-\begin{align*}
-f_{U,V} (u,v) & = f_U(u) f_V(v) \\
-              & = 
-\frac{ 1 }{ \Gamma \left( \frac{p}{2} \right) \Gamma \left( \frac{q}{2} \right) 2^{(p+q)/2} }  u^{\frac{p}{2} - 1}
-v^{\frac{q}{2} - 1} e^{-(u+v)/2}
-\end{align*}
-
-
-- Consider the change of variables 
-$$
-x(u,v) := \frac{u/p}{v/q} \,, \quad y(u,v) := u + v
-$$
-
-
-
-
-## Idea of Proof {.smaller}
-
-- This way we have
-$$
-X = \frac{U/p}{V/q}  \,, \qquad Y = U + V
-$$
-
-
-- To conclude the proof, we need to compute the pdf of $X$, that is $f_X$
-
-- This can be computed as the $X$ marginal of $f_{X,Y}$
-$$
-f_{X}(x) = \int_{0}^\infty f_{X,Y}(x,y) \, dy
-$$
-
-
-
-## Idea of Proof {.smaller}
-
-- The joint pdf $f_{X,Y}$ can be computed by inverting the change of variables
-$$
-x(u,v) := \frac{u/p}{v/q} \,, \quad y(u,v) := u + v
-$$
-and using the formula
-$$
-f_{X,Y}(x,y) = f_{U,V}(u(x,y),v(x,y)) \, |\det J|
-$$
-where $J$ is the Jacobian of the inverse transformation 
-$$
-(x,y) \mapsto (u(x,y),v(x,y))
-$$
-
-
-
-## Idea of Proof {.smaller}
-
-- Since $f_{U,V}$ is known, then also $f_{X,Y}$ is known
-
-- Moreover the integral
-$$
-f_{X}(x) = \int_{0}^\infty f_{X,Y}(x,y) \, dy
-$$
-can be explicitly computed, yielding the thesis
-$$
-f_{X}(x) = \frac{ \Gamma \left(\frac{p+q}{2} \right) }{ \Gamma \left( \frac{p}{2} \right) \Gamma \left( \frac{q}{2} \right) } 
-\left( \frac{p}{q} \right)^{p/2} \, 
-\frac{ x^{ (p/2) - 1 } }{ [ 1 + (p/q) x ]^{(p+q)/2} }
-$$
-
-
-
-
-## Properties of F-distribution {.smaller}
-
-::: Theorem
-
-1. Suppose $X \sim F_{p,q}$ with $q>2$. Then 
-$$
-\Expect[X] = \frac{q}{q-2}
-$$
-
-2. If $X \sim F_{p,q}$ then $1/X \sim F_{q,p}$
-
-3. If $X \sim t_q$ then $X^2 \sim F_{1,q}$
-
-:::
-
-
-
-
-## Properties of F-distribution {.smaller}
-### Proof of Theorem
-
-1. Requires a bit of work (omitted)
-
-2. By the Theorem in Slide 6, we have
-$$
-X \sim F_{p,q} \quad \implies \quad X = \frac{U/p}{V/q}
-$$
-with $U \sim \chi_p^2$ and $V \sim \chi_q^2$ independent. Therefore
-$$
-\frac{1}{X} = \frac{V/q}{U/p} \sim  \frac{\chi^2_q/q}{\chi^2_p/p} \sim F_{q,p}
-$$
-
-
-
-## Properties of F-distribution {.smaller}
-### Proof of Theorem
-
-3. Suppose $X \sim t_q$. The Theorem in Slide 118 of Lecture 2, guarantees that
-$$
-X = \frac{U}{\sqrt{V/q}}
-$$
-where $U \sim N(0,1)$ and $V \sim \chi_q^2$ are independent. Therefore
-$$
-X^2 = \frac{U^2}{V/q}
-$$
-
-
-
-## Properties of F-distribution {.smaller}
-### Proof of Theorem
-
-- Since $U \sim N(0,1)$, by definition $U^2 \sim \chi_1^2$. 
-- Moreover $U^2$ and $V$ are independet, since $U$ and $V$ are independent
-- Finally, the Theorem in Slide 6 implies
-$$
-X^2 = \frac{U^2}{V/q} \sim \frac{\chi_1^2/1}{\chi_q^2/q} \sim F_{1,q} 
-$$
-
-
-
-
-
-
-
-# Part 2: <br>Two-sample F-test {background-color="#cc0164" visibility="uncounted"}
-
-::: footer
-
-<div color="#cc0164">  </div>
-
-:::
-
-
-
-
-
-
-
-## Variance estimators {.smaller}
-
-Suppose given **independent** random samples from 2 normal populations:
-
-- $X_1, \ldots, X_n$ iid random sample from $N(\mu_X, \sigma_X^2)$
-- $Y_1, \ldots, Y_m$ iid random sample from $N(\mu_Y, \sigma_Y^2)$
-
-
-**Problem**:
-
-- We want to compare **variance** of the 2 populations
-- We do it by studying the variances ratio
-$$
-\frac{\sigma_X^2}{\sigma_Y^2}
-$$
-
-
-
-## Variance estimators {.smaller}
-
-**Question**: 
-
-- Suppose the variances $\sigma_X^2$ and $\sigma_Y^2$ are **unknown**
-- How can we estimate the ratio $\sigma_X^2 /\sigma_Y^2 \,$ ?
-
-. . . 
-
-**Answer**: 
-
-- Estimate the ratio $\sigma_X^2 /\sigma_Y^2 \,$ using sample variances
-$$
-S^2_X / S^2_Y
-$$
-
-- The F-distribution allows to compare the quantities 
-$$
-\sigma_X^2 /\sigma_Y^2 \qquad \text{and} \qquad S^2_X / S^2_Y
-$$
-
-
-
-
-## Variance ratio distribution {.smaller}
-
-::: Theorem
-
-Suppose given **independent** random samples from 2 normal populations:
-
-- $X_1, \ldots, X_n$ iid random sample from $N(\mu_X, \sigma_X^2)$
-- $Y_1, \ldots, Y_m$ iid random sample from $N(\mu_Y, \sigma_Y^2)$
-
-The random variable 
-$$
-F = \frac{ S_X^2 / \sigma_X^2  }{ S_Y^2 / \sigma_Y^2 } \, \sim \, F_{n-1,m-1}
-$$
-that is, $F$ is F-distributed with $n-1$ and $m-1$ degrees of freedom
-
-:::
-
-
-
-## Variance ratio distribution {.smaller}
-### Proof
-
-- We need to prove
-$$
-F = \frac{ S_X^2 / \sigma_X^2  }{ S_Y^2 / \sigma_Y^2 } \sim F_{n-1,m-1}
-$$
-
-
-- By the Theorem in Slide 101 Lecture 2, we have that
-$$
- \frac{S_X^2}{ \sigma_X^2} \sim \frac{\chi_{n-1}^2}{n-1} \,, \qquad 
- \frac{S_Y^2}{ \sigma_Y^2} \sim \frac{\chi_{m-1}^2}{m-1}
-$$
-
-
-## Variance ratio distribution {.smaller}
-### Proof
-
-- Therefore 
-$$
-F = \frac{ S_X^2 / \sigma_X^2  }{ S_Y^2 / \sigma_Y^2 } = \frac{U/p}{V/q}  
-$$
-where we have
-$$
-U \sim \chi_{p}^2 \,, \qquad 
-V \sim \chi_q^2 \,, \qquad 
-p = n-1 \,, \qquad
-q = m - 1
-$$
-
-
-- By the Theorem in Slide 6, we infer the thesis
-$$
-F = \frac{U/p}{V/q}   \sim F_{n-1,m-1}
-$$
-
-
-
-## Unbiased estimation of variance ratio {.smaller}
-
-**Question:** Why is $S_X^2/S_Y^2$ a good estimator for $\sigma_X^2/\sigma_Y^2$
-
-**Answer:** 
-
-- Because $S_X^2/S_Y^2$ is (asymptotically) unbiased estimator of $\sigma_X^2/\sigma_Y^2$
-- This is shown in the following Theorem
-
-
-
-
-
-## Unbiased estimation of variance ratio {.smaller}
-
-
-::: Theorem
-
-Suppose given independent random samples from 2 normal populations:
-
-- $X_1, \ldots, X_n$ iid random sample from $N(\mu_X, \sigma_X^2)$
-- $Y_1, \ldots, Y_m$ iid random sample from $N(\mu_Y, \sigma_Y^2)$
-
-It holds that
-$$
-\Expect \left[ \frac{S_X^2}{S_Y^2}  \right] = \frac{m-1}{m-3} \frac{\sigma_X^2}{\sigma_Y^2}  \,, \qquad
-\lim_{m \to \infty} \Expect \left[ \frac{S_X^2}{S_Y^2}  \right] =  \frac{\sigma_X^2}{\sigma_Y^2} 
-$$
-
-:::
-
-
-
-
-
-
-
-## The F-statistic {.smaller}
-
-**Assumption**: Suppose given 2 samples from independent normal populations
-
-$$
-X_1, \ldots, X_n \, \text{ iid from } \, N(\mu_X, \sigma_X^2) \,, \qquad \quad
-Y_1, \ldots, Y_m \, \text{ iid from } \, N(\mu_Y, \sigma_Y^2)
-$$
-
-
-::: Definition
-
-The **F-statistic** is defined as
-$$
-F := \frac{ S_X^2 / \sigma_X^2  }{ S_Y^2 / \sigma_Y^2 } 
-\, \sim  \, F_{n-1,m-1}
-$$
-
-:::
-
-**Note**: Under the Null hypothesis that $\sigma_X^2 = \sigma_Y^2$, the F-statistic simplifies to
-$$
-F =  \frac{ S_X^2 }{ S_Y^2 }
-$$
-
-
-
-## The two-sample F-test {.smaller}
-
-Suppose given two **independent** samples
-
-$$
-x_1, \ldots, x_n \, \text{ iid from } \, N(\mu_X, \sigma_X^2) \,, \qquad \quad
-y_1, \ldots, y_m \, \text{ iid from } \, N(\mu_Y, \sigma_Y^2)
-$$
-
-
-The hypotheses for **difference in variance** are
-$$
-H_0 \colon \sigma_X^2 = \sigma_Y^2 \,, \quad \qquad 
-H_1 \colon \sigma_X^2 \neq \sigma_Y^2 \quad \text{ or } \quad 
-H_1 \colon \sigma_X^2 > \sigma_Y^2
-$$
-
-
-
-**Very important:** We only consider two-sided and right-tailed hypotheses  
-
-- This is because we can always label the samples in a way that $s_X^2 \geq s_Y^2$
-
-- Therefore, there is no reason to suspect that $\sigma_X^2 < \sigma_Y^2$
-
-- This allows us to work only with upper quantiles  
-(and avoid a lot of trouble, as the F-distribution is asymmetric)
-
-
-
-
-
-
-
-
-## Procedure: 3 Steps {.smaller}
-
-1. **Calculation**: Compute the two-sample F-statistic
-$$
-F = \frac{ s_X^2}{ s_Y^2}
-$$
-where sample variances are
-$$
-s_X^2 = \frac{\sum_{i=1}^n x_i^2 - n \overline{x}^2}{n-1}
-\qquad \quad
-s_Y^2 = \frac{\sum_{i=1}^m y_i^2 - m \overline{y}^2}{m-1}
-$$
-
-
-**Very important:** $s_X^2$ refers to the sample with **largest variance**
-
-$$
-\implies \quad s_X^2 \geq s_Y^2 \,, \qquad F \geq 1
-$$
-
-
-
-
-
-##  {.smaller}
-
-2. **Statistical Tables or R**: Find either
-    * Critical value $F^*$ in [Tables 3, 4](files/Statistics_Tables.pdf)
-    * p-value in R
-
-<br> 
-
-3. **Interpretation**: Reject $H_0$ when either
-$$
-p < 0.05 \qquad \text{ or } \qquad F \in \,\,\text{Rejection Region} 
-\qquad \qquad \qquad \qquad
-(X \, \sim \, F_{n-1,m-1})
-$$
-
-
-| Alternative                      | Rejection Region  | $F^*$             | p-value         |
-|----------------------------------|-------------------|-------------------|-----------------|
-| $\sigma^2_X \neq \sigma^2_Y$               | $F > F^*$       | $F_{n-1, m-1}(0.025)$| $2P(X > F)$   |
-| $\sigma^2_X > \sigma^2_Y$                  | $F > F^*$       | $F_{n -1, m-1}(0.05)$ | $P(X > F)$      |
-: {tbl-colwidths="[25,25,25,25]"}
-
-
-
-
-
-## {.smaller}
-
-```{r}
-# Degrees of freedom
-df1 <- 6
-df2 <- 10
-
-# Values for x-axis
-x <- seq(0, 6, length.out = 1000)
-
-# Calculate PDF of F-distribution
-pdf <- df(x, df1, df2)
-
-# Set layout for 2 plots side by side
-par(mfrow = c(1, 2))
-
-# ==========================
-# Two-tailed test
-# ==========================
-plot(x, pdf, type = "l", col = "blue", lwd = 2, xlab = "", ylab = "",
-     main = expression("Two-Tailed Test: " ~ sigma[X]^2 != sigma[Y]^2))
-
-# Left rejection region (alpha/2 = 0.025)
-crit_left <- qf(0.025, df1, df2)
-x_fill_left <- x[x <= crit_left]
-y_fill_left <- pdf[x <= crit_left]
-polygon(c(x_fill_left, rev(x_fill_left)), c(y_fill_left, rep(0, length(y_fill_left))),
-        col = "gray", border = NA)
-
-# Right rejection region (alpha/2 = 0.025)
-crit_right <- qf(0.975, df1, df2)
-x_fill_right <- x[x >= crit_right]
-y_fill_right <- pdf[x >= crit_right]
-polygon(c(x_fill_right, rev(x_fill_right)), c(y_fill_right, rep(0, length(y_fill_right))),
-        col = "gray", border = NA)
-
-# Add critical value labels with symbolic subscripts
-text(crit_left + 1.2, df(crit_left, df1, df2) + - 0.35, expression(F[n-1 * "," * m-1](0.925)),
-     pos = 3, col = "red", cex = 1.1)
-
-text(crit_right + 1.0, df(crit_right, df1, df2) + 0.0, expression(F[n-1 * "," * m-1](0.025)),
-     pos = 3, col = "red", cex = 1.1)
-
-# Legend
-legend("topright", legend = c("Rej. Region area = 0.025 x 2"), fill = "gray", cex = 1)
-
-# ==========================
-# Right-tailed test
-# ==========================
-plot(x, pdf, type = "l", col = "blue", lwd = 2, xlab = "", ylab = "",
-     main = expression("Right-Tailed Test: " ~ sigma[X]^2 > sigma[Y]^2))
-
-# Critical value for 0.05 significance level
-crit_right_tail <- qf(0.95, df1, df2)
-
-# Shading rejection region
-x_fill_right <- x[x >= crit_right_tail]
-y_fill_right <- pdf[x >= crit_right_tail]
-polygon(c(x_fill_right, rev(x_fill_right)), c(y_fill_right, rep(0, length(y_fill_right))),
-        col = "gray", border = NA)
-
-# Add critical value label with symbolic subscripts
-text(crit_right_tail + 1.1, df(crit_right_tail, df1, df2) - 0.01,
-     expression(F[n-1 * "," * m-1](0.05)), pos = 3, col = "red", cex = 1.1)
-
-# Legend
-legend("topright", legend = c("Rej. Region area = 0.05"), fill = "gray", cex = 1)
-
-# Reset layout
-par(mfrow = c(1, 1))
-
-
-```
-
-::: {style="font-size: 0.92em"}
-- Reject $H_0$ if F-statistic falls in the *Rejection Region* (in gray)
-
-- Recall $F \geq 1 \implies$ for two-sided test we only need to check if $F > F_{n-1,m-1}(0.025)$
-:::
-
-
-## Tables: Critical values of F distribution {.smaller}
-
-- **Always** construct F-statistic as
-$$
-F = \frac{s^2_X}{s^2_Y} \quad\quad  \text{where} \quad\quad s^2_X \geq s^2_Y \qquad \implies \qquad F \geq 1
-$$
-
-- This way only the **upper** critical values of F-distribution are needed
-
-
-- Upper critical values for F distribution are in [Tables 3, 4](files/Statistics_Tables.pdf)
-    
-| Table # | Critical values           |
-|-------  |---------------------------|
-| 3       | $F_{\nu_1,\nu_2} (0.05)$  |
-| 4       | $F_{\nu_1,\nu_2} (0.025)$ |
-
-
-
-
-
-## Table 3 in [Statistics_Tables.pdf](files/Statistics_Tables.pdf) {.smaller}
-
-
-![](images/F_statistic_table_3.png){width=82%}
-
-**Table 3:** Lists the values $F_{\nu_1,\nu_2}(0.05)$, which means
-
-$$
-P(X > F_{\nu_1,\nu_2}(0.05)) = 0.05 \,, \qquad \text{ when } \quad X \sim F_{\nu_1,\nu_2}
-$$
-
-For example $F_{9, 6}(0.05) = 4.10$
-
-
-
-
-
-##  {.smaller}
-
-Plot of $F_{9,6}$ distribution. White area is $0.95$. Shaded area is $0.05$
-$$
-P(F_{9,6} > 4.10) =  0.05 \,, \qquad 
-4.10 = F_{9,6}(0.05)
-$$
-
-
-```{r}
-# Degrees of freedom
-df_num <- 9
-df_den <- 6
-
-# Generate values for the x-axis
-x <- seq(0.1, 7, by = 0.01)
-
-# Calculate the probability density function (PDF) for the F-distribution
-pdf <- df(x, df_num, df_den)
-
-# Plot PDF
-plot(x, pdf, type = "l", col = "blue", lwd = 2, xlab = "x", ylab = "Density")
-
-# Shade area where p-value > 0.95
-critical_value <- qf(0.95, df_num, df_den)
-x_fill_right <- x[x >= critical_value]
-y_fill_right <- pdf[x >= critical_value]
-polygon(c(x_fill_right, rev(x_fill_right)), c(y_fill_right, rep(0, length(y_fill_right))), col = "gray", border = NA)
-
-# Add annotation with subscript F_{9,6}
-text(critical_value, df(critical_value, df_num, df_den) + 0.05, 
-     bquote(F[.(df_num)*","*.(df_den)](0.05) == .(round(critical_value, 2))), 
-     pos = 3, col = "red", cex = 1.3)
-
-# Add legend
-legend("topright", legend = c("area = 0.05"), fill = "gray", cex = 1.3)
-
-
-```
-
-
-
-
-## Table 4 in [Statistics_Tables.pdf](files/Statistics_Tables.pdf) {.smaller}
-
-
-![](images/F_statistic_table_4.png){width=82%}
-
-**Table 4:** Lists the values $F_{\nu_1,\nu_2}(0.025)$, which means
-
-$$
-P(X > F_{\nu_1,\nu_2}(0.025)) = 0.025 \,, \qquad \text{ when } \quad X \sim F_{\nu_1,\nu_2}
-$$
-
-For example $F_{9, 6}(0.025) = 5.52$
-
-
-
-
-
-
-## What about missing values? {.smaller}
-
-- Sometimes the value $F_{\nu_1,\nu_2}(\alpha)$ is missing from F-table
-
-- In such case approximate $F_{\nu_1,\nu_2}(\alpha)$ with average of closest entries available
-
-
-![](images/F_statistic_table_missing.png){width=82%}
-
-**Example:** $F_{21,5}(0.05)$ is missing. We can approximate it by
-$$
-F_{21,5}(0.05) \approx \frac{F_{20,5}(0.05) + F_{25,5}(0.05)}{2} = \frac{ 4.56 + 4.52 }{ 2 } = 4.54
-$$
-
-
-
-
-
-
-
-## The two-sample F-test in R {.smaller}
-
-1. Store the samples $x_1,\ldots,x_n$ and $y_1,\ldots,y_m$ in two R vectors
-    * ``x <- c(x1, ..., xn)``
-    * ``y <- c(y1, ..., ym)``
-
-2. Perform a two-sample F-test on ``x`` and ``y``
-
-|Alternative                  |    R command                               |
-|-----------------------------|--------------------------------------------|
-|$\sigma_X^2 \neq \sigma_Y^2$ | ``var.test(x, y)``                         |
-|$\sigma_X^2 > \sigma_Y^2$    |``var.test(x, y, alt = "greater")`` |
-: {tbl-colwidths="[30,70]"}
-
-3. Read output: similar to two-sample t-test
-    * The main quantity of interest is p-value
-
-
-
-
-
-
-
-# Part 3: <br>Worked Example {background-color="#cc0164" visibility="uncounted"}
-
-::: footer
-
-<div color="#cc0164">  </div>
-
-:::
-
-
-
-
-
-
-##  {.smaller}
-
-- **Data:** Wages of 10 Mathematicians and 13 Accountants (again!)
-
-- **Assumptions:** Wages are independent and normally distributed
-
-
-
-|                  |     |     |     |     |     |     |     |     |     |      |     |    |    |
-|:-----------      |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:----:|:---:|:--:|:--:|
-|**Mathematicians**| 36  |  40 | 46  | 54  |  57 | 58  | 59  | 60  |  62 |  63  |     |    |    |
-|**Accountants**   | 37  | 37  | 42  |  44 |  46 |  48 |  54 |  56 |  59 | 60   |  60 | 64 | 64 |
-
-- Last week, we conducted a two-sample t-test for equality of means
-$$
-H_0 \colon \mu_X = \mu_Y \,, \qquad 
-H_1 \colon \mu_X \neq \mu_Y
-$$
-
-- We concluded that there is no evidence ($p>0.05$) of difference in pay levels
-
-- However, the two-sample t-test assumed equal variance
-$$
-\sigma_X^2 = \sigma_Y^2
-$$
-
-- We checked this assumption by plotting the estimated sample distributions
-
-
-
-##  {.smaller}
-
-```{r}
-#| echo: true
-#| code-fold: true
-#| code-summary: "View the R Code"
-
-# Enter the Wages data
-mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
-accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
-
-# Compute the estimated distributions
-d.math <- density(mathematicians)
-d.acc <- density(accountants)
-
-# Plot the estimated distributions
-
-plot(d.math,                                    # Plot d.math
-     xlim = range(c(d.math$x, d.acc$x)),        # Set x-axis range
-     ylim = range(c(d.math$y, d.acc$y)),        # Set y-axis range
-     main = "Estimated Distributions of Wages") # Add title to plot
-lines(d.acc,                                    # Layer plot of d.acc
-      lty = 2)                                  # Use different line style
-         
-legend("topleft",                               # Add legend at top-left
-       legend = c("Mathematicians",             # Labels for legend
-                  "Accountants"), 
-       lty = c(1, 2))                           # Assign curves to legend          
-```
-
-
-- The plot shows that the two populations have similar variance (spread)
-
-- Thanks to the F-test, we can now compare variances in a quantitative way
-
-
-
-
-## Setting up the F-test {.smaller}
-
-- We want to test for equality of the two variances
-
-- There is no prior reason to believe that pay in one group is more spread out
-
-- Therefore, a two-sided test is appropriate
-$$
-H_0 \colon \sigma_X^2 = \sigma_Y^2 \,, \qquad
-H_1 \colon \sigma_X^2 \neq \sigma_Y^2
-$$
-
-- First task is to compute the F-statistic
-$$
-F = \frac{s_X^2}{s_Y^2}
-$$
-
-
-- **Important:** We need to make sure the samples are labelled so that
-$$
-s_X^2 \geq s_Y^2
-$$
-
-
-
-
-## 1. Calculation {.smaller}
-### Variance of first sample (Already done last week!)
-
-- **Sample size:** $\ n =$ No. of Mathematicians $= 10$
-- **Mean**:
-$$
-\bar{x} = \frac{\sum_{i=1}^n x_i}{n} 
-        = \frac{36+40+46+ \ldots +62+63}{10}=\frac{535}{10}=53.5
-$$
-
-- **Variance:**
-\begin{align*}
-  \sum_{i=1}^n x_i^2 & =  36^2+40^2+46^2+ \ldots +62^2+63^2 = 29435 \\
-  s^2_X & = \frac{\sum_{i=1}^n x_i^2 - n \bar{x}^2}{n -1 }
-          = \frac{29435-10(53.5)^2}{9} = 90.2778
-\end{align*}
-
-
-
-
-## 1. Calculation {.smaller}
-### Variance of second sample (Already done last week!)
-
-- **Sample size:** $\ m =$ No. of Accountants $= 13$
-- **Mean**:
-$$
-\bar{y} = \frac{37+37+42+ \dots +64+64}{13}
-        = \frac{671}{13} = 51.6154
-$$
-
-- **Variance:**
-\begin{align*}
-  \sum_{i=1}^m y_i^2 & = 37^2+37^2+42^2+ \ldots +64^2+64^2 = 35783  \\
-  s^2_Y & = \frac{\sum_{i=1}^m y_i^2 - m \bar{y}^2}{m - 1} 
-          = \frac{35783-13(51.6154)^2}{12} = 95.7547
-\end{align*}
-
-
-
-## 1. Calculation {.smaller}
-### The F-statistic
-
-
-- Notice that
-$$
-s^2_Y = 95.7547 > 90.2778 = s_X^2
-$$
-
-- Hence the $F$-statistic is
-$$
-F = \frac{s^2_Y}{s_X^2} = \frac{95.7547}{90.2778} = 1.061\ \quad (3\ \text{d.p.})
-$$
-
-- **Important:** We have swapped role of $s^2_X$ and $s^2_Y$, since $s^2_Y > s^2_X$. This way
-$$
-F > 1
-$$
-
-
-
-
-## 2. Referencing Tables {.smaller}
-
-- Degrees of freedom are
-$$ 
-n - 1 = 10 - 1 = 9 \,, \qquad
-m - 1 = 13 - 1 = 12
-$$
-
-- **Note**: Since we have swapped role of $s^2_X$ and $s^2_Y$, we have
-$$
-F =  \frac{s^2_Y}{s_X^2}  \sim F_{m-1,n-1} = F_{12,9}
-$$
-
-- We need to find the critical value $F_{12,9}(0.025)$ in [Table 4](files/Statistics_Tables.pdf)
-
-**Note: This is a two-sided test. Hence $\alpha = 0.025$, and not $0.05$!**
-
-
-
-##  {.smaller}
-
-- Below is a section of [Table 4](files/Statistics_Tables.pdf)
-
-![](images/F_statistic_table_missing_2.png){width=82%}
-
-
-- We note that $F_{12, 9}$ is missing. Closest values are $F_{10, 9}$ and $F_{15, 9}$
-
-- We estimate the desired critical value by averaging the two
-
-$$
-F_{12, 9}(0.025) \approx \frac{F_{10, 9}(0.025) + F_{15, 9}(0.025)}{2} = \frac{3.96 + 3.77}{2} = 3.865
-$$
-
-
-
-
-## 3. Interpretation {.smaller}
-
-
-- We have that
-$$
-F = 1.061 <  3.865 = F_{12, 9}(0.025)
-$$
-
-- Therefore the p-value satisfies
-$$
-p > 0.05
-$$
-
-- There is no evidence ($p > 0.05$) in favor of $H_1$. We have no reason to doubt that
-$$
-\sigma_X^2 = \sigma_Y^2
-$$
-
-
-- **Conclusion:** 
-    i. Wage levels for the two groups appear to be equally well spread out
-    ii. This is in line with previous graphical checks
-
-
-
-
-
-
-
-## The F-test in R {.smaller}
-
-We present two implementations in R:
-
-1. Simple solution using the command ``var.test``
-2. A first-principles construction closer to our earlier hand calculation
-
-
-
-
-## Simple solution: ``var.test`` {.smaller}
-
-This is a two-sided F-test. The p-value is computed by
-
-$$
-p = 2 P(F_{m-1, n-1} > F) \,, \qquad F  = \frac{s_Y^2}{s_X^2} 
-$$
-
-
-```r
-# Enter Wages data in 2 vectors using function c()
-mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
-accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
-
-
-# Perform two-sided F-test using var.test
-# Store result and print
-ans <- var.test(accountants, mathematicians)
-print(ans)
-```
-
-- **Note**: ``accountants`` goes first because it has larger variance
-- Code can be downloaded here [F_test.R](codes/F_test.R)
-
-
-
-
-##  {.smaller}
-
-```{r}
-# Enter Wages data in 2 vectors using function c()
-
-mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
-accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
-
-
-# Perform two-sided F-test using var.test
-# Store result and print
-
-ans <- var.test(accountants, mathematicians)
-print(ans)
-```
-
-**Comments**: 
-
-1. First line: R tells us that an F-test is performed
-
-2. Second line: Data for F-test is ``accountants`` and ``mathematicians``
-
-3. The F-statistic computed is $F = 1.0607$
-    * **Note**: This coincides with the one computed by hand (up to rounding error)
-
-
-
-
-##  {.smaller}
-
-```{r}
-# Enter Wages data in 2 vectors using function c()
-
-mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
-accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
-
-
-# Perform two-sided F-test using var.test
-# Store result and print
-
-ans <- var.test(accountants, mathematicians)
-print(ans)
-```
-
-
-**Comments**: 
-
-4. Numerator of F-statistic has $12$ degrees of freedom
-5. Denominator of F-statistic has $9$ degrees of freedom
-6. p-value is $p = 0.9505$
-
-
-
-
-##  {.smaller}
-
-```{r}
-# Enter Wages data in 2 vectors using function c()
-
-mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
-accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
-
-
-# Perform two-sided F-test using var.test
-# Store result and print
-
-ans <- var.test(accountants, mathematicians)
-print(ans)
-```
-
-
-**Comments**: 
-
-7. Fourth line: The alternative hypothesis is that ratio of variances is $\, \neq 1$
-    * This translates to $H_1 \colon \sigma_Y^2 \neq \sigma^2_X$
-    * **Warning**: This is not saying to reject $H_0$ -- R is just stating $H_1$
-
-
-
-
-
-##  {.smaller}
-
-```{r}
-# Enter Wages data in 2 vectors using function c()
-
-mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
-accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
-
-
-# Perform two-sided F-test using var.test
-# Store result and print
-
-ans <- var.test(accountants, mathematicians)
-print(ans)
-```
-
-
-**Comments**: 
-
-8. Fifth line: R computes a $95 \%$ confidence interval for ratio $\sigma_Y^2/\sigma_X^2$ 
-$$
-(\sigma_Y^2/\sigma_X^2 ) \in [0.2742053, 3.6443547]
-$$
-    * **Interpretation:** If you repeat the experiment (on new data) over and over, the interval will contain $\sigma_Y^2/\sigma_X^2$ about $95\%$ of the times
-
-
-
-
-
-## {.smaller}
-
-```{r}
-# Enter Wages data in 2 vectors using function c()
-
-mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
-accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
-
-
-# Perform two-sided F-test using var.test
-# Store result and print
-
-ans <- var.test(accountants, mathematicians)
-print(ans)
-```
-
-
-**Comments**: 
-
-9. Seventh line: R computes ratio of sample variances
-    * We have that $s_Y^2/s_X^2 = 1.060686$
-    * By definition, the above coincides with the F-statistic (up to rounding)
-
-
-
-
-
-##  {.smaller}
-
-```{r}
-# Enter Wages data in 2 vectors using function c()
-mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
-accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
-
-
-# Perform two-sided F-test using var.test
-# Store result and print
-ans <- var.test(accountants, mathematicians)
-print(ans)
-```
-
-
-**Conclusion**: The p-value is $p = 0.9505$
-
-- Since $p > 0.05$, we do not reject $H_0$
-- Hence $\sigma^2_X$ and $\sigma^2_Y$ appear to be similar
-- Wage levels for the two groups appear to be equally well spread out
-
-
-
-
-
-## First principles solution {.smaller}
-
-- Start by entering data into R
-
-```r
-# Enter Wages data in 2 vectors using function c()
-
-mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
-accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
-``` 
-
-
-
-
-
-## First principles solution {.smaller}
-
-- Check which population has higher variance
-- In our case ``accountants`` has higher variance
-
-```r
-# Check which variance is higher
-
-cat("\n Variance of accountants is", var(accountants))
-cat("\n Variance of mathematicians is", var(mathematicians))
-```
-
-```{r}
-# Enter Wages data in 2 vectors using function c()
-
-mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
-accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
-
-cat("\n Variance of accountants is", var(accountants))
-cat("\n Variance of mathematicians is", var(mathematicians))
-``` 
-
-## First principles solution {.smaller}
-
-- Compute sample sizes
-
-```r
-# Calculate sample sizes
-
-n <- length(mathematicians)
-m <- length(accountants)
-```
-
-
-## First principles solution {.smaller}
-
-- Compute F-statistic
-$$
-F = \frac{s_Y^2}{s_X^2}
-$$
-
-- **Recall**: Numerator has to have larger variance
-
-- In our case ``accountants`` is numerator
-
-
-```r
-# Compute F-statistics
-# Numerator is population with largest variance
-
-F <- var(accountants) / var(mathematicians)
-```
-
-
-
-
-
-
-## First principles solution  {.smaller}
-
-
-- Compute the p-value
-$$
-p = 2P(F_{m-1, n-1} > F) = 2 - 2P(F_{m-1, n-1} \leq F) \,, \qquad F = \frac{s_Y^2}{s_X^2}
-$$
-
-
-```r
-# Compute p-value
-p_value <- 2 - 2 * pf(F, df1 = m - 1, df2 = n - 1)
-
-# Print p-value
-cat("\n The p-value for two-sided F-test is", p_value)
-```
-
-<br>
-
-- **Note:** The command ``pf(x, df1 = n, df2 = m)`` computes probability
-$$
-P(F_{n,m} \leq x)
-$$
-
-
-
-## First principles solution: Output {.smaller}
-
-- Full code be downloaded here [F_test_first_principles.R](codes/F_test_first_principles.R)
-
-- Running the code yields the output:
-
-```{r}
-# Enter Wages data in 2 vectors using function c()
-mathematicians <- c(36, 40, 46, 54, 57, 58, 59, 60, 62, 63)
-accountants <- c(37, 37, 42, 44, 46, 48, 54, 56, 59, 60, 60, 64, 64)
-
-# Check which variance is higher
-cat("\n Variance of accountants is", var(accountants))
-cat("\n Variance of mathematicians is", var(mathematicians))
-
-# Calculate sample sizes
-n <- length(mathematicians)
-m <- length(accountants)
-
-# Compute F-statistics
-# Numerator is population with largest variance
-F <- var(accountants)/var(mathematicians)
-
-# Compute p-value
-p_value <- 2 - 2 * pf(F, df1 = m - 1, df2 = n - 1)
-
-# Print p-value
-cat("\n The p-value for two-sided F-test is", p_value)
-```
-
-<br>
-
-- Note: The p-value coincides with the one obtained with ``var.test``
-    * This is a way to cross check our code is right
-
-- Since $p > 0.05$, we **do not reject** $H_0$
-
 
