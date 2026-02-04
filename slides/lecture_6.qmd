@@ -21,7 +21,7 @@ $
 
 
 
-# Lecture 6: <br> Contingency tables &  <br> Simulation {background-color="#cc0164" visibility="uncounted"}
+# Lecture 6: <br> Chi-squared test &  <br> Least Squares {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -37,10 +37,8 @@ $
 
 ::: {.column width="50%"}
 
-1. Goodness-of-fit test for Contingency tables
+1. Chi-squared test of independence
 2. Worked Example
-3. Chi-squared test of independence
-4. Worked Example
 
 :::
 
@@ -48,20 +46,11 @@ $
 
 ::: {.column width="50%"}
 
-5. Monte Carlo simulations
-6. Simulating p-values
-7. The Bootstrap
-
-:::
-
-
-
-
-# Part 1: <br>Goodness-of-fit test for <br >Contingency tables {background-color="#cc0164" visibility="uncounted"}
-
-::: footer
-
-<div color="#cc0164">  </div>
+3. Lists
+4. Data Frames
+5. Data Entry
+6. Least squares
+7. Worked Example
 
 :::
 
@@ -69,756 +58,7 @@ $
 
 
 
-## {.smaller}
-
-**Two-way Contigency Tables:** Table in which each observation is classified in 2 ways
-
-**Example:** 
-
-- Relative performance of Man Utd managers
-
-- Two classifications for each game: Result, and Manager in charge
-
-| Manager     |     Won |  Drawn  | Lost    |
-|:-----------:|:-------:|:-------:|:-------:|
-| **Moyes**   |   27    | 9       |   15    |
-|**Van Gaal** |   54    |  25     |   24    |
-|**Mourinho** |   84    |  32     |   28    |
-|**Solskjaer**|    91   |   37    |   40    |
-|**Rangnick** |    11   |   10    |   8     |
-|**ten Hag**  |    61   |   12    |   28    |
-
-
-
-
-
-
-## Contingency tables: Abstract definition {.smaller}
-
-|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
-|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
-|$X = 1$   |  $O_{11}$| $O_{12}$  | $\ldots$ | $O_{1C}$ | $O_{1+}$|
-|$X = 2$   |  $O_{21}$| $O_{22}$  | $\ldots$ | $O_{2C}$ | $O_{2+}$|
-|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
-|$X = R$   |  $O_{R1}$| $O_{R2}$  | $\ldots$ | $O_{RC}$ | $O_{R+}$|
-|**Totals**| $O_{+1}$ | $O_{+2}$  | $\ldots$ | $O_{+C}$ | $m$     |
-
-
-- Each observation
-    * has attached two categories $X$ and $Y$
-    * can only belong to one category $(X,Y) = (i,j)$
-
-- $O_{ij}$ is the **count** of observations with $(X,Y) = (i,j)$
-- Table has $R$ rows and $C$ columns, for total of $n = RC$ categories
-
-
-
-## Contingency tables: Abstract definition {.smaller}
-
-|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
-|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
-|$X = 1$   |  $O_{11}$| $O_{12}$  | $\ldots$ | $O_{1C}$ | $O_{1+}$|
-|$X = 2$   |  $O_{21}$| $O_{22}$  | $\ldots$ | $O_{2C}$ | $O_{2+}$|
-|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
-|$X = R$   |  $O_{R1}$| $O_{R2}$  | $\ldots$ | $O_{RC}$ | $O_{R+}$|
-|**Totals**| $O_{+1}$ | $O_{+2}$  | $\ldots$ | $O_{+C}$ | $m$     |
-
-
-- *plus* symbol in subscript denotes sum over
-that subscript. Example
-
-$$
-O_{R+} = \sum_{j=1}^C O_{Rj} \qquad \quad 
-O_{+2} = \sum_{i=1}^R O_{i2}
-$$
-
-
-
-
-## Contingency tables: Abstract definition {.smaller}
-
-|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
-|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
-|$X = 1$   |  $O_{11}$| $O_{12}$  | $\ldots$ | $O_{1C}$ | $O_{1+}$|
-|$X = 2$   |  $O_{21}$| $O_{22}$  | $\ldots$ | $O_{2C}$ | $O_{2+}$|
-|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
-|$X = R$   |  $O_{R1}$| $O_{R2}$  | $\ldots$ | $O_{RC}$ | $O_{R+}$|
-|**Totals**| $O_{+1}$ | $O_{+2}$  | $\ldots$ | $O_{+C}$ | $m$     |
-
-
-- The total count is
-
-$$
-m = O_{++} = \sum_{i=1}^R \sum_{j=1}^C O_{ij}
-$$
-
-
-
-
-
-## Contingency tables: Abstract definition {.smaller}
-
-|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
-|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
-|$X = 1$   |  $O_{11}$| $O_{12}$  | $\ldots$ | $O_{1C}$ | $O_{1+}$|
-|$X = 2$   |  $O_{21}$| $O_{22}$  | $\ldots$ | $O_{2C}$ | $O_{2+}$|
-|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
-|$X = R$   |  $O_{R1}$| $O_{R2}$  | $\ldots$ | $O_{RC}$ | $O_{R+}$|
-|**Totals**| $O_{+1}$ | $O_{+2}$  | $\ldots$ | $O_{+C}$ | $m$     |
-
-
-- The marginal counts sum to $m$ as well
-
-$$
-\sum_{i=1}^R O_{i+} = \sum_{i=1}^R \sum_{j=1}^C O_{ij} = m
-$$
-
-
-
-## Contingency tables: Abstract definition {.smaller}
-
-|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
-|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
-|$X = 1$   |  $O_{11}$| $O_{12}$  | $\ldots$ | $O_{1C}$ | $O_{1+}$|
-|$X = 2$   |  $O_{21}$| $O_{22}$  | $\ldots$ | $O_{2C}$ | $O_{2+}$|
-|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
-|$X = R$   |  $O_{R1}$| $O_{R2}$  | $\ldots$ | $O_{RC}$ | $O_{R+}$|
-|**Totals**| $O_{+1}$ | $O_{+2}$  | $\ldots$ | $O_{+C}$ | $m$     |
-
-
-- The marginal counts sum to $m$ as well
-
-$$
-\sum_{j=1}^C O_{+j} = \sum_{j=1}^C \sum_{i=1}^R  O_{ij} = m
-$$
-
-
-
-
-## Contingency tables: Probabilities {.smaller}
-
-|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
-|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
-|$X = 1$   |  $p_{11}$| $p_{12}$  | $\ldots$ | $p_{1C}$ | $p_{1+}$|
-|$X = 2$   |  $p_{21}$| $p_{22}$  | $\ldots$ | $p_{2C}$ | $p_{2+}$|
-|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
-|$X = R$   |  $p_{R1}$| $p_{R2}$  | $\ldots$ | $p_{RC}$ | $p_{R+}$|
-|**Totals**| $p_{+1}$ | $p_{+2}$  | $\ldots$ | $p_{+C}$ | $1$     |
-
-
-- Observation in cell $(i,j)$ happens with probability
-
-$$
-p_{ij} := P(X = i , Y = j)
-$$
-
-
-## Contingency tables: Probabilities {.smaller}
-
-|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
-|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
-|$X = 1$   |  $p_{11}$| $p_{12}$  | $\ldots$ | $p_{1C}$ | $p_{1+}$|
-|$X = 2$   |  $p_{21}$| $p_{22}$  | $\ldots$ | $p_{2C}$ | $p_{2+}$|
-|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
-|$X = R$   |  $p_{R1}$| $p_{R2}$  | $\ldots$ | $p_{RC}$ | $p_{R+}$|
-|**Totals**| $p_{+1}$ | $p_{+2}$  | $\ldots$ | $p_{+C}$ | $1$     |
-
-- The marginal probabilities that $X = i$ or $Y = j$ are at the margins of table
-
-$$
-P(X = i) = \sum_{j=1}^C P(X = i , Y = j) = \sum_{j=1}^C p_{ij} = p_{i+}
-$$
-
-
-## Contingency tables: Probabilities {.smaller}
-
-|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
-|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
-|$X = 1$   |  $p_{11}$| $p_{12}$  | $\ldots$ | $p_{1C}$ | $p_{1+}$|
-|$X = 2$   |  $p_{21}$| $p_{22}$  | $\ldots$ | $p_{2C}$ | $p_{2+}$|
-|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
-|$X = R$   |  $p_{R1}$| $p_{R2}$  | $\ldots$ | $p_{RC}$ | $p_{R+}$|
-|**Totals**| $p_{+1}$ | $p_{+2}$  | $\ldots$ | $p_{+C}$ | $1$     |
-
-- The marginal probabilities that $X = i$ or $Y = j$ are at the margins of table
-
-$$
-P(Y = j) = \sum_{i=1}^R P(X = i , Y = j) = \sum_{i=1}^R p_{ij} = p_{+j}
-$$
-
-
-
-## Contingency tables: Probabilities {.smaller}
-
-|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
-|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
-|$X = 1$   |  $p_{11}$| $p_{12}$  | $\ldots$ | $p_{1C}$ | $p_{1+}$|
-|$X = 2$   |  $p_{21}$| $p_{22}$  | $\ldots$ | $p_{2C}$ | $p_{2+}$|
-|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
-|$X = R$   |  $p_{R1}$| $p_{R2}$  | $\ldots$ | $p_{RC}$ | $p_{R+}$|
-|**Totals**| $p_{+1}$ | $p_{+2}$  | $\ldots$ | $p_{+C}$ | $1$     |
-
-- Marginal probabilities sum to $1$
-
-$$
-\sum_{i=1}^R p_{i+} = \sum_{i=1}^R  P(X = i) = \sum_{i=1}^R \sum_{j=1}^C P(X = i , Y = j) = 1
-$$
-
-
-
-## Contingency tables: Probabilities {.smaller}
-
-|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
-|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
-|$X = 1$   |  $p_{11}$| $p_{12}$  | $\ldots$ | $p_{1C}$ | $p_{1+}$|
-|$X = 2$   |  $p_{21}$| $p_{22}$  | $\ldots$ | $p_{2C}$ | $p_{2+}$|
-|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
-|$X = R$   |  $p_{R1}$| $p_{R2}$  | $\ldots$ | $p_{RC}$ | $p_{R+}$|
-|**Totals**| $p_{+1}$ | $p_{+2}$  | $\ldots$ | $p_{+C}$ | $1$     |
-
-- Marginal probabilities sum to $1$
-
-$$
-\sum_{j=1}^C p_{+j} = \sum_{j=1}^C  P(X = j) = \sum_{j=1}^R \sum_{j=1}^C P(X = i , Y = j) = 1
-$$
-
-
-
-## Multinomial distribution {.smaller}
-
-- Counts $O_{ij}$ and probabilities $p_{ij}$ can be assembled into $R \times C$ matrices
-$$
-O = 
-\left(
-\begin{array}{ccc}
-O_{11} & \ldots & O_{1C} \\
-\vdots & \ddots & \vdots \\
-O_{R1} & \ldots & O_{RC} \\
-\end{array}
-\right) 
-\qquad \qquad 
-p = 
-\left(
-\begin{array}{ccc}
-p_{11} & \ldots & p_{1C} \\
-\vdots & \ddots & \vdots \\
-p_{R1} & \ldots & p_{RC} \\
-\end{array}
-\right)
-$$
-
-
-- This way the random matrix $O$ has multinomial distribution 
-$$
-O \sim \multinomial (m,p)
-$$
-
-- The counts $O_{ij}$ are therefore binomial
-$$
-O_{ij} \sim \binomial (m,p_{ij})
-$$
-
-
-
-
-## Multinomial distribution {.smaller}
-
-
-- We can also consider the marginal random vectors
-$$
-(O_{1+}, \ldots, O_{R+}) \qquad \qquad (O_{+1}, \ldots, O_{+C})
-$$
-
-- These have also multinomial distribution
-$$
-(O_{1+}, \ldots, O_{R+})  \sim \multinomial (m, p_{1+}, \ldots, p_{R+})
-$$
-$$
-(O_{+1}, \ldots, O_{+C}) \sim \multinomial (m, p_{+1}, \ldots, p_{+C})
-$$
-
-
-
-
-
-## Expected counts {.smaller}
-
-|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
-|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
-|$X = 1$   |  $O_{11}$| $O_{12}$  | $\ldots$ | $O_{1C}$ | $O_{1+}$|
-|$X = 2$   |  $O_{21}$| $O_{22}$  | $\ldots$ | $O_{2C}$ | $O_{2+}$|
-|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
-|$X = R$   |  $O_{R1}$| $O_{R2}$  | $\ldots$ | $O_{RC}$ | $O_{R+}$|
-|**Totals**| $O_{+1}$ | $O_{+2}$  | $\ldots$ | $O_{+C}$ | $m$     |
-
-
-- We have that $O_{ij} \sim \binomial (m,p_{ij})$
-- We model the **expected counts** for category $(i,j)$ as
-$$
-E_{ij} := \Expect[O_{ij}] =  m p_{ij}
-$$
-
-
-
-## Marginal expected counts {.smaller}
-
-|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
-|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
-|$X = 1$   |  $E_{11}$| $E_{12}$  | $\ldots$ | $E_{1C}$ | $E_{1+}$|
-|$X = 2$   |  $E_{21}$| $E_{22}$  | $\ldots$ | $E_{2C}$ | $E_{2+}$|
-|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
-|$X = R$   |  $E_{R1}$| $E_{R2}$  | $\ldots$ | $E_{RC}$ | $E_{R+}$|
-|**Totals**| $E_{+1}$ | $E_{+2}$  | $\ldots$ | $E_{+C}$ | $m$     |
-
-- Due to linearity of expectation, it makes sense to define marginal counts
-$$
-E_{i+} := \sum_{j=1}^C E_{ij} 
-\qquad \qquad 
-E_{+j} := \sum_{i=1}^R  E_{ij} 
-$$
-
-
-
-## Marginal expected counts {.smaller}
-
-|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
-|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
-|$X = 1$   |  $E_{11}$| $E_{12}$  | $\ldots$ | $E_{1C}$ | $E_{1+}$|
-|$X = 2$   |  $E_{21}$| $E_{22}$  | $\ldots$ | $E_{2C}$ | $E_{2+}$|
-|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
-|$X = R$   |  $E_{R1}$| $E_{R2}$  | $\ldots$ | $E_{RC}$ | $E_{R+}$|
-|**Totals**| $E_{+1}$ | $E_{+2}$  | $\ldots$ | $E_{+C}$ | $m$     |
-
-- Marginal expected counts sum to $m$. For example:
-$$
-\sum_{i=1}^R E_{i+} = \sum_{i=1}^R \sum_{j=1}^C E_{ij} =  m \sum_{i=1}^R \sum_{j=1}^C p_{ij} = m
-$$
-
-
-
-
-## The chi-squared statistic {.smaller}
-
-|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
-|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
-|$X = 1$   |  $O_{11}$| $O_{12}$  | $\ldots$ | $O_{1C}$ | $O_{1+}$|
-|$X = 2$   |  $O_{21}$| $O_{22}$  | $\ldots$ | $O_{2C}$ | $O_{2+}$|
-|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
-|$X = R$   |  $O_{R1}$| $O_{R2}$  | $\ldots$ | $O_{RC}$ | $O_{R+}$|
-|**Totals**| $O_{+1}$ | $O_{+2}$  | $\ldots$ | $O_{+C}$ | $m$     |
-
-
-::: Definition 
-
-The chi-squared statistic associated to the above contingency table is
-$$
-\chi^2 := \sum_{i=1}^R \sum_{j=1}^C  \frac{ (O_{ij} - E_{ij})^2 }{ E_{ij} } = 
-\sum_{i=1}^R \sum_{j=1}^C  \frac{ (O_{ij} - m p_{ij})^2 }{ m p_{ij} }
-$$
-
-:::
-
-
-
-
-## Distribution of chi-squared statistic {.smaller}
-
-::: Theorem
-
-Suppose the counts $O \sim \multinomial (m,p)$. Then
-$$
-\chi^2 = \sum_{i=1}^R \sum_{j=1}^C  \frac{ (O_{ij} - m p_{ij})^2 }{ m p_{ij} } \ 
-\stackrel{ {\rm d} }{ \longrightarrow } \ \chi_{RC - 1 - {\rm fitted} }^2  
-$$
-when sample size $m  \to \infty$. The convergence is in distribution and
-
-- $\rm fitted = \,$ \# of parameters used to estimate cell probabilities $p_{ij}$
-
-:::
-
-
-**Quality of approximation:** The chi-squared approximation is good if
-$$
-E_{ij} = m p_{ij} \geq 5  \quad \text{ for all } \,\, i = 1 , \ldots , R  \, \text{ and }
-j = 1, \ldots, C 
-$$
-
-
-
-
-## Goodness-of-fit test for contingency tables {.smaller}
-
-**Setting:** 
-
-- Population consists of items of $n = R \times C$ different types
-- $p_{ij}$ is probability that an item selected at random is of type $(i,j)$
-- $p_{ij}$ is unknown and needs to be estimated
-
-- As guess for $p_{ij}$ we take $p_{ij}^0$ such that
-$$
-0 \leq p_{ij}^0 \leq 1 \qquad \qquad \sum_{i=1}^R \sum_{j=1}^C p_{ij}^0 = 1
-$$
-
-
-
-## Goodness-of-fit test for contingency tables {.smaller}
-
-**Hypothesis Test:** We test for equality of $p_{ij}$ to $p_{ij}^0$
-\begin{align*}
-& H_0 \colon p_{ij} = p_{ij}^0 \qquad \text{ for all } \, i = 1, \ldots, R  \,, \text{ and } \, j = 1 , \ldots, C \\
-& H_1 \colon p_{ij} \neq p_{ij}^0 \qquad \text{ for at least one pair } \, (i,j) 
-\end{align*}
-
-
-**Sample**: 
-
-- We draw $m$ items from population
-- $O_{ij}$ denotes the number of items of type $i$ drawn
-- Therefore $O = (O_{ij})_{ij}$ is $\multinomial (m,p)$ with $p = (p_{ij})_{ij}$
-
-**Data**: Matrix of counts $o = (o_{ij})_{ij}$
-
-
-
-
-## Procedure {.smaller}
-
-1. **Calculation**: 
-    * Compute total counts and expected counts
-    $$
-    m = \sum_{i=1}^R \sum_{j=1}^C o_{ij} \qquad \quad E_{ij} = m p_{ij}^0
-    $$ 
-    * Compute the chi-squared statistic
-    $$
-    \chi^2 = \sum_{i=1}^R \sum_{j=1}^C \frac{ (o_{ij} - E_{ij})^2 }{E_{ij}}
-    $$
-
-
-
-##  {.smaller}
-
-
-
-2. **Statistical Tables or R**: 
-    * Check that $E_{ij} \geq 5$ for all $i, j$
-    * No parameters fitted. By the Theorem we get
-    $$
-    {\rm degrees \,\, freedom} = RC - 1 \qquad \qquad  \chi^2 \ \approx \ \chi_{RC-1}^2
-    $$
-    * Find critical value $\chi^2_{RC - 1} (0.05)$ in chi-squared [Table 2](files/Statistics_Tables.pdf)
-    * Alternatively, compute p-value in R
-
-
-3. **Interpretation**: Reject $H_0$ when either
-$$
-p < 0.05 \qquad \text{ or } \qquad \chi^2 \in \,\,\text{Rejection Region}
-$$
-
-
-| Alternative                                      | Rejection Region               |    p-value                 |
-|--------------------------------------------------|--------------------------------|----------------------------|
-| $\exists \, (i,j) \,\,$ s.t. $\,\, p_{ij} \neq p_{ij}^0$ | $\chi^2 > \chi^2_{RC-1}(0.05)$  | $P(\chi_{RC-1}^2 > \chi^2)$ |
-: {tbl-colwidths="[32,28,25]"}
- 
-
-
-
-
-
-## Goodness-of-fit test in R {.smaller}
-
-1. Store matrix of counts $O = (o_{ij})_{ij}$ into a single R vector, proceeding row-by-row 
-    * ``counts <- c(o_11, o_12, ..., o_RC)``
-
-2. Store matrix of null probabilities $p^0 = (p_{ij}^0)_{ij}$ into a single R vector (row-by-row)
-    * ``nullp.p <- c(p_11, p_12, ..., p_RC)``
-
-3. Perform a chi-squared goodness-of-fit test on ``counts`` with ``null.p``
-
-|Alternative                                    |    R command                         |
-|-----------------------------------------------|--------------------------------------|
-|$\exists \, (i,j) \,\,$ s.t. $\,\, p_{ij} \neq p_{ij}^0$ | ``chisq.test(counts, p = null.p)``  |
-: {tbl-colwidths="[40,60]"}
-
-4. Read output: In particular look for the p-value
-
-**Monte Carlo p-value:** compute with the option ``simulate.p.value = T``
-
-**Note:** Command in 3 is exactly the same as goodness-of-fit test for simple counts
-
-
-
-
-# Part 2: <br>Worked Example {background-color="#cc0164" visibility="uncounted"}
-
-::: footer
-
-<div color="#cc0164">  </div>
-
-:::
-
-
-
-## Example: Manchester United performance {.smaller}
-
-
-**Background story:**
-
-- From 1992 to 2013 Man Utd won 13 Premier Leagues titles out of 21
-- This is the best performance (of any team) in the Premier League era
-- This was under manager Sir Alex Ferguson
-- Ferguson stepped down in 2014
-- Since 2014 Man Utd has not won the PL and was managed by 6 different people (excluding interims)
-
-
-**Question:** Are the 6 managers to blame for worse Team Performance?
-
-
-
-
-## The data {.smaller}
-
-| Manager     |     Won |  Drawn  | Lost    |
-|:-----------:|:-------:|:-------:|:-------:|
-| **Moyes**   |   27    | 9       |   15    |
-|**Van Gaal** |   54    |  25     |   24    |
-|**Mourinho** |   84    |  32     |   28    |
-|**Solskjaer**|    91   |   37    |   40    |
-|**Rangnick** |    11   |   10    |   8     |
-|**ten Hag**  |    61   |   12    |   28    |
-
-- Table contains Man Utd games since 2014 season (updated to 2024 season)
-
-- To each Man Utd game in the sample we associate two categories:
-    * Manager and Result
-
-
-
-
-
-## Setting up the test {.smaller}
-
-- **Question:** Is the number of Wins, Draws and Losses uniformly distributed?
-    * If Yes, this would suggest very poor performance
-
-
-- **Hypothesis Test:** To answer the question we perform a goodness-of-fit test on
-\begin{align*}
-& H_0 \colon p_{ij} = p_{ij}^0 \quad \text { for all pairs } \, (i,j)  \\
-& H_1 \colon p_{ij} \neq p_{ij}^0 \quad \text { for at least one pair } \, (i,j)  \\
-\end{align*}
-
-- **Null Probabilities:** 
-    * They have to model that Wins, Draws and Losses are uniformly distributed
-    * To compute them, we need to compute total number of games for each manager
-
-
-
-## Computing the null probabilities {.smaller}
-
-- We compute total number of games for each manager
-
-| Manager     |     Won |  Drawn  | Lost    |     Total     |
-|:-----------:|:-------:|:-------:|:-------:|:------------- |
-| **Moyes**   |   27    | 9       |   15    | $o_{1+} = 51$ |
-|**Van Gaal** |   54    |  25     |   24    | $o_{2+} = 103$|
-|**Mourinho** |   84    |  32     |   28    | $o_{3+} = 144$|
-|**Solskjaer**|    91   |   37    |   40    | $o_{4+} = 168$|
-|**Rangnick** |    11   |   10    |   8     | $o_{5+} = 29$ |
-|**ten Hag**  |    61   |   12    |   28    | $o_{6+} = 101$|
-
-- We also need the total number of games
-$$
-m = \sum_{i=1}^R o_{i+} = 596
-$$
-
-
-
-
-## Computing the null probabilities {.smaller}
-
-::: {style="font-size: 0.93em"}
-
-- The results are **uniformly distributed** if each manager 
-    * Wins (Draws, Loses) $1/3$ of the games he played
-
-    
-- Since Manager $i$ plays $o_{i+}$ games, the expected scores are
-$$
-E_{ij} = \frac{o_{i+}}{3} \,, \qquad j=1,2,3
-$$
-
-- Recall that the expected scores are modelled as
-$$
-E_{ij} = m p_{ij}^0
-$$
-
-- Thus, the null probabilities under the assumption of uniform distribution are
-
-$$
-p_{ij}^0 = \frac13 \times \frac{o_{i+}}{m} \quad \left( = \frac{1}{3} \times \text{Proportion of total games played by Manager } \, i \right)
-$$
-
-:::
-
-
-## Computing the null probabilities {.smaller}
-
-- Substituting the values of $o_{i+}$ and $m$, we obtain the null probabilities
-
-\begin{align*}
-\text{Moyes: } \quad & p_{1j}^0 = \frac13 \times \frac{ o_{1+} }{ m } = 51 \big/ 1788  \\ 
-\text{Van Gaal: }\quad & p_{2j}^0 = \frac13 \times  \frac{ o_{2+} }{ m } = 103 \big/  1788  \\
-\text{Mourinho: } \quad& p_{3j}^0 = \frac13 \times  \frac{ o_{3+} }{ m } =  144 \big/  1788  \\
-\text{Solskjaer: } \quad& p_{4j}^0 = \frac13 \times \frac{ o_{4+} }{ m } =  168 \big/ 1788 \\
-\text{Rangnick: }\quad & p_{5j}^0 = \frac13 \times \frac{ o_{5+} }{ m } =  29 \big/  1788  \\
-\text{ten Hag: }\quad & p_{6j}^0 = \frac13 \times \frac{ o_{6+} }{ m } =  101 \big/  1788 
-\end{align*}
-
-
-## Summary: Counts and Null probabilities {.smaller}
-
-<br>
-
-::: {.column width="48%"}
-
-| Manager     |     Won |  Drawn  | Lost    |
-|:-----------:|:-------:|:-------:|:-------:|
-| **Moyes**   |   27    | 9       |   15    |
-|**Van Gaal** |   54    |  25     |   24    |
-|**Mourinho** |   84    |  32     |   28    |
-|**Solskjaer**|    91   |   37    |   40    |
-|**Rangnick** |    11   |   10    |   8     |
-|**ten Hag**  |    61   |   12    |   28    |
-
-:::
-
-
-
-::: {.column width="48%"}
-
-| Manager     |     Won |  Drawn  | Lost    |
-|:-----------:|:-------:|:-------:|:-------:|
-| **Moyes**   | $\frac{51}{1788}$ | $\frac{51}{1788}$ | $\frac{51}{1788}$ |
-|**Van Gaal** | $\frac{103}{1788}$ | $\frac{103}{1788}$ | $\frac{103}{1788}$ |
-|**Mourinho** | $\frac{144}{1788}$ | $\frac{144}{1788}$ | $\frac{144}{1788}$ |
-|**Solskjaer**| $\frac{168}{1788}$ | $\frac{168}{1788}$ | $\frac{168}{1788}$ |
-|**Rangnick** | $\frac{29}{1788}$ | $\frac{29}{1788}$ | $\frac{29}{1788}$ |
-|**ten Hag**  | $\frac{101}{1788}$ | $\frac{101}{1788}$ | $\frac{101}{1788}$ |
-
-
-::::
-
-
-## Implementation in R {.smaller}
-
-- Start by storing the matrix of counts into a single R vector, row-by-row
-
-```r
-# Store matrix of counts into single R vector
-counts <- c(27, 9, 15,
-            54, 25, 24,
-            84, 32, 28, 
-            91, 37, 40,
-            11, 10, 8,
-            61, 12, 28)
-```
-
-
-## {.smaller}
-
-- Then we store the matrix of null probabilities into a single R vector, row-by-row
-- Null probabilities in each row are the same. Hence we can use the command ``rep``
-
-```r
-# Store matrix of null probabilities into single R vector
-# To avoid copy pasting, first store probabilities of each Manager
-manager.null.p <- c(51/1788, 103/1788, 144/1788, 
-                    168/1788, 29/1788, 101/1788)
-
-# Repeat each entry 3 times 
-null.p <- rep(manager.null.p, c(3, 3, 3, 3, 3, 3))
-```
-
-<br>
-
-- Let us print the (rounded) null probabilities to aid visualization
-
-```r
-print(round(null.p,2))     # Rounds to 2 d.p.
-```
-
-```{r}
-manager.null.p <- c(51/1788, 103/1788, 144/1788, 
-                    168/1788, 29/1788, 101/1788)
-null.p <- rep(manager.null.p, c(3, 3, 3, 3, 3, 3))
-print(round(null.p,2))
-```
-
-
-
-
-## {.smaller}
-
-- Finally we perform the goodness-of-fit test on ``counts`` and ``null.p``
-
-```r
-# Perform goodness-of-fit test
-ans <- chisq.test(counts, p = null.p)
-
-# Print answer
-print(ans)
-```
-
-
-- The code can be downloaded here [good_fit_contingency.R](codes/good_fit_contingency.R)
-
-
-
-
-## Output {.smaller}
-
-- Running the code we obtain
-
-```{r}
-# Store matrix of counts into single R vector
-counts <- c(27, 9, 15,
-            54, 25, 24,
-            84, 32, 28, 
-            91, 37, 40,
-            11, 10, 8,
-            61, 12, 28)
-
-# Store matrix of null probabilities into single R vector
-# To avoid copy pasting, first store probabilities of each Manager
-manager.null.p <- c(51/1788, 103/1788, 144/1788, 
-                    168/1788, 29/1788, 101/1788)
-
-# Repeat each entry 3 times 
-null.p <- rep(manager.null.p, c(3, 3, 3, 3, 3, 3))
-
-# Perform goodness-of-fit test
-ans <- chisq.test(counts, p = null.p)
-
-# Print answer
-print(ans)
-```
-
-<br>
-
-- p-value is $p \approx 0 < 0.05$
-- We therefore reject $H_0$
-- Significant evidence that results of Man Utd games are not uniformly distributed
-- Low goal-scoring rates in soccer mean roughly $1/3$ of games end in a draw
-- Hence Man Utd is not actually doing too bad
-
-
-
-
-
-
-
-# Part 3: <br>Chi-squared test <br>of independence {background-color="#cc0164" visibility="uncounted"}
+# Part 1: <br>Chi-squared test <br>of independence {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -1231,7 +471,7 @@ $$
 
 
 
-# Part 4: <br> Worked Example {background-color="#cc0164" visibility="uncounted"}
+# Part 2: <br> Worked Example {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -1492,7 +732,1058 @@ print(ans)
 
 
 
-# Part 5: <br>Monte Carlo <br> simulations {background-color="#cc0164" visibility="uncounted"}
+# Part 3: <br>Lists {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## Lists {.smaller}
+
+
+- Vectors can contain only one data type (number, character, boolean)
+
+- Lists are data structures that can contain **any R object**
+
+- Lists can be created similarly to vectors, with the command ``list()``
+
+```{r}
+#| echo: true
+
+# List containing a number, a vector, and a string
+my_list <- list(2, c(T,F,T,T), "hello")
+
+# Print the list
+print(my_list)
+```
+
+
+
+
+## Retrieving elements {.smaller}
+
+Elements of a list can be retrieved by **indexing**
+
+- ``my_list[[k]]`` returns k-th element of ``my_list``
+
+<br>
+
+```{r}
+#| echo: true
+# Consider again the same list
+my_list <- list(2, c(T,F,T,T), "hello")
+
+# Access 2nd element of my_list and store it in variable
+second_element <- my_list[[2]]
+
+# In this case the variable second_element is a vector
+print(second_element)
+
+```
+
+
+
+## List slicing {.smaller}
+
+
+You can return multiple items of a list via **slicing**
+
+- ``my_list[c(k1, ..., kn)]`` returns elements in positions ``k1, ..., kn``
+- ``my_list[k1:k2]`` returns elements ``k1`` to ``k2``
+
+```{r}
+#| echo: true
+
+my_list <- list(2, c(T,F), "Cat", "Dog", pi, 42)
+
+# We store 1st, 3rd, 5th entries of my_list in slice
+slice <- my_list[c(1, 3, 5)]
+
+print(slice)
+
+```
+
+
+## List slicing {.smaller}
+
+
+```{r}
+#| echo: true
+
+my_list <- list(2, c(T,F), "Cat", "Dog", pi, 42)
+
+# We store 2nd to 4th entries of my_list in slice
+slice <- my_list[2:4]
+
+print(slice)
+
+```
+
+
+## Naming {.smaller}
+
+
+- Components of lists can be **named**
+    * ``names(my_list) <- c("name_1", ..., "name_k")``
+
+```{r}
+#| echo: true
+
+# Create list with 3 elements
+my_list <- list(2, c(T,F,T,T), "hello")
+
+# Name each of the 3 elements
+names(my_list) <- c("number", "TF_vector", "string")
+
+# Print the named list: the list is printed along with element names 
+print(my_list)
+
+```
+
+
+
+
+## Accessing named entries {.smaller}
+
+- A component of ``my_list`` named ``my_name`` can be accessed with dollar operator
+    * ``my_list$my_name``
+
+```{r}
+#| echo: true
+
+# Create list with 3 elements and name them
+my_list <- list(2, c(T,F,T,T), "hello")
+names(my_list) <- c("number", "TF_vector", "string")
+
+# Access 2nd element using dollar operator and store it in variable
+second_component <- my_list$TF_vector
+
+# Print 2nd element
+print(second_component)
+
+```
+
+
+
+
+## Naming vectors {.smaller}
+
+
+- Vectors can be **named**, using the same syntax
+    * ``names(my_vector) <- c("name_1", ..., "name_k")``
+
+
+<br>
+
+
+```{r}
+#| echo: true
+
+# Create vector storing RGB levels of purple color
+purple <- c(99, 3, 48)
+names(purple) <- c("Red", "Green", "Blue")
+
+# Print the vector
+print(purple)
+```
+
+
+
+## Accessing named entries {.smaller}
+
+- A named component is accessed via indexing
+    * ``my_vector["name_k"]``
+
+
+<br>
+
+```r
+# Print 2nd element
+print(purple["Green"])
+```
+
+```{r}
+# Create vector storing RGB levels of purple color
+purple <- c(99, 3, 48)
+names(purple) <- c("Red", "Green", "Blue")
+
+# Print 2nd element
+print(purple["Green"])
+```
+
+<br>
+
+```r
+# Print only the value stored in "Green"
+print(as.numeric(purple["Green"]))
+```
+
+```{r}
+# Create vector storing RGB levels of purple color
+purple <- c(99, 3, 48)
+names(purple) <- c("Red", "Green", "Blue")
+
+# Print only the value stored in "Green"
+print(as.numeric(purple["Green"]))
+```
+
+
+
+# Part 4: <br>Data Frames {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## Data Frames {.smaller}
+
+- Data Frames are the preferred way of presenting a data set in R:
+    * Each variable has assigned a collection of recorded observations
+
+- Data frames can contain any R object
+
+- Data Frames are similar to Lists, with the difference that:
+    * Members of a Data Frame must all be vectors of equal length
+
+- In simpler terms:
+    * Data Frame is a rectangular table of entries
+
+
+
+
+
+## Constructing a Data Frame {.smaller}
+
+- Data frames are constructed similarly to lists, using 
+    * ``data.frame()``
+
+- **Important**: Elements of data frame must be vectors of the same length
+
+- **Example**: We construct the **Family Guy** data frame. Variables are
+    * ``person`` -- Name of character
+    * ``age`` -- Age of character
+    * ``sex`` -- Sex of character
+
+```r
+family <- data.frame(
+  person = c("Peter", "Lois", "Meg", "Chris", "Stewie"),
+  age = c(42, 40, 17, 14, 1),
+  sex = c("M", "F" , "F", "M", "M")
+)
+```
+
+
+
+## Printing a Data Frame {.smaller}
+
+::: {.column width="44%"}
+
+- R prints data frames like matrices
+- First row contains vector names
+
+:::
+
+::: {.column width="54%"}
+
+- First column contains row names
+- Data are paired: e.g. Peter is 42 and Male
+
+:::
+
+```{r}
+#| echo: true
+
+family <- data.frame(
+  person = c("Peter", "Lois", "Meg", "Chris", "Stewie"),
+  age = c(42, 40, 17, 14, 1),
+  sex = c("M", "F" , "F", "M", "M")
+)
+
+print(family)
+
+```
+
+
+## Accessing single entry {.smaller}
+
+- Think of a data frame as a *matrix*
+
+- You can access element in position ``(m,n)`` by using
+    * ``my_data[m, n]``
+
+- **Example**
+    * Peter is in 1st row
+    * Names are in 1st column 
+    * Therefore, Peter's name is in position ``(1,1)``
+
+
+```r
+data <- family[1, 1]
+
+print(data)
+```
+
+```{r}
+family <- data.frame(
+  person = c("Peter", "Lois", "Meg", "Chris", "Stewie"),
+  age = c(42, 40, 17, 14, 1),
+  sex = c("M", "F" , "F", "M", "M")
+)
+
+data <- family[1, 1]
+
+print(data)
+```
+
+
+
+
+## Accessing multiple entries {.smaller}
+
+To access multiple elements on the same row or column, type
+
+- ``my_data[c(k1,...,kn), m] `` $\quad$ or $\quad$ `` my_data[k1:k2, m]``
+- ``my_data[n, c(k1,...,km)] `` $\quad$ or $\quad$ `` my_data[n, k1:k2]``
+
+**Example:** We want to access Stewie's Sex and Age:
+
+- Stewie is listed in 5th row
+- Age and Sex are in 2nd and 3rd column
+
+```r
+stewie_data <- family[5, 2:3]
+
+print(stewie_data)
+```
+
+```{r}
+family <- data.frame(
+  person = c("Peter", "Lois", "Meg", "Chris", "Stewie"),
+  age = c(42, 40, 17, 14, 1),
+  sex = c("M", "F" , "F", "M", "M")
+)
+
+stewie_data <- family[5, 2:3]
+
+print(stewie_data)
+```
+
+
+
+## Accessing rows {.smaller}
+
+
+- To access rows ``k1,...,kn``
+    * ``my_data[c(k1,...,kn), ]`` 
+    
+- To access rows ``k1`` to ``kn`` 
+    * ``my_data[k1:k2, ]``
+
+
+<br>
+
+```r
+data <- family[c(1,3), ]      # Access 1st and 3rd row - Peter & Meg
+
+print(data)
+```
+
+```{r}
+
+family <- data.frame(
+  person = c("Peter", "Lois", "Meg", "Chris", "Stewie"),
+  age = c(42, 40, 17, 14, 1),
+  sex = c("M", "F" , "F", "M", "M")
+)
+
+data <- family[c(1,3), ]      # Access 1st and 3rd row - Peter & Meg
+
+print(data)
+
+```
+
+
+
+## Accessing columns {.smaller}
+
+- To access columns ``k1,...,kn``
+    * ``my_data[ , c(k1,...,kn)]`` 
+    
+- To access columns ``k1`` to ``kn`` 
+    * ``my_data[ ,k1:k2]``
+
+
+<br>
+
+
+```r
+age.name <- family[, c(2,1)]    # Access 2nd and 1st columns: Age and Name
+
+print(age.name)
+```
+
+```{r}
+
+family <- data.frame(
+  person = c("Peter", "Lois", "Meg", "Chris", "Stewie"),
+  age = c(42, 40, 17, 14, 1),
+  sex = c("M", "F" , "F", "M", "M")
+)
+
+age.name <- family[, c(2,1)]
+
+
+print(age.name)
+
+```
+
+
+
+
+## The dollar operator {.smaller}
+
+Use dollar operator to access data frame columns
+
+- Suppose data frame ``my_data`` contains a variable called ``my_variable``
+    * ``my_data$my_variable`` accesses column ``my_variable``
+    * ``my_data$my_variable`` is a vector
+
+**Example**: To access ``age`` in the ``family`` data frame type
+
+```r
+ages <- family$age        # Stores ages in a vector
+
+cat("Ages of the Family Guy characters are:", ages)
+```
+
+```{r}
+family <- data.frame(
+  person = c("Peter", "Lois", "Meg", "Chris", "Stewie"),
+  age = c(42, 40, 17, 14, 1),
+  sex = c("M", "F" , "F", "M", "M")
+)
+
+ages <- family$age
+
+cat("Ages of the Family Guy characters are:", ages)
+```
+
+```r
+cat("Meg's age is", ages[3])
+```
+
+
+```{r}
+family <- data.frame(
+  person = c("Peter", "Lois", "Meg", "Chris", "Stewie"),
+  age = c(42, 40, 17, 14, 1),
+  sex = c("M", "F" , "F", "M", "M")
+)
+
+ages <- family$age
+
+cat("Meg's age is", ages[3])
+```
+
+
+## Size of a data frame {.smaller}
+
+
+
+|  Command            |    Output         |
+|:------------        |:-------------     |
+|``nrow(my_data)``    | # of rows         |
+|``ncol(my_data)``    | # of columns      |
+|``dim(my_data)``     | vector containing #  of rows and columns |
+: {tbl-colwidths="[30,60]"}
+
+
+<br>
+
+
+```r
+family_dim <- dim(family)    # Stores dimensions of family in a vector
+
+cat("The Family Guy data frame has", 
+    family_dim[1], 
+    "rows and", 
+    family_dim[2], 
+    "columns")
+```
+
+```{r}
+family <- data.frame(
+  person = c("Peter", "Lois", "Meg", "Chris", "Stewie"),
+  age = c(42, 40, 17, 14, 1),
+  sex = c("M", "F" , "F", "M", "M")
+)
+
+family_dim <- dim(family)
+
+cat("The Family Guy data frame has", family_dim[1], 
+    "rows and", family_dim[2], "columns")
+
+```
+
+
+
+
+## Adding Data {.smaller}
+
+
+Assume given a data frame ``my_data``
+
+- To add more records (adding to rows ``rbind``) 
+    * Create single row data frame ``new_record``
+    * ``new_record`` must match the structure of ``my_data``
+    * Add to ``my_data`` with ``my_data <- rbind(my_data, new_record)``
+
+- To add a set of observations for a new variable (adding to columns ``cbind``)
+    * Create a vector ``new_variable``
+    * ``new_variable`` must have as many components as rows in ``my_data``
+    * Add to ``my_data`` with ``my_data <- cbind(my_data, new_variable)``
+
+    
+
+## Example: Add new record {.smaller}
+
+- Consider the usual **Family Guy** data frame ``family``
+- Suppose we want to add data for **Brian**
+- Create a new record: a single row data frame with columns   
+    * *person*, *age*, *sex*
+
+```{r}
+#| echo: true
+
+new_record <- data.frame(
+  person = "Brian",
+  age = 7,
+  sex = "M"
+)
+
+print(new_record)
+```
+
+**Important:** Names have to match existing data frame
+
+
+
+## Example: Add new record {.smaller}
+
+
+- Now, we add ``new_record`` to ``family``
+- This is done by *appending* one row to the existing data frame
+
+<br>
+
+```r
+family <- rbind(family, new_record)
+
+print(family)
+```
+
+```{r}
+family <- data.frame(
+  person = c("Peter", "Lois", "Meg", "Chris", "Stewie"),
+  age = c(42, 40, 17, 14, 1),
+  sex = c("M", "F" , "F", "M", "M")
+)
+
+new_record <- data.frame(
+  person = "Brian",
+  age = 7,
+  sex = "M"
+)
+
+family <- rbind(family, new_record)
+print(family)
+```
+
+
+
+## Example: Add new variable {.smaller}
+
+- We want to add a new variable to the **Family Guy** data frame ``family``
+- This variable is called ``funny``
+- It records how funny each character is, with levels
+    * *Low*, *Med*, *High*
+- Create a vector ``funny`` with entries matching each character (including **Brian**)
+
+
+```{r}
+#| echo: true
+
+funny <- c("High", "High", "Low", "Med", "High", "Med")
+
+print(funny)
+
+```
+
+
+## Example: Add new variable {.smaller}
+
+- Add ``funny`` to the **Family Guy** data frame ``family``
+- This is done by *appending* one column to the existing data frame
+
+
+```r
+family <- cbind(family, funny)
+
+print(family)
+```
+
+
+```{r}
+family <- data.frame(
+  person = c("Peter", "Lois", "Meg", "Chris", "Stewie"),
+  age = c(42, 40, 17, 14, 1),
+  sex = c("M", "F" , "F", "M", "M")
+)
+
+new_record <- data.frame(
+  person = "Brian",
+  age = 7,
+  sex = "M"
+)
+
+family <- rbind(family, new_record)
+
+funny <- c("High", "High", "Low", "Med", "High", "Med")
+
+family <- cbind(family, funny)
+print(family)
+```
+
+
+
+## Adding a new variable {.smaller}
+### Alternative way
+
+Instead of using ``cbind`` we can use dollar operator:
+
+- Want to add variable called ``new_variable``
+- Create a vector ``v`` containing values for the new variable
+- ``v`` must have as many components as rows in ``my_data``
+- Add to ``my_data`` with 
+    * ``my_data$new_variable <- v``
+    
+
+
+
+## Example  {.smaller}
+
+- We add age expressed in months to the **Family Guy** data frame ``family``
+- Age in months can be computed by multiplying vector ``family$age`` by $12$
+
+
+```r
+v <- family$age * 12       # Computes vector of ages in months
+
+family$age.months <- v     # Stores vector as new column in family
+
+print(family)
+```
+
+
+```{r}
+family <- data.frame(
+  person = c("Peter", "Lois", "Meg", "Chris", "Stewie"),
+  age = c(42, 40, 17, 14, 1),
+  sex = c("M", "F" , "F", "M", "M")
+)
+
+new_record <- data.frame(
+  person = "Brian",
+  age = 7,
+  sex = "M"
+)
+
+family <- rbind(family, new_record)
+
+funny <- c("High", "High", "Low", "Med", "High", "Med")
+
+family <- cbind(family, funny)
+
+v <- family$age * 12
+family$age.months <- v
+print(family)
+```
+
+
+
+
+## Logical Record Subsets {.smaller}
+
+- We saw how to use **logical flag vectors** to subset vectors
+
+- We can use logical flag vectors to subset data frames as well
+
+- Suppose to have data frame ``my_data`` containing a variable ``my_variable``
+
+- Want to subset records in ``my_data`` for which  ``my_variable`` satisfies a condition
+
+- Use commands
+    * ``flag <- condition(my_data$my_variable)``
+    * ``my_data[flag, ]``
+ 
+
+
+
+## Example {.smaller}
+
+- Consider again the **Family Guy** data frame ``family``
+- We subset Female characters using flag 
+    * ``family$sex == "F"``
+
+
+
+```r
+# Create flag vector for female Family Guy characters
+flag <- (family$sex == "F")
+print(flag)
+```
+
+```{r}
+family <- data.frame(
+  person = c("Peter", "Lois", "Meg", "Chris", "Stewie"),
+  age = c(42, 40, 17, 14, 1),
+  sex = c("M", "F" , "F", "M", "M")
+)
+
+new_record <- data.frame(
+  person = "Brian",
+  age = 7,
+  sex = "M"
+)
+
+family <- rbind(family, new_record)
+
+funny <- c("High", "High", "Low", "Med", "High", "Med")
+
+family <- cbind(family, funny)
+
+family$age.months <- family$age * 12
+
+flag <- (family$sex == "F")
+print(flag)
+```
+
+<br>
+
+```r
+# Subset data frame "family" and store in data frame "subset"
+subset <- family[flag, ]
+print(subset)
+```
+
+
+```{r}
+family <- data.frame(
+  person = c("Peter", "Lois", "Meg", "Chris", "Stewie"),
+  age = c(42, 40, 17, 14, 1),
+  sex = c("M", "F" , "F", "M", "M")
+)
+
+new_record <- data.frame(
+  person = "Brian",
+  age = 7,
+  sex = "M"
+)
+
+family <- rbind(family, new_record)
+
+funny <- c("High", "High", "Low", "Med", "High", "Med")
+
+family <- cbind(family, funny)
+
+family$age.months <- family$age * 12
+
+flag <- (family$sex == "F")
+
+subset <- family[flag, ]
+print(subset)
+```
+
+
+
+
+# Part 5: <br>Data Entry {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## Reading data from files {.smaller}
+
+- R has a many functions for reading **characters** from stored **files** 
+
+- We will see how to read **Table-Format** files
+
+- **Table-Formats** are just tables stored in plain-text files
+
+- Typical file estensions are:
+    * ``.txt`` for plain-text files
+    * ``.csv`` for comma-separated values
+
+
+- **Table-Formats** can be read into R with the command
+    * ``read.table()``
+
+
+
+
+## Table-Formats {.smaller}
+### 4 key features
+    
+1. **Header**: Used to name columns
+    * Header should be first line
+    * Header is optional
+    * If header present, need to tell R when importing
+    * If not, R cannot tell if first line is header or data
+
+
+
+2. **Delimiter**: Character used to separate entries in each line
+    * Delimiter character cannot be used for anything else in the file
+    * Default delimiter is **whitespace**
+
+
+
+## Table-Formats {.smaller}
+### 4 key features
+
+3. **Missing value**: Character string used exclusively to denote a missing value
+    * When reading the file, R will turn these entries into ``NA``
+
+
+4. **Comments**:
+    * Table files can include comments
+    * Comment lines start with $\quad$ ``#``
+    * R ignores such comments
+
+
+
+
+## Example {.smaller}
+
+- Table-Format for **Family Guy** characters can be downloaded here [family_guy.txt](datasets/family_guy.txt)
+
+
+::: {.column width="54%"}
+
+- The text file looks like this
+
+![](images/family_guy.png){width=78%}
+
+:::
+
+::: {.column width="44%"}
+
+- Remarks:
+    * Header is present
+    * Delimiter is **whitespace**
+    * Missing values denoted by ``*``
+
+:::
+
+
+
+## read.table command {.smaller}
+
+Table-Formats can be read via ``read.table()``
+
+- Reads ``.txt`` or ``.csv`` files
+
+- outputs a data frame
+
+Options of ``read.table()``
+
+- ``header = T/F``
+    * Tells R if a header is present
+
+- ``na.strings = "string"``
+    * Tells R that ``"string"`` means ``NA`` (missing values)
+
+
+
+## Reading our first Table-Format file {.smaller}
+
+To read ``family_guy.txt`` into R proceed as follows:
+
+1. Download [family_guy.txt](datasets/family_guy.txt) and move file to Desktop
+
+2. Open the R Console and change working directory to **Desktop**
+
+```r
+# In MacOS type
+setwd("~/Desktop")
+
+# In Windows type
+setwd("C:/Users/YourUsername/Desktop")
+```
+
+
+##  {.smaller}
+
+3. Read ``family_guy.txt`` into R and store it in data frame ``family`` with code
+
+```r
+family = read.table(file = "family_guy.txt",
+                    header = TRUE,
+                    na.strings = "*")
+```
+
+4. Note that we are telling ``read.table()`` that
+    * ``family_guy.txt`` has a header
+    * Missing values are denoted by ``*``
+
+
+::: {.column width="48%"}
+5. Print data frame ``family`` to screen
+
+```r
+print(family)
+```
+
+```{r}
+family = read.table(file = "datasets/family_guy.txt",
+                    header = TRUE,
+                    na.strings = "*"
+                    )
+print(family)
+```
+
+:::
+
+::: {.column width="48%"}
+
+- For comparison this is the ``.txt`` file
+
+![](images/family_guy.png){width=85%}
+
+:::
+
+
+
+
+
+## Example: t-test {.smaller}
+
+**Data**: Analysis of Consumer Confidence Index for 2008 crisis (seen in Lecture 3)
+
+- We imported data into R using ``c()``
+- This is ok for small datasets
+- Suppose the CCI data is stored in a ``.txt`` file instead
+
+
+**Goal**: Perform t-test on CCI difference for mean difference $\mu = 0$
+
+- By reading CCI data into R using ``read.table()``
+- By manipulating CCI data using **data frames**
+
+
+
+
+##  {.smaller}
+
+- The CCI dataset can be downloaded here [2008_crisis.txt](datasets/2008_crisis.txt)
+
+- The text file looks like this
+
+![](images/2008_crisis.png){width=78%}
+
+
+
+## {.smaller}
+
+To perform the t-test on data ``2008_crisis.txt`` we proceed as follows:
+
+1. Download dataset [2008_crisis.txt](datasets/2008_crisis.txt) and move file to Desktop
+
+2. Open the R Console and change working directory to **Desktop**
+
+```r
+# In MacOS type
+setwd("~/Desktop")
+
+# In Windows type
+setwd("C:/Users/YourUsername/Desktop")
+```
+
+3. Read ``2008_crisis.txt`` into R and store it in data frame ``scores`` with code
+
+```r
+scores = read.table(file = "2008_crisis",
+                    header = TRUE
+                    )
+```
+
+
+##  {.smaller}
+
+4. Store 2nd and 3rd columns of ``scores`` into 2 vectors
+
+```r
+# CCI from 2007 is stored in 2nd column
+score_2007 <- scores[, 2]
+
+# CCI from 2009 is stored in 3nd column
+score_2009 <- scores[, 3]
+```
+
+
+5. From here, the t-test can be performed as done in Lecture 3
+
+```r
+# Compute vector of differences
+difference <- score_2007 - score_2009
+
+# Perform t-test on difference with null hypothesis mu = 0
+t.test(difference, mu = 0)$p.value
+```
+```{r}
+# Read ``2008_crisis.txt`` into R and store in "scores"
+scores = read.table(file = "datasets/2008_crisis.txt",
+                    header = TRUE
+                    )
+
+# Access scores of 2007 and 2009 in 2 vectors
+score_2007 <- scores[, 2]
+score_2009 <- scores[, 3]
+
+# Compute difference
+difference <- score_2007 - score_2009
+
+# Perform t-test on difference with null hypothesis mu = 0
+t.test(difference, mu = 0)$p.value
+```
+
+- We obtain the same result of Lecture 3
+    * p-value is $p < 0.05 \implies$ Reject $H_0$: The mean difference is not $0$
+
+- For convenience, you can download the full code [2008_crisis_code.R](codes/2008_crisis_code.R)
+
+
+
+
+
+
+
+
+
+# Part 6: <br>Least squares {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -1503,719 +1794,867 @@ print(ans)
 
 
 
-## For simple counts, we said that: {.smaller}
 
-- The distribution of the $\chi^2$ statistic is approximately
-$$
-\chi^2 = \sum_{i=1}^n \frac{(O_i - E_i)^2 }{ E_i } \ \approx \ \chi_{n-1}^2  
-$$
+## Example: Blood Pressure {.smaller}
 
+::: {.column width="58%"}
 
-- The approximation is:
-  
-  | **Good**     |  $E_i \geq 5  \, \text{ for all } \, i = 1 , \ldots n$ |
-  |:------------ |:------------------------------------------------------ |
-  | **Bad**      |                $E_i < 5 \,$ for some $\, i = 1 , \ldots n$ |
+$10$ patients treated with both Drug A and Drug B
 
+- These drugs cause change in blood pressure
+- Patients are given the drugs one at a time
+- Changes in blood pressure are recorded
+- For patient $i$ we denote by
+  * $x_i$ the change caused by Drug A
+  * $y_i$ the change caused by Drug B
 
-- **How to compute the p-value:** When approximation is
-    * **Good:** Use $\chi_{n-1}^2$ approximation of $\chi^2$
-    * **Bad:** Use Monte Carlo simulations
+:::
 
-
-- **Question:** What is a Monte Carlo simulation?
+::: {.column width="40%"}
 
 
-
-
-
-## Monte Carlo methods {.smaller}
-
-- **Monte Carlo methods:** 
-    * Broad class of computational algorithms 
-    * They rely on repeated random sampling to obtain numerical results
-    * Principle: use randomness to solve problems which are deterministic
-
-- **Why the name?**
-    * Method was developed by [Stanislaw Ulam](https://en.wikipedia.org/wiki/Stanisław_Ulam)
-    * His uncle liked to gamble in the Monte--Carlo Casino in Monaco
-
-- **Examples of applications:**
-    * First used to solve problem of neutron diffusion in Los Alamos 1946
-    * Can be used to compute integrals
-    * **Can be used to compute p-values**
-
-
-
-
-## Example: Approximation of $\pi$  {.smaller}
-
-
-::: {.column width="49%"}
-
-
-- Throw random points inside square of side $2$
-- Count proportion of points falling inside unit circle
-- Such proportion approximates $\pi$ (area of the circle)
-    * $r = \,$ Red point
-    * $b = \,$ Blue point
-    * $n = r + b$ Total points
-
-$$
-\frac{\pi}{4} \approx \frac{r}{n} \,\, \implies \,\, 
-\pi \approx \frac{4r}{n}
-$$
+| $i$   |  $x_i$  |  $y_i$ |
+|:-----:|:-------:|:------:|
+|  $1$  |  $1.9$  |  $0.7$ |
+|  $2$  |  $0.8$  |  $-1.0$|
+|  $3$  |  $1.1$  |  $-0.2$|
+|  $4$  |  $0.1$  |  $-1.2$|
+|  $5$  |  $-0.1$ |  $-0.1$|
+|  $6$  |  $4.4$  |  $3.4$ |
+|  $7$  |  $4.6$  |  $0.0$ |
+|  $8$  |  $1.6$  |  $0.8$ |
+|  $9$  |  $5.5$  |  $3.7$ |
+|  $10$ |  $3.4$  |  $2.0$ |
+: {tbl-colwidths="[30,35,35]"}
 
 :::
 
 
+
+
+## Example: Blood Pressure {.smaller}
 
 ::: {.column width="50%"}
 
-![](images/pi_monte_carlo.gif){width=80%}
+**Goal:**
+
+- Predict reaction to Drug B, knowing reaction to Drug A
+- This means predict $y_i$ from $x_i$
+
+
+**Plot:**
+
+- To visualize data we can plot pairs $(x_i,y_i)$
+- Points seem to align
+- It seems there is a linear relation between $x_i$ and $y_i$
 
 :::
 
-
-
-
-## Approximating $\pi$ -- Formal model {.smaller}
-
-- Draw $x_1, \ldots, x_N$ and $y_1, \ldots, y_N$ from ${\rm Uniform(-1,1)}$
-- Count the number of points $(x_i,y_i)$ falling inside circle of radius $1$
-- These are points satisfying condition
-$$
-x_i^2 + y_i^2 \leq 1
-$$
-
-- Area of circle estimated with proportion of points falling inside circle:
-$$
-\text{Area} \ = \ \pi \ \approx \ \frac{\text{Number of points } (x_i,y_i) \text{ inside circle}}{N}  \ \times \ 4
-$$
-
-- Note: $4$ is the area of square of side $2$
-
-
-
-
-##  {.smaller}
-
-**Plot: 1000 random points in square of side 2**
+::: {.column width="48%"}
 
 ```{r}
+#| echo: false
 #| fig-asp: 1
 
-R <- 1
-niters <- 1000
-total <- 0
-in_circle <- 0
+# Read the data
+x <- c(1.9, 0.8, 1.1, 0.1, -0.1, 4.4, 4.6, 1.6, 5.5, 3.4)
+y <- c(0.7, -1.0, -0.2, -1.2, -0.1, 3.4, 0.0, 0.8, 3.7, 2.0)
 
-# Function to plot the points
-plot_points <- function(x, y, R) {
-  plot(x, y, col = ifelse(x^2 + y^2 <= R^2, "blue", "red"), pch = 16, xlab = "X", ylab = "Y", asp = 1, frame.plot = TRUE, xlim = c(-1,1), ylim = c(-1,1) )
-  points(0, 0, col = "green", pch = 3)  # Plotting the center of the circle
-  legend("bottomright", legend = c("Inside Circle", "Outside Circle"), col = c("blue", "red"), pch = 16, cex = 2)
-  circle <- seq(0, 2 * pi, length.out = 100)
-  lines(R * cos(circle), R * sin(circle))  # Plotting the circle
+# Create the plot
+plot(x, y, xlab = "", ylab = "", pch = 16, cex = 2)
+
+# Add labels
+mtext("Drug A reaction x_i", side = 1, line = 3, cex = 2.1)
+mtext("Drug B reaction y_i", side = 2, line = 2.5, cex = 2.1)
+```
+
+:::
+
+
+
+
+
+
+## Example: Blood Pressure {.smaller}
+
+::: {.column width="50%"}
+
+**Linear relation:**
+
+- Try to fit a line through the data
+- Line roughly predicts $y_i$ from $x_i$
+- However note the outlier
+$$(x_7,y_7) = (4.6, 0)$$
+(red point) 
+
+- How is such line constructed?
+
+:::
+
+::: {.column width="48%"}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Read the data
+x <- c(1.9, 0.8, 1.1, 0.1, -0.1, 4.4, 4.6, 1.6, 5.5, 3.4)
+y <- c(0.7, -1.0, -0.2, -1.2, -0.1, 3.4, 0.0, 0.8, 3.7, 2.0)
+
+# Create the plot
+plot(x, y, xlab = "", ylab = "", pch = 16, cex = 2)
+
+# Add labels
+mtext("Drug A reaction x_i", side = 1, line = 3, cex = 2.1)
+mtext("Drug B reaction y_i", side = 2, line = 2.5, cex = 2.1)
+
+# Fit linear regression
+fit <- lm(y ~ x)
+
+# Plot regression line in red
+abline(fit, col = "red", lwd = 5)
+
+# Highlight outlier
+points(4.6, 0, pch = 16, cex = 2, col = "red")
+```
+
+:::
+
+
+
+
+
+## Example: Blood Pressure {.smaller}
+
+::: {.column width="50%"}
+
+**Least Squares Line:**
+
+- A general line has equation
+$$
+y = \beta x + \alpha
+$$
+for some 
+  * **slope** $\beta$
+  * **intercept** $\alpha$
+
+- Value predicted by the line for $x_i$ is
+$$
+\hat{y}_i = \beta x_i + \alpha
+$$
+
+:::
+
+::: {.column width="48%"}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Read the data
+x <- c(1.9, 0.8, 1.1, 0.1, -0.1, 4.4, 4.6, 1.6, 5.5, 3.4)
+y <- c(0.7, -1.0, -0.2, -1.2, -0.1, 3.4, 0.0, 0.8, 3.7, 2.0)
+
+# Create the plot
+plot(x, y, xlab = "", ylab = "", pch = 16, cex = 2)
+
+# Add labels
+mtext("Drug A reaction x_i", side = 1, line = 3, cex = 2.1)
+mtext("Drug B reaction y_i", side = 2, line = 2.5, cex = 2.1)
+
+# Fit linear regression
+fit <- lm(y ~ x)
+
+# Plot regression line in red
+abline(fit, col = "red", lwd = 5)
+
+# Fit linear regression
+fit <- lm(y ~ x)
+
+# Plot regression line in red
+abline(fit, col = "red", lwd = 5)
+
+# Calculate predicted values
+predicted <- predict(fit)
+
+# Plot vertical distances in gray
+segments(x, y, x, predicted, col = "gray", lwd = 2)
+```
+:::
+
+
+
+
+
+
+## Example: Blood Pressure {.smaller}
+
+::: {.column width="50%"}
+
+**Least Squares Line:**
+
+- We would like predicted and actual value to be close
+$$
+\hat{y}_i \approx y_i
+$$
+
+
+- Hence the **vertical** difference has to be small
+$$
+y_i - \hat{y}_i \approx 0
+$$
+
+
+:::
+
+::: {.column width="48%"}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Read the data
+x <- c(1.9, 0.8, 1.1, 0.1, -0.1, 4.4, 4.6, 1.6, 5.5, 3.4)
+y <- c(0.7, -1.0, -0.2, -1.2, -0.1, 3.4, 0.0, 0.8, 3.7, 2.0)
+
+# Create the plot
+plot(x, y, xlab = "", ylab = "", pch = 16, cex = 2)
+
+# Add labels
+mtext("Drug A reaction x_i", side = 1, line = 3, cex = 2.1)
+mtext("Drug B reaction y_i", side = 2, line = 2.5, cex = 2.1)
+
+# Fit linear regression
+fit <- lm(y ~ x)
+
+# Plot regression line in red
+abline(fit, col = "red", lwd = 5)
+
+# Fit linear regression
+fit <- lm(y ~ x)
+
+# Plot regression line in red
+abline(fit, col = "red", lwd = 5)
+
+# Calculate predicted values
+predicted <- predict(fit)
+
+# Plot vertical distances in gray
+segments(x, y, x, predicted, col = "gray", lwd = 2)
+```
+:::
+
+
+
+
+
+## Example: Blood Pressure {.smaller}
+
+::: {.column width="50%"}
+
+**Least Squares Line:**
+
+- We want 
+$$
+\hat{y}_i - y_i \approx 0 \,, \qquad \forall \, i
+$$
+
+- Can be achieved by minimizing the sum of squares
+$$
+\min_{\alpha, \beta} \ \sum_{i} \ (y_i - \hat{y}_i)^2
+$$
+$$
+\hat{y}_i = \beta x_i + \alpha
+$$
+
+:::
+
+::: {.column width="48%"}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Read the data
+x <- c(1.9, 0.8, 1.1, 0.1, -0.1, 4.4, 4.6, 1.6, 5.5, 3.4)
+y <- c(0.7, -1.0, -0.2, -1.2, -0.1, 3.4, 0.0, 0.8, 3.7, 2.0)
+
+# Create the plot
+plot(x, y, xlab = "", ylab = "", pch = 16, cex = 2)
+
+# Add labels
+mtext("Drug A reaction x_i", side = 1, line = 3, cex = 2.1)
+mtext("Drug B reaction y_i", side = 2, line = 2.5, cex = 2.1)
+
+# Fit linear regression
+fit <- lm(y ~ x)
+
+# Plot regression line in red
+abline(fit, col = "red", lwd = 5)
+
+# Fit linear regression
+fit <- lm(y ~ x)
+
+# Plot regression line in red
+abline(fit, col = "red", lwd = 5)
+
+# Calculate predicted values
+predicted <- predict(fit)
+
+# Plot vertical distances in gray
+segments(x, y, x, predicted, col = "gray", lwd = 2)
+```
+:::
+
+
+
+
+
+## Residual Sum of Squares {.smaller}
+
+::: Definition
+
+Let $(x_1,y_1), \ldots, (x_n, y_n)$ be a set of $n$ pair of points. Consider the line
+$$
+y = \beta x + \alpha
+$$
+The Residual Sum of Squares associated to the line is
+$$
+\RSS (\alpha,\beta) := \sum_{i=1}^n (y_i-\alpha-{\beta}x_i)^2
+$$
+
+:::
+
+
+**Note:** $\RSS$ can be seen as a function
+$$
+\RSS \colon \R^2 \to \R   \qquad \quad \RSS = \RSS (\alpha,\beta)
+$$
+
+
+## $\RSS(\alpha,\beta)$ for Blood Pressure data {.smaller}
+
+```{r}
+library(plotly)
+
+# Function to calculate RSS
+calculate_RSS <- function(alpha, beta, x, y) {
+  y_pred <- alpha + beta * x
+  rss <- sum((y - y_pred)^2)
+  return(rss)
 }
 
-x <- runif(niters, -R, R)
-y <- runif(niters, -R, R)
-plot_points(x, y, R)
+# Define a grid of alpha and beta values
+alpha <- seq(-2, 2, length.out = 100)
+beta <- seq(-2, 2, length.out = 100)
+
+# Create a grid of alpha and beta values
+grid <- expand.grid(alpha = alpha, beta = beta)
+
+# Calculate RSS for each combination of alpha and beta
+rss_values <- mapply(calculate_RSS, grid$alpha, grid$beta, MoreArgs = list(x = c(1.9, 0.8, 1.1, 0.1, -0.1, 4.4, 4.6, 1.6, 5.5, 3.4), y = c(0.7, -1.0, -0.2, -1.2, -0.1, 3.4, 0.0, 0.8, 3.7, 2.0)))
+
+# Reshape RSS values to a matrix
+rss_matrix <- matrix(rss_values, nrow = length(alpha))
+
+# Define the data for the surface plot
+x_vals <- alpha
+y_vals <- beta
+z_matrix <- rss_matrix
+
+# Create a 3D surface plot using plot_ly
+plot_ly(
+  x = x_vals,
+  y = y_vals,
+  z = z_matrix,
+  type = "surface",
+  colors = "viridis",
+  showscale = FALSE
+) %>% 
+  layout(
+    scene = list(
+      xaxis = list(title = "Alpha"),
+      yaxis = list(title = "Beta"),
+      zaxis = list(title = "RSS"),
+      camera = list(
+        eye = list(x = 1.87, y = 0.88, z = 0.64)
+      )
+    ),
+    width = 800,
+    height = 600
+  )
 
 ```
 
 
 
-## Approximation of $\pi$ in R {.smaller}
 
-::: {style="font-size: 0.93em"}
 
-```r
-N <- 10000      # We do 100000 iterations and print every 10000
-total <- 0      # Counts total number of points
-in_circle <- 0  # Counts points falling in circle
+## Summary statistics {.smaller}
 
-for (j in 1:10) {   # This loop is for printing message every N iterations
-  for (i in 1:N) {  # Loop in which points are counted
-    x <- runif(1, -1, 1); y <- runif(1, -1, 1);  # sample point (x,y)
-    if (x^2 + y^2 <= 1) {    
-      in_circle <- in_circle + 1  # If (x,y) in circle increase counter
-    }
-    total <- total + 1  # Increase total counter (in any case)
-  }
-  
-  pi_approx <- ( in_circle / total ) * 4  # Compute approximate area
+For a given sample $(x_1,y_1), \ldots, (x_n, y_n)$, define
 
-  cat(sprintf("After %8d iterations pi is %.08f, error is %.08f\n",
-     (j * N), pi_approx, abs(pi_approx - pi)))
-}
-```
-
-:::
-
-- The R code can be downloaded here [monte_carlo_pi.R](codes/monte_carlo_pi.R)
-
-
-
-## Approximation of $\pi$ in R: Output {.smaller}
-
-```{r}
-N <- 10000      # We do 100000 iterations and print every 10000
-total <- 0      # Counts total number of points
-in_circle <- 0  # Counts points falling in circle
-
-for (j in 1:10) {   # This loop is for printing message every N iterations
-  for (i in 1:N) {  # Loop in which points are counted
-    x <- runif(1, -1, 1); y <- runif(1, -1, 1);  # sample point (x,y)
-    if (x^2 + y^2 <= 1) {    
-      in_circle <- in_circle + 1  # If (x,y) in circle increase counter
-    }
-    total <- total + 1  # Increase total counter (in any case)
-  }
-  
-  pi_approx <- ( in_circle / total ) * 4  # Compute approximate area
-
-  cat(sprintf("After %8d iterations pi is %.08f, error is %.08f\n",
-     (j * N), pi_approx, abs(pi_approx - pi)))
-}
-```
-
-
-**Note:** 
-
-- The error decreases overall, but there are random fluctuations
-
-- This is because we are trying to approximate $\pi$ by a random quantity
-
-
-
-## A word on error estimates {.smaller}
-
-::: {style="font-size: 0.93em"}
-
-- Deriving error estimates for numerical methods is not easy (Numerical Analysis)
-
-- Going back to our example:
-    * Let $n$ denote the total number of points drawn
-    * Let $X_n$ denote the proportion of points falling inside the unit circle
-
-- For every $\e > 0$ fixed, it can be shown that
-$$
-P( | X_n - \pi/4  | \geq \e ) \leq   {\rm Error} = \frac{1}{20 n \e^2}
-$$
-
-- To get small *Error*: $\,\, \e$ has to be small, $n$ has to be large
-    * Fixing a small error threshold $\e$ implies doing more iterations (larger $n$)
-    * Error estimate is probabilistic: Error fluctuates, but decreases with more iterations
-
-- Estimate can be derived by interpreting the problem as the Monte Carlo integration of $\int_0^1 \sqrt{1-x^2} \, dx = \pi /4$, see [stackexchange post](https://math.stackexchange.com/questions/19119/approximating-pi-using-monte-carlo-integration)
-
-:::
-
-
-
-
-## Simulation: The main point (for us) {.smaller}
-
-Simulation can be used to gain insight into the **shape** of a distribution:
-
-- Mean and variance
-
-- Related probabilities (p-values)
-
-
-How to simulate in R:
-
-- Use loops
-    * Example: We used a ``for`` loop to simulate $\pi$
-
-- Use ad hoc R commands
-    * ``replicate(n, expr)`` repeats expression n times and outputs results
-    * ``apply(x, expr)`` applies expression to the object ``x``
-
-
-
-
-
-## Example: Estimating mean / variance of $\overline{X}$ {.smaller}
-
-
-Consider sample $X_1, \ldots, X_n$ from $N(\mu,\sigma^2)$
-
-- Recall that the sample mean satisfies
-$$
-\Expect[\overline{X}] = \mu \,, \qquad \Var[\overline{X}] = \frac{\sigma^2}{n}
-$$
-(As $n$ gets larger, $\Var[\overline{X}]$ will be closer to $0$ 
-$\implies \overline{X} \approx \mu$ when $n$ is large)
-
-- For example, if the sample size is $n = 10$, mean $\mu = 0$ and sd $\sigma = 1$, then
-$$
-\Expect[\overline{X}] = 0 \,, \qquad \Var[\overline{X}] = \frac{1}{10} = 0.1
-$$
-
-- We can obtain the above quantitites through simulation  
-(In fancy terms: *Estimating mean and variance of* $\overline{X}$)
-
-
-
-
-
-## {.smaller}
-
-
-- One simulation of $\overline{X}$ can be done as follows:
-    1. Generate sample $x_1, \ldots, x_n$ from $N(0,1)$
-    2. Compute sample mean of $x_1, \ldots, x_n$
-
-
-```r 
-# Simulate the sample mean xbar
-
-n <- 10
-sim.xbar <- mean(rnorm(n)) 
-```
-
-
-- To simulate $M = 1000$ values from $\overline{X}$, **replicate** the above command $M$ times
-
-```r
-# Simulate M = 1000 times the sample mean xbar
-n <- 10; M <- 1000
-
-sim.xbar <- replicate(M, mean(rnorm(n)))
-```
-
-
-
-
-## {.smaller}
-
-- The vector ``sim.xbar`` contains $M=1000$ simulations from $\overline{X}$
-
-
-- Reasonable to suppose that ``sim.xbar`` approximates the random variable $\overline{X}$  
-(This can be made rigorous with Central Limit Thm)
-
-- Therefore, we can make the following estimation
-
-
-|      Quantity            |  Estimation                    |
-|:------------             |:------------                   |
-| $\Expect[\overline{X}]$| Sample mean of ``sim.xbar``    |
-| $\Var[\overline{X}]$     | Sample variance of ``sim.xbar``| 
-: {tbl-colwidths="[30,70]"}
-
-
-::: {style="font-size: 0.51em"}
-
-<br>
-
-:::
-
-
-```r
-# Print mean and variance of sample mean
-cat("Expected value:", mean(sim.xbar), "Variance:", var(sim.xbar))
-```
-
-```{r}
-set.seed(231) 
-
-# Generate 1000 samples of size 10 from N(0,1) and compute sample mean
-n <- 10; M <- 1000
-
-sim.xbar <- replicate(M, mean(rnorm(n)))
-
-# Print mean and variance of sample mean
-cat("Expected value:", mean(sim.xbar), "  Variance:", var(sim.xbar))
-```
-
-::: {style="font-size: 0.51em"}
-
-<br>
-
-:::
-
-
-These are very close to the theoretical values:
-$\quad \Expect[\overline{X}] = 0 \,, \quad \Var[\overline{X}] = \frac{1}{10} = 0.1$
-
-
-
-
-
-
-
-## Example: Sample mean VS sample median  {.smaller}
-
-- Both sample mean and median can be used to estimate the center of a distribution
-
-- But which one is better? 
-
-- Suppose the population is $N(\mu,\sigma^2)$
-
-- We know that the sample mean $\overline{X}$ satisfies
-$$
-\Expect[\overline{X}] = \mu \,, \qquad \Var[\overline{X}] = \frac{\sigma^2}{n}
-$$
-
-- However, no such formulas are available for the sample meadian
-
-**Question:** How can we compare them? Use simulation
-
-
-
-##  {.smaller}
-
-To simulate sample mean and median from $N(0,1)$, we do:
-
-- Generate sample $x_1, \ldots, x_{10}$ from $N(0,1)$, and compute sample mean and median
-
-- Repeat $M = 1000$ times
-
-```r
-M <- 1000; n <- 10  
-sim.mean <- replicate(M, mean(rnorm(n)))
-sim.median <- replicate(M, median(rnorm(n)))
-```
-
-- To compare simulated sample mean and median, we can produce a boxplot
-
-- The one with smallest variance, will be the better estimator for the true population mean $\mu = 0$
-
-
-```r
-boxplot(list("sample mean" = sim.mean, 
-             "sample median" = sim.median),
-        main = "Normal population N(0,1)")
-```
-
-
-
-
-##  {.smaller}
-
-```{r}
-set.seed(23) 
-
-M <- 1000; n <- 30  
-sim.mean <- replicate(M, mean(rnorm(n)))
-sim.median <- replicate(M, median(rnorm(n)))
-
-boxplot(list("sample mean" = sim.mean, 
-             "sample median" = sim.median),
-        main = "Normal population N(0,1)")
-```
-
-- The sample mean has less variability
-- It is the preferred estimator for the true population mean  
-(when the population is normal)
-
-
-
-## Example: Computing probabilities {.smaller}
-
-**Question:** What is the probability of rolling $7$ with two dice?
-
-- Of course this problem has combinatorial answer: $p = \frac16$
-
-- But we can also answer using simulation
-
-- To simulate the roll of a dice, we use the function ``sample``
-    * ``sample(x, n, replace = T)`` 
-    * samples n times from vector ``x`` with replacement
-
-
-- To roll 2 dice, we input:
-
-```{r}
-#| echo: true
-# Roll two dice
-
-sample(1:6, 2, replace = T)
-```
-
-
-## {.smaller}
 
 ::: {style="font-size: 0.94em"}
 
-To compute the probability of rolling $7$ with two dice we do:
-
-- Simulate one roll of the two dice, and sum the outcome
-- Repeat $M = 1000$ times
-- Estimate the probability of rolling a $7$ with
+- **Sample Means:**
 $$
-P(\text{Rolling } 7) \approx \frac{\# \text{ of times the simulated roll is } 7 }{1000}
+\overline{x} := \frac{1}{n}  \sum_{i=1}^n x_i \qquad \quad 
+\overline{y} := \frac{1}{n}  \sum_{i=1}^n y_i
 $$
 
-```{r}
-#| echo: true
 
-M <- 1000
+- **Sums of squares:**
+$$
+S_{xx} :=   \sum_{i=1}^n ( x_i - \overline{x} )^2 \qquad \quad 
+S_{yy} :=   \sum_{i=1}^n ( y_i - \overline{y} )^2
+$$
 
-sim.rolls <- replicate(M, sum( sample(1:6, 2, replace = T) ))
+- **Sum of cross-products:**
+$$
+S_{xy} :=   \sum_{i=1}^n ( x_i - \overline{x} ) ( y_i - \overline{y} )
+$$
 
-number.of.7s <- sum( sim.rolls == 7 )
-p <- number.of.7s / M
+:::
 
-cat("The estimated probability of rolling 7 is", p)
-```
 
-- This is very close to the theoretical probability $p = 1/6$
 
+## Minimizing the RSS {.smaller}
+
+::: Theorem
+
+Given $(x_1,y_1), \ldots, (x_n, y_n)$, consider the minimization problem
+\begin{equation}   \tag{M}
+\min_{\alpha,\beta } \ \RSS =  \min_{\alpha,\beta} \ \sum_{i=1}^n (y_i-\alpha-{\beta}x_i)^2
+\end{equation}
+Then
+
+1. There exists a unique line solving (M)
+2. Such line has the form $y = \hat{\beta} x + \hat{\alpha}$ with
+$$
+\hat{\beta} = \frac{S_{xy}}{S_{xx}} \qquad \qquad 
+\hat{\alpha} = \overline{y} - \hat{\beta} \ \overline{x}
+$$
 :::
 
 
 
 
 
-## Example: Interpretation of Confidence Intervals {.smaller}
+## Positive semi-definite matrix {.smaller}
 
-- Suppose given a normal population $N(\mu,\sigma^2)$
+To prove the Theorem we need some background results
 
-- A $95 \%$ conﬁdence interval for the true mean $\mu$ is a (random) interval $[a,b]$ s.t.
+- A symmetric matrix is **positive semi-definite** if all the eigenvalues $\lambda_i$ satisfy 
 $$
-P(\mu \in [a,b]) = 0.95
-$$
-
-
-- Confidence interval is **not** probability statement about $\mu$ -- note $\mu$ is a constant!
-
-- It is probability statement about $[a,b]$
-
-
-**Interpretation:** The random interval $[a,b]$ contains the mean $\mu$ with probability $0.95$
-
-
-
-## {.smaller}
-
-**Constructing the confidence interval with t-statistic:**
-
-- Suppose given a sample $x_1, \ldots, x_n$ from $N(\mu,\sigma^2)$
-
-- Recall: the t-statistic has t-distribution
-$$
-t = \frac{\overline{x}-\mu}{\ese} \, \sim  \, t_{n-1} \,, \qquad \ese = \frac{s}{\sqrt{n}}
+\lambda_i \geq 0
 $$
 
-- We impose that $t$ is observed with probability $0.95$ 
+- **Proposition:** A $2 \times 2$ symmetric matrix $M$ is **positive semi-definite** iff
 $$
-P(- t^* \leq t \leq t^*) = 0.95 \,, \qquad 
-t^* = t_{n-1}(0.025)
+\det M \geq 0 \,, \qquad \quad \operatorname{Tr}(M) \geq 0 
 $$
 
 
-- The $95\%$ confidence interval is obtained by solving above equation for $\mu$ 
+
+
+## Positive semi-definite Hessian {.smaller}
+
+
+- Suppose given a smooth function of 2 variables
+
 $$
-P(\mu \in [a,b] ) = 0.95 \,, \qquad 
-a = \overline{x} - t^* \times \ese , \qquad  
-b = \overline{x} + t^* \times \ese
+f \colon \R^2 \to \R \qquad \quad f = f (x,y)
 $$
 
-- **Interpretation:** If you sample over and over again, the interval $[a,b]$ will contain $\mu$ about $95\%$ of the times
+
+- The Hessian of $f$ is the matrix
+
+$$
+\nabla^2 f = 
+\left(  
+\begin{array}{cc}
+f_{xx} & f_{xy} \\
+f_{yx} & f_{yy} \\
+\end{array}
+\right)
+$$
+
+
+## Positive semi-definite Hessian {.smaller}
+
+- In particular the Hessian is **positive semi-definite** iff
+
+$$
+\det \nabla^2 f = f_{xx} f_{yy} - f_{xy}^2 \geq 0 \qquad \quad
+f_{xx} + f_{yy} \geq 0
+$$
+
+
+- **Side Note:** For $C^2$ functions it holds that
+
+$$
+\nabla^2 f \, \text{ is positive semi-definite} \qquad \iff \qquad  
+f \, \text{ is convex}
+$$
 
 
 
-## {.smaller}
+
+## Optimality conditions {.smaller}
+
+::: Lemma
+
+Suppose $f \colon \R^2 \to \R$ has positive semi-definite Hessian. They are equivalent
+
+1. The point $(\hat{x},\hat{y})$ is a minimizer of $f$, that is,
+$$
+f(\hat{x}, \hat{y}) = \min_{x,y} \ f(x,y)
+$$
+
+2. The point $(\hat{x},\hat{y})$ satisfies the **optimality conditions**
+$$
+\nabla f (\hat{x},\hat{y}) = 0
+$$
+
+:::
 
 
-![](images/CI_interpretation.png){width=100%}
+**Note**: The proof of the above Lemma can be found in [@fusco-marcellini-sbordone]
 
 
 
-::: {style="font-size: 0.85em"}
+
+## Example {.smaller}
+
+- The main example of strictly convex function in 2D is 
+
+$$
+f(x,y) = x^2 + y^2
+$$
 
 
-- Each row of points is a sample from the same normal distribution $\qquad$ (Image from [Wikipedia](https://en.wikipedia.org/wiki/Confidence_interval#/media/File:Normal_distribution_50%25_CI_illustration.svg))
+- It is clear that
+$$
+\min_{x,y} \ f(x,y) = \min_{x,y} \ x^2 + y^2 = 0 \,,
+$$
+with the only minimizer being $(0,0)$
 
-- The colored lines are confidence intervals for the mean $\mu$
 
-- At the center of each interval is the sample mean (diamond)
+- However, let us use the Lemma to prove this fact
 
-- The blue intervals contain the population mean, and the red ones do not
+
+
+##  {.smaller}
+
+- The gradient of $f = x^2 + y^2$ is
+
+$$
+\nabla f = (f_x,f_y) = (2x, 2y)
+$$
+
+- Therefore the optimality condition has unique solution
+
+$$
+\nabla f = 0 \qquad \iff \qquad x = y = 0
+$$
+
+
+
+##  {.smaller}
+
+- The Hessian of $f$ is 
+
+$$
+\nabla^2 f =
+\left( 
+\begin{array}{cc}
+f_{xx} & f_{xy} \\
+f_{yx} & f_{yy}
+\end{array}
+\right) 
+=
+\left( 
+\begin{array}{cc}
+2 & 0 \\
+0 & 2
+\end{array}
+\right) 
+$$
+
+- The Hessian is positive semi-definite since
+
+$$
+\det (\nabla^2) f = 4 > 0 \qquad \qquad \operatorname{Tr}(\nabla^2 f)  = 4 > 0
+$$
+
+- By the Lemma, we conclude that $(0,0)$ is the unique minimizer of $f$, that is,
+
+$$
+0 = f(0,0) = \min_{x,y} \ f(x,y) 
+$$
+
+
+
+
+
+
+## Minimizing the RSS {.smaller}
+### Proof of Theorem
+
+- We go back to proving the RSS Minimization Theorem
+
+- Suppose given data points $(x_1,y_1), \ldots, (x_n, y_n)$
+
+- We want to solve the minimization problem
+
+\begin{equation}   \tag{M}
+\min_{\alpha,\beta } \ \RSS =  \min_{\alpha,\beta} \ \sum_{i=1}^n (y_i-\alpha-{\beta}x_i)^2
+\end{equation}
+
+- In order to use the Lemma we need to compute
+
+$$
+\nabla \RSS  \quad \text{ and } \quad 
+\nabla^2 \RSS
+$$
+
+
+
+## Minimizing the RSS {.smaller}
+### Proof of Theorem
+
+
+- We first compute $\nabla \RSS$ and solve the optimality conditions
+$$
+\nabla \RSS (\alpha,\beta) = 0 
+$$
+
+
+- To this end, recall that 
+$$
+\overline{x} := \frac{\sum_{i=1}^nx_i}{n} \qquad \implies \qquad  \sum_{i=1}^n x_i =   n \overline{x}
+$$
+
+- Similarly, we have 
+$$
+\sum_{i=1}^n y_i =   n \overline{y}
+$$
+
+
+
+## Minimizing the RSS {.smaller}
+### Proof of Theorem
+
+
+- Therefore we get
+
+\begin{align*}
+\RSS_{\alpha} & = -2\sum_{i=1}^n(y_i- \alpha- \beta x_i) \\[10pt]
+              & = - 2 n \overline{y} + 2n \alpha + 2 \beta n \overline{x} \\[20pt]
+\RSS_{\beta} & = -2\sum_{i=1}^n x_i (y_i- \alpha - \beta x_i) \\[10pt]
+             & =  - 2 \sum_{i=1}^n x_i y_i + 2 \alpha n \overline{x} + 2 \beta \sum_{i=1}^n x_i^2
+\end{align*}
+
+
+
+
+## Minimizing the RSS {.smaller}
+### Proof of Theorem
+
+
+
+- Hence the optimality conditions are
+
+\begin{align}
+ - 2 n \overline{y} + 2n \alpha + 2 \beta n \overline{x} & = 0  \tag{1} \\[20pt]
+- 2 \sum_{i=1}^n x_i y_i + 2 \alpha n \overline{x} + 2 \beta \sum_{i=1}^n x_i^2 & = 0 \tag{2}
+\end{align}
+
+
+
+
+
+
+## Minimizing the RSS {.smaller}
+### Proof of Theorem
+
+
+- Equation (1) is
+
+$$
+-2 n \overline{y} + 2n \alpha + 2  \beta n \overline{x} = 0
+$$
+
+- By simplifying and rearraging, we find that (1) is equivalent to
+
+$$
+\alpha =  \overline{y}- \beta \overline{x}
+$$
+
+
+
+
+## Minimizing the RSS {.smaller}
+### Proof of Theorem
+
+- Equation (2) is equivalent to
+
+$$
+\sum_{i=1}^n x_i y_i - \alpha n \overline{x}  - \beta \sum_{i=1}^n x^2_i = 0
+$$
+
+- From the previous slide we have $\alpha =  \overline{y}- \beta \overline{x}$
+
+
+## Minimizing the RSS {.smaller}
+### Proof of Theorem
+
+- Substituting in Equation (2) we get
+\begin{align*}
+0 & = \sum_{i=1}^n x_i y_i - \alpha n \overline{x}  - \beta \sum_{i=1}^n x^2_i \\
+  & = \sum_{i=1}^n x_i y_i - n \overline{x} \, \overline{y}  + \beta n \overline{x}^2 - \beta \sum_{i=1}^n x^2_i \\
+  & =  \sum_{i=1}^n (x_i y_i - \overline{x} \, \overline{y} ) - \beta  \left(  \sum_{i=1}^n x^2_i - n\overline{x}^2 \right)  = S_{xy} - \beta S_{xx} 
+\end{align*}
+where we used the usual identity 
+$S_{xx} = \sum_{i=1}^n ( x_i - \overline{x})^2 =  \sum_{i=1}^n x_i^2 - n\overline{x}^2$
+
+
+## Minimizing the RSS {.smaller}
+### Proof of Theorem
+
+- Hence Equation (2) is equivalent to
+$$
+ \beta = \frac{S_{xy}}{ S_{xx} }
+$$
+
+- Also recall that Equation (1) is equivalent to
+$$
+\alpha =  \overline{y}- \beta \overline{x}
+$$
+
+- Therefore $(\hat\alpha, \hat\beta)$ solves the optimality conditions $\nabla \RSS = 0$ iff
+$$
+\hat\alpha =  \overline{y}- \hat\beta \overline{x} \,, \qquad \quad 
+\hat\beta = \frac{S_{xy}}{ S_{xx} }
+$$
+
+
+
+## Minimizing the RSS {.smaller}
+### Proof of Theorem
+
+- We need to compute $\nabla^2 \RSS$ 
+
+- To this end recall that
+$$
+\RSS_{\alpha} = - 2 n \overline{y} + 2n \alpha + 2 \beta n \overline{x} \,,
+\quad 
+\RSS_{\beta} =  - 2 \sum_{i=1}^n x_i y_i + 2 \alpha n \overline{x} + 2 \beta \sum_{i=1}^n x_i^2
+$$
+
+- Therefore we have
+\begin{align*}
+\RSS_{\alpha \alpha} & = 2n \qquad   & \RSS_{\alpha \beta} & =  2 n \overline{x} \\ 
+\RSS_{\beta \alpha } & =  2 n \overline{x} \qquad     & \RSS_{\beta \beta} & =  2 \sum_{i=1}^{n} x_i^2
+\end{align*}
+
+
+
+## Minimizing the RSS {.smaller}
+### Proof of Theorem
+
+- The Hessian determinant is 
+
+\begin{align*}
+\det (\nabla^2 \RSS) & = \RSS_{\alpha \alpha}\RSS_{\beta \beta} -  \RSS_{\alpha \beta}^2  \\[10pt]
+                   & = 4n \sum_{i=1}^{n} x_i^2 - 4 n^2 \overline{x}^2  \\[10pt]
+                   & = 4n \left(  \sum_{i=1}^{n} x_i^2  - n \overline{x}^2 \right) \\[10pt]
+                   & = 4n S_{xx}
+\end{align*}
+
+
+
+## Minimizing the RSS {.smaller}
+### Proof of Theorem
+
+- Recall that 
+
+$$
+S_{xx} = \sum_{i=1}^n (x_i - \overline{x})^2 \geq 0
+$$
+
+- Therefore we have
+
+$$
+\det (\nabla^2 \RSS) = 4n S_{xx} \geq 0
+$$
+
+
+
+
+## Minimizing the RSS {.smaller}
+### Proof of Theorem
+
+
+- We also have
+
+$$
+\operatorname{Tr}(\nabla^2\RSS) = \RSS_{\alpha \alpha} + \RSS_{\beta \beta}  = 2n + 2 \sum_{i=1}^{n} x_i^2 \geq 0
+$$
+
+- Therefore we have proven 
+$$
+\det( \nabla^2 \RSS) \geq 0 \,, \qquad \quad 
+\operatorname{Tr}(\nabla^2\RSS) \geq 0
+$$
+
+- As the Hessian is symmetric, we conclude that $\nabla^2 \RSS$ is positive semi-definite
+
+
+
+## Minimizing the RSS {.smaller}
+### Proof of Theorem
+
+
+- By the Lemma, we have that all the solutions $(\alpha,\beta)$ to the optimality conditions 
+$$
+\nabla \RSS (\alpha,\beta) = 0
+$$
+are minimizers
+
+- Therefore $(\hat \alpha,\hat\beta)$ with
+$$\hat\alpha =  \overline{y}- \hat\beta \overline{x} \,, \qquad \quad 
+\hat\beta = \frac{S_{xy}}{ S_{xx} }
+$$
+is a minimizer of $\RSS$, ending the proof
+
+
+
+
+
+## Least-squares line {.smaller}
+
+The previous Theorem motivates the following definition
+
+
+::: Definition
+
+Given $(x_1,y_1), \ldots, (x_n, y_n)$, the **least-squares line** is 
+$$
+y = \hat\beta x + \hat \alpha
+$$
+where we define
+$$
+\hat{\alpha} = \overline{y} - \hat{\beta} \ \overline{x} \qquad \qquad \hat{\beta} = \frac{S_{xy}}{S_{xx}}
+$$
 
 :::
 
 
 
 
-## {.smaller}
-
-::: {style="font-size: 0.92em"}
-
-**Simulating one confidence interval in R:**
-
-- Sample $n = 100$ times from $N(0,1)$
-    * Running a t-test on the sample gives a confidence interval for the unknown mean $\mu$
-    * The confidence interval can be retrieved with ``$conf.int``
-
-```r
-# Sample 100 times from N(0,1)
-x <- rnorm(100)
-
-# Compute confidence interval using t.test
-interval <- t.test(x)$conf.int
-```
-
-- ``interval`` is a vector containing the simulated confidence interval
-    * Left extreme in ``interval[1]`` $\qquad$ Right extreme in ``interval[2]``
-
-```r
-a <- interval[1];   b <- interval[2]
-
-cat("Simulated confidence interval: a =", a, "  b = ", b)
-```
-
-```{r}
-set.seed(231)
-
-# Sample 100 times from N(0,1)
-x <- rnorm(100)
-
-# Compute confidence interval using t.test
-interval <- t.test(x)$conf.int
-
-# Save left and right extremes
-a <- interval[1];   b <- interval[2]
-
-cat("Simulated confidence interval: a =", a, "  b = ", b)
-```
-
-- In this case the interval contains the true mean $\mu = 0$
-
-:::
-
-
-
-
-## {.smaller}
-
-::: {style="font-size: 0.96em"}
-
-**Testing the claim:** $\quad P (\mu \in [a,b]) = 0.95$
-
-- *If you sample over and over, the interval $[a,b]$ will contain $\mu$ about $95\%$ of the times*
-
-
-We test with the following method:
-
-- Sample $n = 100$ times from $N(0,1)$ and compute confidence interval
-- Repeat $M = 1000$ times
-- Check how many times $\mu = 0$ belongs to simulated confidence intervals
-- Estimate the probability of the CI containing $\mu$ as
-$$
-P(\mu \in [a,b]) \approx \frac{\# \text{ of times } \mu = 0 \text{ belongs to simulated } [a,b]}{M}
-$$
-
-- The estimate should approach $0.95$
-
-:::
-
-
-
-
-
-## {.smaller}
-
-::: {style="font-size: 0.96em"}
-
-- First, we simulate the $M = 1000$ confidence intervals
-
-```r
-# Simulate M confidence intervals for the mean
-n <- 100; M <- 10000
-
-intervals <- replicate(M, t.test(rnorm(n)) $ conf.int)
-```
-
-- ``intervals`` is a matrix containing the $M = 1000$ simulated intervals (as columns)
-    * Left extremes are in ``intervals[1, ]``
-    * Right extremes are in ``intervals[2, ]``
-
-- For visualization, we print the first 5 confidence intervals
-
-```r
-# Print the first 5 columns of intervals
-intervals[ ,1:5]
-```
-
-```{r}
-set.seed(231)
-
-n <- 100; M <- 10000
-
-intervals <- replicate(M, t.test(rnorm(n)) $ conf.int)
-
-intervals[ ,1:5]
-```
-
-:::
-
-
-
-
-## {.smaller}
-
-::: {style="font-size: 0.9em"}
-
-
-- Now, we have our $M = 1000$ confidence intervals for $\mu = 0$
-
-- Check how many times $\mu = 0$ belongs to simulated confidence intervals
-
-```r 
-# Save left and right extremes in vectors
-a <- intervals[1, ];   b <- intervals[2, ]
-
-# Check how many times mu = 0 belongs to (a,b)
-mu.belongs <- sum( (a < 0) & (0 < b) )
-
-# Estimate the probability that mu = 0 belongs to (a,b)
-p <- mu.belongs / M
-
-cat("mu = 0 belongs to the confidence interval with probability", p)
-```
-
-
-```{r} 
-set.seed(231)
-
-# Simulate M confidence intervals for the mean
-n <- 100; M <- 10000
-
-intervals <- replicate(M, t.test(rnorm(n)) $ conf.int)
-
-# Save left and right extremes in vectors
-a <- intervals[1, ];   b <- intervals[2, ]
-
-# Check how many times mu = 0 belongs to (a,b)
-mu.belongs <- sum( (a < 0) & (0 < b) )
-
-# Estimate the probability that mu = 0 belongs to (a,b)
-p <- mu.belongs / M
-
-cat("mu = 0 belongs to the confidence interval with probability", p)
-```
-
-
-- This approximates the theoretical probability
-$$
-P(\mu \in [a,b]) = 0.95
-$$
-(we would need more confidence intervals for a better estimate)
-
-
-:::
-
-
-
-
-
-# Part 6: <br>Simulating p-values {background-color="#cc0164" visibility="uncounted"}
+# Part 7: <br> Worked Example {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -2225,308 +2664,407 @@ $$
 
 
 
+## Worked Example: Blood Pressure {.smaller}
+### Computing the least-squares line in R
 
-## The problem of simulating p-values {.smaller}
+::: {.column width="58%"}
 
-Suppose given a random variable $X$ such that
+In R, we want to do the following:
 
-- The distribution of $X$ is (possibly) unknown
+- Input the data into vectors $x$ and $y$
 
-- A method for **simulating** $X$ is available
-    * This means we can (somehow) sample values from $X$
-
-**Goal:** For a given $x^*$, we want to estimate the p-value 
-
+- Compute the least-square line coefficients
 $$
-p = P(X > x^*)
+\hat{\alpha} = \overline{y} - \hat{\beta} \ \overline{x} \qquad \qquad \hat{\beta} = \frac{S_{xy}}{S_{xx}}
 $$
 
+- Plot the data points $(x_i,y_i)$
 
-
-## General recipe to simulate p-values {.smaller}
-
-**Goal:** Estimate the p-value $p = P(X>x^*)$
-
-1. Simuate the random varible $X$. You obtain a numerical value $X_{\rm sim}$
-
-2. The simulated value is **extreme** if
-$$
-X_{\rm sim} > x^*
-$$
-
-3. There are two possibilities:
-    * $X_{\rm sim}$ is extreme $\quad \,\,\, \quad \implies \quad$ simulation goes in favor of $\, p$
-    * $X_{\rm sim}$ is not extreme $\quad \implies \quad$ simulation goes in favor of $\, 1-p$ 
-    
-4. We **estimate** the p-value as
-$$
-p =  P( X > x^* ) \ \approx \ \frac{ \# \text{ of extreme simulated values} }{ \text{Total number of simulations} }
-$$
-
-
-
-
-## Example: Monte Carlo p-value for goodness-of-fit test {.smaller}
-
-**Goal:** use Monte Carlo simulations to compute p-value for **goodness-of-fit** test 
-
-- Consider data counts
-
-|  Type      | $1$  | $\ldots$ | $n$   | Total                   |
-|:-----------|:----:|:--------:|:-----:|:-----------------------:|
-| Observed counts      |$o_1$ | $\ldots$ | $o_n$ | $m$|
-|Null Probabilities|$p_1^0$| $\ldots$ | $p_n^0$| $1$|
-
-- The expected counts are $E_i = m p_i^0$
-
-- Under the null hypothesis, the observed counts $(o_1, \ldots, o_n)$ come from
-$$
-(O_1 , \ldots, O_n) \sim \multinomial(m, p_1^0, \ldots, p_n^0)
-$$
-
-
-
-
-## p-value for goodness-of-fit test {.smaller}
-
-- The chi-squared statistic *random variable* is
-$$
-\chi^2 = \sum_{i=1}^n \frac{(O_i - E_i)^2 }{ E_i }
-$$
-
-- The observed chi-squared statistics is
-$$
-\chi^2_{\rm obs} = \sum_{i=1}^n \frac{(o_i - E_i)^2 }{ E_i }
-$$
-
-- The p-value is defined as
-$$
-p = P( \chi^2 > \chi^2_{\rm obs} ) 
-$$
-
-
-
-## Problem: Computing p-value for low counts {.smaller}
-
-- Suppose $E_i < 5$ for some $i$ 
-
-- In this case, $\chi^2$ is **not** $\chi^2_{n-1}$ distributed
-
-- In fact, the distribution is **unknown**
-$$
-\chi^2 = \sum_{i=1}^n \frac{(O_i - E_i)^2 }{ E_i }  \ \, \sim \ \, ???
-$$
-- If the distribution is unknown, how do we compute the p-value 
-$$
-p = P( \chi^2 > \chi^2_{\rm obs} )  \ \ ???
-$$
-
-
-**Exercise**: Come up with a simulation to approximate $p$
-
-
-
-## Method: Simulating p-value for $\chi^2$ statistic {.smaller}
-
-::: {style="font-size: 0.94em"}
-
-1. Simulate counts $(o_1^{\rm sim},\ldots,o_n^{\rm sim})$ from $\multinomial(m, p_1^0, \ldots, p_n^0)$
-2. Compute the corresponding simulated chi-squared statistic
-$$
-\chi^2_{\rm sim} = \sum_{i=1}^n \frac{ (o_i^{\rm sim} - E_i)^2 }{E_i} \,, \qquad E_i := m p_i^0
-$$
-3. The simulated chi-squared statistic is **extreme** if
-$$
-\chi^2_{\rm sim} > \chi^2_{\rm obs} \,, \quad \text{ where \, } \chi^2_{\rm obs} = \sum_{i=1}^n \frac{(o_i - E_i)^2 }{ E_i } \,, \,\, o_i \, \text{ the observed counts}
-$$
-
-4. We **estimate** the theoretical p-value by
-$$
-p =  P( \chi^2 > \chi^2_{\rm obs} ) \ \approx \ \frac{ \# \text{ of extreme simulated statistics} }{ \text{Total number of simulations} }
-$$
+- Overlay the least squares line
 
 :::
 
+::: {.column width="40%"}
 
-## Exercise  {.smaller}
+::: {style="font-size: 0.9em"}
 
-::: {style="font-size: 0.94em"}
+| $i$   |  $x_i$  |  $y_i$ |
+|:-----:|:-------:|:------:|
+|  $1$  |  $1.9$  |  $0.7$ |
+|  $2$  |  $0.8$  |  $-1.0$|
+|  $3$  |  $1.1$  |  $-0.2$|
+|  $4$  |  $0.1$  |  $-1.2$|
+|  $5$  |  $-0.1$ |  $-0.1$|
+|  $6$  |  $4.4$  |  $3.4$ |
+|  $7$  |  $4.6$  |  $0.0$ |
+|  $8$  |  $1.6$  |  $0.8$ |
+|  $9$  |  $5.5$  |  $3.7$ |
+|  $10$ |  $3.4$  |  $2.0$ |
+: {tbl-colwidths="[30,35,35]"}
 
-**Data:** Number of defects in printed circuit boards, along with null probabilities
-
-
-|\# Defects             | $0$  | $1$  |  $2$ | $3$  |
-|:-------               |:----:|:----:|:----:|:----:|
-|**Counts**             | $32$ | $15$ | $9$  |  $4$ |
-|**Null Probabilities** | $0.5$| $0.3$|$0.15$|$0.05$|
-
-
-- Total number of counts is $m = 60$. Expected counts are $E_i = m p_i^0$
-
-| $E_1$    | $E_2$    |  $E_3$   | $E_4$   |
-|:-------  |:--------:|:--------:|:-------:|
-|  $30$    | $18$     | $9$      | $3$     |
-
-
-- **Note:** $E_4 = 3 < 5 \quad \implies \quad$ the distribution of $\chi^2$ is unknown
-
-- **Exercise**: Write R code to perform a goodness-of-fit test on above data
-    * You may not use the function ``chisq.test``
-    * p-value should be simulated (see previous slide)
+:::
 
 :::
 
 
 
-## Solution {.smaller}
+
+::: {.content-hidden}
+
+## First Solution {.smaller}
 
 
-- First, compute the observed chi-squared statistic:
-    * Enter observed counts and null probabilities
-    * Compute total counts, expected counts and $\chi^2_{\rm obs}$
+:::
+
+
+
+## First Solution {.smaller}
+
+- We give a first solution using elementary R functions
+
+- The code to input the data into a data-frame is as follows
 
 ```r
-# Enter counts and null hypothesis probabilities
-counts <- c(32, 15, 9, 4)
-null.p <- c(0.5, 0.3, 0.15, 0.05)
+# Input blood pressure changes data into data-frame
 
-# Compute total counts
-m <- sum(counts)
+changes <- data.frame(drug_A = c(1.9, 0.8, 1.1, 0.1, -0.1, 
+                                 4.4, 4.6, 1.6, 5.5, 3.4),
+                      drug_B = c(0.7, -1.0, -0.2, -1.2, -0.1, 
+                                 3.4, 0.0, 0.8, 3.7, 2.0)
+                     )
 
-# Compute expected counts
-exp.counts <- m * null.p
-
-# Compute the observed chi-squared statistic
-obs.chi <- sum( (counts - exp.counts)^2 / exp.counts )
 ```
 
+- To shorten the code we assign ``drug_A`` and ``drug_B`` to vectors ``x`` and ``y``
+
+```r
+# Assign data-frame columns to vectors x and y
+x <- changes$drug_A
+y <- changes$drug_B
+```
 
 
 ## {.smaller}
 
-
-
-We now generate $M = 10000$ simulated chi-squared statistics:
-
-1. Simulate counts $(o_1^{\rm sim},\ldots,o_n^{\rm sim})$ from $\multinomial(m, p_1^0, \ldots, p_n^0)$
-
-2. Compute the corresponding simulated chi-squared statistic
-    $$
-    \chi^2_{\rm sim} = \sum_{i=1}^n \frac{ (o_i^{\rm sim} - E_i)^2 }{E_i}
-    $$
-
-
-::: {style="font-size: 0.94em"}
+- Compute averages $\overline{x}, \overline{y}$ and covariances $S_{xx}, S_{xy}$
 
 ```r
-# Simulate M chi-squared statistics
-M <- 10000
+# Compute averages xbar and ybar
+xbar <- mean(x)
+ybar <- mean(y)
 
-sim.chi <- replicate(M, {
-                # Simulate multinomial counts under null hypothesis
-                sim.counts <- rmultinom(1, m, null.p)
-                            
-                # Reurn chi-squared statistic from the simulated counts
-                sum( (sim.counts - exp.counts )^2 / exp.counts)
-                })
+# Compute covariances S_xx and S_xy
+S_xx <- var(x)
+S_xy <- cov(x,y)
 ```
-:::
 
 
 
 
-## {.smaller}
+##  {.smaller}
 
-- The vector ``sim.chi`` contains $M = 10000$ simulated chi-squared statistics
-
-- We approximate the p-value by
+- Compute the least-square line coefficients
 $$
-p = P(\chi^2 > \chi_{\rm obs}^2) \approx 
-\ \frac{ \# \text{ of extreme simulated statistics} }{ M }
+\hat{\beta} = \frac{S_{xy}}{S_{xx}} \,, \qquad \qquad  \hat{\alpha} = \overline{y} - \hat{\beta} \ \overline{x} 
 $$
 
 ```r
-# Check how many simulated statistics are extreme
-num.extreme <- sum( sim.chi > obs.chi )
+# Compute least-square line coefficients
+beta <- S_xy / S_xx
+alpha <- ybar - beta * xbar
 
-# Estimate the p-value
-sim.p.value <- num.extreme / M
+# Print coefficients
+cat("\nCoefficient alpha =", alpha)
+cat("\nCoefficient beta =", beta)
+```
+
+<br>
+
+
+```{r}
+# Input blood pressure changes data into data-frame
+
+changes <- data.frame(drug_A = c(1.9, 0.8, 1.1, 0.1, -0.1, 
+                                 4.4, 4.6, 1.6, 5.5, 3.4),
+                      drug_B = c(0.7, -1.0, -0.2, -1.2, -0.1, 
+                                 3.4, 0.0, 0.8, 3.7, 2.0)
+                     )
+
+# Assign data-frame columns to vectors x and y
+x <- changes$drug_A
+y <- changes$drug_B
+
+# Compute averages xbar and ybar
+xbar <- mean(x)
+ybar <- mean(y)
+
+# Compute covariances S_xx and S_xy
+S_xx <- var(x)
+S_xy <- cov(x,y)
+
+# Compute least-square line coefficients
+beta <- S_xy / S_xx
+alpha <- ybar - beta * xbar
+
+# Print coefficients
+cat("\nCoefficient alpha =", alpha)
+cat("\nCoefficient beta =", beta)
 ```
 
 
 
 ##  {.smaller}
 
-- As cross check, we also simulate the p-value with ``chisq.test``
+- Plot the data pairs $(x_i,y_i)$
 
 ```r
-# Perform chi-squared test using built-in R function
-ans <- chisq.test(counts, p = null.p, simulate.p.value = T)
+# Plot the data
+plot(x, y, xlab = "", ylab = "", pch = 16, cex = 2)
 
-# Extract p-value from chi-squared test result
-R.p.value <- ans$p.value
+# Add labels
+mtext("Drug A reaction x_i", side = 1, line = 3, cex = 2.1)
+mtext("Drug B reaction y_i", side = 2, line = 2.5, cex = 2.1)
+```
 
-# Print p-values for comparison
-cat("\nOur simulated p-value is:", sim.p.value)
-cat("\nR simulated p-value is:", R.p.value)
+**Note:** We have added a few cosmetic options
+
+- ``pch = 16`` plots points with black circles
+- ``cex = 2`` stands for *character expansion* -- Specifies width of points
+- ``mtext`` is used to fine-tune the axis labels
+  * ``side = 1`` stands for x-axis
+  * ``side = 2`` stands for y-axis
+  * ``line`` specifies distance of label from axis
+
+
+
+## {.smaller}
+
+::: {style="font-size: 0.93em"}
+
+- To plot a line $y = bx + a$
+    * ``abline(a, b)`` 
+
+- Overlay the least squares line $y = \hat{\beta}x + \hat{\alpha}$
+
+
+```r
+# Overlay least-squares line
+abline(a = alpha, b = beta, col = "red", lwd = 3)
+```
+
+- **Note:** Cosmetic options
+  * ``col`` specifies color of the plot
+  * ``lwd`` specifies line width
+
+
+- For clarity, we can add legend to plot
+```r
+# Add legend
+legend("topleft", 
+       legend = c("Data", "Least-Squares Line"), 
+       col = c("black", "red"), 
+       pch = c(16, NA), 
+       lty = c(NA, 1), 
+       lwd = c(NA, 3))
+```
+
+:::
+
+
+
+##  {.smaller}
+
+
+- The code can be downloaded here [least_squares_1.R](codes/least_squares_1.R)
+
+- Running the code we obtain the plot below
+
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Input blood pressure changes data into data-frame
+changes <- data.frame(drug_A = c(1.9, 0.8, 1.1, 0.1, -0.1, 
+                                 4.4, 4.6, 1.6, 5.5, 3.4),
+                      drug_B = c(0.7, -1.0, -0.2, -1.2, -0.1, 
+                                 3.4, 0.0, 0.8, 3.7, 2.0)
+                     )
+
+# Assign data-frame columns to vectors x and y
+x <- changes$drug_A
+y <- changes$drug_B
+
+# Compute averages xbar and ybar
+xbar <- mean(x)
+ybar <- mean(y)
+
+# Compute covariances S_xx and S_xy
+S_xx <- var(x)
+S_xy <- cov(x,y)
+
+# Compute least-square line coefficients
+beta <- S_xy / S_xx
+alpha <- ybar - beta * xbar
+
+# Plot the data
+plot(x, y, xlab = "", ylab = "", pch = 16, cex = 2)
+
+# Add labels
+mtext("Drug A reaction x_i", side = 1, line = 3, cex = 2.1)
+mtext("Drug B reaction y_i", side = 2, line = 2.5, cex = 2.1)
+
+# Overlay least-squares line
+abline(a = alpha, b = beta, col = "red", lwd = 3)
+
+# Add legend
+legend("topleft", 
+       legend = c("Data", "Least-Squares Line"), 
+       col = c("black", "red"), 
+       pch = c(16, NA), 
+       lty = c(NA, 1), 
+       lwd = c(NA, 3))
+```
+
+
+
+
+
+## Second Solution {.smaller}
+
+
+- The second solution uses the R function ``lm``
+- ``lm`` stands for **linear model**
+- First we input the data into a data-frame
+
+```r
+# Input blood pressure changes data into data-frame
+changes <- data.frame(drug_A = c(1.9, 0.8, 1.1, 0.1, -0.1, 
+                                 4.4, 4.6, 1.6, 5.5, 3.4),
+                      drug_B = c(0.7, -1.0, -0.2, -1.2, -0.1, 
+                                 3.4, 0.0, 0.8, 3.7, 2.0)
+                     )
+```
+
+
+
+
+## {.smaller}
+
+
+- Use ``lm`` to fit the least-squares line
+  * ``lm(formula, data)``
+  * ``data`` expects a data-frame in input
+  * ``formula`` stands for the relation to fit
+
+- In the case of least-squares:
+  * ``formula = y ~ x``
+  * ``x`` and ``y`` are names of two variables in the data-frame
+  * Symbol `y ~ x` can be read as: *$y$ modelled as function of $x$*
+
+
+
+
+*Note:* Storing data in data-frame is optional
+
+- We can just store data in vectors ``x`` and ``y``
+
+- Then fit the least-squares line with ``lm(y ~ x)``
+
+
+
+
+##  {.smaller}
+
+- The command to fit the least-squares line on ``changes`` is
+
+```r
+# Fit least squares line
+least_squares <- lm(formula = drug_B ~ drug_A, data = changes) 
+
+# Print output
+print(least_squares)
 ```
 
 
 ```{r}
-set.seed(22)
+# Input blood pressure changes data into data-frame
+changes <- data.frame(drug_A = c(1.9, 0.8, 1.1, 0.1, -0.1, 
+                                 4.4, 4.6, 1.6, 5.5, 3.4),
+                      drug_B = c(0.7, -1.0, -0.2, -1.2, -0.1, 
+                                 3.4, 0.0, 0.8, 3.7, 2.0)
+                     )
 
-# Enter counts and null hypothesis probabilities
-counts <- c(32, 15, 9, 4)
-null.p <- c(0.5, 0.3, 0.15, 0.05)
+least_squares <- lm(formula = drug_B ~ drug_A, data = changes) 
 
-# Compute total counts
-m <- sum(counts)
-
-# Compute expected counts
-exp.counts <- m * null.p
-
-# Compute the observed chi-squared statistic
-obs.chi <- sum( (counts - exp.counts)^2 / exp.counts )
-
-# Simulate M chi-squared statistics
-M <- 10000
-
-sim.chi <- replicate(M, {
-                # Simulate multinomial counts under null hypothesis
-                sim.counts <- rmultinom(1, m, null.p)
-                            
-                # Return chi-squared statistic from the simulated counts
-                sum( (sim.counts - exp.counts )^2 / exp.counts)
-                })
-
-# Check how many simulated statistics are extreme
-num.extreme <- sum( sim.chi >= obs.chi )
-
-# Estimate the p-value
-sim.p.value <- num.extreme / M
-
-# Perform chi-squared test using built-in R function
-ans <- chisq.test(counts, p = null.p, simulate.p.value = T)
-
-# Extract p-value from chi-squared test result
-R.p.value <- ans$p.value
-
-# Print p-values for comparison
-cat("\nOur simulated p-value is:", sim.p.value)
-cat("\nR simulated p-value is:", R.p.value)
+print(least_squares)
 ```
 
-::: {style="font-size: 0.51em"}
+<br>
+- The above tells us that the estimators are 
+
+$$
+\hat \alpha = -0.7861 \,, \qquad \quad \hat \beta = 0.6850
+$$
+
+
+
+
+
+##  {.smaller}
+
+- We can now plot the data with the following command
+  * 1st coordinate is the vector ``changes$drug_A``
+  * 2nd coordinate is the vector ``changes$drug_B``
+
+```r
+# Plot data 
+plot(changes$drug_A, changes$drug_B, pch = 16, cex = 2)
+```
+
 
 <br>
 
-:::
 
-- **Note**: The simulated p-values are the same!  (up to random fluctuations)
+- The least-squares line is currently stored in ``least_squares``
 
-- **Conclusion:** We see that $p > 0.05$. There is not enogh evidence to reject $H_0$
+- To add the line to the current plot use ``abline``
+
+```r    
+# Plot least-squares line
+abline(least_squares, col = "red", lwd = 3)
+```
 
 
 
+##  {.smaller}
 
 
+- The code can be downloaded here [least_squares_2.R](codes/least_squares_2.R)
+
+- Running the code we obtain the plot below
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Input blood pressure changes data into data-frame
+changes <- data.frame(drug_A = c(1.9, 0.8, 1.1, 0.1, -0.1, 
+                                 4.4, 4.6, 1.6, 5.5, 3.4),
+                      drug_B = c(0.7, -1.0, -0.2, -1.2, -0.1, 
+                                 3.4, 0.0, 0.8, 3.7, 2.0)
+                     )
+
+# Fit least-squares line
+least_squares <- lm(formula = drug_B ~ drug_A, data = changes) 
+
+# Plot data 
+plot(changes$drug_A, changes$drug_B, pch = 16, cex = 2)
+
+# Plot least-squares line
+abline(least_squares, col = "red", lwd = 3)
+```
+
+
+
+## References

@@ -40,6 +40,7 @@ $
 1. The basics of R
 2. Vectors
 3. Graphics
+4. Functions
 
 :::
 
@@ -47,10 +48,10 @@ $
 
 ::: {.column width="63%"}
 
-4. The t-test in R
-5. One-sample variance ratio test
-6. Worked example
-7. One-sample variance ratio test in R
+5. The t-test in R
+6. One-sample variance ratio test
+7. Worked example
+8. One-sample variance ratio test in R
 
 :::
 
@@ -1277,7 +1278,270 @@ plot(x)
 
 
 
-# Part 4: <br>The t-test in R {background-color="#cc0164" visibility="uncounted"}
+
+# Part 4: <br>Functions in R {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## Expressions and objects {.smaller}
+
+- Basic way to interact with R is through **expression evaluation**:
+  * You enter an epression
+  * The system evaluates it and prints the result
+
+- Expressions work on **objects**
+- **Object**: anything that can be assigned to a variable
+- Objects encountered so far are:
+  * Scalars
+  * Vectors
+
+
+
+## Functions and arguments {.smaller}
+
+- **Functions** are a class of objects
+
+- Format of a function is **name** followed by parentheses containing **arguments**
+
+- Functions take **arguments** and **return** a result
+
+- We already encountered several built in functions:
+  * ``plot(x, y)``
+  * ``lines(x, y)``
+  * ``seq(x)``
+  * ``print("Stats is great!")``
+  * ``cat("R is great!")``
+  * ``mean(x)``
+  * ``sin(x)``
+
+
+## Functions and arguments {.smaller}
+
+- Functions have **actual arguments** and **formal arguments**
+- Example: 
+  * ``plot(x, y)`` has formal arguments two vectors ``x`` and ``y``
+  * ``plot(height, weight)`` has actual arguments ``height`` and ``weight``
+
+- When you write ``plot(height, weight)`` the arguments are matched:
+  * ``height`` corresponds to x-variable
+  * ``weight`` corresponds to y-variable
+  * This is called **positional matching**
+  
+  
+
+## Functions and arguments {.smaller}
+
+- If a function has a lot of arguments, positional matching is tedious
+
+- For example ``plot()`` accepts the following (and more!) arguments
+
+| Argument |                        Description    |
+|:--------:|:-------------------------------------:|
+| ``x``    | x coordinate of points in the plot    |
+| ``y``    | y coordinate of points in the plot    |
+| ``type`` | Type of plot to be drawn              |
+| ``main`` | Title of the plot                     |
+| ``xlab`` | Label of x axis                       |
+| ``ylab`` | Label of y axis                       | 
+| ``pch``  | Shape of points                       |
+
+
+
+
+
+## Functions and arguments {.smaller}
+
+Issue with having too many arguments is the following:
+
+- We might want to specify ``pch = 2``
+- But then we would have to match all the arguments preceding
+``pch``
+  * ``x``
+  * ``y``
+  * ``type``
+  * ``xlab``
+  * ``ylab``
+
+
+
+## Functions and arguments {.smaller}
+
+- Thankfully we can use **named actual arguments**:
+  * The name of a formal argument can be matched to an actual argument
+  * This is independent of position
+
+- For example we can specify ``pch = 2`` by the call
+  * ``plot(weight, height, pch = 2)``
+
+- In the above:
+  * ``weight`` is implicitly matched to ``x``
+  * ``height`` is implicitly matched to ``y``
+  * ``pch`` is explicitly matched to ``2``
+  
+- Note that the following call would give same output
+  * ``plot(x = weight, y = height, pch = 2)``
+
+
+
+
+
+
+## Functions and arguments {.smaller}
+
+- Named actual arguments **override** positional arguments
+- Example: The following commands yield the same plot
+  * ``plot(height, weight)``
+  * ``plot(x = height, y = weight)``
+  * ``plot(y = weight, x = height)``
+
+
+
+
+
+## Functions and arguments {.smaller}
+
+We have already seen another example of **named actual arguments**
+
+- ``seq(from = 1, to = 11, by = 2)``
+- ``seq(1, 11, 2)``
+- These yield the same output. Why?
+- Because in this case **named actual arguments** match **positional arguments**
+
+
+
+
+## Functions and arguments {.smaller}
+
+If however we want to divide the interval $[1, 11]$ in $5$ equal parts:
+
+- Have to use ``seq(1, 11, length.out = 6)``
+
+
+```{r}
+#| echo: true
+seq(1, 11, length.out = 6)
+```
+
+- The above is different from ``seq(1, 11, 6)``
+```{r}
+#| echo: true
+seq(1, 11, 6)
+```
+
+- They are different because:
+  * The 3rd positional argument of ``seq()`` is ``by``
+  * Hence the command ``seq(1, 11, 6)`` assumes that ``by = 6``
+
+
+
+## Functions and arguments {.smaller}
+### Warning
+
+- You can call functions without specifying arguments
+- However you have to use brackets ``()``
+- Example:
+  * ``getwd()`` -- which outputs current working directory
+  * ``ls()`` -- which outputs names of objects currently in memory
+
+
+
+
+## Custom functions {.smaller}
+
+- You can define your own functions in R
+- Syntax for definining custom function ``my_function`` is below
+- You can call your custom function by typing
+    * ``my_function(arguments)``
+
+```r
+my_function <- function(first = "1st argument", 
+                        ... ,
+                        nth = "n-th argument") {
+  
+  # Code here: This is where you tell the function what to do
+
+  return(object)      # Object to be returned  
+}
+```
+
+
+## Custom functions -- Example {.smaller}
+
+- The R function ``mean(x)`` computes the sample mean of vector ``x``
+- We want to define our own function to compute the mean
+
+- **Example:** The mean of ``x`` could be computed via
+    * ``sum(x) / length(x)``
+- We want to implement this code into the function ``my_mean(x)``
+    * ``my_mean`` takes vector ``x`` as argument
+    * ``my_mean`` returns a scalar -- the mean of ``x``
+
+```r
+# Definition of custom function my_mean(x)
+my_mean <- function(vector = x) {
+  
+  mean_of_x <- sum(x) / length(x)
+  
+  return(mean_of_x)  
+}
+```
+
+
+
+## Custom functions -- Example {.smaller}
+
+
+- Let us use our function ``my_mean`` on an example
+
+```r
+# Generate a random vector of 1000 entries from N(0,1)
+x <- rnorm(1000)
+
+# Compute mean of x with my_mean
+xbar <- my_mean(x)
+
+# Compute mean of x with built in function mean
+xbar_check <- mean(x)
+  
+cat("Mean of x computed with my_mean is:", xbar)
+cat("Mean of x computed with R mean is:", xbar_check)
+cat("They coincide!")
+```
+
+```{r}
+my_mean <- function(vector = x) {
+  
+  mean_of_x <- sum(x) / length(x)
+  
+  return(mean_of_x)  
+}
+
+# Generate a random vector of 1000 entries from N(0,1)
+x <- rnorm(1000)
+
+# Compute mean of x with my_mean
+xbar <- my_mean(x)
+
+# Compute mean of x with built in function mean
+xbar_check <- mean(x)
+  
+cat("Mean of x computed with my_mean is:", xbar)
+cat("Mean of x computed with R mean is:", xbar_check)
+cat("They coincide!")
+```
+
+
+
+
+
+
+# Part 5: <br>The t-test in R {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -1823,7 +2087,7 @@ print(answer)
 
 
 
-# Part 5: <br>One-sample variance <br> ratio test{background-color="#cc0164" visibility="uncounted"}
+# Part 6: <br>One-sample variance <br> ratio test{background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -2105,7 +2369,7 @@ $$
 
 
 
-# Part 6: <br>Worked example {background-color="#cc0164" visibility="uncounted"}
+# Part 7: <br>Worked example {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -2280,7 +2544,7 @@ $$
 
 
 
-# Part 7: <br>One-sample variance <br> ratio test in R{background-color="#cc0164" visibility="uncounted"}
+# Part 8: <br>One-sample variance <br> ratio test in R{background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 

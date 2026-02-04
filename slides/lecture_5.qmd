@@ -51,6 +51,8 @@ $
 
 4. The goodness-of-fit test
 5. Worked Examples
+1. Goodness-of-fit test for Contingency tables
+2. Worked Example
 
 :::
 
@@ -290,8 +292,7 @@ $$
 
 
 
-## Properties of F-distribution {.smaller}
-### Proof of Theorem
+## Proof of Theorem {.smaller}
 
 1. Requires a bit of work (omitted)
 
@@ -306,8 +307,7 @@ $$
 
 
 
-## Properties of F-distribution {.smaller}
-### Proof of Theorem
+## ## Proof of Theorem {.smaller} {.smaller}
 
 3. Suppose $X \sim t_q$. The Theorem in Slide 118 of Lecture 2, guarantees that
 $$
@@ -320,8 +320,7 @@ $$
 
 
 
-## Properties of F-distribution {.smaller}
-### Proof of Theorem
+## ## Proof of Theorem {.smaller} {.smaller}
 
 - Since $U \sim N(0,1)$, by definition $U^2 \sim \chi_1^2$. 
 - Moreover $U^2$ and $V$ are independet, since $U$ and $V$ are independent
@@ -329,11 +328,6 @@ $$
 $$
 X^2 = \frac{U^2}{V/q} \sim \frac{\chi_1^2/1}{\chi_q^2/q} \sim F_{1,q} 
 $$
-
-
-
-
-
 
 
 
@@ -2481,4 +2475,765 @@ cat("The p-value is:", p_value)
 
 
 **Conclusion:** No reason to believe that Republicans and Democrats are not tied
+
+
+
+
+# Part 6: <br>Goodness-of-fit test for <br >Contingency tables {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+
+
+## {.smaller}
+
+**Two-way Contigency Tables:** Table in which each observation is classified in 2 ways
+
+**Example:** 
+
+- Relative performance of Man Utd managers
+
+- Two classifications for each game: Result, and Manager in charge
+
+| Manager     |     Won |  Drawn  | Lost    |
+|:-----------:|:-------:|:-------:|:-------:|
+| **Moyes**   |   27    | 9       |   15    |
+|**Van Gaal** |   54    |  25     |   24    |
+|**Mourinho** |   84    |  32     |   28    |
+|**Solskjaer**|    91   |   37    |   40    |
+|**Rangnick** |    11   |   10    |   8     |
+|**ten Hag**  |    61   |   12    |   28    |
+
+
+
+
+
+
+## Contingency tables: Abstract definition {.smaller}
+
+|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
+|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
+|$X = 1$   |  $O_{11}$| $O_{12}$  | $\ldots$ | $O_{1C}$ | $O_{1+}$|
+|$X = 2$   |  $O_{21}$| $O_{22}$  | $\ldots$ | $O_{2C}$ | $O_{2+}$|
+|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
+|$X = R$   |  $O_{R1}$| $O_{R2}$  | $\ldots$ | $O_{RC}$ | $O_{R+}$|
+|**Totals**| $O_{+1}$ | $O_{+2}$  | $\ldots$ | $O_{+C}$ | $m$     |
+
+
+- Each observation
+    * has attached two categories $X$ and $Y$
+    * can only belong to one category $(X,Y) = (i,j)$
+
+- $O_{ij}$ is the **count** of observations with $(X,Y) = (i,j)$
+- Table has $R$ rows and $C$ columns, for total of $n = RC$ categories
+
+
+
+## Contingency tables: Abstract definition {.smaller}
+
+|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
+|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
+|$X = 1$   |  $O_{11}$| $O_{12}$  | $\ldots$ | $O_{1C}$ | $O_{1+}$|
+|$X = 2$   |  $O_{21}$| $O_{22}$  | $\ldots$ | $O_{2C}$ | $O_{2+}$|
+|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
+|$X = R$   |  $O_{R1}$| $O_{R2}$  | $\ldots$ | $O_{RC}$ | $O_{R+}$|
+|**Totals**| $O_{+1}$ | $O_{+2}$  | $\ldots$ | $O_{+C}$ | $m$     |
+
+
+- *plus* symbol in subscript denotes sum over
+that subscript. Example
+
+$$
+O_{R+} = \sum_{j=1}^C O_{Rj} \qquad \quad 
+O_{+2} = \sum_{i=1}^R O_{i2}
+$$
+
+
+
+
+## Contingency tables: Abstract definition {.smaller}
+
+|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
+|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
+|$X = 1$   |  $O_{11}$| $O_{12}$  | $\ldots$ | $O_{1C}$ | $O_{1+}$|
+|$X = 2$   |  $O_{21}$| $O_{22}$  | $\ldots$ | $O_{2C}$ | $O_{2+}$|
+|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
+|$X = R$   |  $O_{R1}$| $O_{R2}$  | $\ldots$ | $O_{RC}$ | $O_{R+}$|
+|**Totals**| $O_{+1}$ | $O_{+2}$  | $\ldots$ | $O_{+C}$ | $m$     |
+
+
+- The total count is
+
+$$
+m = O_{++} = \sum_{i=1}^R \sum_{j=1}^C O_{ij}
+$$
+
+
+
+
+
+## Contingency tables: Abstract definition {.smaller}
+
+|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
+|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
+|$X = 1$   |  $O_{11}$| $O_{12}$  | $\ldots$ | $O_{1C}$ | $O_{1+}$|
+|$X = 2$   |  $O_{21}$| $O_{22}$  | $\ldots$ | $O_{2C}$ | $O_{2+}$|
+|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
+|$X = R$   |  $O_{R1}$| $O_{R2}$  | $\ldots$ | $O_{RC}$ | $O_{R+}$|
+|**Totals**| $O_{+1}$ | $O_{+2}$  | $\ldots$ | $O_{+C}$ | $m$     |
+
+
+- The marginal counts sum to $m$ as well
+
+$$
+\sum_{i=1}^R O_{i+} = \sum_{i=1}^R \sum_{j=1}^C O_{ij} = m
+$$
+
+
+
+## Contingency tables: Abstract definition {.smaller}
+
+|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
+|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
+|$X = 1$   |  $O_{11}$| $O_{12}$  | $\ldots$ | $O_{1C}$ | $O_{1+}$|
+|$X = 2$   |  $O_{21}$| $O_{22}$  | $\ldots$ | $O_{2C}$ | $O_{2+}$|
+|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
+|$X = R$   |  $O_{R1}$| $O_{R2}$  | $\ldots$ | $O_{RC}$ | $O_{R+}$|
+|**Totals**| $O_{+1}$ | $O_{+2}$  | $\ldots$ | $O_{+C}$ | $m$     |
+
+
+- The marginal counts sum to $m$ as well
+
+$$
+\sum_{j=1}^C O_{+j} = \sum_{j=1}^C \sum_{i=1}^R  O_{ij} = m
+$$
+
+
+
+
+## Contingency tables: Probabilities {.smaller}
+
+|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
+|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
+|$X = 1$   |  $p_{11}$| $p_{12}$  | $\ldots$ | $p_{1C}$ | $p_{1+}$|
+|$X = 2$   |  $p_{21}$| $p_{22}$  | $\ldots$ | $p_{2C}$ | $p_{2+}$|
+|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
+|$X = R$   |  $p_{R1}$| $p_{R2}$  | $\ldots$ | $p_{RC}$ | $p_{R+}$|
+|**Totals**| $p_{+1}$ | $p_{+2}$  | $\ldots$ | $p_{+C}$ | $1$     |
+
+
+- Observation in cell $(i,j)$ happens with probability
+
+$$
+p_{ij} := P(X = i , Y = j)
+$$
+
+
+## Contingency tables: Probabilities {.smaller}
+
+|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
+|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
+|$X = 1$   |  $p_{11}$| $p_{12}$  | $\ldots$ | $p_{1C}$ | $p_{1+}$|
+|$X = 2$   |  $p_{21}$| $p_{22}$  | $\ldots$ | $p_{2C}$ | $p_{2+}$|
+|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
+|$X = R$   |  $p_{R1}$| $p_{R2}$  | $\ldots$ | $p_{RC}$ | $p_{R+}$|
+|**Totals**| $p_{+1}$ | $p_{+2}$  | $\ldots$ | $p_{+C}$ | $1$     |
+
+- The marginal probabilities that $X = i$ or $Y = j$ are at the margins of table
+
+$$
+P(X = i) = \sum_{j=1}^C P(X = i , Y = j) = \sum_{j=1}^C p_{ij} = p_{i+}
+$$
+
+
+## Contingency tables: Probabilities {.smaller}
+
+|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
+|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
+|$X = 1$   |  $p_{11}$| $p_{12}$  | $\ldots$ | $p_{1C}$ | $p_{1+}$|
+|$X = 2$   |  $p_{21}$| $p_{22}$  | $\ldots$ | $p_{2C}$ | $p_{2+}$|
+|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
+|$X = R$   |  $p_{R1}$| $p_{R2}$  | $\ldots$ | $p_{RC}$ | $p_{R+}$|
+|**Totals**| $p_{+1}$ | $p_{+2}$  | $\ldots$ | $p_{+C}$ | $1$     |
+
+- The marginal probabilities that $X = i$ or $Y = j$ are at the margins of table
+
+$$
+P(Y = j) = \sum_{i=1}^R P(X = i , Y = j) = \sum_{i=1}^R p_{ij} = p_{+j}
+$$
+
+
+
+## Contingency tables: Probabilities {.smaller}
+
+|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
+|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
+|$X = 1$   |  $p_{11}$| $p_{12}$  | $\ldots$ | $p_{1C}$ | $p_{1+}$|
+|$X = 2$   |  $p_{21}$| $p_{22}$  | $\ldots$ | $p_{2C}$ | $p_{2+}$|
+|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
+|$X = R$   |  $p_{R1}$| $p_{R2}$  | $\ldots$ | $p_{RC}$ | $p_{R+}$|
+|**Totals**| $p_{+1}$ | $p_{+2}$  | $\ldots$ | $p_{+C}$ | $1$     |
+
+- Marginal probabilities sum to $1$
+
+$$
+\sum_{i=1}^R p_{i+} = \sum_{i=1}^R  P(X = i) = \sum_{i=1}^R \sum_{j=1}^C P(X = i , Y = j) = 1
+$$
+
+
+
+## Contingency tables: Probabilities {.smaller}
+
+|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
+|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
+|$X = 1$   |  $p_{11}$| $p_{12}$  | $\ldots$ | $p_{1C}$ | $p_{1+}$|
+|$X = 2$   |  $p_{21}$| $p_{22}$  | $\ldots$ | $p_{2C}$ | $p_{2+}$|
+|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
+|$X = R$   |  $p_{R1}$| $p_{R2}$  | $\ldots$ | $p_{RC}$ | $p_{R+}$|
+|**Totals**| $p_{+1}$ | $p_{+2}$  | $\ldots$ | $p_{+C}$ | $1$     |
+
+- Marginal probabilities sum to $1$
+
+$$
+\sum_{j=1}^C p_{+j} = \sum_{j=1}^C  P(X = j) = \sum_{j=1}^R \sum_{j=1}^C P(X = i , Y = j) = 1
+$$
+
+
+
+## Multinomial distribution {.smaller}
+
+- Counts $O_{ij}$ and probabilities $p_{ij}$ can be assembled into $R \times C$ matrices
+$$
+O = 
+\left(
+\begin{array}{ccc}
+O_{11} & \ldots & O_{1C} \\
+\vdots & \ddots & \vdots \\
+O_{R1} & \ldots & O_{RC} \\
+\end{array}
+\right) 
+\qquad \qquad 
+p = 
+\left(
+\begin{array}{ccc}
+p_{11} & \ldots & p_{1C} \\
+\vdots & \ddots & \vdots \\
+p_{R1} & \ldots & p_{RC} \\
+\end{array}
+\right)
+$$
+
+
+- This way the random matrix $O$ has multinomial distribution 
+$$
+O \sim \multinomial (m,p)
+$$
+
+- The counts $O_{ij}$ are therefore binomial
+$$
+O_{ij} \sim \binomial (m,p_{ij})
+$$
+
+
+
+
+## Multinomial distribution {.smaller}
+
+
+- We can also consider the marginal random vectors
+$$
+(O_{1+}, \ldots, O_{R+}) \qquad \qquad (O_{+1}, \ldots, O_{+C})
+$$
+
+- These have also multinomial distribution
+$$
+(O_{1+}, \ldots, O_{R+})  \sim \multinomial (m, p_{1+}, \ldots, p_{R+})
+$$
+$$
+(O_{+1}, \ldots, O_{+C}) \sim \multinomial (m, p_{+1}, \ldots, p_{+C})
+$$
+
+
+
+
+
+## Expected counts {.smaller}
+
+|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
+|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
+|$X = 1$   |  $O_{11}$| $O_{12}$  | $\ldots$ | $O_{1C}$ | $O_{1+}$|
+|$X = 2$   |  $O_{21}$| $O_{22}$  | $\ldots$ | $O_{2C}$ | $O_{2+}$|
+|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
+|$X = R$   |  $O_{R1}$| $O_{R2}$  | $\ldots$ | $O_{RC}$ | $O_{R+}$|
+|**Totals**| $O_{+1}$ | $O_{+2}$  | $\ldots$ | $O_{+C}$ | $m$     |
+
+
+- We have that $O_{ij} \sim \binomial (m,p_{ij})$
+- We model the **expected counts** for category $(i,j)$ as
+$$
+E_{ij} := \Expect[O_{ij}] =  m p_{ij}
+$$
+
+
+
+## Marginal expected counts {.smaller}
+
+|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
+|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
+|$X = 1$   |  $E_{11}$| $E_{12}$  | $\ldots$ | $E_{1C}$ | $E_{1+}$|
+|$X = 2$   |  $E_{21}$| $E_{22}$  | $\ldots$ | $E_{2C}$ | $E_{2+}$|
+|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
+|$X = R$   |  $E_{R1}$| $E_{R2}$  | $\ldots$ | $E_{RC}$ | $E_{R+}$|
+|**Totals**| $E_{+1}$ | $E_{+2}$  | $\ldots$ | $E_{+C}$ | $m$     |
+
+- Due to linearity of expectation, it makes sense to define marginal counts
+$$
+E_{i+} := \sum_{j=1}^C E_{ij} 
+\qquad \qquad 
+E_{+j} := \sum_{i=1}^R  E_{ij} 
+$$
+
+
+
+## Marginal expected counts {.smaller}
+
+|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
+|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
+|$X = 1$   |  $E_{11}$| $E_{12}$  | $\ldots$ | $E_{1C}$ | $E_{1+}$|
+|$X = 2$   |  $E_{21}$| $E_{22}$  | $\ldots$ | $E_{2C}$ | $E_{2+}$|
+|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
+|$X = R$   |  $E_{R1}$| $E_{R2}$  | $\ldots$ | $E_{RC}$ | $E_{R+}$|
+|**Totals**| $E_{+1}$ | $E_{+2}$  | $\ldots$ | $E_{+C}$ | $m$     |
+
+- Marginal expected counts sum to $m$. For example:
+$$
+\sum_{i=1}^R E_{i+} = \sum_{i=1}^R \sum_{j=1}^C E_{ij} =  m \sum_{i=1}^R \sum_{j=1}^C p_{ij} = m
+$$
+
+
+
+
+## The chi-squared statistic {.smaller}
+
+|          | $Y = 1$  | $Y = 2$   | $\ldots$ | $Y = C$  | Totals  |
+|:--------:|:--------:|:---------:|:--------:|:--------:|:-------:|
+|$X = 1$   |  $O_{11}$| $O_{12}$  | $\ldots$ | $O_{1C}$ | $O_{1+}$|
+|$X = 2$   |  $O_{21}$| $O_{22}$  | $\ldots$ | $O_{2C}$ | $O_{2+}$|
+|$\cdots$  |  $\cdots$| $\cdots$  | $\ldots$ | $\cdots$ | $\cdots$|
+|$X = R$   |  $O_{R1}$| $O_{R2}$  | $\ldots$ | $O_{RC}$ | $O_{R+}$|
+|**Totals**| $O_{+1}$ | $O_{+2}$  | $\ldots$ | $O_{+C}$ | $m$     |
+
+
+::: Definition 
+
+The chi-squared statistic associated to the above contingency table is
+$$
+\chi^2 := \sum_{i=1}^R \sum_{j=1}^C  \frac{ (O_{ij} - E_{ij})^2 }{ E_{ij} } = 
+\sum_{i=1}^R \sum_{j=1}^C  \frac{ (O_{ij} - m p_{ij})^2 }{ m p_{ij} }
+$$
+
+:::
+
+
+
+
+## Distribution of chi-squared statistic {.smaller}
+
+::: Theorem
+
+Suppose the counts $O \sim \multinomial (m,p)$. Then
+$$
+\chi^2 = \sum_{i=1}^R \sum_{j=1}^C  \frac{ (O_{ij} - m p_{ij})^2 }{ m p_{ij} } \ 
+\stackrel{ {\rm d} }{ \longrightarrow } \ \chi_{RC - 1 - {\rm fitted} }^2  
+$$
+when sample size $m  \to \infty$. The convergence is in distribution and
+
+- $\rm fitted = \,$ \# of parameters used to estimate cell probabilities $p_{ij}$
+
+:::
+
+
+**Quality of approximation:** The chi-squared approximation is good if
+$$
+E_{ij} = m p_{ij} \geq 5  \quad \text{ for all } \,\, i = 1 , \ldots , R  \, \text{ and }
+j = 1, \ldots, C 
+$$
+
+
+
+
+## Goodness-of-fit test for contingency tables {.smaller}
+
+**Setting:** 
+
+- Population consists of items of $n = R \times C$ different types
+- $p_{ij}$ is probability that an item selected at random is of type $(i,j)$
+- $p_{ij}$ is unknown and needs to be estimated
+
+- As guess for $p_{ij}$ we take $p_{ij}^0$ such that
+$$
+0 \leq p_{ij}^0 \leq 1 \qquad \qquad \sum_{i=1}^R \sum_{j=1}^C p_{ij}^0 = 1
+$$
+
+
+
+## Goodness-of-fit test for contingency tables {.smaller}
+
+**Hypothesis Test:** We test for equality of $p_{ij}$ to $p_{ij}^0$
+\begin{align*}
+& H_0 \colon p_{ij} = p_{ij}^0 \qquad \text{ for all } \, i = 1, \ldots, R  \,, \text{ and } \, j = 1 , \ldots, C \\
+& H_1 \colon p_{ij} \neq p_{ij}^0 \qquad \text{ for at least one pair } \, (i,j) 
+\end{align*}
+
+
+**Sample**: 
+
+- We draw $m$ items from population
+- $O_{ij}$ denotes the number of items of type $i$ drawn
+- Therefore $O = (O_{ij})_{ij}$ is $\multinomial (m,p)$ with $p = (p_{ij})_{ij}$
+
+**Data**: Matrix of counts $o = (o_{ij})_{ij}$
+
+
+
+
+## Procedure {.smaller}
+
+1. **Calculation**: 
+    * Compute total counts and expected counts
+    $$
+    m = \sum_{i=1}^R \sum_{j=1}^C o_{ij} \qquad \quad E_{ij} = m p_{ij}^0
+    $$ 
+    * Compute the chi-squared statistic
+    $$
+    \chi^2 = \sum_{i=1}^R \sum_{j=1}^C \frac{ (o_{ij} - E_{ij})^2 }{E_{ij}}
+    $$
+
+
+
+##  {.smaller}
+
+
+
+2. **Statistical Tables or R**: 
+    * Check that $E_{ij} \geq 5$ for all $i, j$
+    * No parameters fitted. By the Theorem we get
+    $$
+    {\rm degrees \,\, freedom} = RC - 1 \qquad \qquad  \chi^2 \ \approx \ \chi_{RC-1}^2
+    $$
+    * Find critical value $\chi^2_{RC - 1} (0.05)$ in chi-squared [Table 2](files/Statistics_Tables.pdf)
+    * Alternatively, compute p-value in R
+
+
+3. **Interpretation**: Reject $H_0$ when either
+$$
+p < 0.05 \qquad \text{ or } \qquad \chi^2 \in \,\,\text{Rejection Region}
+$$
+
+
+| Alternative                                      | Rejection Region               |    p-value                 |
+|--------------------------------------------------|--------------------------------|----------------------------|
+| $\exists \, (i,j) \,\,$ s.t. $\,\, p_{ij} \neq p_{ij}^0$ | $\chi^2 > \chi^2_{RC-1}(0.05)$  | $P(\chi_{RC-1}^2 > \chi^2)$ |
+: {tbl-colwidths="[32,28,25]"}
+ 
+
+
+
+
+
+## Goodness-of-fit test in R {.smaller}
+
+1. Store matrix of counts $O = (o_{ij})_{ij}$ into a single R vector, proceeding row-by-row 
+    * ``counts <- c(o_11, o_12, ..., o_RC)``
+
+2. Store matrix of null probabilities $p^0 = (p_{ij}^0)_{ij}$ into a single R vector (row-by-row)
+    * ``nullp.p <- c(p_11, p_12, ..., p_RC)``
+
+3. Perform a chi-squared goodness-of-fit test on ``counts`` with ``null.p``
+
+|Alternative                                    |    R command                         |
+|-----------------------------------------------|--------------------------------------|
+|$\exists \, (i,j) \,\,$ s.t. $\,\, p_{ij} \neq p_{ij}^0$ | ``chisq.test(counts, p = null.p)``  |
+: {tbl-colwidths="[40,60]"}
+
+4. Read output: In particular look for the p-value
+
+**Monte Carlo p-value:** compute with the option ``simulate.p.value = T``
+
+**Note:** Command in 3 is exactly the same as goodness-of-fit test for simple counts
+
+
+
+
+# Part 7: <br>Worked Example {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## Example: Manchester United performance {.smaller}
+
+
+**Background story:**
+
+- From 1992 to 2013 Man Utd won 13 Premier Leagues titles out of 21
+- This is the best performance (of any team) in the Premier League era
+- This was under manager Sir Alex Ferguson
+- Ferguson stepped down in 2014
+- Since 2014 Man Utd has not won the PL and was managed by 6 different people (excluding interims)
+
+
+**Question:** Are the 6 managers to blame for worse Team Performance?
+
+
+
+
+## The data {.smaller}
+
+| Manager     |     Won |  Drawn  | Lost    |
+|:-----------:|:-------:|:-------:|:-------:|
+| **Moyes**   |   27    | 9       |   15    |
+|**Van Gaal** |   54    |  25     |   24    |
+|**Mourinho** |   84    |  32     |   28    |
+|**Solskjaer**|    91   |   37    |   40    |
+|**Rangnick** |    11   |   10    |   8     |
+|**ten Hag**  |    61   |   12    |   28    |
+
+- Table contains Man Utd games since 2014 season (updated to 2024 season)
+
+- To each Man Utd game in the sample we associate two categories:
+    * Manager and Result
+
+
+
+
+
+## Setting up the test {.smaller}
+
+- **Question:** Is the number of Wins, Draws and Losses uniformly distributed?
+    * If Yes, this would suggest very poor performance
+
+
+- **Hypothesis Test:** To answer the question we perform a goodness-of-fit test on
+\begin{align*}
+& H_0 \colon p_{ij} = p_{ij}^0 \quad \text { for all pairs } \, (i,j)  \\
+& H_1 \colon p_{ij} \neq p_{ij}^0 \quad \text { for at least one pair } \, (i,j)  \\
+\end{align*}
+
+- **Null Probabilities:** 
+    * They have to model that Wins, Draws and Losses are uniformly distributed
+    * To compute them, we need to compute total number of games for each manager
+
+
+
+## Computing the null probabilities {.smaller}
+
+- We compute total number of games for each manager
+
+| Manager     |     Won |  Drawn  | Lost    |     Total     |
+|:-----------:|:-------:|:-------:|:-------:|:------------- |
+| **Moyes**   |   27    | 9       |   15    | $o_{1+} = 51$ |
+|**Van Gaal** |   54    |  25     |   24    | $o_{2+} = 103$|
+|**Mourinho** |   84    |  32     |   28    | $o_{3+} = 144$|
+|**Solskjaer**|    91   |   37    |   40    | $o_{4+} = 168$|
+|**Rangnick** |    11   |   10    |   8     | $o_{5+} = 29$ |
+|**ten Hag**  |    61   |   12    |   28    | $o_{6+} = 101$|
+
+- We also need the total number of games
+$$
+m = \sum_{i=1}^R o_{i+} = 596
+$$
+
+
+
+
+## Computing the null probabilities {.smaller}
+
+::: {style="font-size: 0.93em"}
+
+- The results are **uniformly distributed** if each manager 
+    * Wins (Draws, Loses) $1/3$ of the games he played
+
+    
+- Since Manager $i$ plays $o_{i+}$ games, the expected scores are
+$$
+E_{ij} = \frac{o_{i+}}{3} \,, \qquad j=1,2,3
+$$
+
+- Recall that the expected scores are modelled as
+$$
+E_{ij} = m p_{ij}^0
+$$
+
+- Thus, the null probabilities under the assumption of uniform distribution are
+
+$$
+p_{ij}^0 = \frac13 \times \frac{o_{i+}}{m} \quad \left( = \frac{1}{3} \times \text{Proportion of total games played by Manager } \, i \right)
+$$
+
+:::
+
+
+## Computing the null probabilities {.smaller}
+
+- Substituting the values of $o_{i+}$ and $m$, we obtain the null probabilities
+
+\begin{align*}
+\text{Moyes: } \quad & p_{1j}^0 = \frac13 \times \frac{ o_{1+} }{ m } = 51 \big/ 1788  \\ 
+\text{Van Gaal: }\quad & p_{2j}^0 = \frac13 \times  \frac{ o_{2+} }{ m } = 103 \big/  1788  \\
+\text{Mourinho: } \quad& p_{3j}^0 = \frac13 \times  \frac{ o_{3+} }{ m } =  144 \big/  1788  \\
+\text{Solskjaer: } \quad& p_{4j}^0 = \frac13 \times \frac{ o_{4+} }{ m } =  168 \big/ 1788 \\
+\text{Rangnick: }\quad & p_{5j}^0 = \frac13 \times \frac{ o_{5+} }{ m } =  29 \big/  1788  \\
+\text{ten Hag: }\quad & p_{6j}^0 = \frac13 \times \frac{ o_{6+} }{ m } =  101 \big/  1788 
+\end{align*}
+
+
+## Summary: Counts and Null probabilities {.smaller}
+
+<br>
+
+::: {.column width="48%"}
+
+| Manager     |     Won |  Drawn  | Lost    |
+|:-----------:|:-------:|:-------:|:-------:|
+| **Moyes**   |   27    | 9       |   15    |
+|**Van Gaal** |   54    |  25     |   24    |
+|**Mourinho** |   84    |  32     |   28    |
+|**Solskjaer**|    91   |   37    |   40    |
+|**Rangnick** |    11   |   10    |   8     |
+|**ten Hag**  |    61   |   12    |   28    |
+
+:::
+
+
+
+::: {.column width="48%"}
+
+| Manager     |     Won |  Drawn  | Lost    |
+|:-----------:|:-------:|:-------:|:-------:|
+| **Moyes**   | $\frac{51}{1788}$ | $\frac{51}{1788}$ | $\frac{51}{1788}$ |
+|**Van Gaal** | $\frac{103}{1788}$ | $\frac{103}{1788}$ | $\frac{103}{1788}$ |
+|**Mourinho** | $\frac{144}{1788}$ | $\frac{144}{1788}$ | $\frac{144}{1788}$ |
+|**Solskjaer**| $\frac{168}{1788}$ | $\frac{168}{1788}$ | $\frac{168}{1788}$ |
+|**Rangnick** | $\frac{29}{1788}$ | $\frac{29}{1788}$ | $\frac{29}{1788}$ |
+|**ten Hag**  | $\frac{101}{1788}$ | $\frac{101}{1788}$ | $\frac{101}{1788}$ |
+
+
+::::
+
+
+## Implementation in R {.smaller}
+
+- Start by storing the matrix of counts into a single R vector, row-by-row
+
+```r
+# Store matrix of counts into single R vector
+counts <- c(27, 9, 15,
+            54, 25, 24,
+            84, 32, 28, 
+            91, 37, 40,
+            11, 10, 8,
+            61, 12, 28)
+```
+
+
+## {.smaller}
+
+- Then we store the matrix of null probabilities into a single R vector, row-by-row
+- Null probabilities in each row are the same. Hence we can use the command ``rep``
+
+```r
+# Store matrix of null probabilities into single R vector
+# To avoid copy pasting, first store probabilities of each Manager
+manager.null.p <- c(51/1788, 103/1788, 144/1788, 
+                    168/1788, 29/1788, 101/1788)
+
+# Repeat each entry 3 times 
+null.p <- rep(manager.null.p, c(3, 3, 3, 3, 3, 3))
+```
+
+<br>
+
+- Let us print the (rounded) null probabilities to aid visualization
+
+```r
+print(round(null.p,2))     # Rounds to 2 d.p.
+```
+
+```{r}
+manager.null.p <- c(51/1788, 103/1788, 144/1788, 
+                    168/1788, 29/1788, 101/1788)
+null.p <- rep(manager.null.p, c(3, 3, 3, 3, 3, 3))
+print(round(null.p,2))
+```
+
+
+
+
+## {.smaller}
+
+- Finally we perform the goodness-of-fit test on ``counts`` and ``null.p``
+
+```r
+# Perform goodness-of-fit test
+ans <- chisq.test(counts, p = null.p)
+
+# Print answer
+print(ans)
+```
+
+
+- The code can be downloaded here [good_fit_contingency.R](codes/good_fit_contingency.R)
+
+
+
+
+## Output {.smaller}
+
+- Running the code we obtain
+
+```{r}
+# Store matrix of counts into single R vector
+counts <- c(27, 9, 15,
+            54, 25, 24,
+            84, 32, 28, 
+            91, 37, 40,
+            11, 10, 8,
+            61, 12, 28)
+
+# Store matrix of null probabilities into single R vector
+# To avoid copy pasting, first store probabilities of each Manager
+manager.null.p <- c(51/1788, 103/1788, 144/1788, 
+                    168/1788, 29/1788, 101/1788)
+
+# Repeat each entry 3 times 
+null.p <- rep(manager.null.p, c(3, 3, 3, 3, 3, 3))
+
+# Perform goodness-of-fit test
+ans <- chisq.test(counts, p = null.p)
+
+# Print answer
+print(ans)
+```
+
+<br>
+
+- p-value is $p \approx 0 < 0.05$
+- We therefore reject $H_0$
+- Significant evidence that results of Man Utd games are not uniformly distributed
+- Low goal-scoring rates in soccer mean roughly $1/3$ of games end in a draw
+- Hence Man Utd is not actually doing too bad
+
+
+
 

@@ -425,6 +425,14 @@
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
+  .Remark {
+    --color1: #bce5de;
+    --color2: #21aa93;
+  }
+  .Definition {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
   .Lemma {
     --color1: #f4cce0;
     --color2: #db4d92;
@@ -437,6 +445,46 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
+  .Important {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Notation {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
+  .Question {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Idea {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .DONE {
+    --color1: #cce7b1;
+    --color2: #86b754;
+  }
+  .Conjecture {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .TODO {
+    --color1: #e7b1b4;
+    --color2: #8c3236;
+  }
+  .Proposition {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Warning {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Example {
+    --color1: #bce5de;
+    --color2: #21aa93;
+  }
   .Axiom {
     --color1: #f4cce0;
     --color2: #db4d92;
@@ -445,57 +493,9 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Question {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .TODO {
-    --color1: #e7b1b4;
-    --color2: #8c3236;
-  }
-  .Example {
-    --color1: #bce5de;
-    --color2: #21aa93;
-  }
-  .Important {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Proposition {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .DONE {
-    --color1: #cce7b1;
-    --color2: #86b754;
-  }
-  .Warning {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Remark {
-    --color1: #bce5de;
-    --color2: #21aa93;
-  }
-  .Notation {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
-  }
-  .Idea {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
   .Proof {
     --color1: #f1f1f2;
     --color2: #c0c0c1;
-  }
-  .Conjecture {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Definition {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
   }
   </style>
 </head>
@@ -538,9 +538,10 @@
 <li>The basics of R</li>
 <li>Vectors</li>
 <li>Graphics</li>
+<li>Functions</li>
 </ol>
 </div><div class="column" style="width:63%;">
-<ol start="4" type="1">
+<ol start="5" type="1">
 <li>The t-test in R</li>
 <li>One-sample variance ratio test</li>
 <li>Worked example</li>
@@ -812,7 +813,7 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1]  0.002312062 -0.198194300 -0.210915560  2.074046584  0.345449555</code></pre>
+<pre><code>[1] -0.557001  0.919865 -1.282678  1.043764 -1.207707</code></pre>
 </div>
 </div>
 <p>The above values can be plotted by concatenating the <code>plot</code> command</p>
@@ -1678,8 +1679,288 @@ y = x^2 \,, \qquad x \in [-1, 1]
 </div>
 </div></section></section>
 <section>
-<section id="part-4-the-t-test-in-r" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
-<h1>Part 4: <br>The t-test in R</h1>
+<section id="part-4-functions-in-r" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 4: <br>Functions in R</h1>
+<div class="footer">
+<div color="#cc0164">
+
+</div>
+</div>
+</section>
+<section id="expressions-and-objects" class="slide level2 smaller">
+<h2>Expressions and objects</h2>
+<ul>
+<li>Basic way to interact with R is through <strong>expression evaluation</strong>:
+<ul>
+<li>You enter an epression</li>
+<li>The system evaluates it and prints the result</li>
+</ul></li>
+<li>Expressions work on <strong>objects</strong></li>
+<li><strong>Object</strong>: anything that can be assigned to a variable</li>
+<li>Objects encountered so far are:
+<ul>
+<li>Scalars</li>
+<li>Vectors</li>
+</ul></li>
+</ul>
+</section>
+<section id="functions-and-arguments" class="slide level2 smaller">
+<h2>Functions and arguments</h2>
+<ul>
+<li><p><strong>Functions</strong> are a class of objects</p></li>
+<li><p>Format of a function is <strong>name</strong> followed by parentheses containing <strong>arguments</strong></p></li>
+<li><p>Functions take <strong>arguments</strong> and <strong>return</strong> a result</p></li>
+<li><p>We already encountered several built in functions:</p>
+<ul>
+<li><code>plot(x, y)</code></li>
+<li><code>lines(x, y)</code></li>
+<li><code>seq(x)</code></li>
+<li><code>print("Stats is great!")</code></li>
+<li><code>cat("R is great!")</code></li>
+<li><code>mean(x)</code></li>
+<li><code>sin(x)</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="functions-and-arguments-1" class="slide level2 smaller">
+<h2>Functions and arguments</h2>
+<ul>
+<li>Functions have <strong>actual arguments</strong> and <strong>formal arguments</strong></li>
+<li>Example:
+<ul>
+<li><code>plot(x, y)</code> has formal arguments two vectors <code>x</code> and <code>y</code></li>
+<li><code>plot(height, weight)</code> has actual arguments <code>height</code> and <code>weight</code></li>
+</ul></li>
+<li>When you write <code>plot(height, weight)</code> the arguments are matched:
+<ul>
+<li><code>height</code> corresponds to x-variable</li>
+<li><code>weight</code> corresponds to y-variable</li>
+<li>This is called <strong>positional matching</strong></li>
+</ul></li>
+</ul>
+</section>
+<section id="functions-and-arguments-2" class="slide level2 smaller">
+<h2>Functions and arguments</h2>
+<ul>
+<li><p>If a function has a lot of arguments, positional matching is tedious</p></li>
+<li><p>For example <code>plot()</code> accepts the following (and more!) arguments</p></li>
+</ul>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Argument</th>
+<th style="text-align: center;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>x</code></td>
+<td style="text-align: center;">x coordinate of points in the plot</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>y</code></td>
+<td style="text-align: center;">y coordinate of points in the plot</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>type</code></td>
+<td style="text-align: center;">Type of plot to be drawn</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>main</code></td>
+<td style="text-align: center;">Title of the plot</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>xlab</code></td>
+<td style="text-align: center;">Label of x axis</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>ylab</code></td>
+<td style="text-align: center;">Label of y axis</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>pch</code></td>
+<td style="text-align: center;">Shape of points</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions-and-arguments-3" class="slide level2 smaller">
+<h2>Functions and arguments</h2>
+<p>Issue with having too many arguments is the following:</p>
+<ul>
+<li>We might want to specify <code>pch = 2</code></li>
+<li>But then we would have to match all the arguments preceding <code>pch</code>
+<ul>
+<li><code>x</code></li>
+<li><code>y</code></li>
+<li><code>type</code></li>
+<li><code>xlab</code></li>
+<li><code>ylab</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="functions-and-arguments-4" class="slide level2 smaller">
+<h2>Functions and arguments</h2>
+<ul>
+<li>Thankfully we can use <strong>named actual arguments</strong>:
+<ul>
+<li>The name of a formal argument can be matched to an actual argument</li>
+<li>This is independent of position</li>
+</ul></li>
+<li>For example we can specify <code>pch = 2</code> by the call
+<ul>
+<li><code>plot(weight, height, pch = 2)</code></li>
+</ul></li>
+<li>In the above:
+<ul>
+<li><code>weight</code> is implicitly matched to <code>x</code></li>
+<li><code>height</code> is implicitly matched to <code>y</code></li>
+<li><code>pch</code> is explicitly matched to <code>2</code></li>
+</ul></li>
+<li>Note that the following call would give same output
+<ul>
+<li><code>plot(x = weight, y = height, pch = 2)</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="functions-and-arguments-5" class="slide level2 smaller">
+<h2>Functions and arguments</h2>
+<ul>
+<li>Named actual arguments <strong>override</strong> positional arguments</li>
+<li>Example: The following commands yield the same plot
+<ul>
+<li><code>plot(height, weight)</code></li>
+<li><code>plot(x = height, y = weight)</code></li>
+<li><code>plot(y = weight, x = height)</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="functions-and-arguments-6" class="slide level2 smaller">
+<h2>Functions and arguments</h2>
+<p>We have already seen another example of <strong>named actual arguments</strong></p>
+<ul>
+<li><code>seq(from = 1, to = 11, by = 2)</code></li>
+<li><code>seq(1, 11, 2)</code></li>
+<li>These yield the same output. Why?</li>
+<li>Because in this case <strong>named actual arguments</strong> match <strong>positional arguments</strong></li>
+</ul>
+</section>
+<section id="functions-and-arguments-7" class="slide level2 smaller">
+<h2>Functions and arguments</h2>
+<p>If however we want to divide the interval <span class="math inline">[1, 11]</span> in <span class="math inline">5</span> equal parts:</p>
+<ul>
+<li>Have to use <code>seq(1, 11, length.out = 6)</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">11</span>, <span class="at">length.out =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1  3  5  7  9 11</code></pre>
+</div>
+</div>
+<ul>
+<li>The above is different from <code>seq(1, 11, 6)</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">11</span>, <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 7</code></pre>
+</div>
+</div>
+<ul>
+<li>They are different because:
+<ul>
+<li>The 3rd positional argument of <code>seq()</code> is <code>by</code></li>
+<li>Hence the command <code>seq(1, 11, 6)</code> assumes that <code>by = 6</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="functions-and-arguments-8" class="slide level2 smaller">
+<h2>Functions and arguments</h2>
+<h3 id="warning-1">Warning</h3>
+<ul>
+<li>You can call functions without specifying arguments</li>
+<li>However you have to use brackets <code>()</code></li>
+<li>Example:
+<ul>
+<li><code>getwd()</code> – which outputs current working directory</li>
+<li><code>ls()</code> – which outputs names of objects currently in memory</li>
+</ul></li>
+</ul>
+</section>
+<section id="custom-functions" class="slide level2 smaller">
+<h2>Custom functions</h2>
+<ul>
+<li>You can define your own functions in R</li>
+<li>Syntax for definining custom function <code>my_function</code> is below</li>
+<li>You can call your custom function by typing
+<ul>
+<li><code>my_function(arguments)</code></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a aria-hidden="true" tabindex="-1"></a>my_function <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">first =</span> <span class="st">"1st argument"</span>, </span>
+<span id="cb91-2"><a aria-hidden="true" tabindex="-1"></a>                        ... ,</span>
+<span id="cb91-3"><a aria-hidden="true" tabindex="-1"></a>                        <span class="at">nth =</span> <span class="st">"n-th argument"</span>) {</span>
+<span id="cb91-4"><a aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb91-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># Code here: This is where you tell the function what to do</span></span>
+<span id="cb91-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(object)      <span class="co"># Object to be returned  </span></span>
+<span id="cb91-8"><a aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="custom-functions-example" class="slide level2 smaller">
+<h2>Custom functions – Example</h2>
+<ul>
+<li><p>The R function <code>mean(x)</code> computes the sample mean of vector <code>x</code></p></li>
+<li><p>We want to define our own function to compute the mean</p></li>
+<li><p><strong>Example:</strong> The mean of <code>x</code> could be computed via</p>
+<ul>
+<li><code>sum(x) / length(x)</code></li>
+</ul></li>
+<li><p>We want to implement this code into the function <code>my_mean(x)</code></p>
+<ul>
+<li><code>my_mean</code> takes vector <code>x</code> as argument</li>
+<li><code>my_mean</code> returns a scalar – the mean of <code>x</code></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Definition of custom function my_mean(x)</span></span>
+<span id="cb92-2"><a aria-hidden="true" tabindex="-1"></a>my_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">vector =</span> x) {</span>
+<span id="cb92-3"><a aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb92-4"><a aria-hidden="true" tabindex="-1"></a>  mean_of_x <span class="ot">&lt;-</span> <span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span>
+<span id="cb92-5"><a aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb92-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(mean_of_x)  </span>
+<span id="cb92-7"><a aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="custom-functions-example-1" class="slide level2 smaller">
+<h2>Custom functions – Example</h2>
+<ul>
+<li>Let us use our function <code>my_mean</code> on an example</li>
+</ul>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a random vector of 1000 entries from N(0,1)</span></span>
+<span id="cb93-2"><a aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
+<span id="cb93-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute mean of x with my_mean</span></span>
+<span id="cb93-5"><a aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> <span class="fu">my_mean</span>(x)</span>
+<span id="cb93-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute mean of x with built in function mean</span></span>
+<span id="cb93-8"><a aria-hidden="true" tabindex="-1"></a>xbar_check <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
+<span id="cb93-9"><a aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb93-10"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Mean of x computed with my_mean is:"</span>, xbar)</span>
+<span id="cb93-11"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Mean of x computed with R mean is:"</span>, xbar_check)</span>
+<span id="cb93-12"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"They coincide!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Mean of x computed with my_mean is: 0.04926081</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mean of x computed with R mean is: 0.04926081</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>They coincide!</code></pre>
+</div>
+</div>
+</section></section>
+<section>
+<section id="part-5-the-t-test-in-r" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 5: <br>The t-test in R</h1>
 <div class="footer">
 <div color="#cc0164">
 
@@ -1942,17 +2223,17 @@ H_1 \colon \mu \neq 0
 <p><span class="math display">
 p = 2 P(t_{n-1} &gt; |t|) \,, \qquad t  = \frac{\bar{x} - \mu_0}{s/\sqrt{n}}
 </span></p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter CCI data in 2 vectors using function c()</span></span>
-<span id="cb87-2"><a aria-hidden="true" tabindex="-1"></a>score_2007 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">86</span>, <span class="dv">86</span>, <span class="dv">88</span>, <span class="dv">90</span>, <span class="dv">99</span>, <span class="dv">97</span>, <span class="dv">97</span>, <span class="dv">96</span>, <span class="dv">99</span>, <span class="dv">97</span>, <span class="dv">90</span>, <span class="dv">90</span>)</span>
-<span id="cb87-3"><a aria-hidden="true" tabindex="-1"></a>score_2009 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">24</span>, <span class="dv">22</span>, <span class="dv">21</span>, <span class="dv">21</span>, <span class="dv">19</span>, <span class="dv">18</span>, <span class="dv">17</span>, <span class="dv">18</span>, <span class="dv">21</span>, <span class="dv">23</span>, <span class="dv">22</span>, <span class="dv">21</span>)</span>
-<span id="cb87-4"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute vector of differences in CCI</span></span>
-<span id="cb87-6"><a aria-hidden="true" tabindex="-1"></a>difference <span class="ot">&lt;-</span> score_2007 <span class="sc">-</span> score_2009</span>
-<span id="cb87-7"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-8"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Perform t-test on difference with null hypothesis mu = 0</span></span>
-<span id="cb87-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Store output in "answer" and print</span></span>
-<span id="cb87-10"><a aria-hidden="true" tabindex="-1"></a>answer <span class="ot">&lt;-</span> <span class="fu">t.test</span>(difference, <span class="at">mu =</span> <span class="dv">0</span>)</span>
-<span id="cb87-11"><a aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(answer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter CCI data in 2 vectors using function c()</span></span>
+<span id="cb97-2"><a aria-hidden="true" tabindex="-1"></a>score_2007 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">86</span>, <span class="dv">86</span>, <span class="dv">88</span>, <span class="dv">90</span>, <span class="dv">99</span>, <span class="dv">97</span>, <span class="dv">97</span>, <span class="dv">96</span>, <span class="dv">99</span>, <span class="dv">97</span>, <span class="dv">90</span>, <span class="dv">90</span>)</span>
+<span id="cb97-3"><a aria-hidden="true" tabindex="-1"></a>score_2009 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">24</span>, <span class="dv">22</span>, <span class="dv">21</span>, <span class="dv">21</span>, <span class="dv">19</span>, <span class="dv">18</span>, <span class="dv">17</span>, <span class="dv">18</span>, <span class="dv">21</span>, <span class="dv">23</span>, <span class="dv">22</span>, <span class="dv">21</span>)</span>
+<span id="cb97-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute vector of differences in CCI</span></span>
+<span id="cb97-6"><a aria-hidden="true" tabindex="-1"></a>difference <span class="ot">&lt;-</span> score_2007 <span class="sc">-</span> score_2009</span>
+<span id="cb97-7"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-8"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Perform t-test on difference with null hypothesis mu = 0</span></span>
+<span id="cb97-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Store output in "answer" and print</span></span>
+<span id="cb97-10"><a aria-hidden="true" tabindex="-1"></a>answer <span class="ot">&lt;-</span> <span class="fu">t.test</span>(difference, <span class="at">mu =</span> <span class="dv">0</span>)</span>
+<span id="cb97-11"><a aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(answer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>The code can be downloaded here <a href="codes/one_sample_t_test.R">one_sample_t_test.R</a></li>
 </ul>
@@ -2183,15 +2464,15 @@ H_1 \colon \mu &lt; 17
 <p><span class="math display">
 p = P(t_{n-1} &lt; t) \,, \qquad t  = \frac{\bar{x} - \mu_0}{s/\sqrt{n}}
 </span></p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter the mileage data</span></span>
-<span id="cb98-2"><a aria-hidden="true" tabindex="-1"></a>mpg <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">11.4</span>, <span class="fl">13.1</span>, <span class="fl">14.7</span>, <span class="fl">14.7</span>, <span class="fl">15.0</span>, <span class="fl">15.5</span>, <span class="fl">15.6</span>, <span class="fl">15.9</span>, <span class="fl">16.0</span>, <span class="fl">16.8</span>)</span>
-<span id="cb98-3"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb98-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Perform one-sided t-test with null hypothesis mu = 17 </span></span>
-<span id="cb98-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Store answer in "answer"</span></span>
-<span id="cb98-6"><a aria-hidden="true" tabindex="-1"></a>answer <span class="ot">&lt;-</span> <span class="fu">t.test</span>(mpg, <span class="at">mu =</span> <span class="dv">17</span>, <span class="at">alternative =</span> <span class="st">"less"</span>)</span>
-<span id="cb98-7"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb98-8"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Print the answer</span></span>
-<span id="cb98-9"><a aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(answer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter the mileage data</span></span>
+<span id="cb108-2"><a aria-hidden="true" tabindex="-1"></a>mpg <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">11.4</span>, <span class="fl">13.1</span>, <span class="fl">14.7</span>, <span class="fl">14.7</span>, <span class="fl">15.0</span>, <span class="fl">15.5</span>, <span class="fl">15.6</span>, <span class="fl">15.9</span>, <span class="fl">16.0</span>, <span class="fl">16.8</span>)</span>
+<span id="cb108-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Perform one-sided t-test with null hypothesis mu = 17 </span></span>
+<span id="cb108-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Store answer in "answer"</span></span>
+<span id="cb108-6"><a aria-hidden="true" tabindex="-1"></a>answer <span class="ot">&lt;-</span> <span class="fu">t.test</span>(mpg, <span class="at">mu =</span> <span class="dv">17</span>, <span class="at">alternative =</span> <span class="st">"less"</span>)</span>
+<span id="cb108-7"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-8"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Print the answer</span></span>
+<span id="cb108-9"><a aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(answer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="solution-4" class="slide level2 smaller">
 <h2>Solution</h2>
@@ -2218,8 +2499,8 @@ mean of x
 </ul>
 </section></section>
 <section>
-<section id="part-5-one-sample-variance-ratio-test" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
-<h1>Part 5: <br>One-sample variance <br> ratio test</h1>
+<section id="part-6-one-sample-variance-ratio-test" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 6: <br>One-sample variance <br> ratio test</h1>
 <div class="footer">
 <div color="#cc0164">
 
@@ -2338,7 +2619,7 @@ P(\chi_{n-1}^2 &gt; \chi_{n-1}^2(0.05) ) = 0.05
 <li><p>In the picture we have <span class="math inline">n = 12</span> and <span class="math inline">\chi_{11}^2(0.05) = 19.68</span></p></li>
 </ul>
 
-<img data-src="lecture_3_files/figure-revealjs/unnamed-chunk-40-1.png" width="960" class="r-stretch"></section>
+<img data-src="lecture_3_files/figure-revealjs/unnamed-chunk-43-1.png" width="960" class="r-stretch"></section>
 <section id="critical-values-of-chi-squared-tables" class="slide level2 smaller">
 <h2>Critical values of chi-squared – Tables</h2>
 <ul>
@@ -2410,8 +2691,8 @@ p := P( \chi_{n-1}^2 &gt; \chi^2 )
 </ol>
 </section></section>
 <section>
-<section id="part-6-worked-example" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
-<h1>Part 6: <br>Worked example</h1>
+<section id="part-7-worked-example" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 7: <br>Worked example</h1>
 <div class="footer">
 <div color="#cc0164">
 
@@ -2850,8 +3131,8 @@ s=\sqrt{\frac{845}{11}}=8.765
 </ol>
 </section></section>
 <section>
-<section id="part-7-one-sample-variance-ratio-test-in-r" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
-<h1>Part 7: <br>One-sample variance <br> ratio test in R</h1>
+<section id="part-8-one-sample-variance-ratio-test-in-r" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
+<h1>Part 8: <br>One-sample variance <br> ratio test in R</h1>
 <div class="footer">
 <div color="#cc0164">
 
@@ -2916,10 +3197,10 @@ p = P(\chi_{n-1}^2 &gt; \chi^2)
 </ul>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Probability woman exceeds 180cm in height</span></span>
-<span id="cb100-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># P(X &gt; 180) = 1 - P(X &lt;= 180)</span></span>
-<span id="cb100-3"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb100-4"><a aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="dv">180</span>, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Probability woman exceeds 180cm in height</span></span>
+<span id="cb110-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># P(X &gt; 180) = 1 - P(X &lt;= 180)</span></span>
+<span id="cb110-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-4"><a aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="dv">180</span>, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.01679331</code></pre>
 </div>
@@ -2928,30 +3209,30 @@ p = P(\chi_{n-1}^2 &gt; \chi^2)
 <section id="section-1" class="slide level2 smaller">
 <h2></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># The upper 10th percentile for women height, that is,</span></span>
-<span id="cb102-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># height q such that P(X &lt;= q) = 0.9</span></span>
-<span id="cb102-3"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fl">0.90</span>, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># The upper 10th percentile for women height, that is,</span></span>
+<span id="cb112-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># height q such that P(X &lt;= q) = 0.9</span></span>
+<span id="cb112-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fl">0.90</span>, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 173.2524</code></pre>
 </div>
 </div>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Value of pdf at 163</span></span>
-<span id="cb104-2"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb104-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">dnorm</span>(<span class="dv">163</span>, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Value of pdf at 163</span></span>
+<span id="cb114-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">dnorm</span>(<span class="dv">163</span>, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.04986779</code></pre>
 </div>
 </div>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Generate random sample of size 5</span></span>
-<span id="cb106-2"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb106-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Generate random sample of size 5</span></span>
+<span id="cb116-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 170.3669 148.4334 163.8110 158.1014 156.9287</code></pre>
+<pre><code>[1] 156.5976 164.7110 158.2954 160.2530 162.2315</code></pre>
 </div>
 </div>
 </section>
@@ -2964,10 +3245,10 @@ p = P(\chi_{n-1}^2 &gt; \chi^2)
 <li>The tallest would be in the top 1/(3.5 billion) quantile</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Find the top 1/(3.5 billion) quantile</span></span>
-<span id="cb108-2"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb108-3"><a aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="fl">3.5e9</span>)</span>
-<span id="cb108-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(p, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Find the top 1/(3.5 billion) quantile</span></span>
+<span id="cb118-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-3"><a aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="fl">3.5e9</span>)</span>
+<span id="cb118-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(p, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 212.5849</code></pre>
 </div>
@@ -3029,11 +3310,11 @@ p = P(\chi_{n-1}^2 &gt; \chi^2)
 </ul>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute 0.95 quantile for chi-squared with 11 degrees of freedom</span></span>
-<span id="cb110-2"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb110-3"><a aria-hidden="true" tabindex="-1"></a>quantile <span class="ot">&lt;-</span> <span class="fu">qchisq</span>(<span class="fl">0.95</span>, <span class="at">df =</span> <span class="dv">11</span>)</span>
-<span id="cb110-4"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb110-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"The 0.95 quantile for chi-squared with df = 11 is"</span>, quantile)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute 0.95 quantile for chi-squared with 11 degrees of freedom</span></span>
+<span id="cb120-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb120-3"><a aria-hidden="true" tabindex="-1"></a>quantile <span class="ot">&lt;-</span> <span class="fu">qchisq</span>(<span class="fl">0.95</span>, <span class="at">df =</span> <span class="dv">11</span>)</span>
+<span id="cb120-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb120-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"The 0.95 quantile for chi-squared with df = 11 is"</span>, quantile)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>The 0.95 quantile for chi-squared with df = 11 is 19.67514</code></pre>
 </div>
@@ -3060,9 +3341,9 @@ p := P(\chi_{n-1}^2 &gt; \chi^2) = 1 - P(\chi_{n-1}^2  \leq  \chi^2)
 </span></p></li>
 <li><p>The code is therefore</p></li>
 </ul>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute p-value for chi^2 = chi_squared and df = n</span></span>
-<span id="cb112-2"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb112-3"><a aria-hidden="true" tabindex="-1"></a>p_value <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(chi_squared, <span class="at">df =</span> n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute p-value for chi^2 = chi_squared and df = n</span></span>
+<span id="cb122-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-3"><a aria-hidden="true" tabindex="-1"></a>p_value <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(chi_squared, <span class="at">df =</span> n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="the-variance-ratio-test-in-r-1" class="slide level2 smaller">
 <h2>The variance ratio test in R</h2>
@@ -3243,12 +3524,12 @@ H_1 \colon \sigma &gt; 1
 <ul>
 <li>Start by entering data into R</li>
 </ul>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter Consumer Expectation and Consumer Spending data</span></span>
-<span id="cb113-2"><a aria-hidden="true" tabindex="-1"></a>CE <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">66</span>, <span class="dv">53</span>, <span class="dv">62</span>, <span class="dv">61</span>, <span class="dv">78</span>, <span class="dv">72</span>, <span class="dv">65</span>, <span class="dv">64</span>, <span class="dv">61</span>, <span class="dv">50</span>, <span class="dv">55</span>, <span class="dv">51</span>)</span>
-<span id="cb113-3"><a aria-hidden="true" tabindex="-1"></a>CS <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">72</span>, <span class="dv">55</span>, <span class="dv">69</span>, <span class="dv">65</span>, <span class="dv">82</span>, <span class="dv">77</span>, <span class="dv">72</span>, <span class="dv">78</span>, <span class="dv">77</span>, <span class="dv">75</span>, <span class="dv">77</span>, <span class="dv">77</span>)</span>
-<span id="cb113-4"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb113-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute difference</span></span>
-<span id="cb113-6"><a aria-hidden="true" tabindex="-1"></a>difference <span class="ot">&lt;-</span> CE <span class="sc">-</span> CS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter Consumer Expectation and Consumer Spending data</span></span>
+<span id="cb123-2"><a aria-hidden="true" tabindex="-1"></a>CE <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">66</span>, <span class="dv">53</span>, <span class="dv">62</span>, <span class="dv">61</span>, <span class="dv">78</span>, <span class="dv">72</span>, <span class="dv">65</span>, <span class="dv">64</span>, <span class="dv">61</span>, <span class="dv">50</span>, <span class="dv">55</span>, <span class="dv">51</span>)</span>
+<span id="cb123-3"><a aria-hidden="true" tabindex="-1"></a>CS <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">72</span>, <span class="dv">55</span>, <span class="dv">69</span>, <span class="dv">65</span>, <span class="dv">82</span>, <span class="dv">77</span>, <span class="dv">72</span>, <span class="dv">78</span>, <span class="dv">77</span>, <span class="dv">75</span>, <span class="dv">77</span>, <span class="dv">77</span>)</span>
+<span id="cb123-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute difference</span></span>
+<span id="cb123-6"><a aria-hidden="true" tabindex="-1"></a>difference <span class="ot">&lt;-</span> CE <span class="sc">-</span> CS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="the-variance-ratio-test-in-r-3" class="slide level2 smaller">
 <h2>The variance ratio test in R</h2>
@@ -3257,17 +3538,17 @@ H_1 \colon \sigma &gt; 1
 \chi^2 = \frac{(n-1) s^2}{\sigma^2_0}
 </span></li>
 </ul>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute sample size</span></span>
-<span id="cb114-2"><a aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(difference)</span>
-<span id="cb114-3"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb114-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter null hypothesis</span></span>
-<span id="cb114-5"><a aria-hidden="true" tabindex="-1"></a>sigma_0 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb114-6"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb114-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute sample standard deviation</span></span>
-<span id="cb114-8"><a aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">sd</span>(difference)</span>
-<span id="cb114-9"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb114-10"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute chi-squared statistic</span></span>
-<span id="cb114-11"><a aria-hidden="true" tabindex="-1"></a>chi_squared <span class="ot">&lt;-</span> (n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> s <span class="sc">^</span> <span class="dv">2</span> <span class="sc">/</span> sigma_0 <span class="sc">^</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute sample size</span></span>
+<span id="cb124-2"><a aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(difference)</span>
+<span id="cb124-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter null hypothesis</span></span>
+<span id="cb124-5"><a aria-hidden="true" tabindex="-1"></a>sigma_0 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb124-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute sample standard deviation</span></span>
+<span id="cb124-8"><a aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">sd</span>(difference)</span>
+<span id="cb124-9"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-10"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute chi-squared statistic</span></span>
+<span id="cb124-11"><a aria-hidden="true" tabindex="-1"></a>chi_squared <span class="ot">&lt;-</span> (n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> s <span class="sc">^</span> <span class="dv">2</span> <span class="sc">/</span> sigma_0 <span class="sc">^</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="the-variance-ratio-test-in-r-4" class="slide level2 smaller">
 <h2>The variance ratio test in R</h2>
@@ -3276,11 +3557,11 @@ H_1 \colon \sigma &gt; 1
 p = P(\chi_{n-1}^2 &gt; \chi^2) = 1 - P(\chi_{n-1}^2 \leq \chi^2)
 </span></li>
 </ul>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute p-value</span></span>
-<span id="cb115-2"><a aria-hidden="true" tabindex="-1"></a>p_value <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(chi_squared, <span class="at">df =</span> n <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb115-3"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb115-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Print p-value</span></span>
-<span id="cb115-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"The p-value for one-sided variance test is"</span>, p_value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute p-value</span></span>
+<span id="cb125-2"><a aria-hidden="true" tabindex="-1"></a>p_value <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(chi_squared, <span class="at">df =</span> n <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb125-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb125-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Print p-value</span></span>
+<span id="cb125-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"The p-value for one-sided variance test is"</span>, p_value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><br></p>
 <ul>
 <li>The full code can be downloaded here <a href="codes/variance_ratio_test.R">variance_ratio_test.R</a></li>

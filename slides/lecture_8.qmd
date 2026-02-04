@@ -21,7 +21,7 @@ $
 
 
 
-# Lecture 8: <br>The Maths of <br>Regression {background-color="#cc0164" visibility="uncounted"}
+# Lecture 8: <br> Practical regression {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -33,23 +33,43 @@ $
 
 
 
-## Outline of Lecture 8
+## Outline of Lecture 8 {.smaller}
+
+1. Plotting variables in R  
+    * Cross-check formal statistical results with graphical analyses
+    * Important in practical research work
+
+<br>
+
+2. Coefficient of determination $R^2$
+    * $R^2$ measures proportion of variability in the data explained by the model
+    * $R^2$ close to $1 \implies$ Model exaplains data well
+    * Any $R^2$ larger than $0.3$ is potentially interesting
 
 
 
-1. Simple linear regression
-2. General linear regression
-3. Simple regression as general regression
-4. Multiple linear regression
-5. Coefficient of determination $R^2$
-6. Example of multiple regression
-7. Two sample t-test as general regression
+## Outline of Lecture 8 {.smaller}
+
+
+3. t-test for simple regression
+    * Test the significance of the slope parameter
+
+4. t-test for general regression
+    * Test the significance of regression parameters
+
+5. F-test for multiple regression
+    * Test the Overall Significance of the parameters
+
+
+6. Worked Example: The Longley dataset
+    * Classic example of highly collinear dataset
 
 
 
 
 
-# Part 1: <br>Simple linear<br>regression {background-color="#cc0164" visibility="uncounted"}
+
+# Part 1: <br>Plotting variables in R {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -60,721 +80,705 @@ $
 
 
 
+## Plotting variables in R {.smaller}
+
+
+Interested in relationship between 2 variables
+
+- Want to plot the 2 variables together
+
+- Cross-check the results of a formal statistical analysis
+
+- Very important in real project work
 
 
 
+## Example: Stock and Gold prices
 
-## Simple linear regression: Motivation {.smaller}
-
-- **Model:** Suppose given two random variables $X$ and $Y$
-  
-  ::: {.column width="48%"}
-  * $X$ models *observed values*
-  :::
-  ::: {.column width="48%"}
-  * $Y$ models a *response*
-  :::
-  
-- **Goal of Regression:** Learn (approximate) the conditional distribution
-  $$
-  Y | X
-  $$
-  * $Y | X$ allows to predict values of $Y$ from values of $X$
-  * To determine $Y|X$, we need the **joint distribution** of $(X,Y)$
-
-- **Problem:** The joint distribution of $(X,Y)$ is **unknown**. We have partial knowledge in the form of paired observations
-  $$
-  (x_1,y_1) , \ldots, (x_n,y_n) \quad \text{ observed from } \quad (X,Y)
-  $$
-  
-- **Goal:** Use the observations (data) to learn $Y|X$
-
-
-
-
-
-## Why not just use Least-Squares? {.smaller}
-
-
-::: {.column width="50%"}
-
-**Least-Squares:** 
-
-- Naive solution to regression problem 
-
-- Find a line of best fit
-$$
-y = \hat \alpha + \hat \beta x
-$$
-
-- Such line explains the data, i.e.,
-$$
-y_i \approx \hat{y}_i \,, \qquad \hat{y}_i = \hat \alpha + \hat \beta x_i
-$$
-
+::: {style="font-size: 0.75em"}
+Dataset with $33$ entries for Stock and Gold price pairs
 :::
 
 
-::: {.column width="48%"}
-
+::: {style="font-size: 0.55em"}
 ```{r}
 #| echo: false
-#| fig-asp: 1
+#| layout-ncol: 1
 
-# Read the data
-x <- c(1.9, 0.8, 1.1, 0.1, -0.1, 4.4, 4.6, 1.6, 5.5, 3.4)
-y <- c(0.7, -1.0, -0.2, -1.2, -0.1, 3.4, 0.0, 0.8, 3.7, 2.0)
+data <- read.table("datasets/L3eg1data.txt")
 
-# Create the plot
-plot(x, y, xlab = "", ylab = "", pch = 16, cex = 2)
+#Add column labels to data
+colnames(data) <- c("Stock Price","Gold Price")
 
-# Add labels
-mtext("X", side = 1, line = 3, cex = 2.1)
-mtext("Y", side = 2, line = 2.5, cex = 2.1)
+# Output markdown table from data
+knitr::kable(
+  list(data[1:11,], data[12:22,], data[23:33,]),
+  row.names = TRUE,
+  format = "html", 
+  table.attr = 'class="table simple table-striped table-hover"',
+) 
 
-# Fit linear regression
-fit <- lm(y ~ x)
 
-# Plot regression line in red
-abline(fit, col = "red", lwd = 5)
 ```
 
 :::
 
 
 
-## Why not just use Least-Squares? {.smaller}
-
-::: {.column width="50%"}
-
-**Drawbacks of least squares:** 
-
-- Only predicts values of $y$ such that
-$$
-(x,y)  \, \in \, \text{ Line}
-$$
+## Example: Stock and Gold prices {.smaller}
 
 
-- Ignores that $(x_i,y_i)$ come from joint distribution $(X,Y)$
+- The data is stored in a ``.txt`` file
 
-- We don't have meaningful estimates for the error (residuals)
-$$
-\e_i = y_i - \hat{y}_i \,, \qquad \hat{y}_i = \hat \alpha + \hat \beta x_i
-$$
+- The file can be downloaded here [stock_gold.txt](datasets/stock_gold.txt)
 
+::: {.column width="54%"}
+
+- The text file looks like this
+![](images/stock_gold.png){width=73%}
+
+:::
+
+::: {.column width="44%"}
+
+- Remarks:
+    * There is a Header
+    * 1st column lists *Stock Price*
+    * 2nd column lists *Gold Price*
 
 :::
 
 
-::: {.column width="48%"}
+
+## Reading data into R {.smaller}
+
+
+To read ``stock_gold.txt`` into R proceed as follows:
+
+1. Download [stock_gold.txt](datasets/stock_gold.txt) and move file to Desktop
+
+2. Open the R Console and change working directory to **Desktop**
+
+```r
+# In MacOS type
+setwd("~/Desktop")
+
+# In Windows type
+setwd("C:/Users/YourUsername/Desktop")
+```
+
+
+## Reading data into R {.smaller}
+
+3. Read ``stock_gold.txt`` into R and store it in data-frame ``prices`` with code
+
+```r
+prices = read.table(file = "stock_gold.txt",
+                    header = TRUE)
+```
+
+<br>
+
+**Note:** We are telling ``read.table()`` that
+
+- ``stock_gold.txt`` has a header
+- Headers are *optional*
+- Headers are good practice to describe data
+
+
+
+## Reading data into R {.smaller}
+
+
+4. Double check that we loaded the correct data file 
+
+
+```r
+print(prices)
+```
+
+```{r}
+prices = read.table(file = "datasets/stock_gold.txt",
+                    header = TRUE)
+
+print(prices)
+```
+
+
+
+
+## Store data into vectors {.smaller}
+
+- We now store Stock and Gold prices in 2 vectors
+    * Stock prices are in 1st column of ``prices``
+    * Gold prices are in 2nd column of ``prices``
+
+```r
+stock.price <- prices[ , 1]
+gold.price <- prices[ , 2]
+```
+
+<br>
+
+- Alternatively the same can be achieved with
+
+```r
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+```
+
+
+
+## Plot Stock Price vs Gold Price {.smaller}
+
+::::: {.columns style='display: flex !important; height: 80%;'}
+
+::: {.column width="38%" style='display: flex; justify-content: center; align-items: center;'}
+
+
+
+```r
+plot(stock.price, 
+     gold.price, 
+     xlab = "Stock Price", 
+     ylab = "Gold Price",
+     pch = 16
+    )
+```
+
+:::
+
+::: {.column width="61%" style='display: flex; justify-content: center; align-items: center;'}
 
 ```{r}
 #| echo: false
 #| fig-asp: 1
 
 # Read the data
-x <- c(1.9, 0.8, 1.1, 0.1, -0.1, 4.4, 4.6, 1.6, 5.5, 3.4)
-y <- c(0.7, -1.0, -0.2, -1.2, -0.1, 3.4, 0.0, 0.8, 3.7, 2.0)
+prices <- read.table(file = "datasets/stock_gold.txt",
+                   header = TRUE
+                  )
+
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
 
 # Create the plot
-plot(x, y, xlab = "", ylab = "", pch = 16, cex = 2)
+plot(stock.price,
+     gold.price, 
+     xlab = "", 
+     ylab= "",
+     pch = 16)
 
 # Add labels
-mtext("X", side = 1, line = 3, cex = 2.1)
-mtext("Y", side = 2, line = 2.5, cex = 2.1)
-
-# Fit linear regression
-fit <- lm(y ~ x)
-
-# Plot regression line in red
-abline(fit, col = "red", lwd = 5)
+mtext("Stock Price", side=1, line=3, cex=2.1)
+mtext("Gold Price", side=2, line=2.5, cex=2.1)
 ```
 
 :::
+:::::
 
 
 
-## Linear Regression instead of Least Squares {.smaller}
 
-::: {.column width="50%"}
+## Plot Stock Price vs Gold Price {.smaller}
 
-**Linear Regression:** 
+::::: {.columns style='display: flex !important; height: 80%;'}
 
-- Find a **regression line** 
-$$
-R(x) = \alpha + \beta x
-$$
+::: {.column width="38%" style='display: flex; justify-content: center; align-items: center;'}
 
-- $R(x)$ predicts **most likely** value of $Y$ when $X = x$
+- ``xlab`` and ``ylab`` specify axes labels
 
-- We will see that regression line coincides with line of best fit
-$$
-  R(x) = \hat \alpha + \hat \beta x
-$$
+- ``pch`` specifies type of points
 
-- **Regression gives statistical meaning to Least Squares**
+- Scaling is achieved with
+    * ``xlim = c(lower, upper)``
+    * ``ylim = c(lower, upper)``
+
 
 :::
 
 
-::: {.column width="48%"}
+::: {.column width="61%" style='display: flex; justify-content: center; align-items: center;'}
 
 ```{r}
 #| echo: false
 #| fig-asp: 1
 
 # Read the data
-x <- c(1.9, 0.8, 1.1, 0.1, -0.1, 4.4, 4.6, 1.6, 5.5, 3.4)
-y <- c(0.7, -1.0, -0.2, -1.2, -0.1, 3.4, 0.0, 0.8, 3.7, 2.0)
+prices <- read.table(file = "datasets/stock_gold.txt",
+                   header = TRUE
+                  )
+
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
 
 # Create the plot
-plot(x, y, xlab = "", ylab = "", pch = 16, cex = 2)
+plot(stock.price,
+     gold.price, 
+     xlab = "", 
+     ylab= "",
+     pch = 16)
 
 # Add labels
-mtext("X", side = 1, line = 3, cex = 2.1)
-mtext("Y", side = 2, line = 2.5, cex = 2.1)
-
-# Fit linear regression
-fit <- lm(y ~ x)
-
-# Plot regression line in red
-abline(fit, col = "red", lwd = 5)
+mtext("Stock Price", side=1, line=3, cex=2.1)
+mtext("Gold Price", side=2, line=2.5, cex=2.1)
 ```
 
 :::
+:::::
 
 
 
+## Examining the graph {.smaller}
 
-## Regression function {.smaller}
-### Definition
+::::: {.columns style='display: flex !important; height: 80%;'}
 
-Suppose given two random variables $X$ and $Y$
+::: {.column width="38%" style='display: flex; justify-content: center; align-items: center;'}
 
-::: {.column width="30%"}
+- Graph suggests that the 2 variables are negatively correlated
 
-- $X$ is the **predictor**
+- Need to cross-check with the results of a formal statistical regression analysis
 
-:::
-
-::: {.column width="49%"}
-
-- $Y$ is the **response**
-
-:::
-
-::: Definition
-
-The **regression function** of $Y$ on $X$ is the conditional expectation
-
-$$
-R \colon \R \to \R \,, \qquad \quad R(x) :=  \Expect[Y | X = x]
-$$
 
 :::
 
 
+::: {.column width="61%" style='display: flex; justify-content: center; align-items: center;'}
 
-## Regression function {.smaller}
-### Interpretation
+```{r}
+#| echo: false
+#| fig-asp: 1
 
-::: Idea
+# Read the data
+prices <- read.table(file = "datasets/stock_gold.txt",
+                   header = TRUE
+                  )
 
-The regression function
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Create the plot
+plot(stock.price,
+     gold.price, 
+     xlab = "", 
+     ylab= "",
+     pch = 16)
+
+# Add labels
+mtext("Stock Price", side=1, line=3, cex=2.1)
+mtext("Gold Price", side=2, line=2.5, cex=2.1)
+```
+
+:::
+:::::
+
+
+
+
+# Part 2: <br>Coefficient of <br> determination $R^2${background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## Coefficient of determination $R^2$ {.smaller}
+
+- $R^2$ is defined as
+
 $$
-R(x) = \Expect[Y | X = x]
+ R^2  = 1 - \frac{ \RSS }{ \TSS }
+$$
+
+- $R^2$ measures proportion of variability in the data explained by the model
+
+- Recall that $R^2 \leq 1$
+
+::: Important
+
+- $R^2$ is automatically computed by R when using ``lm``
+- **High** values of $R^2$ are **better**! (that is, values of $R^2$ close to $1$) 
+
+:::
+
+
+
+
+## Some observations about $R^2$ {.smaller}
+
+::: Warning
+
+$R^2$ increases as more $X$ variables are added to a regression model
+
+:::
+
+This is not necessarily good
+
+- One can add lots of variables and make $R^2 \approx 1$
+
+- This way the model explains the data really well
+    $$
+    y_i \approx \hat y_i \,, \quad \forall \,\, i = 1 , \ldots, n
+    $$ 
+
+- Problem: the model will not make good predictions on new data 
+
+- This is known as **overfitting** and it should be avoided  
+(more on this later)
+
+
+
+
+## Some observations about $R^2$ {.smaller}
+
+- For multiple regression $R^2$ lies between $0$ and $1$
+    * $R^2 = 0$ model explains nothing
+    * $R^2 = 1$ model explains everything
+
+- **Warning:** $R^2$ can be negative for general linear regression (no intercept)
+
+
+- Generally: the higher the value of $R^2$ the better the model
+    * Textbook examples often have high values
+    $$
+    R^2 \geq 0.7
+    $$
+    * **Example:** In the *Unemployment* example of Lecture 8 we found
+    $$
+    R^2 = 0.8655401
+    $$
+
+
+
+
+## Some observations about $R^2$ {.smaller}
+
+
+
+::: Important
+
+In practice values 
+$$
+R^2 \geq 0.3
 $$ 
-predicts the most likely value of $Y$ when we observe 
-$$
-X = x
-$$
+imply there is a nontrivial amount of variation in the data explained by the model
 
 :::
 
-**Notation:** We use the shorthand
+    
+**Example:** In the *Stock Price* Vs *Gold Price* example we have
 $$
-\Expect[Y|x] := \Expect[Y | X = x]
-$$
+R^2 = 0.395325
+$$ 
+
+- This shows that *Stock Price* affects *Gold Price*
+- Since $R^2$ is not too large, also other factors may affect *Gold Price*
 
 
 
 
-## The regression problem {.smaller}
 
-**Assumption:** Suppose given $n$ observations $(x_1,y_1) \,, \ldots , (x_n, y_n)$
+## Regression in R {.smaller}
 
-::: {.column width="38%"}
+- The basic R command used to run regression is
 
-- $x_i$ observed from $X$
+::: {.r-stack}
+
+``lm(formula)``
 
 :::
 
-::: {.column width="48%"}
+<br>
 
-- $y_i$ observed from $Y$
+- ``lm`` stands for **linear model**
 
-:::
 
 
-::: Problem
-From $(x_1,y_1) \,, \ldots , (x_n, y_n)$, learn a regression function
-$$
-R(x) = \Expect[Y | x]
-$$
-which explains the observations, that is, such that
-$$
-R(x_i) = \Expect[Y | x_i] \ \approx \ y_i \,, \qquad \forall \, i = 1 , \ldots, n
-$$
+## Simple linear regression in R {.smaller}
 
-:::
 
-**Remember: We don't know $X$ and $Y$**
+For simple linear regression
 
-
-
-
-## Simple linear regression {.smaller}
-
-- Regression problem is difficult without prior knowledge on  $\Expect[Y | x]$
-
-- A popular model is to assume that  $\Expect[Y | x]$ is linear
-
-
-::: Definition
-
-The regression function of $Y$ on $X$ is **linear** if there exist  $\alpha$ and $\beta$ s.t.
-$$
-\Expect[Y | x] = \alpha +  \beta x  \,, \qquad \forall \, x \in \R
-$$
-
-:::
-
--  $\alpha$ and $\beta$ are called **regression coefficients**
-
-- The above regression is called **simple** because only 2 variables are involved
-
-
-
-
-## What do we mean by linear? {.smaller}
-
-We said that the regression is **linear** if
-$$
-\Expect[Y | x ] = \alpha + \beta x
-$$
-Linearity in intended wrt the parameters $\alpha$ and $\beta$
-
-
-**Examples:**
-
-- Linear regression of $Y$ on $X^2$ is
-$$
-\Expect[Y | x^2 ] = \alpha + \beta x^2
-$$
-
-- Linear regression of $\log Y$ on $1/X$ is
-$$
-\Expect[ \log Y | x ] = \alpha + \beta \frac{1}{ x }
-$$
-
-
-
-
-
-## Simple linear regression {.smaller}
-### Model Assumptions
-
-
-Suppose given $n$ observations $(x_1,y_1) \,, \ldots , (x_n, y_n)$
-
-::: {.column width="38%"}
-
-- $x_i$ observed from $X$
-
-:::
-
-::: {.column width="48%"}
-
-- $y_i$ observed from $Y$
-
-:::
-
-
-
-::: Definition
-
-For each $i = 1 , \ldots, n$, we denote by $Y_i$ a random variable with distribution 
-$$
-Y | X = x_i
-$$
-
-:::
-
-
-
-
-
-##  {.smaller}
-
-**Model Assumptions:** Recall, $Y_i$ is distributed like $Y | X = x_i$
-
-1. **Predictor is known:** The values $x_1, \ldots, x_n$ are known
-
-2. **Normality:** The conditional distribution $Y_i$ is normal
-
-3. **Linear mean:** There are parameters $\alpha$ and $\beta$ such that
-$$
-\Expect[Y_i] = \alpha + \beta x_i   \,, \qquad \forall \, i = 1, \ldots, n
-$$
-
-4. **Common variance (Homoscedasticity):** There is a parameter $\sigma^2$ such that
-$$
-\Var[Y_i] = \sigma^2 \,, \qquad \forall \, i = 1, \ldots, n
-$$
-
-5. **Independence:** The random variables 
-$$
-Y_1   \,, \ldots \,, Y_n 
-$$
-are independent
-
-
-
-
-## Characterization of the Model {.smaller}
-
-- Assumptions 1--5 look quite abstract
-- The following Proposition gives a handy characterization
-
-
-::: Proposition 
-
-Assumptions 1-5 are satisfied if and only if
 $$
 Y_i = \alpha + \beta x_i + \e_i
 $$
-for some random variables
-$$
-\e_1 , \ldots, \e_n  \,\, \text{ iid } \,\, N(0,\sigma^2)
-$$
+
+the command is
+
+::: {.r-stack}
+
+``lm(y ~ x)``
 
 :::
 
-- The terms $\e_i$ are called **errors** or **residuals**
+<br>
+
+- Symbol ``y ~ x`` reads as *$y$ modelled as function of $x$*
+
+- ``y`` is vector containing the data $y_1, \ldots, y_n$
+
+- ``x`` is vector containing the data $x_1, \ldots, x_n$
 
 
 
 
-## Proof {.smaller}
+## Multiple linear regression in R {.smaller}
 
-- By Assumption 2, we have that $Y_i$ is normal
 
-- By Assumptions 3-4, we have
+For multiple linear regression
+
 $$
-\Expect[Y_i] = \alpha + \beta x_i \,, \qquad \quad
-\Var[Y_i] = \sigma^2
-$$
-
-- Therefore $\, Y_i  \sim  N(\alpha + \beta x_i, \sigma^2)$
-
-
-
-- Define the random variables $\e_i$ by
-$$
-\e_i := Y_i   -  (\alpha + \beta x_i)  \quad \qquad \left( \text{which implies } \,\,
-Y_i   =  \alpha + \beta x_i + \e_i \right)
+Y_i = \beta_1 + \beta_2 \, x_{i2} + \ldots + \beta_p \, x_{ip} + \e_i
 $$
 
-- By Assumption 5, we have that $Y_1,\ldots,Y_n$ are independent
+the command is 
 
-- Therefore $\e_1,\ldots, \e_n$ are independent
+::: {.r-stack}
 
-- Since $Y_i  \sim  N(\alpha + \beta x_i, \sigma^2)$, we conclude that $\e_i$ are iid $N(0,\sigma^2)$
-
-- Therefore, $Y_i   =  \alpha + \beta x_i + \e_i$ with  $\e_i$ iid $N(0,\sigma^2) \qquad \qquad \qquad \qquad \quad  \qquad  \square$
-
-
-
-
-## Likelihood function {.smaller}
-
-::: {style="font-size: 0.92em"}
-
-Let $X_1, \ldots, X_n$ be continuous rv with joint pdf 
-$$
-f = f(x_1, \ldots, x_n | \theta) \,, \qquad \theta \in \Theta \,\, \, \text{ parameter}
-$$ 
-
-::: Definition
-
-The likelihood function of $(X_1, \ldots, X_n)$ for a given sample $(x_1, \ldots, x_n)$ is
-$$
-L \colon \Theta \to \R \,, \qquad \quad L(\theta | x_1,\ldots, x_n ) := f(x_1, \ldots, x_n | \theta)
-$$
+``lm (y ~ x2 + x3 + ... + xp)``
 
 :::
 
+<br>
 
-::: Theorem
+- ``y`` is vector containing the data $y_1, \ldots, y_n$
 
-Suppose Assumptions 1--5 hold. The likelihood function of $(Y_1,\ldots,Y_n)$ is 
+- ``xj`` is vector containing the data $x_{1j}, \ldots , x_{jp}$ 
 
+
+
+## General commands for regression in R {.smaller}
+
+The best way to run regression is
+
+1. Run the regression analysis and store the results in a variable
+
+```r
+fit.model <- lm(formula)
+```
+
+<br>
+
+2. Use command ``summary`` to read output of regression
+
+```r
+summary(fit.model)
+```
+
+**Note:** If you are running the code from ``.R`` file you need to print output
+
+```r
+print( summary(fit.model) )
+```
+
+
+
+
+## Example: Stock and Gold prices {.smaller}
+
+- Stock price is stored in vector 
+    * ``stock.price``
+
+- Gold price is stored in vector 
+    * ``gold.price``
+
+
+- We want to fit the simple linear model
 $$
-L(\alpha,\beta, \sigma^2 | y_1, \ldots, y_n ) = \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \Bigg(   -\frac{\sum_{i=1}^n(y_i-\alpha - \beta x_i)^2}{2\sigma^2}      \Bigg)
-$$
-
-:::
-
-
-:::
-
-
-
-
-## Proof {.smaller}
-
-::: {style="font-size: 0.92em"}
-
-- By the Assumptions, we have $Y_i \sim N( \alpha + \beta x_i , \sigma^2 )$
-
-- Therefore, the pdf of $Y_i$ is 
-$$
-f_{Y_i} (y_i) =  \frac{1}{\sqrt{2\pi \sigma^2}} \exp \Bigg( -\frac{(y_i-\alpha-\beta{x_i})^2}{2\sigma^2} \Bigg)
-$$
-
-
-- Since $Y_1,\ldots, Y_n$ are independent, we obtain
-\begin{align*}
-L(\alpha,\beta, \sigma^2 | y_1, \ldots,y_n) & = f(y_1,\ldots,y_n) 
-                                   = \prod_{i=1}^n f_{Y_i}(y_i)  \\
-                                  & = \prod_{i=1}^n 
-                                  \frac{1}{\sqrt{2\pi \sigma^2}} \exp \Bigg( -\frac{(y_i-\alpha-\beta{x_i})^2}{2\sigma^2} \Bigg) \\
-                                  & = \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp  \Bigg(   -\frac{\sum_{i=1}^n(y_i- \alpha - \beta x_i)^2}{2\sigma^2}     \Bigg) \qquad \qquad \square
-\end{align*}  
-
-:::
-
-
-
-## Model Summary  {.smaller}
-
-- Simple linear regression of $Y$ on $X$ is the function
-$$
-\Expect[Y | x] = \alpha + \beta x
-$$
-
-- Suppose given $n$ observations $(x_1,y_1) \,, \ldots , (x_n, y_n)$
-
-  ::: {.column width="54%"}
-  * $x_i$ observed from $X$
-  :::
-  ::: {.column width="46%"}
-  * $y_i$ observed from $Y$
-  :::
-
-
-- Denote by $Y_i$ the random variable $Y | X = x_i$
-
-- We suppose that $Y_i$ has the form
-$$
-Y_i = \alpha + \beta x_i + \e_i \,, \qquad \e_i \, \text{ iid } \, N(0,\sigma^2)
-$$
-
-- In particular 
-$$\Expect[Y|x_i] = \Expect[Y_i] = \alpha + \beta x_i$$
-
-
-
-## The linear regression problem {.smaller}
-
-::: Problem
-Given observations $(x_1,y_1) \,, \ldots , (x_n, y_n)$, learn a linear regression function
-$$
-\Expect[Y | x] = \alpha + \beta x
-$$
-which explains the observations, that is, such that
-\begin{equation} \tag{1}
-\Expect[Y_i] = \Expect[Y | x_i] \ \approx \ y_i \,, \qquad \forall \, i = 1 , \ldots, n
-\end{equation}
-
-:::
-
-
-::: Question
-
-How do we enforce (1)?
-
-:::
-
-
-
-
-## {.smaller}
-
-::: {style="font-size: 0.88em"}
-
-**Answer:** Recall condition (1) from previous slide
-\begin{equation} \tag{1}
-\Expect[Y_i] \ \approx \ y_i \,, \qquad \forall \, i = 1 , \ldots, n
-\end{equation}
-
-
-- If we want (1) to hold, we need to maximize the joint probability
-\begin{equation}\tag{P}
-P(Y_1 \approx y_1, \ldots, Y_n \approx y_n) = 
-\int_{A} f(y) \, dy \approx |A| f(y)
-\end{equation}
-    * where $f$ is the joint pdf of $(Y_1,\ldots, Y_n)$
-    * $A$ is (small) open set in $\R^n$ containing the observations $(y_1,\ldots,y_n)$
-    * |A| is the $n$-dimensional volume of $A$
-
-
-
-- To maximize the probability, by (P), it is enough to maximize $f(y_1,\ldots,y_n)$
-
-- Therefore, choose parameters $\hat \alpha, \hat \beta, \hat \sigma$ which **maximize the likelihood function**
-$$
-\max_{\alpha,\beta,\sigma} f(y_1,\ldots,y_n | \alpha,\beta, \sigma^2) = \max_{\alpha,\beta,\sigma} \ L(\alpha,\beta, \sigma^2 | y_1, \ldots, y_n )
-$$
-**Maximum Likelihood Estimation:** Find parameters that maximize the Likelihood, and so (P)
-
-:::
-
-
-
-## Maximum Likelihood Estimation {.smaller}
-
-::: {style="font-size: 0.94em"}
-
-::: Theorem 
-
-Suppose Assumptions 1--5 hold. Assume given $n$ observations
-$(x_1,y_1), \ldots, (x_n,y_n)$. 
-The maximization problem
-$$
-\max_{\alpha,\beta,\sigma}  \ L(\alpha,\beta, \sigma^2 | y_1, \ldots, y_n ) 
-$$
-admits the unique solution
-$$
-\hat \alpha = \overline{y} - \hat  \beta \, \overline{x} \,, \qquad 
-\hat \beta = \frac{S_{xy}}{S_{xx}} \,, \qquad 
-\hat{\sigma}^2  = \frac{1}{n} \sum_{i=1}^n \left(  y_i - \hat \alpha - \hat \beta x_i  \right)^2
-$$
-
-:::
-
-- The constants $\hat \alpha, \hat \beta, \hat{\sigma}^2$ are called *Maximum Likelihood Estimators (MLE)*
-
-- **Important:** $\hat \alpha$ and $\hat \beta$ are the Least Squares coefficients!
-
-:::
-
-
-## Proof of Theorem {.smaller}
-
-- The $\log$ function is strictly increasing. Therefore 
-$$
-\max_{\alpha,\beta,\sigma} \ L(\alpha,\beta, \sigma^2 | y_1, \ldots, y_n ) \quad \text{ is equivalent to } \quad
-\max_{\alpha,\beta,\sigma} \ \log L( \alpha,\beta, \sigma^2 | y_1, \ldots, y_n )
+\text{gold.price } = \alpha + \beta \, \times ( \text{ stock.price }) + \text{ error}
 $$
 
 
-- Recall that the likelihood is
-$$
-L(\alpha,\beta, \sigma^2 | y_1, \ldots, y_n ) =  \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left(   - \frac{\sum_{i=1}^n(y_i-\alpha - \beta x_i)^2}{2\sigma^2}      \right)
-$$
+```r
+# Fit simple linear regression model
+fit.model <- lm(gold.price ~ stock.price)
 
-- Hence the log--likelihood is
-$$
-\log L(\alpha,\beta, \sigma^2 | y_1, \ldots, y_n ) 
-= - \frac{n}{2} \log (2 \pi) - \frac{n}{2} \log \sigma^2 -
-\frac{ \sum_{i=1}^n(y_i-\alpha - \beta x_i)^2 }{2 \sigma^2}
-$$
+# Print result to screen
+summary(fit.model)
+```
+
+
+- The full code can be downloaded here [simple_regression.R](codes/simple_regression.R)
+
 
 
 
 ##  {.smaller}
 
-- Suppose first that $\sigma$ is fixed. In this case the problem
-$$
-\max_{\alpha,\beta} \ \left\{ \frac{n}{2} \log (2 \pi) - \frac{n}{2} \log \sigma^2 -
-\frac{ \sum_{i=1}^n(y_i-\alpha - \beta x_i)^2 }{2 \sigma^2} \right\}
-$$
-is equivalent to 
-$$
-\min_{\alpha, \beta} \ \sum_{i=1}^n(y_i-\alpha - \beta x_i)^2
-$$
+:::: {.columns}
 
-- This is the Least Squares problem! Hence the solution is
-$$
-\hat \alpha = \overline{y} - \hat  \beta \, \overline{x} \,, \qquad 
-\hat \beta = \frac{S_{xy}}{S_{xx}}
-$$
-
-
-
-## {.smaller}
-
-- Substituting $\hat \alpha$ and $\hat \beta$ we obtain
-\begin{align*}
-\max_{\alpha,\beta,\sigma} \ & \log L(\alpha,\beta, \sigma^2 | y_1, \ldots, y_n ) 
-= \max_{\sigma} \ \log L(\hat \alpha, \hat \beta, \sigma^2 | y_1, \ldots, y_n ) \\[10pt]
-& = \max_{\sigma} \ \left\{ - \frac{n}{2} \log (2 \pi) - \frac{n}{2} \log \sigma^2 -
-\frac{ \sum_{i=1}^n(y_i-\hat\alpha - \hat\beta x_i)^2 }{2 \sigma^2}  \right\}
-\end{align*}
-
-
-- The above is a one-dimensional minimization problem in $\sigma$
-
-- Taking the first order derivative wrt $\sigma$, it can be shown the unique solution is
-$$
-\hat{\sigma}^2  = \frac{1}{n} \sum_{i=1}^n \left(  y_i - \hat \alpha - \hat \beta x_i  \right)^2
-$$
-
-- This concludes the proof
-
-
-
-
-## Least-squares vs Linear regression {.smaller}
-
-::: {style="font-size: 0.94em"}
-
-Linear regression and least-squares give seemingly the same answer
-
-::: {.column width="73%"}
-
-| **Least-squares line**     |  $y = \hat \alpha + \hat \beta x$               |
-|:-------------------------- |:----------------------------------------------- | 
-| **Linear regression line** | $\Expect[Y | x ] =  \hat \alpha + \hat \beta x$ |
-: {tbl-colwidths="[60,40]"}
-
+::: {.column width="100%"}
+![](images/simple_regression_output.png){width=78%}
 :::
 
-::: {.column width="25%"}
+::::
 
+
+- There is a lot of information here!
+
+- We will make sense of most of it in this lecture
+
+
+
+## Interesting parts of Output {.smaller}
+
+
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut.png){width=79%}
 :::
 
-**Question:** Why did we define regression if it gives same answer as least-squares?
-
-**Answer:** There is actually a big difference
-
-- Least-squares line $y = \hat \alpha + \hat \beta x$ is just a geometric object
-  * We don’t have meaningful estimates for the error (residuals)
-  $$
-  \e_i = y_i - \hat{y_i} \,, \qquad  \hat{y}_i = \hat \alpha + \hat \beta_n
-  $$
+::::
   
 
-- Regression line $\Expect[Y | x ] =  \hat \alpha + \hat \beta x$ is Statistical model for $Y|X$
-  * Can quantify in probability how well the linear model fits the data
+- The MLEs are found under ``estimate``
+    * ``(Intercept)`` refers to the coefficient $\hat \alpha \qquad \implies  \qquad  \hat \alpha = 37.917$
+    * ``stock.price`` refers to the coefficient $\hat \beta \qquad \implies  \qquad  \hat \beta = - 6.169$
+
+
+
+
+## Interesting parts of Output {.smaller}
+
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut.png){width=79%}
+:::
+
+::::
+
+
+- Other quantities of interest are:
+
+
+| Coefficient $R^2$ | $\texttt{Multiple R-squared:  0.3953}$ |
+|:------------------|:----------                             |
+|**t-statistic for** ``stock.price`` | $\texttt{stock.price t-value:  -4.502}$ |
+| **F-statistic**      |  $\texttt{F-statistic: 20.27}$           |
+: {tbl-colwidths="[50,50]"}
+
+
+
+
+## Plotting the regression line {.smaller}
+
+::::: {.columns style='display: flex !important; height: 80%;'}
+
+::: {.column width="43%" style='display: flex; justify-content: center; align-items: center;'}
+
+
+```r    
+# Data stored in stock.price 
+# and gold.price
+# Plot the data
+plot(stock.price, gold.price, 
+     xlab = "Stock Price", 
+     ylab= "Gold Price",
+     pch = 16)
+
+# Model stored in fit.model
+# Plot the regression line
+abline(fit.model, 
+       col = "red", 
+       lwd = 3)
+```
 
 :::
 
 
+::: {.column width="48%" style='display: flex; justify-content: center; align-items: center;'}
+
+```{r}
+#| echo: false
+#| fig-asp: 1
+
+# Read the data
+prices <- read.table(file = "datasets/stock_gold.txt",
+                     header = TRUE
+                    )
+
+# Store data into vectors
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Fit simple linear regression model
+fit.model <- lm(gold.price ~ stock.price)
+
+# Plot the data
+plot(stock.price,
+     gold.price, 
+     xlab = "", 
+     ylab= "",
+     pch = 16)
+
+# Add labels
+mtext("Stock Price", side=1, line=3, cex=2.1)
+mtext("Gold Price", side=2, line=2.5, cex=2.1)
+
+# Plot the regression line in red
+abline(fit.model, col = "red", lwd = 3)
+```
+
+:::
+
+:::::
 
 
-# Part 2: <br>General linear<br>regression {background-color="#cc0164" visibility="uncounted"}
+
+
+## Conclusion {.smaller}
+
+- We fit a simple linear model to *Stock Price* Vs *Gold Price*
+
+- We obtained the regression line
+
+$$
+\Expect[Y | x] = \hat \alpha + \hat \beta x =  37.917 -  6.169 \times x
+$$
+
+- The coefficient of determination is
+
+$$
+R^2 = 0.395325 \geq 0.3
+$$ 
+
+- Hence the linear model explains the data to a reasonable extent:
+    * *Stock Price* affects *Gold Price*
+    * Since $R^2$ is not too large, also other factors may affect *Gold Price*
+
+
+
+
+
+
+## t-test and F-test for regression {.smaller}
+
+- From ``lm`` we also obtained
+
+| **t-statistic for** ``stock.price`` | $\texttt{stock.price t-value:  -4.502}$ |
+|:------------------|:----------                             |
+| **F-statistic**      |  $\texttt{F-statistic: 20.27}$           |
+: {tbl-colwidths="[50,50]"}
+
+<br>
+
+- t-statistic and F-statistic for regression are mathematically **DIFFICULT** topic
+
+- In the next two parts we explain what they mean
+    * We however omit mathematical details
+    * If interested check out Section 11.3 of [@casella-berger] and Chapter 11 of [@degroot]
+
+
+
+
+# Part 3: <br>t-test for simple regression {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -785,1362 +789,1214 @@ Linear regression and least-squares give seemingly the same answer
 
 
 
-## Simple vs General regression {.smaller}
 
-**Simple regression:** Response variable $Y$ depends on one predictor $X$
+## t-test for simple regression {.smaller}
 
-- The goal is to learn the distribution of 
-  
-  $$
-  Y | X
-  $$
+- Consider the simple linear regression model
 
-- $Y | X$ allows to predict values of $Y$, knowing values of $X$
-
-
-
-**General regression:** Response variable $Y$ depends on $p$ predictors $Z_1 , \ldots,  Z_p$
-
-- The goal is to learn the distribution of 
 $$
-Y | Z_1, \ldots, Z_p
-$$
-
-- $Y | Z_1 , \dots, Z_p$ allows to predict values of $Y$, knowing values of $Z_1 , \dots, Z_p$
-
-
-
-
-## General regression function {.smaller}
-
-Suppose given random variables $Z_1 , \ldots, Z_p$ and $Y$
-
-::: {.column width="45%"}
-
-- $Z_1,\ldots, Z_p$ are the **predictors**
-
-:::
-
-::: {.column width="49%"}
-
-- $Y$ is the **response**
-
-:::
-
-
-**Notation:** We denote points of $\R^p$ by
-$$
-z = (z_1, \ldots, z_p)
+Y_i = \alpha + \beta X_i + \e_i
 $$
 
 
-::: Definition
-
-The **regression function** of $Y$ on $Z_1,\ldots,Z_p$ is the conditional expectation
+- We have that 
 
 $$
-R \colon \R^p \to \R \,, \qquad \quad R(z) :=  \Expect[Y | Z_1 = z_1, \ldots , Z_p = z_p]
+X \,\, \text{ affects } \,\, Y \qquad \iff \qquad
+\beta \neq 0
 $$
 
-:::
+- $\beta$ is a random quantity which depends on the sample
 
+- To see if $X$ affects $Y$, we can test the hypothesis
 
-
-## General regression function {.smaller}
-
-::: Idea
-
-The regression function
-$$
-R(z) =  \Expect[Y | Z_1 = z_1, \ldots , Z_p = z_p]
-$$ 
-predicts the most likely value of $Y$ when we observe 
-$$
-Z_1 = z_1, \,\,\ldots , \,\, Z_p = z_p
-$$
-
-:::
-
-
-**Notation**: We use the shorthand
-$$
-\Expect[Y | z_1, \ldots, z_p] := \Expect[Y | Z_1 = z_1, \ldots , Z_p = z_p]
-$$
-
-
-
-
-## The general regression problem {.smaller}
-
-**Assumption:** For each $i =1 , \ldots, n$ we assume given observations
-
-::: {.column width="42%"}
-
-- data point $(z_{i1}, \ldots, z_{ip}, y_i)$  
-
-:::
-
-::: {.column width="26%"}
-
-- $z_{ij}$ is from $Z_j$
-
-:::
-
-::: {.column width="26%"}
-
-- $y_i$ is from $Y$
-
-:::
-
-
-
-::: Problem
-From the above data, learn a regression function
-$$
-R(z) = \Expect[Y | z_1, \ldots, z_p]
-$$
-which explains the observations, that is, such that
-$$
-\Expect[Y | z_{i1}, \ldots, z_{ip}] \ \approx \ y_i \,, \qquad \forall \, i = 1 , \ldots, n
-$$
-
-:::
-
-
-
-
-## General linear regression {.smaller}
-
-
-**Key assumption:** The regression function $R(z) = \Expect[Y | z_1, \ldots, z_p]$ is **linear**
-
-
-::: Definition
-
-The regression of $Y$ on $Z_1 , \ldots, Z_p$ is **linear** if there exist $\beta_1, \ldots, \beta_p$ s.t.
-
-$$
-\Expect[Y | z_1, \ldots, z_p] =  \beta_1 z_1 + \ldots + \beta_p z_p  \,, \quad \forall \, z \in \R^p
-$$
-
-$\beta_1, \ldots, \beta_p$ are called **regression coefficients**
-:::
-
-**Note:** 
-
-- In simple regression we have 2 coefficients $\alpha$ and $\beta$
-
-- In multiple regression we have $p$ coefficients $\beta_1, \ldots, \beta_p$
-
-
-
-
-## General linear regression {.smaller}
-### Model Assumptions
-
-For each $i =1 , \ldots, n$ we assume given
-
-::: {.column width="42%"}
-
-- data point $(z_{i1}, \ldots, z_{ip}, y_i)$  
-
-:::
-
-::: {.column width="26%"}
-
-- $z_{ij}$ is from $Z_j$
-
-:::
-
-::: {.column width="26%"}
-
-- $y_i$ is from $Y$
-
-:::
-
-
-::: Definition
-
-For each $i = 1, \ldots, n$, we denote by $Y_i$ a random variable with distribution
-$$
-Y | Z_1 = z_{i1} , \ldots, Z_p = z_{ip}
-$$
-
-:::
-
-
-
-
-## {.smaller}
-
-**Model Assumptions:** Recall, $Y_i$ is distributed like $Y | Z_1 = z_{i1} , \ldots, Z_p = z_{ip}$
-
-1. **Predictor is known:** The values $z_{i1}, \ldots, z_{ip}$ are known
-
-2. **Normality:** The conditional distribution $Y_i$ is normal
-
-3. **Linear mean:** There are parameters $\beta_1,\ldots,\beta_p$ such that
-$$
-\Expect[Y_i] = \beta_1 z_{i1} + \ldots + \beta_p z_{ip}  \,, \qquad \forall \, i = 1, \ldots, n 
-$$
-
-
-4. **Common variance (Homoscedasticity):** There is a parameter $\sigma^2$ such that
-$$
-\Var[Y_i] = \sigma^2 \,, \qquad \forall \, i = 1, \ldots, n
-$$
-
-5. **Independence:** The random variables 
-$$
-Y_1   \,, \ldots \,, Y_n 
-$$
-are independent
-
-
-
-
-## Characterization of the Model {.smaller}
-
-- Assumptions 1--5 look quite abstract
-- The following Proposition gives a handy characterization
-
-::: Proposition 
-
-Assumptions 1-5 are satisfied if and only if
-$$
-Y_i =  \beta_1 z_{i1} + \ldots + \beta_p z_{ip}  + \e_{i}
-$$
-for some **errors** or **residuals**
-$$
-\e_1 , \ldots, \e_n  \,\, \text{ iid } \,\, N(0,\sigma^2)
-$$
-
-:::
-
-
-**Proof:** Similar to the proof of Proposition in Slide 14. Omitted
-
-
-
-
-## Likelihood function {.smaller}
-
-Introduce the column vectors
-$$
-\beta := (\beta_1, \ldots, \beta_p)^T \,, \qquad 
-y := (y_1,\ldots,y_n)^T
-$$
-
-::: Theorem
-
-Suppose Assumptions 1--5 hold. The likelihood function of $(Y_1,\ldots,Y_n)$ is
-$$
-L(\beta, \sigma^2 | y ) = \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left(   -\frac{\sum_{i=1}^n(y_i- \beta_1 z_{i1} - \ldots - \beta_p z_{ip})^2}{2\sigma^2}  \right)
-$$
-
-:::
-
-
-
-## Proof {.smaller}
-
-- By the Assumptions, we have $Y_i \sim N(\beta_1 z_{i1} + \ldots + \beta_p z_{ip} , \sigma^2 )$
-
-- Therefore, the pdf of $Y_i$ is 
-$$
-f_{Y_i} (y_i) =  \frac{1}{\sqrt{2\pi \sigma^2}} \exp \left( -\frac{(y_i - \beta_1 z_{i1} - \ldots - \beta_p z_{ip})^2}{2\sigma^2} \right)
-$$
-
-
-- Since $Y_1,\ldots, Y_n$ are independent, we obtain
 \begin{align*}
-L(\beta, \sigma^2 | y) & = f(y_1,\ldots,y_n) 
-                                    = \prod_{i=1}^n f_{Y_i}(y_i)  \\
-                                  & = \prod_{i=1}^n 
-                                  \frac{1}{\sqrt{2\pi \sigma^2}} \exp \left( -\frac{(y_i - \beta_1 z_{i1} - \ldots - \beta_p z_{ip})^2}{2\sigma^2} \right) \\
-                                  & = \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left(   -\frac{\sum_{i=1}^n(y_i- \beta_1 z_{i1} - \ldots - \beta_p z_{ip})^2}{2\sigma^2}      \right) \qquad \quad \square
+H_0 \colon  & \beta = 0 \\
+H_1 \colon & \beta \neq 0
 \end{align*}
 
 
 
 
 
-## Design matrix {.smaller}
+## Construction of t-test {.smaller}
 
-For each $i = 1 , \ldots, n$ suppose given $p$ observations
+- More in general, consider the hypothesis 
+
+\begin{align*}
+H_0 \colon  & \beta = b \\
+H_1 \colon & \beta \neq b
+\end{align*}
+
+- Our best guess for $\beta$ is the ML Estimator
 $$
-z_{i1}, \ldots, z_{ip}
+\hat \beta = \frac{ S_{xy} }{ S_{xx} }
+$$ 
+
+- To test above hypotheses, we therefore need to
+    * Know the **distribution** of $\hat \beta$
+    * Construct **t-statistic** involving $\hat \beta$
+
+
+
+
+## Distribution of $\hat \beta$ {.smaller}
+
+::: Theorem
+
+Consider the linear regression model 
+
+$$
+Y_i = \alpha + \beta x_i + \e_i  \,, \qquad \e_i \,\, \text{ iid } \,\, N(0, \sigma^2)
 $$
 
-::: Definition 
 
-The **design matrix** is the $n \times p$ matrix
+The MLE $\hat{\beta}$ is normally distributed
+
+$$
+\hat \beta \sim N \left(\beta , \frac{ \sigma^2 }{ S_{xx} } \right)
+$$
+
+:::
+
+
+**Proof:** Quite difficult. If interested see Theorem 11.3.3 in [@casella-berger] 
+
+
+
+
+## Construction of t-statistic for $\hat \beta$ {.smaller}
+
+
+- From the previous Theorem, we know that 
+$$
+\hat \beta \sim N \left(\beta , \frac{ \sigma^2 }{ S_{xx} } \right)
+$$
+
+
+
+- In particular $\hat \beta$ is an unbiased estimator for $\beta$
+$$
+\Expect[ \hat \beta ] = \beta
+$$
+
+- This means $\hat \beta$ is the *Estimate* for the unknown parameter $\beta$
+
+- The t-statistic is therefore
+$$
+t = \frac{\text{Estimate } - \text{ Hypothesised Value}}{\ese} 
+  = \frac{ \hat \beta - \beta }{ \ese }
+$$
+
+
+
+
+## Estimated Standard Error for $\hat \beta$ {.smaller}
+
+
+- From the Theorem in Slide 30, we know that 
+$$
+\Var [\hat \beta] = \frac{ \sigma^2 }{ S_{xx}} \quad \implies \quad \SD [\hat \beta] = \frac{ \sigma }{ \sqrt{S_{xx}} }
+$$
+
+- The standard deviation $\SD$ cannot be used as error, since $\sigma^2$ is unknown  
+(Recall that $\sigma^2$ is the unknown variance of the error $\e_i$)
+
+- We however have an estimate for $\sigma^2$
+$$
+\hat \sigma^2 = \frac{1}{n} \RSS = \frac1n \sum_{i=1}^n (y_i - \hat y_i)^2
+$$
+
+- $\hat \sigma^2$ was obtained from maximization of the likelihood function (Lecture 8) 
+
+
+
+##  {.smaller}
+
+
+- It can be shown that
+$$
+\Expect[ \hat\sigma^2 ] = \frac{n-2}{n} \, \sigma^2
+$$
+(for a proof, see Section 11.3.4 in [@casella-berger])
+
+
+- Therefore $\hat\sigma^2$ is not unbiased estimator of $\sigma^2$
+
+- To obtain an unbiased estimator, we rescale $\hat\sigma^2$ and introduce $S^2$
+$$
+S^2 := \frac{n}{n-2} \, \hat\sigma^2 = \frac{\RSS}{n-2} 
+$$
+
+- This way, $S^2$ is unbiased estimator for $\sigma^2$
+$$
+\Expect[S^2] =  \frac{n}{n-2}  \, \Expect[\hat\sigma^2] =  \frac{n}{n-2} \,\cdot \, \frac{n-2}{n} \, \cdot \, \sigma^2 = \sigma^2
+$$
+
+
+## {.smaller}
+
+
+- Recall that the standard deviation of $\hat \beta$ is
+
+$$
+\SD [\hat \beta] = \frac{ \sigma }{ \sqrt{S_{xx}} }
+$$
+
+- We replace the unknown $\sigma$ with its unbiased estimator $S$ 
+
+- This gives the **estimated standard error**
+
+$$
+\ese := \frac{S}{\sqrt{S_{xx}}} \,, \qquad S = \sqrt{\frac{\RSS}{n-2}}
+$$
+
+
+
+
+## t-statistic for testing $\hat \beta$ {.smaller}
+
+The t-statistic for $\hat \beta$ is then
+
+$$
+t = \frac{\text{Estimate } - \text{ Hypothesised Value}}{\ese}
+  = \frac{ \hat \beta - \beta }{ S / \sqrt{S_{xx}} } 
+$$
+
+
+::: Theorem 
+
+Consider the linear regression model 
+
+$$
+Y_i = \alpha + \beta x_i + \e_i \,, \qquad \e_i \,\, \text{ iid } \,\, N(0, \sigma^2)
+$$
+
+The t-statistic for $\hat{\beta}$ follows a t-distribution
+
+$$
+t = \frac{ \hat \beta - \beta }{ S / \sqrt{S_{xx}} }  
+\, \sim \,
+t_{n-2}
+$$
+
+:::
+
+
+
+## How to prove the Theorem {.smaller}
+
+- Proof of this Theorem is quite difficult and we omit it
+
+- If you are interested in the proof, see Section 11.3.4 in [@casella-berger]
+
+- The main idea is that t-statistic can be rewritten as
+
+$$
+t = \frac{ \hat \beta - \beta }{ S / \sqrt{S_{xx}} }  
+  = \frac{ U }{ \sqrt{ V/(n-2) } }  
+$$
+
+- Here we defined
+
+$$
+U := \frac{ \hat \beta - \beta }{ \sigma / \sqrt{S_{xx}} } \,, \qquad \quad V := \frac{ (n-2) S^2 }{ \sigma^2 }
+$$
+
+
+##  {.smaller}
+
+- We know that 
+$$
+\hat \beta \sim N \left(\beta , \frac{ \sigma^2 }{ S_{xx} } \right)
+$$
+
+
+- Therefore 
+$$
+U = \frac{ \hat \beta - \beta }{ \sigma / \sqrt{S_{xx}} } \, \sim \, N(0,1)
+$$
+
+
+- Moreover, it can be shown that 
+$$
+V = \frac{(n-2) S^2}{\sigma^2} \, \sim \, \chi_{n-2}^2
+$$
+
+- It can also be shown that $U$ and $V$ are independent
+
+
+
+##  {.smaller}
+
+- In summary, we have
+
+$$
+t = \frac{ \hat \beta - \beta }{ S / \sqrt{S_{xx}} }  
+  = \frac{ U }{ \sqrt{ V/(n-2) } }  
+$$
+
+- $U$ and $V$ are independent, with
+
+$$
+U \sim N(0,1) \,, \qquad \quad V \sim \chi_{n-2}^2
+$$
+
+- From the Theorem on t-distribution in Lecture 2, we conclude
+
+$$
+t \sim t_{n-2}
+$$
+
+
+
+
+## The t-test for $\beta$ {.smaller}
+
+**Assumption:** Given data points $(x_1, y_1), \ldots, (x_n,y_n)$, consider the simple linear regression model
+$$
+Y_i = \alpha + \beta x_i + \e_i \,, \qquad \e_i \,\, \text{ iid } \,\, N(0,\sigma^2)
+$$
+
+
+**Goal**: Statistical inference on the slope $\beta$
+
+
+**Hypotheses**: If $b$ is guess for $\beta$, the two-sided hypothesis is
+$$
+H_0 \colon \beta = b \,, \quad \qquad 
+H_1 \colon \beta \neq b
+$$
+The one-sided alternative hypotheses are
+$$
+H_1 \colon \beta < b \quad  \text{ or } \quad 
+H_1 \colon \beta > b
+$$
+
+
+
+
+## Procedure: 3 Steps {.smaller}
+
+1. **Calculation**: Compute the MLE $\hat{\alpha}, \hat{\beta}$ and the predictions $\hat{y}_i$
+$$
+\hat \beta = \frac{ S_{xy} }{ S_{xx} }  \,, \qquad 
+\hat \alpha = \overline{y} - \hat \beta \overline{x} \,, \qquad \hat{y}_i = \hat{\alpha} + \hat{\beta} x_i
+$$
+Compute the *Residual Sum of Squares* and the estimator $S^2$ 
+$$
+\RSS = \sum_{i=1}^n (y_i - \hat{y}_i)^2 \,, \qquad  S^2 := \frac{\RSS}{n-2}
+$$
+Finally, compute the $\ese$ and t-statistic
+$$
+\ese = \frac{S}{\sqrt{S_{xx}} } \,, \qquad t = \frac{\hat \beta - b }{ \ese }  \ \sim \ t_{n-2}
+$$
+
+
+
+## {.smaller}
+
+2. **Statistical Tables or R**: Find either
+    * Critical value $t^*$ in [Table 1](files/Statistics_Tables.pdf)
+    * p-value in R
+
+<br>
+
+3. **Interpretation**: Reject $H_0$ when either
+$$
+p < 0.05 \qquad \text{ or } \qquad t \in \,\,\text{Rejection Region} 
+\qquad \qquad \qquad \qquad
+(T \, \sim \, t_{n-2})
+$$
+
+
+
+
+| Alternative                      | Rejection Region  | $t^*$             | p-value         |
+|----------------------------------|-------------------|-------------------|-----------------|
+| $\beta \neq b$               | $|t| > t^*$       | $t_{n-2}(0.025)$| $2P(T > |t|)$   |
+| $\beta < b$                  | $t < - t^*$       | $t_{n-2}(0.05)$ | $P(T < t)$      |
+| $\beta > b$                  | $t > t^*$         | $t_{n-2}(0.05)$ | $P(T > t)$      |
+: {tbl-colwidths="[25,25,25,25]"}
+
+
+
+
+
+
+
+## Worked Example: Stock and Gold prices {.smaller}
+
+- Recall that 
+    * $X =$ Stock Price
+    * $Y =$ Gold Price
+
+- **Goal:** Test if *Gold Price* affects *Stock Price* at level $0.05$
+
+- **Procedure:** Consider the linear model
+$$
+Y_i =  \alpha + \beta x_i + \e_i  \,, \quad \e_i \,\, \text{ iid } \,\, N(0,\sigma^2)
+$$
+Test the hypotheses with two-sided alternative
+\begin{align*}
+H_0 & \colon \beta = 0 \\
+H_1 & \colon \beta \neq 0
+\end{align*}
+
+
+
+
+## Testing for $\beta = 0$ {.smaller}
+
+- Recall that Stock Prices and Gold Prices are stored in R vectors
+    * ``stock.price``
+    * ``gold.price``
+
+
+- Fit the simple linear model with the following commands
+
+$$
+\text{gold.price } = \alpha + \beta \, \times  (\text{ stock.price }) + \text{ error}
+$$
+
+
+```r
+# Fit simple linear regression model
+fit.model <- lm(gold.price ~ stock.price)
+
+# Print result to screen
+summary(fit.model)
+```
+
+
+
+## Output: $\ese$, t-statistic, p-value {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut_2.png){width=70%}
+:::
+
+::::
+  
+
+- $\texttt{(Intercept)}$: 1st row of the table contains information related to $\hat \alpha$
+
+- $\texttt{stock.price}$: 2nd row of the table contains information related to $\hat \beta$
+
+- For larger models, there will be additional rows below the 2nd
+    * These will be **informative** about additional regression parameters
+
+
+
+## Output: $\ese$, t-statistic, p-value {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut_2.png){width=70%}
+:::
+
+::::
+  
+- The 2nd row of the table has to be interpreted as follows
+
+
+| $\texttt{Estimate}$   | $\text{The value of } \hat \beta$                  |
+|:------------------    |:----------                                         |
+| $\texttt{Std. Error}$ | Estimated standard error $\ese$ for $\hat \beta$        |
+| $\texttt{t value}$    | t-statistic $\, t = \dfrac{\hat \beta - 0 }{\ese}$|
+| $\texttt{Pr(>|t|)}$   | p-value $\, p = 2 P( t_{n-2} > |t| )$             |
+| $\texttt{***}$, $\, \texttt{**}$, $\, \texttt{*}$, $\, \texttt{.}$   | Significance (how large is p-value) -- More stars is better |
+: {tbl-colwidths="[30,70]"}
+
+
+
+
+## Output: $\ese$, t-statistic, p-value {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut_2.png){width=70%}
+:::
+
+::::
+  
+- The above table then gives
+
+$$
+\hat \beta = -6.169 \,, \qquad \ese = 1.37 \, , \qquad t = - 4.502 \,, \qquad 
+p = 8.9 \times 10^{-5} \
+$$
+
+
+- The $t$-statistic computed by R can also be computed by hand
+
+$$
+  t   = \frac{\hat \beta - 0}{ \ese }
+      = \frac{-6.169}{1.37} = -4.502 
+$$
+
+
+
+
+## Output: $\ese$, t-statistic, p-value {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut_2.png){width=70%}
+:::
+
+::::
+  
+
+- The p-value computed by R is $p = 8.9 \times 10^{-5}$
+
+- We can also compute it by hand: The degrees of freedom are
+
+$$
+n = \text{No. of data points} = 33 \,, \qquad  \text{df} = n - 2 = 31
+$$
+
+```{r}
+#| echo: true
+t <- - 4.502 
+p <- 2 - 2 * pt(abs(t), df = 31)
+
+cat("The p-value is", p)
+```
+
+
+
+## Output: $\ese$, t-statistic, p-value {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut_2.png){width=70%}
+:::
+
+::::
+
+
+- In alternative, we can find critical value in [Table 1](files/Statistics_Tables.pdf)
+
+$$
+n = \text{No. of data points} = 33 \,, \qquad  \text{df} = n - 2 = 31
+$$
+
+- For two-sided test, the critical value is $\, t_{31}(0.025) = 2.040$
+
+$$
+|t| = 4.502 > 2.040 = t_{31}(0.025) \quad \implies \quad  p < 0.05
+$$
+
+
+## Output: $\ese$, t-statistic, p-value {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut_2.png){width=70%}
+:::
+
+::::
+
+
+**Interpretation:** $\, p$ is very small (hence the $\, \texttt{***} \,$ rating)
+
+- Therefore, we reject the null hypothesis $H_0$, and the real parameter is $\beta \neq 0$
+
+- Since $\beta \neq 0$, we have that *Stock Prices* affect *Gold Prices*
+
+- The best estimate for $\beta$ is the MLE $\hat \beta = -6.169$
+
+- $\hat \beta < 0$ and statistically significant:  
+$\,\,$ 
+As *Stock Prices* increase *Gold Prices* decrease
+
+
+
+
+
+## Warning {.smaller}
+
+The t-statistic and p-value in the *summary* refer to the two-sided test
+$$
+H_0 \colon \beta = 0 \,, \qquad 
+H_1 \colon \beta \neq 0
+$$
+In such case the t-statistic and p-value given in *summary are*
+$$
+t = \frac{\hat \beta - 0}{\ese} \,, \qquad p = 2P(t_{n- 2} > |t|) 
+$$
+
+
+## {.smaller}
+
+If instead you are required to test
+$$
+H_0 \colon \beta = b \,, \qquad 
+H_1 \colon \beta \neq b \,, \quad 
+\beta < b\,, \quad  \text{ or } \,\,
+\beta > b
+$$
+
+1. The t-statistic has to be computed by hand
+$$
+t = \frac{\hat \beta - b}{\ese}
+$$
+    * $\, \ese$ is in the 2nd row under $\,\, \texttt{Std. Error}$
+
+2. The p-value must be computed by hand, according to the table
+
+| Alternative                  | p-value         | R command    |
+|------------------------------|-----------------|--------------|
+| $\beta \neq b$               | $2P(t_{n-2} > |t|)$      | ``2 - 2 * pt(abs(t), df = n - 2)``|
+| $\beta < b$                  | $P(t_{n-2} < t)$      | ``pt(t, df = n - 2)``|
+| $\beta > b$                  | $P(t_{n-2} > t)$      | ``1 - pt(t, df = n - 2)`` |
+: {tbl-colwidths="[20,25,50]"}
+
+
+
+# Part 4: <br>t-test for general regression {background-color="#cc0164" visibility="uncounted"}
+
+::: footer
+
+<div color="#cc0164">  </div>
+
+:::
+
+
+
+## Recall: The t-test for simple regression {.smaller}
+
+- In the previous Part, we have considered the simple linear regression model
+
+$$
+Y_i = \alpha + \beta x_i + \e_i \,, \qquad \e_i \,\, \text{ iid } \,\, N(0,\sigma^2)
+$$
+
+- We have that 
+
+$$
+X \,\, \text{ affects } \,\, Y \qquad \iff \qquad
+\beta \neq 0
+$$
+
+- To see if $X$ affects $Y$, we have developed a t-test for the hypothesis
+
+\begin{align*}
+H_0 \colon  & \beta = b \\
+H_1 \colon & \beta \neq b
+\end{align*}
+
+
+## The t-test for general regression {.smaller}
+
+- Now, consider the *general linear regression model*
+
+$$
+Y_i = \beta_1 z_{i1} + \ldots + \beta_{ip} z_{ip} + \e_i \,, \qquad 
+\e_i \, \text{ iid } \, N(0, \sigma^2)
+$$
+
+- We have that 
+
+$$
+Z_j \,\, \text{ affects } \,\, Y \qquad \iff \qquad
+\beta_j \neq 0
+$$
+
+- To see if $Z_j$ affects $Y$ we can test the hypothesis
+
+\begin{align*}
+H_0 \colon  & \beta_j = 0 \\
+H_1 \colon & \beta_j \neq 0
+\end{align*}
+
+
+
+
+## Construction of t-test {.smaller}
+
+- More in general, consider the hypothesis 
+
+\begin{align*}
+H_0 \colon  & \beta_j = b_j \\
+H_1 \colon & \beta_j \neq b_j
+\end{align*}
+
+- Our best guess for $\beta_j$ is the ML Estimator
+$$
+\hat{\beta}_j = (\hat \beta)_j \,, \qquad \hat \beta = (Z^T Z)^{-1} Z^T y
+$$
+($\beta_j$ is the j-th component of the vector $\beta$)
+
+- To test above hypotheses, we therefore need to
+    * Know the **distribution** of $\hat{\beta}_j$
+    * Construct **t-statistic** involving $\hat{\beta}_j$
+
+
+
+## Distribution of $\hat \beta_j$ {.smaller}
+
+::: {style="font-size: 0.92em"}
+
+::: Theorem
+
+Consider the general linear regression model 
+$$
+Y_i = \beta_1 z_{i1} + \ldots + \beta_{ip} z_{ip} + \e_i \,, \qquad 
+\e_i \, \text{ iid } \, N(0, \sigma^2)
+$$
+The MLE $\hat{\beta}_j$ is normally distributed
+$$
+\hat \beta_j \sim N \left( \beta_j ,  \xi_{jj} \sigma^2 \right) \,,
+$$
+where the numbers $\xi_{jj}$ are the diagonal entries of the $p \times p$ matrix
+$$
+(Z^T Z)^{-1} =
+\left(
+\begin{array}{ccc}
+\xi_{11} & \ldots & \xi_{1p} \\
+\ldots   & \ldots & \ldots \\
+\xi_{p1} & \ldots & \xi_{pp} \\
+\end{array}
+\right)
+$$
+
+
+:::
+
+
+**Proof:** Quite difficult. If interested, see see Section 11.5 in [@degroot] 
+
+:::
+
+
+
+
+## Construction of the t-statistic for $\hat{\beta}_j$ {.smaller}
+
+- From the previous Theorem, we know that
+$$
+\hat \beta_j \sim N \left( \beta_j ,  \xi_{jj} \sigma^2 \right)
+$$
+
+
+- In particular, $\hat{\beta}_j$ is an unbiased estimator for $\beta_j$
+$$
+\Expect[ \hat{\beta}_j ] = \beta_j
+$$
+
+- This means $\hat{\beta}_j$ is the *Estimate* for the unknown parameter $\beta$
+
+- The t-statistic is therefore
+$$
+t = \frac{\text{Estimate } - \text{ Hypothesised Value}}{\ese} 
+  = \frac{ \hat{\beta}_j - \beta_j }{ \ese }
+$$
+
+
+
+## Estimated Standard Error for $\hat{\beta}_j$ {.smaller}
+
+
+- From the Theorem, we know that 
+$$
+\Var [\hat{\beta}_j] =  \xi_{jj} \, \sigma^2  \qquad \implies \qquad 
+\SD [\hat \beta_j] =  \xi_{jj}^{1/2} \, \sigma
+$$
+
+- The standard deviation $\SD$ cannot be used as error, since $\sigma^2$ is unknown
+
+
+- We however have an estimate for $\sigma^2$
+$$
+\hat \sigma^2 = \frac{1}{n} \RSS = \frac1n \sum_{i=1}^n (y_i - \hat y_i)^2
+$$
+
+- $\hat \sigma^2$ was obtained from maximization of the likelihood function (Lecture 8) 
+
+
+
+## {.smaller}
+
+
+- It can be shown that (see Section 11.5 in [@degroot])
+$$
+\Expect[ \hat\sigma^2 ] = \frac{n-p}{n} \, \sigma^2
+$$
+
+
+- Therefore $\hat\sigma^2$ is not unbiased estimator of $\sigma^2$
+
+- To obtain unbiased estimator, we rescale $\hat\sigma^2$ and introduce $S^2$
+$$
+S^2 := \frac{n}{n-p} \, \hat\sigma^2 = \frac{\RSS}{n-p} 
+$$
+
+- This way, $S^2$ is unbiased estimator for $\sigma^2$
+
+$$
+\Expect[S^2] =  \frac{n}{n-p}  \, \Expect[\hat\sigma^2] =  \frac{n}{n-p} \, \frac{n-p}{n} \, \sigma^2 = \sigma^2
+$$
+
+
+## {.smaller}
+
+- Recall that the standard deviation of $\hat{\beta}_j$ is
+
+$$
+\SD [\hat{\beta}_j] = \xi_{jj}^{1/2} \, \sigma
+$$
+
+- We replace the unknown $\sigma$ with its unbiased estimator $S$ 
+
+- This gives the **estimated standard error**
+
+$$
+\ese =\xi_{jj}^{1/2} \,  S \,, \qquad S = \sqrt{\frac{\RSS}{n-2}}
+$$
+
+
+
+## t-statistic for testing $\beta_j$ {.smaller}
+
+
+::: Theorem 
+
+Consider the general linear regression model 
+
+$$
+Y_i = \beta_1 z_{i1} + \ldots +\beta_p z_{ip} + \e_i \,, \qquad \e_i \,\, \text{ iid } \,\, N(0, \sigma^2)
+$$
+
+The t-statistic for $\hat{\beta}$ follows a t-distribution
+
+$$
+t = \frac{\text{Estimate } - \text{ Hypothesised Value}}{\ese} = \frac{ \hat \beta_j - \beta_j }{ \xi_{jj}^{1/2} \, S}  
+\, \sim \,
+t_{n-p}
+$$
+
+:::
+
+**Proof:** See section 11.5 in [@degroot]
+
+
+
+
+## The t-test for $\beta_j$ {.smaller}
+
+**Assumption:** Given data points $(z_{1i}, \ldots, z_{pi}, y_i)$, consider the general model
+$$
+Y_i = \beta_1 z_{i1} + \ldots + \beta_p z_{ip} + \e_i \,, \qquad \e_i \, \text{ iid } \, N(0,\sigma^2)
+$$
+
+**Goal**: Statistical inference on the coefficients $\beta_j$
+
+**Hypotheses**: If $b_j$ is guess for $\beta_j$, the two-sided hypotheses is
+$$
+H_0 \colon \beta_j = b_j \,, \quad \qquad 
+H_1 \colon \beta_j \neq b_j
+$$
+The one-sided alternative hypotheses are
+$$
+H_1 \colon \beta_j < b_j \quad  \text{ or } \quad 
+H_1 \colon \beta_j > b_j
+$$
+
+
+
+## Procedure: 3 Steps {.smaller}
+
+
+1. **Calculation**: Write down the design matrix $Z$ and compute $(Z^TZ)^{-1}$
 $$
 Z :=
 \left(
 \begin{array}{ccc}
 z_{11} & \ldots & z_{1p} \\
-z_{21} & \ldots & z_{2p} \\
 \ldots & \ldots & \ldots \\
 z_{n1} & \ldots & z_{np} \\
-\end{array}
-\right)
-$$
-
-:::
-
-
-
-
-
-
-
-## Vectorial notation {.smaller}
-
-\begin{align*}
-y - Z\beta & = 
-\left(
-\begin{array}{c}
-y_1 \\
-y_2 \\
-\ldots \\
-y_n \\
-\end{array}
-\right)
-- 
-\left(
-\begin{array}{ccc}
-z_{11} & \ldots & z_{1p} \\
-z_{21} & \ldots & z_{2p} \\
-\ldots & \ldots & \ldots \\
-z_{n1} & \ldots & z_{np} \\
-\end{array}
-\right)
-\left(
-\begin{array}{c}
-\beta_1 \\
-\ldots \\
-\beta_p \\
-\end{array}
-\right)
-\\[20pt]
-& = 
-\left(
-\begin{array}{c}
-y_1 \\
-y_2 \\
-\ldots \\
-y_n \\
-\end{array}
-\right)
-- 
-\left(
-\begin{array}{c}
-\beta_1 z_{11} + \ldots + \beta_p z_{1p}\\
-\beta_1 z_{21} + \ldots + \beta_p z_{2p} \\
-\ldots \\
-\beta_1 z_{n1} + \ldots + \beta_p z_{np} \\
-\end{array}
-\right) \\[20pt]
-& =
-\left(
-\begin{array}{c}
-y_1 - \beta_1 z_{11} - \ldots - \beta_p z_{1p}\\
-y_2 - \beta_1 z_{21} - \ldots - \beta_p z_{2p} \\
-\ldots \\
-y_n - \beta_1 z_{n1} - \ldots - \beta_p z_{np} \\
-\end{array}
-\right) \, \in \, \R^n
-\end{align*}
-
-
-
-## RSS: Residual Sum of Squares {.smaller}
-
-From the previous calculation, we get
-
-$$
-(y - Z \beta)^T \, (y - Z\beta) =
- \sum_{i=1}^n \left( y_i - \beta_1 z_{i1} - \ldots - \beta_p z_{ip}   \right)^2
-$$
-
-
-::: Definition 
-
-Assume given
-
-::: {.column width="42%"}
-
-- $n \times p$ design matrix $Z$
-
-:::
-
-::: {.column width="26%"}
-
-- vector $y \in \R^n$
-
-:::
-
-
-The **residual sum of squares** associated to the parameter $\beta$ is the function
-$$
-\RSS \colon \R^p \to \R \,, \qquad 
-\RSS (\beta) :=  (y - Z \beta)^T \, (y - Z\beta)
-$$
-
-:::
-
-
-
-## Likelihood function {.smaller}
-### Vectorial notation
-
-Using vectorial notation, the likelihood function can be re-written as
-
-\begin{align*}
-L(\beta, \sigma^2 | y ) & = \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left(   -\frac{\sum_{i=1}^n(y_i - \beta_1 z_{i1} - \ldots - \beta_p z_{ip})^2}{2\sigma^2}  \right) \\[20pt]
- & = \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left( - \frac{ (y - Z \beta)^T \, (y - Z\beta) }{2 \sigma^2}  \right) \\[20pt]
- & = \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left( - \frac{\RSS(\beta) }{2 \sigma^2}  \right) 
-\end{align*}
-
-
-
-
-
-## Model Summary  {.smaller}
-
-- General linear regression of $Y$ on $Z_1, \ldots, Z_p$ is the function
-$$
-\Expect[Y | z_1,\ldots,z_p] = \beta_1 z_{1} + \ldots + \beta_p z_p
-$$
-
-- For each $i=1, \ldots, n$ suppose given the observations 
-    * $(z_{i1}, \ldots, z_{ip}, y_i)$ observed from $(Z_1,\ldots, Z_p,Y)$
-
-
-- Denote by $Y_i$ the random variable $Y | z_{i1} ,\ldots, z_{ip}$
-
-
-- We suppose that $Y_i$ has the form
-$$
-Y_i = \beta_1 z_{i1} + \ldots + \beta_p z_{ip} + \e_i \,, \qquad \e_i \,\, \text{ iid } \,\, N(0,\sigma^2)
-$$ 
-
-- In particular,
-$$
-\Expect[Y | z_{i1}, \ldots, z_{ip}] = \Expect[Y_i] = \beta_1 z_{i1} + \ldots + \beta_p z_{ip}
-$$
-
-
-
-
-## The general linear regression problem {.smaller}
-
-For each $i = 1 , \ldots, n$ suppose given data points
-$(z_{i1}, \ldots, z_{ip}, y_i)$
-
-::: Problem
-From the above data, learn a general linear regression function
-$$
-\Expect[Y | z_1, \ldots, z_p] = \beta_1 z_1 +
-\ldots + \beta_p z_p
-$$
-which explains the observations, that is, such that
-\begin{equation} \tag{2}
-\Expect[Y_i] = \Expect[Y | z_{i1}, \ldots, z_{ip}] \ \approx \ y_i \,, \qquad \forall \, i = 1 , \ldots, n
-\end{equation}
-
-:::
-
-
-::: Question
-
-How do we enforce (2)?
-
-:::
-
-
-
-
-## {.smaller}
-
-**Answer:** Recall condition (2) from the previous slide
-\begin{equation} \tag{2}
-\Expect[Y_i] \ \approx \ y_i \,, \qquad \forall \, i = 1 , \ldots, n
-\end{equation}
-
-
-- If we want (2) to hold, we need to maximize the joint probability
-\begin{equation}\tag{P}
-P(Y_1 \approx y_1, \ldots, Y_n \approx y_n) = 
-\int_{A} f(y) \, dy \approx |A| f(y)
-\end{equation}
-    * where $f$ is the joint pdf of $(Y_1,\ldots,Y_n)$
-    * $A$ is a (small) open set in $\R^n$ containing the observations $(y_1,\ldots,y_n)$
-    * $|A|$ is the n-dimensional volume of $A$
-
-- To maximize the probability, by (P), it is enough to maximize $f(y_1,\ldots,y_n)$
-
-- Therefore, choose parameters $\hat \beta,  \hat \sigma$ which **maximize the likelihood function**
-$$
-\max_{\beta,\sigma} \ f(y | \beta, \sigma^2) = 
-\max_{\beta,\sigma} \ L(\beta, \sigma^2 | y )
-$$
-
-
-
-
-
-## Maximum Likelihood Estimation {.smaller}
-
-::: Theorem 
-
-Suppose Assumptions 1--5 hold. Assume given observations
-$$
-(z_{i1}, \ldots, z_{ip} ,y_i) \,, \quad \forall \, i =1 ,\ldots n \,, \qquad \text{ s.t. } \,\,
-\det (Z Z^T) \neq 0 
-$$
-The maximization problem
-$$
-\max_{\beta,\sigma}  \ L(\beta, \sigma^2 | y ) 
-$$
-admits the unique solution
-$$
-\hat \beta = (Z^T Z)^{-1} Z^T y  \,, \qquad 
-\hat{\sigma}^2  = \frac{1}{n} \RSS(\hat \beta)
-$$
-:::
-
-- The constants $\hat \beta, \hat{\sigma}^2$ are called *Maximum Likelihood Estimators (MLE)*
-
-
-
-## Minimizing the RSS {.smaller}
-
-The proof of previous Theorem relies on the following Lemma
-
-::: Lemma
-
-Assume given observations
-$$
-(z_{i1}, \ldots, z_{ip} ,y_i) \,, \quad \forall \, i =1 ,\ldots n \,, \qquad \text{ s.t. } \,\,
-\det (Z Z^T) \neq 0 
-$$
-The minimization problem
-$$
-\min_{\beta} \ \RSS(\beta) 
-$$
-admits the unique solution
-$$
-\hat \beta = (Z^T Z)^{-1} Z^T y 
-$$
-
-:::
-
-
-
-
-
-
-## Results from matrix calculus {.smaller}
-
-- To prove the Lemma we need some auxiliary results
-
-- In the following, $x$ denotes an $n \times 1$ column vector
-
-$$
-x = 
-\left(
-\begin{array}{c}
-x_1 \\
-x_2 \\
-\vdots \\
-x_n
-\end{array}
-\right)
-$$
-
-
-
-## Results from matrix calculus {.smaller}
-### First result
-
-- Suppose given an $n \times 1$ column vector $a$
-
-
-- Define the scalar function
-
-$$
-f \colon \R^n \to \R \,, \qquad f(x) := a^T x
-$$
-
-- Then $f$ is differentiable and the gradient is constant
-
-$$
-\nabla f (x) = a^T 
-$$
-
-
-
-
-## Results from matrix calculus {.smaller}
-### Second result 
-
-- Suppose given an $m \times n$ matrix $A$
-
-- Define the vectorial affine function
-
-$$
-g \colon \R^n \to \R^m \,, \qquad g(x) := A x
-$$
-
-- Then $g$ is differentiable and the Jacobian is constant
-
-$$
-J g (x) = A 
-$$
-
-
-
-
-## Results from matrix calculus {.smaller}
-### Third result 
-
-- Suppose given an $n \times n$ matrix $M$
-
-- Define the quadratic form
-
-$$
-h \colon \R^n \to \R \,, \qquad
-h(x) := x^T M x
-$$
-
-
-- Then $h$ is differentiable and the Jacobian is
-
-$$
-J h(x) = x^T (M + M^T)
-$$
-
-
-
-## Additional results on the matrix transpose {.smaller}
-
-1. For any $m \times n$ matrix $A$
-$$
-(A^T)^T= A
-$$
-
-2. A square matrix $M$ of size $n \times n$ is **symmetric** iff $M^T = M$
-
-
-3. Scalars can be seen as $1 \times 1$ symmetric matrices. Therefore
-$$
-c^T = c \,, \qquad \forall \, c \in \R
-$$
-
-5. For any $m \times n$ matrix $A$ and $n \times p$ matrix $B$
-$$
-(AB)^T=B^T A^T
-$$
-
-6. The matrix $A^T A$ is symmetric by point (2)
-$$
-(A^T A)^T = A^T (A^T)^T = A^T A
-$$
-
-
-
-## Optimality conditions {.smaller}
-
-We also need the $n$-dimensional version of the Lemma in Slide 103 Lecture 7
-
-::: Lemma
-
-Suppose $f \colon \R^n \to \R$ has positive semi-definite Hessian. They are equivalent
-
-1. The point $\hat x$ is a minimizer of $f$, that is, such that
-
-$$
-f( \hat x ) = \min_{x \in \R^n} f(x)
-$$
-
-2. The point $\hat x$ satisfies the **optimality conditions**
-
-$$
-\nabla f (\hat x) = 0
-$$
-
-:::
-
-
-
-
-## Proof: Minimizing the RSS {.smaller}
-
-- Recall the definition of Residual Sum of Squares
-$$
-\RSS \colon \R^{p} \to \R \,, \qquad \RSS(\beta) = (y - Z \beta)^T (y - Z \beta)
-$$
-
-- We are finally ready to minimize the $\RSS$
-$$
-\min_{\beta \in \R^p} \ \RSS(\beta) 
-$$
-
-- It is not too difficult to show that $\nabla^2 \RSS$ is positive-semidefinite (omitted)
-
-
-- By the Lemma on Optimality Conditions in Slide 50
-$$
-\beta \,\, \text{ minimizes } \,\, \RSS \qquad \iff \qquad
-\nabla \RSS (\beta) = 0
-$$
-
-## {.smaller}
-
-- To compute $\nabla \RSS$, we first expand $\RSS$
-\begin{align*}
-\RSS(\beta) & = (y-Z \beta)^T (y-Z \beta) \\[5pt]
-            & = (y^T - (Z\beta)^T ) (y-Z \beta) \\[5pt]
-            & = (y^T - \beta^T Z^T ) (y-Z \beta) \\[5pt]
-            & = y^T y - y^T Z \beta - \beta^T Z^T y 
-                + \beta^T Z^T Z \beta
-\end{align*}
-
-- Note that
-  * $\beta$ has size $p \times 1 \quad \implies \quad \beta^T$ has size $1 \times p$
-  * $Z$ has size $n \times p \quad \implies \quad Z^T$ has size $p \times n$
-  * $y$ has size $n \times 1 \quad \implies \quad \beta^T Z^T y$ has size
-$$
-\left( 1 \times p \right) \times
-\left( p \times n \right) \times
-\left( n \times 1 \right)  = 1 \times 1
-$$
-
-
-
-## {.smaller}
-
-::: {style="font-size: 0.95em"}
-
-- $\beta^T Z^T y \,$ is a scalar $\quad \implies \quad$ it is symmetric and we get
-$$
-\left( \beta^T Z^T y  \right)^T = \beta^T Z^T y
-$$
-
-
-- Using the properties of transposition we also get
-$$
-\left( \beta^T Z^T y  \right)^T =  y^T Z \beta
-$$
-
-- From the last 2 equations we conclude
-$$
-\beta^T Z^T y = y^T Z \beta
-$$
-
-
-- The $\RSS$ can now be written as
-\begin{align*}
-\RSS(\beta) & = y^T y - y^T Z \beta 
-                - \textcolor{magenta}{\beta^T Z^T y} + \beta^T Z^T Z \beta \\[5pt]
-            & = y^T y - y^T Z \beta - \textcolor{magenta}{y^T Z \beta}
-              + \beta^T Z^T Z \beta \\[5pt]
-            & = y^T y - 2 y^T Z \beta + \beta^T Z^T Z \beta
-\end{align*}
-
-:::
-
-
-##  {.smaller}
-
-- Therefore, we have
-\begin{align*}
-\nabla \RSS (\beta) & = \nabla ( y^T y ) 
-                      - 2  \nabla (y^T Z     \beta ) + \nabla (\beta^T Z^T Z \beta ) \\[5pt]
-                    & = - 2  \nabla (y^T Z     \beta ) + \nabla (\beta^T Z^T Z \beta )
-\end{align*}
-
-- We need to compute
-$$
- \nabla (y^T Z     \beta )  \qquad \quad \text{ and } \qquad \quad \nabla (\beta^T Z^T Z \beta )
-$$
-
-
-- Note that $y^T Z$ has dimension $\, ( 1 \times n ) \times ( n \times p ) = 1 \times p$
-
-
-- Since $\beta$ has dimension $p \times 1$, we can define the function 
-$$
-f \colon \R^p \to \R \,, \qquad 
-f(\beta) := y^T Z \beta
-$$
-
-
-- By the First Result on Matrix Calculus in Slide 46
-$$
-\nabla f  = \nabla ( \textcolor{magenta}{y^T Z} \beta) = \textcolor{magenta}{y^T Z}
-$$
-
- 
-
-## {.smaller}
-
-
-- Note that $Z^T Z$ has dimension $\, ( p \times n ) \times ( n \times p ) = p \times p$
-
-- Since $\beta$ has dimension $p \times 1$, we can define the function 
-
-$$
-h \colon \R^p \to \R \,, \qquad 
-h(\beta) := \beta^T Z^T Z \beta 
-$$
-
-
-- By the Third Result on Matrix Calculus in Slide 48
-\begin{align*}
-\nabla h  & = \nabla (\beta^T \textcolor{magenta}{Z^T Z} \beta) = \beta^T (\textcolor{magenta}{Z^T Z} + (\textcolor{magenta}{Z^T Z})^T ) \\[5pt]
-& = \beta^T ( Z^T Z + Z^T Z ) = 2 \beta^T (Z^T Z)
-\end{align*}
-
-
-- Putting together these results we obtain
-
-\begin{align*}
-\nabla \RSS (\beta) & = - 2  \nabla (y^T Z     \beta ) + \nabla (\beta^T Z^T Z \beta ) \\[5pt]
-                    & = -2 y^T Z + 2 \beta^T (Z^T Z)
-\end{align*}
-
-
-## {.smaller}
-
-- We can finally solve the optimality conditions:
-\begin{align*}
-\nabla \RSS (\beta) = 0 \qquad & \iff \qquad 
--2 y^T Z + 2 \beta^T (Z^T Z) = 0  \\[5pt]
-& \iff \qquad 
- \beta^T (Z^T Z) =  y^T Z
-\end{align*}
-
-
-- Transposing both sides of the last equation yields
-\begin{equation} \tag{3}
- (Z^T Z) \beta = Z^T y
-\end{equation}
-
-
-- The matrix $Z^T Z$ is invertible, since we are assuming
-$$
-\det (Z^T Z) \neq 0
-$$
-
-- Multiplying by $(Z^T Z)^{-1}$ both sides of (3), we get
-$$
-\beta = (Z^T Z)^{-1} Z^T y
-$$
-
-
-
-##  {.smaller}
-
-- In conclusion, we have shown that
-
-$$
-\nabla \RSS(\beta) = 0 \qquad \iff \qquad 
-\beta = (Z^T Z)^{-1} Z^T y
-$$
-
-- By the Lemma on Optimality Conditions in Slide 50, we infer
-
-$$
-\beta = (Z^T Z)^{-1} Z^T y  \,\,\, \text{ minimizes } \,\,\, \RSS
-$$
-
-- This concludes the proof
-
-
-
-
-
-## Maximum Likelihood Estimation {.smaller}
-
-We are finally in position to prove the main Theorem. We recall the statement
-
-
-::: Theorem 
-
-Suppose Assumptions 1--5 hold. Assume given observations
-$$
-(z_{i1}, \ldots, z_{ip} ,y_i) \,, \quad \forall \, i =1 ,\ldots n \,, \qquad \text{ s.t. } \,\,
-\det (Z Z^T) \neq 0 
-$$
-The maximization problem
-$$
-\max_{\beta,\sigma}  \ L(\beta, \sigma^2 | y ) 
-$$
-admits the unique solution
-$$
-\hat \beta = (Z^T Z)^{-1} Z^T y  \,, \qquad 
-\hat{\sigma}^2  = \frac{1}{n} \RSS(\hat \beta)
-$$
-:::
-
-
-
-
-
-## Proof of Theorem {.smaller}
-
-- The $\log$ function is strictly increasing. Therefore
-$$
-\max_{\beta,\sigma} \ L(\beta, \sigma^2 | y )
-\quad 
-\text{ is equivalent to } \quad 
-\max_{\beta,\sigma} \ \log L( \beta, \sigma^2 | y )
-$$
-
-- Recall that the likelihood is
-$$
-L(\beta, \sigma^2 | y ) =  \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left(   - \frac{ \RSS(\beta) }{2\sigma^2}      \right)
-$$
-
-
-- Hence, the log--likelihood is
-$$
-\log L(\beta, \sigma^2 | y ) 
-= - \frac{n}{2} \log (2 \pi) - \frac{n}{2} \log \sigma^2 -
-\frac{ \RSS(\beta) }{2 \sigma^2}
-$$
-
-
-
-##  {.smaller}
-
-- Suppose first that $\sigma$ is fixed. In this case the problem
-$$
-\max_{\beta} \ \left\{ \frac{n}{2} \log (2 \pi) - \frac{n}{2} \log \sigma^2 -
-\frac{ \RSS(\beta) }{2 \sigma^2} \right\}
-$$
-is equivalent to 
-$$
-\min_{\beta} \ \RSS(\beta)
-$$
-
-- We have already proven that the $\RSS$ is minimized at
-$$
-\hat \beta = (Z^T Z)^{-1} Z^T y 
-$$
-
-
-
-
-## {.smaller}
-
-- Substituting $\hat \beta$, we obtain
-
-\begin{align*}
-\max_{\beta,\sigma} \ & \log L(\beta, \sigma^2 | y ) 
-= \max_{\sigma} \ \log L(\hat \beta, \sigma^2 | y ) \\[5pt]
-& = \max_{\sigma} \ \left\{ - \frac{n}{2} \log (2 \pi) - \frac{n}{2} \log \sigma^2 -
-\frac{ \RSS(\hat \beta) }{2 \sigma^2}  \right\}
-\end{align*}
-
-- The above is a one-dimensional minimization problem in $\sigma$
-
-- Taking the first order derivative wrt $\sigma$, it can be shown the unique solution is
-$$
-\hat{\sigma}^2  = \frac{1}{n} \RSS(\hat \beta)
-$$
-
-- This concludes the proof
-
-
-
-
-
-
-
-# Part 3: <br>Simple regression as<br> general regression {background-color="#cc0164" visibility="uncounted"}
-
-::: footer
-
-<div color="#cc0164">  </div>
-
-:::
-
-
-
-## General linear regression model {.smaller}
-
-
-- The general linear regression model is 
-
-$$
-Y_i = \beta_1 z_{i1} +  \ldots +  \beta_p z_{ip} + \e_i \,,  \quad \e_i \sim N(0,\sigma^2) \quad \, \forall \,  i = 1 , \ldots, n
-$$
-
-- The design matrix, and data and parameters vectors are
-$$
-Z =
-\left(
-\begin{array}{ccc}
-z_{11} & \ldots & z_{1p} \\
-\ldots & \ldots & \ldots \\
-z_{n1} & \ldots & z_{np} \\
-\end{array}
-\right) \in \R^{n \times p} \,, \qquad 
-y =
-\left(
-\begin{array}{c}
-y_1   \\
-\ldots  \\
-y_{n} \\
-\end{array}
-\right)\,, \qquad 
-\beta =
-\left(
-\begin{array}{c}
-\beta_1  \\
-\ldots  \\
-\beta_{p} \\
-\end{array}
-\right)
-$$
-
-
-- The likelihood function for general linear regression is maximized by
-$$
-\hat \beta = (Z^T Z)^{-1} Z^T y
-$$
-
-
-
-
-## Simple linear regression model {.smaller}
-
-
-- The simple linear regression model is 
-
-$$
-Y_i = \alpha + \beta x_i + \e_i \,,  \,,  \quad \e_i \sim N(0,\sigma^2) \quad \, \forall \,  i = 1 , \ldots, n
-$$
-
-
-- The data is given by
-$$
-x =
-\left(
-\begin{array}{c}
-x_1   \\
-\ldots  \\
-x_{n} \\
-\end{array}
-\right)
-\qquad \quad
-y =
-\left(
-\begin{array}{c}
-y_1   \\
-\ldots  \\
-y_{n} \\
-\end{array}
-\right)
-$$
-
-
-
-- The likelihood function for simple linear regression is maximized by
-$$
-\hat \alpha = \overline{y} - \hat \beta \, \overline{x} \,, 
-\qquad \quad \hat \beta = \frac{S_{xy}}{S_{xx}}
-$$
-
-
-
-
-
-## Simple linear regression from general {.smaller}
-
-- The general regression model comprises the simple regression one
-
-- To see this, consider a general linear model with $p = 2$ parameters
-
-$$
-Y_i = \beta_1 z_{i1} + \beta_2 z_{i2} + \e_i \,, \qquad i = 1 , \ldots, n
-$$
-
-- We want to compare the above to
-
-$$
-Y_i = \alpha + \beta x_i + \e_i \,, \qquad i = 1 , \ldots, n
-$$
-
-
-- The 2 models are equivalent iff
-
-$$
-z_{i1} = 1 \,, \qquad z_{i2} = x_i \,, \qquad \forall \, i = 1 , \ldots, n
-$$
-
-
-
-##  {.smaller}
-
-::: {style="font-size: 0.94em"}
-
-Therefore, the design matrix is
-$$
-Z =
-\left(
-\begin{array}{cc}
-1 & x_{1}  \\
-\ldots & \ldots \\
-1 & x_{n} \\
-\end{array}
-\right) \in \R^{n \times 2}
-$$
-
-
-
-::: Theorem
-
-With the above definition of $Z$, it holds that
-$$
-(Z^T Z)^{-1} Z^T y
-= 
-\left( 
-\begin{array}{cc}
-\hat \alpha \\
-\hat \beta
 \end{array}
 \right) \,, \qquad
-\hat \alpha = \overline{y} - \hat \beta \overline{x} \,, 
-\qquad \hat \beta = \frac{S_{xy}}{S_{xx}}
-$$
-
-
-:::
-
-
-In other words, the multiple linear regression estimator
-$$
-(Z^T Z)^{-1} Z^T y
-$$
-coincides with the simple linear regression estimators $\hat \alpha, \hat \beta$
-
-:::
-
-
-
-
-## Proof: Calculating $Z^T y$ {.smaller}
-
-::: {style="font-size: 0.94em"}
-
-- $Z$ has size $n \times 2 \qquad \implies \qquad$  $Z^T$ has size $2 \times n$
-- $y$ has size $n \times 1 \qquad \implies \qquad Z^T y$ has size $\, ( 2 \times n )  \times (n \times 1) = 2 \times 1$
-
-
-\begin{align*}
-Z^T y
-& =
-\left(
-\begin{array}{cc}
-    1 & x_1 \\
-    \ldots & \ldots\\
-    1 & x_n
-\end{array}
-\right)^T
-\left(
-  \begin{array}{l}
-     y_1  \\
-     \ldots\\
-     y_n
-\end{array}\right) \\[15pt]
-& = 
+(Z^T Z)^{-1} =
 \left(
 \begin{array}{ccc}
-1 & \ldots & 1 \\
-x_1 & \ldots & x_n
+\xi_{11} & \ldots & \xi_{1p} \\
+\ldots   & \ldots & \ldots \\
+\xi_{p1} & \ldots & \xi_{pp} \\
 \end{array}
 \right)
-\left(
-  \begin{array}{l}
-     y_1  \\
-     \ldots\\
-     y_n
-\end{array}\right) \\[15pt]
-& = 
-\left(\begin{array}{c}
-1 \times y_1 + 1 \times y_2 + \ldots + 1 \times y_n \\
-x_1 y_1 + x_2 y_2 + \ldots + x_n y_n 
-\end{array} \right) \\[15pt]
-& = 
-\left(
-  \begin{array}{c}
-     n \overline{y}  \\
-     \sum_{i=1}^n x_i y_i 
-\end{array}
-\right)
-\end{align*}
+$$
+Compute the MLE $\hat{\beta}$, predictions $\hat{y}$, RSS and $S^2$
+$$
+\hat \beta = (Z^TZ)^{-1} Z^T y  \,, \qquad 
+\hat{y} = Z \hat{\beta} \,, \qquad 
+\RSS = \sum_{i=1}^n (y_i - \hat{y}_i)^2 \,, \qquad  S^2 := \frac{\RSS}{n-2}
+$$
+Finally, compute the $\ese$ and the t-statistic
+$$
+\ese = \xi_{jj}^{1/2} \, S\,, \qquad  t = \frac{\hat \beta_j - b_j }{ \ese } \ \sim \ t_{n-p} 
+$$
+
+
+
+
+
+## {.smaller}
+
+2. **Statistical Tables or R**: Find either
+    * Critical value $t^*$ in [Table 1](files/Statistics_Tables.pdf)
+    * p-value in R
+
+<br>
+
+3. **Interpretation**: Reject $H_0$ when either
+$$
+p < 0.05 \qquad \text{ or } \qquad t \in \,\,\text{Rejection Region} 
+\qquad \qquad \qquad \qquad
+(T \, \sim \, t_{n-p})
+$$
+
+
+
+
+| Alternative                      | Rejection Region  | $t^*$             | p-value         |
+|----------------------------------|-------------------|-------------------|-----------------|
+| $\beta_j \neq b_j$               | $|t| > t^*$       | $t_{n-p}(0.025)$| $2P(T > |t|)$   |
+| $\beta_j < b_j$                  | $t < - t^*$       | $t_{n-p}(0.05)$ | $P(T < t)$      |
+| $\beta_j > b_j$                  | $t > t^*$         | $t_{n-p}(0.05)$ | $P(T > t)$      |
+: {tbl-colwidths="[25,25,25,25]"}
+
+
+
+
+
+
+
+## The t-test for $\beta_j$ in R {.smaller}
+
+- First, fit general regression model with ``lm``
+
+- Then read the *summary*
+
+Assume the hypotheses to test are
+$$
+H_0 \colon \beta_j = 0 \,, \qquad 
+H_1 \colon \beta_j \neq 0
+$$
+In such case, the t-statistic and p-value are explicitly given in the *summary*
+$$
+t = \frac{\hat \beta_j - 0}{\ese} \,, \qquad p = 2P(t_{n- p} > |t|) 
+$$
+
+- Read the t-statistic in $j$-th variable row under $\,\, \texttt{t value}$
+
+- Read the p-value in $j$-th variable row under $\,\, \texttt{Pr(>|t|)}$
+
+
+
+
+## {.smaller}
+
+::: {style="font-size: 0.92em"}
+
+If instead you are required to test
+$$
+H_0 \colon \beta_j = b_j \,, \qquad 
+H_1 \colon \beta_j \neq b_j \,, \quad 
+\beta_j < b_j \,, \quad  \text{ or } \,\,
+\beta_j > b_j
+$$
+
+1. The t-statistic has to be computed by hand
+$$
+t = \frac{\hat{\beta}_j - b_j}{\ese}
+$$
+    * $\,\, \hat \beta_j$ is in $j$-th variable row under $\,\, \texttt{Estimate}$
+    * $\,\, \ese$ for $\hat \beta_j$ is in $j$-th variable row under $\,\, \texttt{Std. Error}$
+
+
+2. The p-value must be computed by hand, according to the table
+
+| Alternative                  | p-value         | R command    |
+|------------------------------|-----------------|--------------|
+| $\beta_j \neq b_j$               | $2P(t_{n-p} > |t|)$      | ``2 - 2 * pt(abs(t), df = n - p)``|
+| $\beta_j < b_j$                  | $P(t_{n-p} < t)$      | ``pt(t, df = n - p)``|
+| $\beta_j > b_j$                  | $P(t_{n-p} > t)$      | ``1 - pt(t, df = n - p)`` |
+: {tbl-colwidths="[20,25,50]"}
 
 :::
 
 
-## Calculating $Z^T Z$ {.smaller}
-
-::: {style="font-size: 0.94em"}
-
-- $Z$ has size $n \times 2 \qquad \implies \qquad$  $Z^T$ has size $2 \times n$
-
-- Therefore $Z^T Z$ has size $\, ( 2 \times n )  \times (n \times 2) = 2 \times 2$
 
 
+
+
+
+## Worked Example: Stock and Gold prices {.smaller}
+
+- Recall that 
+    * $X =$ Stock Price
+    * $Y =$ Gold Price
+
+- **Goal:** Test if an *intercept is present*, at level $0.05$
+
+- **Procedure:** Consider the linear model
+$$
+Y_i =  \alpha + \beta x_i + \e_i  \,, \quad \e_i \,\, \text{ iid } \,\, N(0,\sigma^2)
+$$
+Test the hypotheses with two-sided alternative
 \begin{align*}
-Z^T Z & = 
-\left(
-\begin{array}{cc}
-    1 & x_1 \\
-    \ldots & \ldots\\
-    1 & x_n
-\end{array}
-\right)^T 
-\left(
-\begin{array}{cc}
-    1 & x_1 \\
-    \ldots & \ldots\\
-    1 & x_n
-\end{array}
-\right) \\[15pt]
-& = 
+H_0 & \colon \alpha = 0 \\
+H_1 & \colon \alpha \neq 0
+\end{align*}
+
+
+
+
+## Testing for $\alpha= 0$ {.smaller}
+
+- Recall that Stock Prices and Gold Prices are stored in R vectors
+    * ``stock.price``
+    * ``gold.price``
+
+
+- Fit the simple linear model with the following commands
+
+$$
+\text{gold.price } = \alpha + \beta \, \times  (\text{ stock.price }) + \text{ error}
+$$
+
+
+```r
+# Fit simple linear regression model
+fit.model <- lm(gold.price ~ stock.price)
+
+# Print result to screen
+summary(fit.model)
+```
+
+
+
+
+
+## Output: $\ese$, t-statistic, p-value {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut_2.png){width=70%}
+:::
+
+::::
+  
+- $\texttt{(Intercept)}$: 1st row of the table contains information related to $\hat \alpha$
+
+| $\texttt{Estimate}$   | $\text{The value of } \hat \alpha$                  |
+|:------------------    |:----------                                         |
+| $\texttt{Std. Error}$ | Estimated standard error $\ese$ for $\hat \alpha$        |
+| $\texttt{t value}$    | t-statistic $\, t = \dfrac{\hat \alpha - 0 }{\ese}$|
+| $\texttt{Pr(>|t|)}$   | p-value $\, p = 2 P( t_{n-2} > |t| )$             |
+| $\texttt{***}$, $\, \texttt{**}$, $\, \texttt{*}$, $\, \texttt{.}$   | Significance (how large is p-value) -- More stars is better |
+: {tbl-colwidths="[30,70]"}
+
+
+
+## Output: $\ese$, t-statistic, p-value {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut_2.png){width=70%}
+:::
+
+::::
+  
+- The above table then gives
+
+$$
+\hat \alpha = 37.917 \,, \qquad \ese = 4.336 \, , \qquad t =  8.744 \,, \qquad 
+p = 7.14 \times 10^{-10} \
+$$
+
+
+- The $t$-statistic computed by R can also be computed by hand
+
+$$
+  t   = \frac{\hat \alpha - 0}{ \ese }
+      = \frac{37.917}{4.336} = 8.744 
+$$
+
+
+
+
+## Output: $\ese$, t-statistic, p-value {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut_2.png){width=70%}
+:::
+
+::::
+  
+- The p-value computed by R is $p = 7.14 \times 10^{-10}$
+
+- We can also compute it by hand: The degrees of freedom are
+
+$$
+n = \text{No. of data points} = 33 \,, \qquad  \text{df} = n - 2 = 31
+$$
+
+```{r}
+#| echo: true
+t <- 8.744
+p <- 2 - 2 * pt(abs(t), df = 31)
+
+cat("The p-value is", p)
+```
+
+
+
+
+## Output: $\ese$, t-statistic, p-value {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut_2.png){width=70%}
+:::
+
+::::
+
+
+- In alternative, we can find the critical value in [Table 1](files/Statistics_Tables.pdf)
+
+$$
+n = \text{No. of data points} = 33 \,, \qquad  \text{df} = n - 2 = 31
+$$
+
+- For two-sided test, the critical value is $\, t_{31}(0.025) = 2.040$
+
+$$
+|t| = 8.744 > 2.040 = t_{31}(0.025) \quad \implies \quad  p < 0.05
+$$
+
+
+
+
+## Output: $\ese$, t-statistic, p-value {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut_2.png){width=70%}
+:::
+
+::::
+
+
+**Interpretation:** $\, p$ is very small (hence the $\, \texttt{***} \,$ rating)
+
+- Therefore, we reject the null hypothesis $H_0$, and the real parameter is $\alpha \neq 0$
+
+- Since $\alpha \neq 0$, we deduce that the model has to *include an intercept*
+
+- The best estimate for $\alpha$ is the MLE $\hat \alpha = 37.917$
+
+
+
+
+
+## Theoretical Example {.smaller}
+### Deriving $\ese$ for simple linear regression 
+
+- Consider the simple regression model
+
+$$
+Y_i = \alpha + \beta x_i + \e_i
+$$
+
+
+- We have seen in the previous part that the $\ese$ for $\hat{\beta}$ is
+
+$$
+\ese = \frac{S}{\sqrt{S_{xx}}} \,, \qquad S = \sqrt{ \frac{\RSS}{n-2} }
+$$
+
+
+- However, we have not computed the $\ese$ for $\hat{\alpha}$
+
+
+**Goal:** Compute $\ese$ for $\hat{\alpha}$ using the theory developed for general regression
+
+
+
+
+## {.smaller}
+
+**Theory developed so far:**
+
+- Consider the general linear model
+$$
+Y_i = \beta_1 z_{i1} + \ldots +\beta_p z_{ip} + \e_i \,, \qquad \e_i \,\, \text{ iid } \,\, N(0, \sigma^2)
+$$
+
+- We have shown that the estimated standard error for $\hat{\beta}_j$ is
+$$
+\ese = \xi_{jj}^{1/2} \, S \,, \qquad 
+S = \sqrt{ \frac{\RSS}{n-2} }
+$$
+where $\xi_{jj}$ are the diagonal entries of the matrix
+$$
+(Z^T Z)^{-1} =
 \left(
 \begin{array}{ccc}
-1 & \ldots & 1 \\
-x_1 & \ldots & x_n
+\xi_{11} & \ldots & \xi_{1p} \\
+\ldots   & \ldots & \ldots \\
+\xi_{p1} & \ldots & \xi_{pp} \\
 \end{array}
 \right)
-\left(
-\begin{array}{cc}
-    1 & x_1 \\
-    \ldots & \ldots\\
-    1 & x_n
-\end{array}
-\right) \\[15pt]
-& = 
-\left(
-\begin{array}{cc}
-    1 \times 1 + \ldots + 1 \times 1 & 1 \times x_1 + \ldots + 1 \times x_n \\
-    x_1 \times 1 + \ldots + x_n \times 1 &  x_1 \times x_1 + \ldots + x_n \times x_n
-\end{array}
-\right) \\[15pt]
-& = 
-\left(
-\begin{array}{cc}
-    n & n \overline{x} \\
-    n \overline{x} & \sum_{i=1}^n x_i^2
-\end{array}
-\right)
-\end{align*}
-
-:::
+$$
 
 
+## {.smaller}
 
-## Matrix inverse: General formula {.smaller}
-
-- Suppose to have a $2 \times n$ matrix 
+- Let us go back to the linear regression model
 
 $$
-M 
-= 
-\left(
+Y_i = \alpha + \beta x_i + \e_i
+$$
+
+
+
+- The design matrix is
+
+$$
+Z = \left( 
 \begin{array}{cc}
-a & b \\
-c & d
+1 & x_1 \\
+\ldots & \ldots \\
+1 & x_n \\
 \end{array}
 \right)
-$$ 
-
-- $M$ is invertible iff 
-
-$$
-\det M = ad - bc \neq 0
 $$
 
 
-- If $\det M \neq 0$, the inverse of $M$ is 
+##  {.smaller}
+
+- We have computed in Lecture 8 that
 
 $$
-M^{-1}
-=
-\frac{1}{ ad - bc}  
-\left(
-\begin{array}{cc}
-d & -b \\
--c & a
-\end{array}\right)
-$$
-
-
-
-## Resume the proof: Calculating $(Z^T Z)^{-1}$ {.smaller}
-
-
-
-$$
-\det  \left( Z^T Z \right)  = 
-\det
-\left(
-\begin{array}{cc}
-    n & n \overline{x} \\
-    n \overline{x} & \sum_{i=1}^n x_i^2
-\end{array}
-\right)
-=
-n \sum_{i=1}^n x^2_i - n^2 \overline{x}^2
-= n S_{xx}
-$$
-
-
-- Note: $\, S_{xx} = \sum_{i=1}^n (x_i - \overline{x})^2 = 0 \quad \iff \quad x_1 = \ldots = x_n = \overline{x}$
-
-- WLOG we can discard the trivial case $S_{xx} = 0$ because:
-  * The predictors $x_1, \ldots, x_n$ are either chosen, or random
-  * If they are chosen, it makes no sense to choose them all equal
-  * If they are random, they will all be equal with probability $0$
-
-
-- Therefore, we have
-$$
-\det \left( Z^T Z \right) = n S_{xx} > 0  \quad \implies \quad Z^T Z \, \text{ is invertible}
-$$
-
-
-
-
-
-## Calculating $(Z^T Z)^{-1}$ {.smaller}
-
-- Therefore, we assume $S_{xx} > 0$
-
-- This way, we have 
-
-$$
-\det \left( Z^T Z \right) = n S_{xx} > 0
-$$
-
-- Thus $Z^T Z$ is invertible, with inverse
-
-\begin{align*}
-(Z^T Z)^{-1} & =
-\left(
-\begin{array}{cc}
-    n & n \overline{x} \\
-    n \overline{x} & \sum_{i=1}^n x_i^2
-\end{array}
-\right)^{-1} \\[15pt]
-& = 
+(Z^T Z)^{-1} = 
 \frac{1}{n S_{xx} }
 \left(
 \begin{array}{cc}
@@ -2148,112 +2004,22 @@ $$
 -n\overline{x} & n
 \end{array}
 \right)
-\end{align*}
-
-
-
-
-
-## Calculating $(Z^T Z)^{-1} Z^T y$ {.smaller}
-
-- $(Z^T Z)^{-1}$ has size $2 \times 2$
-
-- $Z^T y$ has size $2 \times 1$
-
-- $(Z^T Z)^{-1} Z^T y$ therefore has dimensions
-$$
-(2 \times 2) \times (2 \times 1) = (2 \times 1)
-$$
-
-- We expect $(Z^T Z)^{-1} Z^T y$ to contain the simple regression estimators $\hat \alpha, \hat \beta$
-
-$$
-(Z^T Z)^{-1} Z^T y
-= 
-\left( 
-\begin{array}{cc}
-\hat \alpha \\
-\hat \beta
-\end{array}
-\right)
 $$
 
 
-## Calculating $(Z^T Z)^{-1} Z^T y$ {.smaller}
-
-- We have already computed $(Z^T Z)^{-1}$ and $Z^T y$
-
-- Their product is
-
-$$
-(Z^T Z)^{-1} Z^T y = \frac{1}{n S_{xx} }
-\left(
-\begin{array}{cc}
-\sum_{i=1}^n x^2_i & -n \overline{x}\\
--n\overline{x} & n
-\end{array}
-\right) \left(
-  \begin{array}{c}
-     n \overline{y}  \\
-     \sum_{i=1}^n x_i y_i 
-\end{array}
-\right)
-$$
-
-
-
-## Calculating $(Z^T Z)^{-1} Z^T y$ {.smaller}
-
-- The first entry of $(Z^T Z)^{-1} Z^T y$ is therefore
+- Hence the $\ese$ for $\hat \alpha$ and $\hat \beta$ are
 
 \begin{align*}
-\frac{ \sum_{i=1}^n x_i^2 n \overline{y} - n \overline{x} \sum_{i=1}^n x_i y_i  }{n S_{xx}} 
-& = 
-\frac{ \sum_{i=1}^n x_i^2  \overline{y} - \overline{x} \sum_{i=1}^n x_i y_i  }{ S_{xx}} \\[10pt]
-& = \frac{ \sum_{i=1}^n x_i^2  \overline{y} 
- \textcolor{magenta}{- \overline{y} n \overline{x}^2 +  \overline{y} n \overline{x}^2}
- - \overline{x} \sum_{i=1}^n x_i y_i  }{ S_{xx}} \\[10pt]
- & = \overline{y} \ \frac{ \sum_{i=1}^n x_i^2 - n \overline{x}^2}{ S_{xx} } - 
- \overline{x} \ \frac{ \sum_{i=1}^n x_i y_i - n \overline{x} \overline{y} }{ S_{xx} } \\[10pt]
- & =  \overline{y} \ \frac{ S_{xx} }{ S_{xx} } - 
- \overline{x} \ \frac{ S_{xy} }{ S_{xx} }  \\[10pt]
- & = \overline{y} - \hat \beta \, \overline{x} = \hat{\alpha}
+\ese (\hat \alpha) & = \xi_{11}^{1/2} \, S = \sqrt{ \frac{ \sum_{i=1}^n x_i^2 }{ n S_{xx} } } \, S \\[7pt]
+\ese (\hat \beta) & = \xi_{22}^{1/2} \, S = \frac{ S }{ \sqrt{ S_{xx} } }
 \end{align*}
 
-
-
-## Calculating $(Z^T Z)^{-1} Z^T y$ {.smaller}
-
-- The second entry of $(Z^T Z)^{-1} Z^T y$ is
-
-$$
-\frac{ - n \overline{x} n \overline{y} + n \sum_{i=1}^n x_i y_i}{ n S_{xx} } = 
-\frac{  \sum_{i=1}^n x_i y_i - n\overline{x} \overline{y} }{ S_{xx} } 
- = \frac{ S_{xy} }{S_{xx}} 
- = \hat{\beta}
-$$
-
-
-- We have finally proven that
-
-$$
-(Z^T Z)^{-1} Z^T y = 
-\left( 
-\begin{array}{cc}
-\hat \alpha \\
-\hat \beta
-\end{array}
-\right)
-$$
-
-- **Conclusion**
-  * Simple linear regression is special case of general regression with $p = 2$
-  * Estimator for general regression recovers estimators for simple regression
+- **Note:** $\, \ese(\hat\beta)$ coincides with the $\ese$ in Slide 35
 
 
 
 
-# Part 4: <br>Multiple linear<br> regression{background-color="#cc0164" visibility="uncounted"}
+# Part 5: <br>F-test for multiple regression {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -2263,356 +2029,208 @@ $$
 
 
 
-## Mutiple linear regression{.smaller}
+## F-test for Overall Significance {.smaller}
 
-
-Response variable $Y$ depends on $p-1$ predictors $X_2, \ldots, X_p$
-
-- The goal is to learn the distribution of 
-$$
-Y | X_2, \ldots, X_p
-$$
-
-- $Y | X_2, \ldots, X_p$ allows to predict values of $Y$, knowing values of $X_2, \ldots, X_p$
-
-
-**Note:** We start counting from $2$ for notational convenience
-
-
-
-
-
-## Mutiple linear regression model {.smaller}
-
-**Assumption:** For each $i=1, \ldots, n$ we assume given observations
-
-::: {.column width="42%"}
-
-- data point $(x_{i2}, \ldots, x_{ip}, y_i)$ 
-
-:::
-
-::: {.column width="26%"}
-
-- $x_{ij}$ is from $X_j$
-
-:::
-
-::: {.column width="26%"}
-
-- $y_i$ is from $Y$
-
-:::
-
-
-- Denote by $Y_i$ the random variable $Y | x_{i2} ,\ldots, x_{ip}$
-
-
-
-::: Definition
-
-The multiple linear regression model is
-$$
-Y_i = \beta_1 + \beta_2 x_{i2} + \ldots + \beta_p x_{ip} + \e_i
-$$
-where the **residuals** satisfy
-$$
-\e_1,\ldots, \e_n \,\, \text{ iid } \,\, N(0,\sigma^2)
-$$ 
-
-:::
-
- 
-
-
-## Mutiple vs General linear regression {.smaller}
-
-
-- Multiple linear regression is special case of general linear regression
-
-- To see this, consider a *general linear model* with $p$ parameters
+- Want to test the **Overall Significance** of the model
 
 $$
-Y_i = \beta_1 z_{i1} + \beta_2 z_{i2} + \ldots  + \beta_p z_{ip}  + \e_i \,, \qquad i = 1 , \ldots, n
+Y_i = \beta_1  + \beta_2 x_{i2} + \ldots + \beta_p x_{ip} + \e_i
 $$
 
-- We want to compare the above to the *multiple regression model*
+- This means answering the question:
 
 $$
-Y_i = \beta_1 + \beta_2 x_{i2} + \ldots + \beta_p x_{ip} + \e_i
+\text{ Does at least one } X_i \text{ affect } Y \text{ ?}
 $$
 
-
-- The 2 models are equivalent iff
-
-$$
-z_{i1} = 1 \,, \qquad z_{i2} = x_{i2} \,, \qquad \ldots  \qquad  z_{ip} = x_{ip} \qquad \forall \, i = 1 , \ldots, n
-$$
-
-
-
-## Mutiple linear regression estimator {.smaller}
-
-- Hence the design matrix $Z$ and data vector $y$ are
-
-$$
-Z =
-\left(
-\begin{array}{cccc}
-1 & x_{12} & \ldots & x_{1p} \\
-1 & x_{22} & \ldots & x_{2p} \\
-\ldots & \ldots & \ldots & \ldots \\
-1 & x_{n2} & \ldots & x_{np} \\
-\end{array}
-\right) \,, \qquad 
-y = \left(
-\begin{array}{c}
-y_1 \\
-\ldots \\
-y_n \\
-\end{array}
-\right)
-$$
-**The design matrix includes a first column of 1s to account for the intercept**
-
-- $Z$ has size $n \times p$
-- $y$ has size $n \times 1$
-
-
-- The **MLE** for multiple regression is therefore $\hat \beta \in \R^p$
-$$
-\hat \beta = (Z^T Z)^{-1} Z^T y
-$$
+- How to do this?
+    * Could perform a sequence of t-tests on the $\beta_j$
+    * For statistical reasons this is not really desirable
+    * To assess **overall** significance we can perform **F-test**
 
 
 
 
+## F-test for Overall Significance {.smaller}
+
+The F-test for Overall Significance has 3 steps:
+
+1. Define a larger **Full Model** (with more parameters)
+
+
+2. Define a smaller nested **Reduced Model** (with fewer parameters)
+
+
+3. Use an F-statistic to decide between larger or smaller model
 
 
 
+## Overall Significance for multiple regression {.smaller}
 
-# Part 5: <br>Coefficient of <br>determination $R^2$ {background-color="#cc0164" visibility="uncounted"}
-
-::: footer
-
-<div color="#cc0164">  </div>
-
-:::
-
-
-
-
-## How good is the model? {.smaller}
-
-- Consider the general linear regression model
-
-$$
-Y_i = \beta_1 z_{i1}  + \ldots + \beta_p \, z_{ip} + \e_i
-$$
-
-- Given the observed values $y = (y_1, \ldots, y_n)$, compute the MLE by
-
-$$
-\hat \beta = (\hat \beta_1, \ldots, \hat \beta_p ) = (Z^T Z)^{-1} Z^T y
-$$
-
-::: Problem
-
-Quantify how well the model fits the **observed values**
-
-$$
-y_1 , \ldots, y_n
-$$
-
-:::
-
-
-
-## {.smaller}
-
-
-- The **predicted values** are
-$$
-\hat y_i := \Expect[ Y | z_{i1}, \ldots , z_{ip} ] 
-          =  \hat \beta_1 \, z_{i1} + \ldots + \hat \beta_p \, z_{ip}  \quad \implies \quad \hat y = Z \hat \beta
-$$
-
-
-- Recall: the **Residual sum of squares** is
-$$
-\RSS := \sum_{i=1}^n ( y_i - \hat y_i )^2 
-$$
-$\RSS$ measures deviation of predicted values from observed values
-
-$$
-\text{Model is good } \,\, \iff \,\,  \hat{y}_i \approx y_i \, \quad \forall \, i \,\, \iff \,\, \RSS \, \text{ is small}
-$$
-
-- **However:** $\RSS$ is a relative measure of precision
-    * Need to rescale $\RSS$, which will lead to the coefficient of determination $R^2$
-    * To this end, we need some preliminary results
-
-
-
-## Normal equation for General Regression {.smaller}
-
-::: Lemma
-
-Suppose given the general linear regression model
-
-$$
-Y_i =  \beta_1 z_{i1} + \ldots + \beta_p z_{ip}  + \e_{i}
-$$
-for errors $\e_1 , \ldots, \e_n$ iid $N(0,\sigma^2)$. Define the **observed errors**
-$$
-\hat{\e}_i = y_i - \hat{y}_i 
-$$
-Then the **normal equation** is satisfied
-$$
-\hat{\e}^T Z = \mathbf{0}
-$$
-
-:::
-
-
-## Proof {.smaller}
+- Model 1 is the smaller **Reduced Model**
+- Model 2 is the larger **Full Model**
 
 \begin{align*}
-\hat{\e}^T Z & = (y - \hat y)^T Z & \hat{\e} = y - \hat{y} \\
-             & = (y - Z \hat{\beta})^T Z &  \hat{y} = Z\hat{\beta} \\
-             & = (y - Z (Z^T Z)^{-1} Z^T y)^T Z & \hat{\beta} = (Z^T Z)^{-1} Z^T y \\
-             & = y^T (I - Z (Z^T Z)^{-1} Z^T )^T Z   & \text{factor } \,y \\
-             & = y^T (I - Z (Z^T Z)^{-1} Z^T )^T (Z^T)^T  & Z = (Z^T)^T\\
-             & = y^T [  Z^T (I  - Z (Z^T Z)^{-1} Z^T ) ]^T   & (AB)^T = B^TA^T \\
-             & = y^T [  Z^T - \underbrace{Z^T Z (Z^T Z)^{-1}}_{I} \ Z^T ]^T \\[10pt]
-             & = y^T \left[  Z^T - Z^T  \right]^T = \mathbf{0}
+\textbf{Model 1:} & \quad Y_i = \beta_1 + \e_i \\[15pt]
+\textbf{Model 2:} & \quad Y_i = \beta_1  + \beta_2 x_{i2} + \ldots + \beta_p x_{ip} + \e_i
+\end{align*}
+
+
+- Choosing the Full Model 2 is equivalent to rejecting $H_0$
+
+\begin{align*}
+H_0 & \colon \, \beta_2 = \beta_3 = \ldots = \beta_p = 0 \\
+H_1 & \colon \text{ At least one of the } \beta_i \text{ is non-zero}
 \end{align*}
 
 
 
 
-## Total sum of squares {.smaller}
+## Overall Significance for simple regression {.smaller}
 
 
-- The **total sum of squares** is 
-
-$$
-\TSS := \sum_{i=1}^n ( y_i - \overline{y} )^2
-$$
-
-
-- $\TSS$ measures deviation of observed values from the grand mean 
-
-
-- Hence $\TSS$ measures variability of the observed data $y_1 , \ldots, y_n$
-     * If data very variable, then usually $y_i$ is far from $\overline{y} \implies \TSS$ is large
-     * If data not very variable, then $y_i \approx \overline{y} \implies \TSS$ is small
-
-
-**Goal:** Decompose the $\TSS$
-
-
-
-
-## $\RSS$ and $\ESS$ {.smaller}
-
-- Recall: the **Residual sum of squares** is
-$$
-\RSS := \sum_{i=1}^n ( y_i - \hat y_i )^2 
-$$
-The $\RSS$ measures deviation of predicted values from observed values
-
-
-- Introduce the **explained sum of squares** by
-$$
-\ESS := \sum_{i=1}^n ( \hat y_i - \overline{y} )^2
-$$
-$\ESS$ measures deviation of predicted values from the grand mean
-
-
-
-
-## Decomposition of $\TSS$ {.smaller}
-
-::: Theorem
-
-Suppose given the general linear regression model
-
-$$
-Y_i =  \beta_1 z_{i1} + \ldots + \beta_p z_{ip}  + \e_{i}
-$$
-for errors $\e_1 , \ldots, \e_n$ iid $N(0,\sigma^2)$. Then
-
-$$
-\TSS = \ESS + \RSS -  2 \overline{y} \sum_{i=1}^n \hat{\e}_i
-$$
-where the observed errors are
-$$
-\hat{\e}_i = y_i - \hat{y}_i 
-$$
-
-:::
-
-
-
-
-## Proof  {.smaller}
-
-**Trick:** Add and substract $\hat{y}_i$, then expand:
+- Model 1 is the smaller **Reduced Model**
+- Model 2 is the larger **Full Model**
 
 \begin{align*}
-\TSS & = \sum_{i=1}^n (y_i - \overline{y})^2 \\ 
-& = \sum_{i=1}^n \left[ (\hat{y}_i - \overline{y})  + (y_i - \hat{y}_i) \right]^2 \\
-  & = \sum_{i=1}^n (\hat{y}_i - \overline{y})^2  + (y_i - \hat{y}_i)^2 + 2 (\hat{y}_i - \overline{y})  \underbrace{(y_i - \hat{y}_i)}_{\hat{\e}_i} \\
-  & = \ESS + \RSS + 2 \sum_{i=1}^n \hat{y}_i \hat{\e}_i - 2 \overline{y} \sum_{i=1}^n \hat{\e}_i 
+\textbf{Model 1:} & \quad Y_i = \alpha + \e_i \\[15pt]
+\textbf{Model 2:} & \quad Y_i = \alpha  + \beta x_i  + \e_i
+\end{align*}
+
+
+- Choosing the Full Model 2 is equivalent to rejecting $H_0$
+
+\begin{align*}
+H_0 & \colon \beta = 0 \\
+H_1 & \colon \beta \neq 0 
 \end{align*}
 
 
 
 
-## {.smaller}
 
-- Recall the **normal equation**
+## RSS for the Full Model {.smaller}
 
-$$
-\hat{\e}^T Z = \mathbf{0}
-$$
-
-- Using again that $\hat y = Z \hat{\beta}$, we get
+- Consider the Full Model with $p$ parameters
 
 $$
-\sum_{i=1}^n \hat{y}_i \hat{\e}_i = 
-\hat{\e}^T \hat{y} = 
-\hat{\e}^T Z \hat{\beta} =
-\mathbf{0} \hat{\beta} = 0
+\textbf{Model 2:}  \quad Y_i = \beta_1  + \beta_2 x_{i2} + \ldots + \beta_p x_{ip} + \e_i
 $$
 
-- From the above, we conclude the thesis:
+- Denote by $\hat \beta$ the MLE for the Full Model. Therefore, predictions are
+
 $$
-\TSS  = \ESS + \RSS + 2 \underbrace{ \sum_{i=1}^n \hat{y}_i \hat{\e}_i}_{0} - 2 \overline{y} \sum_{i=1}^n \hat{\e}_i
-    = \ESS + \RSS - 2 \overline{y} \sum_{i=1}^n \hat{\e}_i 
+\hat y_i := \hat{\beta}_1  + \hat{\beta}_2 x_{i2} + \ldots + \hat{\beta}_p x_{ip} \,, \quad \forall \, i = 1 , \ldots, n \,,
+$$
+
+- Define the *Residual Sum of Squares* for the Full Model
+
+$$
+\RSS(p) := \sum_{i=1}^n (y_i - \hat y_i)^2 
 $$
 
 
 
 
+## RSS for the Reduced Model {.smaller}
 
-## Multiple regression: $\TSS = \ESS + \RSS$  {.smaller}
-
-::: Theorem
-
-Suppose given the multiple regression linear model
+- Consider now the Reduced Model
 
 $$
-Y_i =  \beta_1 + \beta_2 x_{i2} + \ldots + \beta_p x_{ip}  + \e_{i}
+\textbf{Model 1:} \quad Y_i = \beta_1 + \e_i
 $$
-for errors $\e_1 , \ldots, \e_n$ iid $N(0,\sigma^2)$. Then, the sum of errors is zero
+
+
+- Denote by $\hat{\beta}_1$ the MLE for the Reduced Model. Therefore, predictions are
+
 $$
-\sum_{i=1}^n \hat{\e}_i = 0 \,, 
+\hat y_i = \hat{\beta}_1 \,, \quad \forall \, i = 1 , \ldots, n
 $$
-where $\hat{\e}_i = y_i - \hat{y}_i$. In particular, the following decomposition holds
+
+- Define the *Residual Sum of Squares* for the Reduced Model
+
 $$
-\TSS = \ESS + \RSS
+\RSS(1) := \sum_{i=1}^n (y_i - \hat{\beta}_1)^2
+$$
+
+
+
+## Property of the RSS {.smaller}
+
+- Recall that $\RSS$ is defined via **minimization**
+$$
+\RSS(k) := \min_{\beta_1 , \ldots , \beta_k} \ \sum_{i=1}^n ( y_i - \hat y_i)^2 \,, \qquad 
+\hat y_i := \beta_1 + \beta_2 x_{i2} + \ldots + \beta_k x_{ik}
+$$
+with minumum achieved when $\beta$ coincides with the MLE $\hat \beta = (Z^TZ)^{-1}Z^Ty$
+
+- Therefore $\RSS$ cannot increase if we add parameters to the model
+
+$$
+\RSS(1) \geq \RSS(p)
+$$
+
+
+- In particular, we have that 
+
+$$
+\frac{\RSS(1) - \RSS (p)}{\RSS(p)} \geq 0
+$$
+
+
+
+## Deciding between the two models {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+The hypothesis for deciding between the two model is
+\begin{align*}
+H_0 & \colon \, \beta_2 = \beta_3 = \ldots = \beta_p = 0 \\
+H_1 & \colon \text{ At least one of the } \beta_i \text{ is non-zero}
+\end{align*}
+
+- Suppose the null hypothesis $H_0$ holds
+
+- In this case, the Reduced Model and Full models are the same
+
+- Therefore, predictions of Full and Reduced Model will be similar
+
+- Hence, the $\RSS$ for the 2 models are similar
+
+$$
+\RSS (1) \, \approx \, \RSS(p)
+$$
+
+:::
+
+
+
+## Deciding between the two models {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+The hypothesis for deciding between the two model is
+\begin{align*}
+H_0 & \colon \, \beta_2 = \beta_3 = \ldots = \beta_p = 0 \\
+H_1 & \colon \text{ At least one of the } \beta_i \text{ is non-zero}
+\end{align*}
+
+
+- Suppose instead that the alternative hypothesis $H_1$ holds
+
+- In this case the predictions of Full and Reduced Model will be different
+
+- As already noted, in general it holds that
+$$
+\RSS (1) \geq \RSS(p)
+$$
+
+
+- From $H_1$, we know that some of the extra parameters $\beta_2 , \ldots, \beta_p$ are non zero
+
+- Thus, Full Model will give better predictions $\implies \RSS(p)$ is **much smaller**
+$$
+\RSS (1) \gg \RSS(p)
 $$
 
 :::
@@ -2620,1086 +2238,540 @@ $$
 
 
 
-## Proof  {.smaller}
 
-- Since we are dealing with multiple linear regression, $Z$ has the form
+## Conclusion: 2 cases {.smaller}
 
+::: {style="font-size: 0.95em"}
+
+
+1. Choose the Reduced Model:
+
+\begin{align*}
+H_0 \,\, \text{ holds } & \, \iff \,  \beta_2 = \ldots =  \beta_p = 0 \\[15pt]
+ & \, \iff \, \RSS(1) \approx \RSS (p) \, \iff \, \frac{\RSS(1) - \RSS (p)}{\RSS(p)} \approx 0 
+ \end{align*}
+
+2. Choose the Full Model:
+
+\begin{align*} 
+H_1 \,\, \text{ holds } & \, \iff \, \exists \,\, i \, \text{ s.t.  } \, \beta_i \neq 0 \\[15pt]
+ & \, \iff \, \RSS(1) \gg \RSS (p) \, \iff \, \frac{\RSS(1) - \RSS (p)}{\RSS(p)} \gg 0
+\end{align*}
+
+:::
+
+
+
+## Construction of F-statistic {.smaller}
+
+- Thus, the quantity below could be used as statistic to decide between the 2 models
+
+$$
+\frac{\RSS(1) - \RSS (p)}{\RSS(p)}
+$$
+
+- However, in order to obtain a known distribution, we need to rescale
+
+- Note that the degrees of freedom of Reduced Model (1 parameter) are 
+
+$$
+\df (1) = n - 1
+$$
+
+- The degrees of freedom of the Full Model (p parameters) are 
+
+$$
+\df (p) = n - p
+$$
+
+
+
+## F-statistic for Overall Significance {.smaller}
+
+
+::: Definition
+
+The **F-statistic** for Overall Significance is
+
+\begin{align*}
+F & := \frac{\RSS(1) - \RSS (p)}{ \df(1) - \df (p) } \bigg/ 
+\frac{\RSS(p)}{\df(p)}  \\[15pt] 
+  & = \frac{\RSS(1) - \RSS (p)}{ p - 1 } \bigg/ 
+\frac{\RSS(p)}{n - p}
+\end{align*}
+
+:::
+
+
+**Theorem:** The F-statistic for Overall Significance has F-distribution
+
+$$
+F \, \sim \, F_{p-1,n-p}
+$$
+
+
+
+
+
+
+## Rewriting the F-statistic {.smaller}
+
+::: Proposition
+
+The F-statistic can be rewritten as
+
+\begin{align*}
+F & = \frac{\RSS(1) - \RSS (p)}{ p - 1 } \bigg/ 
+\frac{\RSS(p)}{n - p}  \\[15pt]
+  & = \frac{R^2}{1 - R^2} \, \cdot \, \frac{n - p}{p - 1} 
+\end{align*}
+
+:::
+
+
+
+## Proof of Proposition {.smaller}
+
+- Recall the definition of *Total Sum of Squares*
+$$
+\TSS = \sum_{i=1}^n (y_i - \overline{y})^2
+$$
+
+- Notice that the definition of $\TSS$ does not depend on $p$
+
+
+- Recall the definition of $R^2$ for the Full Model (which has p parameters)
+$$
+R^2 = 1 - \frac{\RSS (p)}{\TSS} 
+$$
+
+
+- From the above, we obtain
+
+$$
+\RSS(p) = (1 - R^2) \TSS
+$$
+
+
+
+
+##  {.smaller}
+
+- By definition, we have that 
+
+$$
+\RSS(1) = \min_{\beta_1} \ \sum_{i=1}^n (y_i - \beta_1)^2 
+$$
+
+- **Exercise:** Check that the unique solution to the above problem is
+
+$$
+\beta_1 = \overline{y}
+$$
+
+- Therefore, we have
+
+$$
+\RSS(1) =  \sum_{i=1}^n (y_i - \overline{y})^2 = \TSS
+$$
+
+
+
+
+##  {.smaller}
+
+- We just obtained the two identities
+
+$$
+\RSS(p) = (1 - R^2) \TSS \,, \qquad \quad \RSS(1) = \TSS
+$$
+
+
+- From the above, we conclude the proof
+
+\begin{align*}
+F & = \frac{\RSS(1) - \RSS (p)}{ p - 1 } \bigg/ 
+\frac{\RSS(p)}{n - p}  \\[15pt]
+  & = \frac{\TSS - (1 - R^2) \TSS}{ p - 1 } \bigg/ 
+\frac{(1 - R^2) \TSS}{n - p}\\[15pt]
+  & = \frac{R^2}{1 - R^2} \, \cdot \, \frac{n - p}{p - 1} 
+\end{align*}
+
+
+
+## Testing Overall Significance {.smaller}
+
+- **Recall:** We want to test the *Overall Significance* of the parameters $\beta_2,\ldots, \beta_p$
+
+- This means deciding which model gives better predictions between
+\begin{align*}
+\textbf{Model 1:} & \quad Y_i = \beta_1 + \e_i  & \text{Reduced Model}\\[15pt]
+\textbf{Model 2:} & \quad Y_i = \beta_1  + \beta_2 x_{i2} + \ldots + \beta_p x_{ip} + \e_i & \text{Full Model}
+\end{align*}
+
+
+- To make a decision, we have formulated the hypothesis
+\begin{align*}
+H_0 & \colon \, \beta_2 = \beta_3 = \ldots = \beta_p = 0 \\
+H_1 & \colon \text{ At least one of the } \beta_i \text{ is non-zero}
+\end{align*}
+- $H_0$ favors Model 1
+- $H_1$ favors Model 2
+
+
+
+## {.smaller}
+
+
+::: {style="font-size: 0.95em"}
+
+We use the F-statistic to decide between the two models
+$$
+F = \frac{\RSS(1) - \RSS (p)}{ p - 1 } \bigg/ 
+\frac{\RSS(p)}{n - p}
+$$
+
+
+1. Choose the Reduced Model:
+\begin{align*}
+H_0 \,\, \text{ holds }  \, \iff \,  \beta_2 = \ldots =  \beta_p = 0 
+  \, \iff \, \RSS(1) \approx \RSS (p) \, \iff \, F \approx 0 
+ \end{align*}
+
+2. Choose the Full Model:
+\begin{align*} 
+H_1 \,\, \text{ holds }  \, \iff \, \exists \,\, i \, \text{ s.t.  } \, \beta_i \neq 0 
+  \, \iff \, \RSS(1) \gg \RSS (p) \, \iff \, F \gg 0
+\end{align*}
+
+
+**Therefore, the test is one-sided: $\,\,$ Reject $H_0 \iff F \gg 0$**
+
+
+:::
+
+
+
+
+
+## The F-test for Overall Significance {.smaller}
+
+**Assumption:** Given data points $(x_{i2},\ldots , x_{ip},  y_i)$, consider the nested models
+
+\begin{align*}
+\textbf{Model 1:} & \quad Y_i = \beta_1 + \e_i  & \text{Reduced Model}\\[15pt]
+\textbf{Model 2:} & \quad Y_i = \beta_1  + \beta_2 x_{i2} + \ldots + \beta_p x_{ip} + \e_i & \text{Full Model}
+\end{align*}
+
+**Goal:** Testing the *Overall Significance* of the parameters $\beta_2,\ldots, \beta_p$  
+(i.e. decide which model gives better predictions)
+
+**Hypothesis:** Choosing the Full Model 2, is equivalent to rejecting $H_0$
+
+\begin{align*}
+H_0 & \colon \, \beta_2 = \beta_3 = \ldots = \beta_p = 0 \\
+H_1 & \colon \text{ At least one of the } \beta_i \text{ is non-zero}
+\end{align*}
+
+
+
+## Procedure: 3 Steps {.smaller}
+
+1. **Calculation**: Write design matrix $Z$, and compute MLE $\hat{\beta}$ and predictions $\hat{y}_i$
 $$
 Z =
 \left(
 \begin{array}{cccc}
 1 & x_{12} & \ldots & x_{1p} \\
-1 & x_{22} & \ldots & x_{2p} \\
 \ldots & \ldots & \ldots & \ldots \\
 1 & x_{n2} & \ldots & x_{np} \\
 \end{array}
-\right) 
+\right) \,, \qquad \hat{\beta} = (Z^TZ)^{-1} Z^T y \,, \qquad \hat{y} = Z \hat{\beta}
 $$
-
-
-- Therefore, we have that 
-
+Compute the $\RSS$, $\TSS$ and $R^2$ coefficient for the Full Model
 $$
-\hat{\e}^T Z = 
-(\hat{\e}_1 , \ldots, \hat{\e}_n) 
-\left(
-\begin{array}{cccc}
-1 & x_{12} & \ldots & x_{1p} \\
-1 & x_{22} & \ldots & x_{2p} \\
-\ldots & \ldots & \ldots & \ldots \\
-1 & x_{n2} & \ldots & x_{np} \\
-\end{array}
-\right) = \left(  \sum_{i=1}^n \hat{\e}_i , \ast , \ldots, \ast  \right)
+\RSS(p) = \sum_{i=1}^n (y_i - \hat{y}_i)^2 \,, \qquad 
+\TSS = \sum_{i=1}^n (y_i - \overline{y})^2\,, \qquad 
+R^2 = 1 - \frac{\RSS(p)}{\TSS}
 $$
-
-
-## {.smaller}
-
-- The normal equation says that 
-
+Finally, compute the F-statistic for *Overall Significance*
 $$
-\hat{\e}^T Z = \mathbf{0}
-$$
-
-- Therefore, we conclude that 
-
-$$
-\hat{\e}^T Z  = \left(  \sum_{i=1}^n \hat{\e}_i , \ast , \ldots, \ast  \right) = (0, 0, \ldots, 0)
-$$
-
-- From the above, we infer that the **sum of the errors is zero**
-
-$$
-\sum_{i=1}^n \hat{\e}_i = 0
+F = \frac{R^2}{1 - R^2} \, \cdot \, \frac{n - p}{p - 1} \ \sim \ F_{p-1, n - p} 
 $$
 
 
 
 ## {.smaller}
 
-
-- Multiple linear regression is a special case of general linear regression
-
-- Therefore, we can apply the previous Theorem to get
-$$
-\TSS = \ESS + \RSS -  2 \overline{y} \sum_{i=1}^n \hat{\e}_i
-$$
-
-- In the previous slide we have shown that
-
-$$
-\sum_{i=1}^n \hat{\e}_i = 0
-$$
-
-
-- Therefore, the thesis follows 
-
-$$
-\TSS = \ESS + \RSS -  2 \overline{y} \sum_{i=1}^n \hat{\e}_i =  \ESS + \RSS
-$$
-
-
-
-
-
-
-
-## Coefficient of determination $R^2$ {.smaller}
-
-
-Consider the general linear regression model
-$$
-Y_i = \beta_1 z_{i1}  + \ldots + \beta_p \, z_{ip} + \e_i
-$$
-For observed data $y = (y_1, \ldots, y_n)$, define the predictions by
-$$
-\hat{y} = Z\hat{\beta}  \,, \qquad \hat{\beta} = (Z^TZ)^{-1} Z^T y
-$$
-
-
-::: Definition
-
-The **coefficient of determination** is 
-$$
-R^2 := 1 -  \frac{ \RSS }{ \TSS } = 1 - \frac{ \sum_{i=1}^n ( y_i - \hat y_i  )^2 }{ \sum_{i=1}^n ( y_i - \overline{y} )^2 }
-$$
-
-:::
-
-
-
-
-
-## Properties of $R^2$ {.smaller}
-
-::: Proposition
-
-For the general linear regression model, we have that
-
-$$
-R^2 \leq 1
-$$
-
-Moreover 
-
-$$
-R^2 = 1 \qquad \iff \qquad y_i = \hat y_i \quad \,\, \forall \, i = 1 , \ldots, n
-$$
-
-:::
-
-
-
-
-
-
-
-## Proof {.smaller}
-
-
-- Since $\RSS$ and $\TSS$ are sums of squares, we have that
-$\TSS,  \, \RSS \geq 0$
-
-- Therefore, the first part of the statemet follows immediately 
-$$
-R^2 := 1 - \frac{\RSS}{\TSS}  \leq 1
-$$
-
-- Moreover, recalling the definition of $\RSS$, we have that
-$$
-\RSS = \sum_{i=1}^n (y_i - \hat{y}_i)^2 = 0 \quad \iff \quad
-\hat{y}_i = y_i \quad \forall \, i
-$$
-
-
-- The thesis immediately follows:
-$$
-R^2 = 1 \,\, \iff \,\, 1 - \frac{\RSS}{\TSS} = 1  \,\, \iff \,\, \RSS = 0 \,\, \iff \,\,
-\hat{y}_i = y_i \quad \forall \, i
-$$
-
-
-
-
-## $R^2$ might be negative {.smaller}
-
-
-::: Proposition
-
-1. For the **general** linear regression model, it might hold that
-$$
-R^2 < 0
-$$
-
-2. For the **multiple** regression model, it always holds that
-$$
-0 \leq R^2 \leq 1
-$$
-
-:::
-
-Bottom line:
-
-- $R^2$ can be negative for general regression (i.e. when no intercept is present)
-
-- $0 \leq R^2 \leq 1$ for multiple regression (i.e. when intercept is present)
-
-
-
-
-
-## Proof {.smaller}
-
-1. For general linear regression, the following decomposition holds (Thm Slide 85)
-$$
-\TSS = \ESS + \RSS -  2 \overline{y} \sum_{i=1}^n \hat{\e}_i
-$$
-
-
-- By definition of $R^2$, we have
-$$
-R^2 := 1 - \frac{ \RSS }{ \TSS } = \underbrace{\frac{\ESS}{\TSS}}_{\geq 0} - \underbrace{\frac{2 \overline{y} \sum_{i=1}^n \hat{\e}_i}{\TSS}}_{\text{can have any sign}} 
-$$
-
-- Since the last term can have any sign, it might hold that $R^2 < 0$
-
-
-
-## {.smaller}
-
-
-2. For multiple linear regression, the following decomposition holds (Thm Slide 88)
-$$
-\TSS = \ESS + \RSS
-$$
-
-
-- By definition of $R^2$, we have
-
-$$
-R^2 := 1 - \frac{ \RSS }{ \TSS } = \frac{\ESS}{\TSS} \geq 0 
-$$
-
-- Therefore, we conclude that
-
-$$
-0 \leq R^2 \leq 1
-$$
-
-
-
-
-
-## Conclusion {.smaller}
-
-We have shown that
-
-- $R^2 \leq 1$
-
-- $R^2 = 1 \quad \iff \quad y_i = \hat y_i \quad \,\, \forall \, i = 1 , \ldots, n$
-
-
-**Conclusion:** $R^2$ measures how well the model fits the data
-
-$$
-R^2  \, \text{ close to } \, 1 \quad \implies \quad \text{  model fits data well}
-$$
-
+2. **Statistical Tables or R**: Find either
+    * Critical value $F^*$ in [Table 3](files/Statistics_Tables.pdf)
+    * p-value in R
 
 <br>
 
-
-**Warning:** $R^2$ can be negative for general regression (no intercept)
-
-
-
-
-# Part 6: <br>Example of <br>multiple regression {background-color="#cc0164" visibility="uncounted"}
-
-::: footer
-
-<div color="#cc0164">  </div>
-
-:::
+3. **Interpretation**: Reject $H_0$ when either
+$$
+p < 0.05 \qquad \text{ or } \qquad F \in \,\,\text{Rejection Region}
+$$
 
 
 
 
-
-## Example: Predicting unemployment {.smaller}
-
-::: {.column width="55%"}
-
-**Goal:** Predict unemployment rates
-
-- Unemp. related to Productivity Index
-- Other factors might also play a role
-- These factors likely depend on the year
-- Use year as surrogate for other factors
+| Alternative                               | Rejection Region  | $F^*$              | p-value              |
+|-------------------------------------------|-------------------|--------------------|----------------------|
+| At least one of the $\beta_i$ is non-zero | $F > F^*$         | $F_{p-1,n-p}(0.05)$| $P(F_{p-1,n-p} > F)$ |
+: {tbl-colwidths="[25,25,25,25]"}
 
 
-:::
 
-::: {.column width="42%"}
-
-
-| Unemp. | Product. | Year |
-|:------:|:--------:|:----:|
-|  3.1   |  113     | 1950 |
-|  1.9   |  123     | 1951 |
-|  1.7   |  127     | 1952 |
-|  1.6   |  138     | 1953 |
-|  3.2   |  130     | 1954 |
-|  2.7   |  146     | 1955 |
-|  2.6   |  151     | 1956 |
-|  2.9   |  152     | 1957 |
-|  4.7   |  141     | 1958 |
-|  3.8   |  159     | 1959 |
-: {tbl-colwidths="[30,35,35]"}
-
-:::
+## The F-test for Overall Significance in R {.smaller}
 
 
-## Enter the data {.smaller}
+1. Fit the Full Model with ``lm``
 
+2. Read the *Summary*
+    * F-statistic is listed in the summary
+    * p-value is listed in the summary
 
-- Enter the data in 3 vectors
 
 ```r 
-# Unemployment data
-unemployment <- c(3.1, 1.9, 1.7, 1.6, 3.2, 2.7, 2.6, 2.9, 4.7, 3.8)
+# Fit the Full Model
+full.model <- lm(y ~ x2 + x3 + ... + xp)
 
-# Productivity data
-productivity <- c(113, 123, 127, 138, 130, 146, 151, 152, 141, 159)
-
-# Year data
-year <- seq(1950, 1959, by = 1)
+# Read the summary
+summary(full.model)
 ```
 
 
 
+## F-statistic for simple regression {.smaller}
 
-## Plotting the data {.smaller}
+::: Proposition
 
-- Want to see if either *Productivity* or *Year* predict *Unemployment*. Therefore, plot
-    * Productivity Vs Unemployment
-    * Year Vs Unemployment
-
-
-```r
-# Set up the layout with two plot panels side by side
-par(mfrow = c(1, 2))
-
-# Scatter plot: Productivity vs Unemployment
-plot(productivity, unemployment, 
-     xlab = "Productivity", ylab = "Unemployment",
-     main = "Productivity vs Unemployment", 
-     pch = 16)
-
-# Scatter plot: Year vs Unemployment
-plot(year, unemployment, 
-     xlab = "Year", ylab = "Unemployment",
-     main = "Year vs Unemployment", 
-     pch = 16)
-```
-
-
-## Output {.smaller}
-### There appears to be some linear relationship
-
-```{r}
-# Unemployment data
-unemployment <- c(3.1, 1.9, 1.7, 1.6, 3.2, 2.7, 2.6, 2.9, 4.7, 3.8)
-
-# Productivity data
-productivity <- c(113, 123, 127, 138, 130, 146, 151, 152, 141, 159)
-
-# Year data
-year <- seq(1950, 1959, by = 1)
-
-# Set up the layout with two plot panels side by side
-par(mfrow = c(1, 2))
-
-# Scatter plot: Productivity vs Unemployment
-plot(productivity, unemployment, 
-     xlab = "Productivity", ylab = "Unemployment",
-     main = "Productivity vs Unemployment", 
-     pch = 16)
-
-# Scatter plot: Year vs Unemployment
-plot(year, unemployment, 
-     xlab = "Year", ylab = "Unemployment",
-     main = "Year vs Unemployment", 
-     pch = 16)
-```
-
-
-
-
-## Plotting the data in 3D {.smaller}
-
-To better understand the data we can do a 3D scatter plot using either
-
-- ``scatterplot3D``
-  * installed via ``install.packages("scatterplot3d")``
-  * produces static plots
-
-- ``plotly``
-  * installed via ``install.packages("plotly")``
-  * produces interactive plots
-
-
-
-
-## Plotting the data with ``scatterplot3d`` {.smaller}
-
-
-
-```r
-# Load the scatterplot3d library
-library(scatterplot3d)
-
-# Create 3D scatter plot
-scatterplot3d(x = productivity,
-              y = year,
-              z = unemployment, 
-              main = "Productivity and Year vs Unemployment", 
-              xlab = "Productivity", 
-              ylab = "Year", 
-              zlab = "Unemployment",
-              pch = 16,
-              color = "black",
-              angle = 50)
-```
-
-
-
-## Plotting the data with ``scatterplot3d`` {.smaller}
-### The data is clearly close to a plane
-
-```{r}
-# Unemployment data
-unemployment <- c(3.1, 1.9, 1.7, 1.6, 3.2, 2.7, 2.6, 2.9, 4.7, 3.8)
-
-# Productivity data
-productivity <- c(113, 123, 127, 138, 130, 146, 151, 152, 141, 159)
-
-# Year data
-year <- seq(1950, 1959, by = 1)
-
-# Load the scatterplot3d library
-library(scatterplot3d)
-
-# Create 3D scatter plot
-scatterplot3d(x = productivity,
-              y = year,
-              z = unemployment, 
-              main = "Productivity and Year vs Unemployment", 
-              xlab = "Productivity", 
-              ylab = "Year", 
-              zlab = "Unemployment", 
-              pch = 16,
-              color = "black",
-              angle = 50)
-```
-
-
-
-
-## Plotting the data with ``plotly`` {.smaller}
-
-```r
-# Load the plotly library
-library(plotly)
-
-# Create a scatter plot using plot_ly
-plot_ly(x = productivity, 
-        y = year, 
-        z = unemployment, 
-        type = "scatter3d", 
-        mode = "markers",
-        marker = list(size = 5, color = "black")) %>%
-  layout(scene = list(xaxis = list(title = "Productivity"),
-                      yaxis = list(title = "Year"),
-                      zaxis = list(title = "Unemployment")),
-         width = 1000, 
-         height = 500)
-```
-
-
-
-
-## Plotting the data with ``plotly`` {.smaller}
-### The data is clearly close to a plane
-
-```{r}
-# Load the plotly library
-library(plotly)
-
-# Data
-unemployment <- c(3.1, 1.9, 1.7, 1.6, 3.2, 2.7, 2.6, 2.9, 4.7, 3.8)
-productivity <- c(113, 123, 127, 138, 130, 146, 151, 152, 141, 159)
-year <- seq(1950, 1959, by = 1)
-
-# Create a scatter plot using plot_ly
-plot_ly(x = productivity, 
-        y = year, 
-        z = unemployment, 
-        type = "scatter3d", 
-        mode = "markers",
-        marker = list(size = 5, color = "black")) %>%
-  layout(scene = list(xaxis = list(title = "Productivity"),
-                      yaxis = list(title = "Year"),
-                      zaxis = list(title = "Unemployment")),
-         width = 1000, 
-         height = 500)
-```
-
-
-
-## Setting up multiple regression model {.smaller}
-
-- We saw that the data points
+1. The $F$-statistic for Overall Significance in simple regression is
 $$
-( \text{Productivity}, \text{Year}, \text{Unemployment}  ) \in R^3
+F = t^2 \,, \qquad \quad t = \frac{\hat \beta}{ S / \sqrt{S_{xx}}}
 $$
-roughly lie on a **plane**
+where $t$ is the t-statistic for $\hat \beta$.
 
-- **Goal:** Use multiple regression to compute such plane
-  * Unemployment is modelled by response variable $Y$
-  * Productivity is modelled by predictor $X_2$
-  * Year is modelled by predictor $X_3$
-  * The multiple regression model is
-  $$
-  \Expect[Y | x_2, x_3] = \beta_1 + \beta_2 \, x_2 + \beta_3 \, x_3
-  $$
-
-
-
-## Exercise {.smaller}
-
-::: {.column width="54%"}
-
-Multiple regression model is
+2. In particular, the p-values for t-test and F-test coincide
 $$
-\Expect[Y | x_2, x_3] = \beta_1 + \beta_2 \, x_2 + \beta_3 \, x_3
-$$
-
-- Enter design matrix ``Z`` into R
-- Enter data ``y`` into R
-- Compute estimator 
-$$
-\hat \beta = (Z^T Z)^{-1} Z^T y
-$$
-    * Matrix product in R is $\,$``%*%``
-    * Transpose matrix of $\,$``A``$\,$ is $\,$``t(A)``
-    * Inverse of matrix $\,$``A``$\,$ is $\,$``solve(A)``
-
-:::
-
-::: {.column width="45%"}
-
-::: {style="font-size: 0.85em"}
-
-| Unemp. |  Product.| Year |
-|:------:|:--------:|:----:|
-| $y_i$  | $x_{i2}$ |$x_{i3}$|
-|  3.1   |  113     | 1950 |
-|  1.9   |  123     | 1951 |
-|  1.7   |  127     | 1952 |
-|  1.6   |  138     | 1953 |
-|  3.2   |  130     | 1954 |
-|  2.7   |  146     | 1955 |
-|  2.6   |  151     | 1956 |
-|  2.9   |  152     | 1957 |
-|  4.7   |  141     | 1958 |
-|  3.8   |  159     | 1959 |
-: {tbl-colwidths="[30,35,35]"}
-
-:::
-:::
-
-
-
-
-
-## Solution {.smaller}
-
-::: {.column width="54%"}
-
-The design matrix is
-$$
-Z=\left(\begin{array}{cccc}
-    1 & 113 & 1950 \\
-    1 & 123 & 1951 \\
-    1 & 127 & 1952 \\
-    1 & 138 & 1953 \\
-    1 & 130 & 1954 \\
-    1 & 146 & 1955 \\
-    1 & 151 & 1956 \\
-    1 & 152 & 1957 \\
-    1 & 141 & 1958 \\
-    1 & 159 & 1959 \\
-\end{array}\right)
+p = 2P( t_{n-2} > |t| ) = P( |t_{n-2}| > |t| )  = P( F_{1,n-2} > F )
 $$
 
 :::
 
-::: {.column width="45%"}
-
-::: {style="font-size: 0.85em"}
-
-| Unemp. |  Product.| Year |
-|:------:|:--------:|:----:|
-| $y_i$  | $x_{i2}$ |$x_{i3}$|
-|  3.1   |  113     | 1950 |
-|  1.9   |  123     | 1951 |
-|  1.7   |  127     | 1952 |
-|  1.6   |  138     | 1953 |
-|  3.2   |  130     | 1954 |
-|  2.7   |  146     | 1955 |
-|  2.6   |  151     | 1956 |
-|  2.9   |  152     | 1957 |
-|  4.7   |  141     | 1958 |
-|  3.8   |  159     | 1959 |
-: {tbl-colwidths="[30,35,35]"}
-
-:::
-:::
-
-
-
-## Solution {.smaller}
-
-::: {.column width="54%"}
-
-The data vector is
-$$
-y = 
-\left(\begin{array}{c}
-3.1 \\
-1.9 \\
-1.7 \\
-1.6 \\
-3.2 \\
-2.7 \\
-2.6 \\
-2.9 \\
-4.7 \\
-3.8 \\
-\end{array}\right)
-$$
-
-:::
-
-::: {.column width="45%"}
-
-::: {style="font-size: 0.85em"}
-
-| Unemp. |  Product.| Year |
-|:------:|:--------:|:----:|
-| $y_i$  | $x_{i2}$ |$x_{i3}$|
-|  3.1   |  113     | 1950 |
-|  1.9   |  123     | 1951 |
-|  1.7   |  127     | 1952 |
-|  1.6   |  138     | 1953 |
-|  3.2   |  130     | 1954 |
-|  2.7   |  146     | 1955 |
-|  2.6   |  151     | 1956 |
-|  2.9   |  152     | 1957 |
-|  4.7   |  141     | 1958 |
-|  3.8   |  159     | 1959 |
-: {tbl-colwidths="[30,35,35]"}
-
-:::
-:::
+**Proof:** Will be left as an exercise
 
 
 
 
+## Worked Example: Stock and Gold prices {.smaller}
 
+- Recall that 
+    * $X =$ Stock Price
+    * $Y =$ Gold Price
 
-
-
-## Solution {.smaller}
-
-::: {style="font-size: 0.93em"}
-
-- Data vector $y$ is stored in R as usual
-
-```r
-# Store vector y
-y <- c(3.1, 1.9, 1.7, 1.6, 3.2, 2.7, 2.6, 2.9, 4.7, 3.8)
-```
-
-- Design matrix is stored as follows
-
-
-```r
-# Store design matrix Z as long vector
-Z <- c(1, 113, 1950,
-       1, 123, 1951,
-       1, 127, 1952,
-       1, 138, 1953,
-       1, 130, 1954,
-       1, 146, 1955,
-       1, 151, 1956,
-       1, 152, 1957,
-       1, 141, 1958,
-       1, 159, 1959)
-
-# Make Z into a matrix with 3 columns
-Z <- matrix(Z, ncol = 3, byrow = TRUE)
-```
-:::
-
-
-## Solution {.smaller}
-
-- We need to compute the estimator
+- Consider the simple linear regression model
 
 $$
-\hat \beta = (Z^T Z)^{-1} Z^T y
+Y_i =  \alpha + \beta x_i + \e_i 
 $$
 
-
-- The matrix transpose is computed with $\,$``t(A)``
-- The product of two matrices $A$ and $B$ is computed with $\,$ ``A %*% B``
-- We use these two operators to compute $Z^T Z$ and store it into ``m1``
+- We want to test the **Overall Significance** of the parameter $\beta$
 
 
-```r
-# Calculate m1
-m1 <- t(Z) %*% Z
-```
+## {.smaller}
 
-
-## Solution {.smaller}
-
-
-- The inverse of a matrix $A$ is computed with $\,$ ``solve(A)``
-- We use this function to compute $(Z^T Z)^{-1}$ and store it into ``m2``
-
-
-```r
-# Calculate m2
-m2 <- solve(m1)
-```
-
-- We can compute $Z^T y$ with $\,$``%*%``
-- This is because R automatically interprets vectors as matrices
-
-```r
-# Calculate m3
-m3 <- t(Z) %*% y
-```
-
-
-
-## Solution {.smaller}
-
-- We compute the estimator 
-$$\hat{\beta}=(Z^T Z)^{-1} Z^T y
-$$
-and store it as $\,$ ``beta``
-
-```r
-# Calculate estimator beta
-beta <- m2 %*% m3
-```
-
-- We then print the result to screen
-
-```r
-# Print estimator beta
-cat("The estimator is", beta)
-```
-
-
-```{r}
-# Store vector y
-y <- c(3.1, 1.9, 1.7, 1.6, 3.2, 2.7, 2.6, 2.9, 4.7, 3.8)
-
-# Store design matrix Z as long vector
-Z <- c(1, 113, 1950,
-       1, 123, 1951,
-       1, 127, 1952,
-       1, 138, 1953,
-       1, 130, 1954,
-       1, 146, 1955,
-       1, 151, 1956,
-       1, 152, 1957,
-       1, 141, 1958,
-       1, 159, 1959)
-
-# Make Z into a matrix with 3 columns
-Z <- matrix(Z, ncol = 3, byrow = TRUE)
-
-# Calculate m1
-m1 <- t(Z) %*% Z
-
-# Calculate m2
-m2 <- solve(m1)
-
-# Calculate m3
-m3 <- t(Z) %*% y
-
-# Calculate estimator beta
-beta <- m2 %*% m3
-
-# Print estimator beta
-cat("The estimator is", beta)
-```
-
-
-
-## Solution {.smaller}
-
-
-- The computed regression model is
+- This means deciding which of the two models below gives better predictions
 
 \begin{align*}
-\Expect[Y | x_2, x_3] & = \hat\beta_1 + \hat\beta_2 \, x_2 + \hat\beta_3 \, x_3 \\[15pt]
- & = -1271.75 + (-0.1033386) \times x_2 + 0.6594171 \times x_3 
+\textbf{Model 1:} & \quad Y_i = \alpha + \e_i  & \text{Reduced Model}\\[15pt]
+\textbf{Model 2:} & \quad Y_i = \alpha  + \beta x_{i} + \e_i & \text{Full Model}
 \end{align*}
 
-- This means 
+- **Hypothesis:** Choosing the Full Model 2, is equivalent to rejecting $H_0$
 
 \begin{align*}
-\text{Predicted Unemployment}  = 
- -1271.75 & + (-0.1033386) \times \text{Productivity}  \\[15pt]
-  & + (0.6594171) \times \text{Year}
+H_0 & \colon \, \beta = 0 \\
+H_1 & \colon \, \beta \neq 0
 \end{align*}
 
-
-- Previous code can be downloaded here [multiple_regression.R](codes/multiple_regression.R)
-
+- Let us perform the F-test in R
 
 
-## Plot of data and regression plane {.smaller}
+
+
+
+##  {.smaller}
+
+- Recall that Stock Prices and Gold Prices are stored in R vectors
+    * ``stock.price``
+    * ``gold.price``
+
+
+- Fit the simple linear model with the following commands
+
+$$
+\text{gold.price } = \alpha + \beta \, \times ( \text{ stock.price } ) + \text{ error}
+$$
+
+
+```r
+# Fit simple linear regression model
+fit.model <- lm(gold.price ~ stock.price)
+
+# Print result to screen
+summary(fit.model)
+```
+
+
+
+## Output: F-statistic and p-value {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut_3.png){width=80%}
+:::
+
+::::
+  
+
+- The computed F-statistic is $F = 20.27$ 
+
+- There are $n = 33$ data points, and $p = 2$ parameters in the Full Model
+
+- Therefore, the degrees of freedom are
+$$
+{\rm df}_1 = p - 1 = 2 - 1 = 1 \,, \qquad 
+{\rm df}_2 = n - p = 33 - 2 = 31
+$$
+These are listed in the output, after the F-statistic
+
+- In particular, we have that the F-statistic has distribution 
+$$
+F \ \sim \ F_{{\rm df}_1, {\rm df}_2} = F_{1,31}
+$$
+
+
+
+
+
+## Output: F-statistic and p-value {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut_3.png){width=80%}
+:::
+
+::::
+  
+
+- The computed p-value is 
+$$
+p = P( F_{1,31} > F ) = 8.904 \times 10^{-5}
+$$
+
+
+- **Conclusion:** Strong evidence ($p=0.000$) that the parameter $\beta$ is significant
+    * Going back to the model, this means that *Stock Price* affects *Gold Price*
+
+
+
+
+
+## Output: F-statistic and p-value {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut_3.png){width=80%}
+:::
+
+::::
+  
+
+We could also compute F-statistic by hand
+
+- From the output we see that $R^2 = 0.3953$
+
+- We have $p = 2$ and $n =33$
+
+- Therefore 
+
+$$
+F = \frac{ R^2 }{ 1 - R^2  } \, \cdot \, \frac{n-p}{p-1} = \frac{0.395325}{0.604675} \, \cdot \, \frac{31}{1} = 20.267
+$$
+
+
+
+
+
+## Output: F-statistic and p-value {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut_3.png){width=80%}
+:::
+
+::::
+  
+
+- Similarly, the p-value could be computed by hand
+
+$$
+p = P( F_{1,31} > F ) = 8.904 \times 10^{-5}
+$$
 
 ```{r}
 #| echo: true
-#| code-fold: true
-#| code-summary: "Click here to show the full code"
+F <- 20.267    # Input the precise value, rather than the rounded one given in Summary
+n <- 33
+p <- 2
 
-# Load the plotly library
-library(plotly)
+p.value <- 1 - pf(F, df1 = p - 1, df2 = n - p)
 
-# Data
-unemployment <- c(3.1, 1.9, 1.7, 1.6, 3.2, 2.7, 2.6, 2.9, 4.7, 3.8)
-productivity <- c(113, 123, 127, 138, 130, 146, 151, 152, 141, 159)
-year <- seq(1950, 1959, by = 1)
-
-# Generate a grid of x and y values
-x_grid <- seq(min(productivity), max(productivity), length.out = 50)
-y_grid <- seq(min(year), max(year), length.out = 50)
-grid <- expand.grid(productivity = x_grid, year = y_grid)
-
-# Calculate z values for the regression plane
-z_values <- -1271.75 - 0.1033386 * grid$productivity + 0.6594171 * grid$year
-
-# Create a scatter plot using plot_ly
-plot_ly(x = productivity, 
-        y = year, 
-        z = unemployment, 
-        type = "scatter3d", 
-        mode = "markers",
-        marker = list(size = 5, color = "black")) %>%
-  layout(scene = list(xaxis = list(title = "Productivity"),
-                      yaxis = list(title = "Year"),
-                      zaxis = list(title = "Unemployment")),
-         width = 1000, 
-         height = 500) %>%
-         add_surface(
-         x = x_grid, 
-         y = y_grid, 
-         z = matrix(z_values, nrow = length(x_grid)),
-         opacity = 0.5, 
-         colorscale = list(c(0, 'rgb(255,255,255)'), c(1, 'rgb(255,0,0)')))
-```
+cat("The p-value is", p.value)
+``` 
 
 
 
 
-## Computing the $R^2$ coefficient  {.smaller} 
+## Output: F-statistic and p-value {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/simple_regression_output_cut_3.png){width=80%}
+:::
+
+::::
 
 
-- How well does the multiple linear model fit our data?
-
-- To answer this question we compute the coefficient of determination
-
+- We can also find critical value $F_{1,31} (0.05)$, by finding its closest values in [Table 3](files/Statistics_Tables.pdf)
 $$
-R^2 = 1 - \frac{\RSS}{\TSS}
+F_{1, 30} (0.05) = 4.17 \,, \qquad \quad  F_{1, 40} (0.05) = 4.08
 $$
 
-
-
-## Computing $\TSS$  {.smaller} 
-
-- We have that 
-
+- Approximate $F_{1,31} (0.05)$ by averaging the above values
 $$
-\TSS := \sum_{i=1}^n (y_i - \overline{y})^2
+F_{1,31}(0.05) \, \approx  \,  \frac{F_{1, 30} (0.05) +  F_{1, 40} (0.05)}{2} = 4.125
 $$
 
-- We compute $\overline{y}$ with the R command
-
-```r
-# Compute mean of y
-y.bar <- mean(y)
-```
-
-- We compute $\TSS$ with the R command
-
-
-```r
-# Compute TSS
-TSS <- sum( ( y - y.bar) ^ 2 )
-```
-
-
-## Computing predictions  {.smaller} 
-
-- We have that 
-
+- We reject $H_0$, since
 $$
-\RSS := \sum_{i=1}^n (y_i - \hat y_i)^2
-$$
-
-
-- We need to compute the predictions
-
-$$
-\hat y_i :=  \hat \beta_1 + \hat \beta_2 x_{i2} + \hat \beta_3 x_{i3}
+F = 20.267 > F_{1,31}(0.05) = 4.125  \quad \implies \quad  p < 0.05
 $$
 
 
 
 
 
-## Computing predictions  {.smaller}
 
-
-- $\hat y$, the design matrix $Z$, and $\hat \beta$ are
-
-$$
-\hat y = 
-\left(\begin{array}{c}
-    \hat y_1 \\
-    \ldots \\
-    \hat y_i  \\
-    \ldots  \\
-    \hat y_n \\
-\end{array}\right) \,, \qquad 
-Z = 
-\left(\begin{array}{cccc}
-    1 & x_{11} & x_{12} \\
-    \ldots & \ldots & \ldots \\
-    1 & x_{i1} & x_{i2} \\
-    \ldots & \ldots & \ldots \\
-    1 & x_{n1} & x_{n2} \\
-\end{array}\right) \,, \qquad 
-\hat \beta = 
-\left(\begin{array}{c}
-    \hat \beta_1 \\
-    \hat \beta_2  \\
-    \hat \beta_3 \\
-\end{array}\right) 
-$$
-
-
-- Therefore, we can compute 
-$$
-\hat y_i =  \hat \beta_1 + \hat \beta_2 x_{i2} + \hat \beta_3 x_{i3}
-$$
-with the product 
-$$
-\hat y = Z \hat \beta
-$$
-
-
-
-
-
-## Computing $\RSS$  {.smaller}
-
-
-- Recall that $\hat \beta$ is stored in ``beta``
-
-- Compute predictions $\hat y = Z \hat{\beta}$
-
-```r
-# Compute predictions y.hat
-y.hat <- Z %*% beta
-```
-
-
-- Recall that 
-$$
-\RSS = \sum_{i=1}^n (y_i - \hat{y}_i)^2
-$$
-
-- This is computed in R with
-
-```r
-# Compute RSS
-RSS <- sum( (y - y.hat) ^ 2 )
-```
-
-
-
-## Computing $R^2$  {.smaller}
-
-
-- The coefficient $R^2$ is computed with
-
-```r 
-# Compute coefficient of determination R^2
-R2 <- 1 - RSS / TSS
-
-# Print R^2
-cat("\nThe coefficient of determination R^2 is", R2)
-```
-
-- The full code can be downloaded here [R2_multiple_regression.R](codes/R2_multiple_regression.R)
-
-
-
-
-
-## Output & Conclusions  {.smaller}
-
-```{r} 
-# Store vector y
-y <- c(3.1, 1.9, 1.7, 1.6, 3.2, 2.7, 2.6, 2.9, 4.7, 3.8)
-
-# Store design matrix Z as long vector
-Z <- c(1, 113, 1950,
-       1, 123, 1951,
-       1, 127, 1952,
-       1, 138, 1953,
-       1, 130, 1954,
-       1, 146, 1955,
-       1, 151, 1956,
-       1, 152, 1957,
-       1, 141, 1958,
-       1, 159, 1959)
-
-# Make Z into a matrix with 3 columns
-Z <- matrix(Z, ncol = 3, byrow = TRUE)
-
-# Calculate m1
-m1 <- t(Z) %*% Z
-
-# Calculate m2
-m2 <- solve(m1)
-
-# Calculate m3
-m3 <- t(Z) %*% y
-
-# Calculate estimator beta
-beta <- m2 %*% m3
-
-# Print estimator beta
-cat("\nThe estimator is", beta)
-
-# Compute mean of y
-y.bar <- mean(y)
-
-# Compute TSS
-TSS <- sum( ( y - y.bar) ^ 2 )
-
-# Compute predictions hat y
-y.hat <- Z %*% beta
-
-# Compute ESS
-RSS <- sum( (y - y.hat) ^ 2 )
-
-# Compute coefficient of determination R^2
-R2 <- 1 - RSS / TSS
-
-# Print R^2
-cat("\nThe coefficient of determination R^2 is", R2)
-```
-
-<br>
-
-The coefficient of determination
-$$
-R^2 = 0.8655401
-$$
-is quite close to $1$, showing that:
-
-- The model fits data quite well
-- *Productivity Index* and *Year* affect *Unemployment*
-- *Unemployment* is almost completely explained by *Productivity Index* and *Year*  
-(Because $R^2$ is almost $1$)
-
-
-
-
-# Part 6: <br>Two sample t-test<br> as general regression {background-color="#cc0164" visibility="uncounted"}
+# Part 6: <br>Worked Example: <br> The Longley dataset {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
@@ -3710,363 +2782,514 @@ is quite close to $1$, showing that:
 
 
 
-## Two-sample t-test as general regression {.smaller}
-
-- Two-sample t-test is special case of general linear regression
-
-- This example is important for two reasons
-
-  * Shows that multiple linear regression encapsulates simple models like the two-sample t-test
-  * Shows that general linear regression leads to intuitive solutions in simple examples
+## Longley US macroeconomic dataset {.smaller}
+### 7 economical variables, observed yearly 1947--1962 (16 years)
 
 
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/longley.png){width=100%}
+:::
+
+:::
 
 
-## Two-sample t-test setting {.smaller}
+::: footer
 
-- We have 2 populations $A$ and $B$ distributed like $N(\mu_A, \sigma_A^2)$ and $N(\mu_B, \sigma_B^2)$
+<div color="#cc0164">  </div>
 
-- We have two samples
-  * Sample of size $n_A$ from population $A$
-  $$
-  a = (a_1, \ldots, a_{n_A})
-  $$
-  * Sample of size $n_B$ from population $B$
-  $$
-  b = (b_1, \ldots, b_{n_B})
-  $$
-
-- Two-sample t-test compares means $\mu_A$ and $\mu_B$ by computing t-statistic
-$$
-t = \frac{ \overline{a} - \overline{b} }{\ese}
-$$
-
-
-
-## Setting up the regression analysis {.smaller}
-
-- We want a regression model that can describe the sample means $\overline{a}$ and $\overline{b}$
-
-- It is sufficient to consider a general linear model with $p = 2$, that is,
-
-$$
-\Expect[Y | Z_1 = z_1 , Z_2 = z_2 ] = \beta_1 z_1 + \beta_2 z_2
-$$
-
-- Define the data vector $y$ by concatenating $a$ and $b$
-
-$$
-y = 
-\left(\begin{array}{c}
-     y_1   \\
-     \ldots \\
-     y_{n_A} \\
-     y_{n_A + 1}\\
-     \ldots \\
-     y_{n_A + n_B}
-\end{array}\right)
-= 
-\left(\begin{array}{c}
-     a_1   \\
-     \ldots \\
-     a_{n_A} \\
-     b_{1}\\
-     \ldots \\
-     b_{n_B}
-\end{array}\right)
-$$
+:::
 
 
 
 
 
+##  {.smaller}
 
+::: {style="font-size: 0.92em"}
 
-## Setting up the regression analysis {.smaller}
+- The Longley dataset was analyzed by J.W. Longley in his 1967 paper [@longley]
 
-- The variable $Z_1$ is modelled as
+- It is stored in R by default, in the variable ``longley``
 
-$$
-Z_1 = 1_{A}(i) := 
-\begin{cases}
-1 & \text{ if i-th observation is from population A} \\
-0 & \text{ otherwise}
-\end{cases}
-$$
+- The first line of ``help(longley)`` reads:
+    * *A macroeconomic data set which provides a well-known example for a highly collinear regression*
 
+- We will see next time what *highly collinear* means
 
-- Therefore, we have 
+- For convenience, you can also download the Longley dataset here [longley.txt](datasets/longley.txt)
 
-\begin{align*}
-z_1 & = (\underbrace{1_A(i) , \ldots, 1_A(i)}_{n_A + n_B} ) \\[15pts]
-    & = (\underbrace{1 , \ldots, 1}_{n_A}, 
-         \underbrace{0 , \ldots, 0}_{n_B} )
-\end{align*}
+- Download the file and place it in current working directory
 
+- Let us load the dataset and read the first 3 lines
 
-## Setting up the regression analysis {.smaller}
+```{r}
+#| echo: true
+longley <- read.table(file = "datasets/longley.txt", header = TRUE)
 
-- Similarly, the variable $Z_2$ is modelled as
+head(longley, n = 3)     # Prints the first 3 rows of dataset
+```
 
-$$
-Z_2 = 1_{B}(i) := 
-\begin{cases}
-1 & \text{ if i-th observation is from population B} \\
-0 & \text{ otherwise}
-\end{cases}
-$$
-
-- Therefore we have 
-
-\begin{align*}
-z_2 & = (\underbrace{1_B(i), \ldots, 1_B (i)}_{n_A + n_B} ) \\[15pts]
-    & = (\underbrace{0 , \ldots, 0}_{n_A}, 
-         \underbrace{1 , \ldots, 1}_{n_B} )
-\end{align*}
+:::
 
 
 
-## Setting up the regression analysis {.smaller}
 
-- The general regression model is
+## {.smaller}
+
+
+```{r}
+longley <- read.table(file = "datasets/longley.txt", header = TRUE)
+
+head(longley, n = 3)     # Prints the first 3 rows of dataset
+```
+
+::: {style="font-size: 0.30em"}
+
+<br>
+
+:::
+
+| #   | Name            | Description |
+|-----|----------------|-------------|
+| $X_2$  | GNP.deflator   | Coefficient for adjusting GNP for inflation ($1954 = 100$)  (1954 is reference year: other years need adjusting) |
+| $X_3$  | GNP           | Yearly Gross National Product (in Billion Dollars)  |
+| $X_4$  | Unemployed    | Number of unemployed people (in thousands)  |
+| $X_5$  | Armed.Forces  | Number of people in the Armed Forces (in thousands) |
+| $X_6$  | Population    | Non-institutionalized Population $\geq$ age 14 (in thousands) (People $\geq 14$ not in Armed Forces or care of institutions) |
+| $X_7$  | Year          | The year in which the data is recorded. Range: 1947–1962 |
+| $Y$   | Employed      | Number of employed people (in thousands) |
+: {tbl-colwidths="[5,10,85]"}
+
+
+
+
+## Analyzing the Longley Dataset {.smaller}
+
+**Goal:** Explain the number of *Employed* people $Y$ in terms of $X_i$ variables
+
+- Longley dataset available here [longley.txt](datasets/longley.txt)
+
+- Download the file and place it in current working directory
+
+```r
+# Read data file
+longley <- read.table(file = "longley.txt", header = TRUE)
+
+# Store columns in vectors
+x2 <- longley[ , 1]        # GNP Deflator
+x3 <- longley[ , 2]        # GNP
+x4 <- longley[ , 3]        # Unemployed
+x5 <- longley[ , 4]        # Armed Forces
+x6 <- longley[ , 5]        # Population
+x7 <- longley[ , 6]        # Year
+y <- longley[ , 7]         # Employed
+```
+
+
+## Fitting multiple regression {.smaller}
+
+- We want to fit the multiple regression model
 
 $$
-Y_i = \beta_1 \, 1_{A}(i) + \beta_2 \, 1_{B}(i) + \e_i
-$$
-
-- Variables $1_A$ and $1_B$ are called **dummy variables** (more on this later)
-
-- The design matrix is therefore
-
-$$
-Z = (1_A | 1_B) =
-\left(\begin{array}{cc}
-     1_A(i) & 1_B (i)  \\
-     \ldots & \ldots\\
-     1_A(i) & 1_B (i) \\
-\end{array}\right)  
- = 
-\left(\begin{array}{cc}
-     1 & 0  \\
-     \ldots & \ldots\\
-     1  & 0\\
-     0 & 1 \\
-     \ldots & \ldots\\
-     0 & 1 
-\end{array}\right)
+Y = \beta_1 + \beta_2 \, X_2 + \beta_3 \, X_3 + \beta_4 \, X_4 + \beta_5 \, X_5
+    + \beta_6 \, X_6 + \beta_7 \, X_7 + \e
 $$
 
 
+```r
+# Fit multiple regression model
+model <- lm(y ~ x2 + x3 + x4 + x5 + x6 + x7)
+
+# Print summary
+summary(model)
+```
+
+<br>
+
+- Full code can be downloaded here [longley_regression.R](codes/longley_regression.R)
+
+- Output is in the next slide
 
 
+##  {.smaller}
 
-## Calculating $Z^T y$ {.smaller}
+:::: {.columns}
 
-- We want to compute the regression estimator
+::: {.column width="100%"}
+![](images/longley_output.png){width=73%}
+:::
 
-$$
-\hat \beta = (Z^T Z)^{-1} Z^T y
-$$
+::::
 
+::: footer
 
-- $Z$ has dimension $(n_A + n_B) \times 2$
-- $Z^T$ has dimension $2 \times (n_A + n_B)$
-- $y$ has dimension $(n_A + n_B) \times 1$
-- $Z^T y$ therefore has dimension
+<div color="#cc0164">  </div>
 
-$$
-[ 2 \times (n_A + n_B)] \times [ (n_A + n_B) \times 1 ] 
-= 2 \times 1
-$$
-
-
-
-
-## Calculating $Z^T y$ {.smaller}
-
-
-
-\begin{align*}
-Z^T y & = 
-\left(\begin{array}{cc}
-     1 & 0  \\
-     \ldots & \ldots\\
-     1 & 0\\
-     0 & 1\\
-     \ldots & \ldots\\
-     0 & 1
-\end{array}\right)^T
-\left(\begin{array}{c}
-     y_1  \\
-     \ldots\\
-     y_{n_A}\\
-     y_{n_A+1}\\
-     \ldots\\
-     y_{n_A+n_B}
-\end{array}\right) 
-=
-\left(\begin{array}{cccccc}
-     1 & \ldots & 1 & 0 & \ldots & 0  \\
-     0 & \ldots & 0 & 1 & \ldots & 1  \\
-\end{array}\right)
-\left(\begin{array}{c}
-     y_1  \\
-     \ldots\\
-     y_{n_A}\\
-     y_{n_A+1}\\
-     \ldots\\
-     y_{n_A+n_B}
-\end{array}\right) \\[35pt]
-& = 
-\left(\begin{array}{c}
-     y_1 \cdot 1 + \ldots + y_{n_A} \cdot 1 + 
-     y_{n_A + 1} \cdot 0 + \ldots + y_{n_A + n_B} \cdot 0 \\
-     y_1 \cdot 0 + \ldots + y_{n_A} \cdot 0 + 
-     y_{n_A + 1} \cdot 1 + \ldots + y_{n_A + n_B} \cdot 1 
-\end{array}\right) \\[20pt]
- & = 
-\left(\begin{array}{c}
-     y_1 + \ldots + y_{n_A} \\
-     y_{n_A + 1} + \ldots + y_{n_A + n_B} 
-\end{array}\right) 
- = 
-\left(\begin{array}{c}
-     a_1 + \ldots + a_{n_A} \\
-     b_{1} + \ldots + b_{n_B} 
-\end{array}\right) 
-=
-\left(\begin{array}{c}
-     n_A \ \overline{a} \\
-      n_B \ \overline{b}
-\end{array}\right)
-\end{align*}
+:::
 
 
 
 
+## Interpreting R output {.smaller}
 
-## Calculating $Z^T Z$ {.smaller}
+We are interested in the following information:
 
-- $Z$ has dimension $(n_A + n_B) \times 2$
-- $Z^T$ has dimension $2 \times (n_A + n_B)$
-- $Z^T Z$ therefore has dimension
+1. Coefficient of determination $R^2$
+
+2. Individual t-statistics for the parameters $\beta_i$
+
+3. F-statistic to assess Overall Significance of parameters $\beta_i$
+
+
+
+
+## 1. Coefficient of determination $R^2$ {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/longley_output_1.png){width=85%}
+:::
+
+::::
+
+- We have that $R^2=0.9955$ 
+
+- $R^2$ is very high, which suggests we might have quite a good model
+
+- This means the model explains around 99.6\% of the variability in the data
+
+- There is a chance $R^2$ is too high to be true  
+(This means the model is *overfitting* - More on this later)
+
+
+
+
+## 2. Individual t-statistics {.smaller}
+
+- Look at p-values for each variable $X_j$
+
+- Recall: Such p-values refer to the two-sided t-test
 
 $$
-[ 2 \times (n_A + n_B)] \times [ (n_A + n_B) \times 2 ] 
-= 2 \times 2
+H_0 \colon \, \beta_j = 0 \qquad  \quad
+H_1 \colon \, \beta_j \neq 0
 $$
 
 
-## Calculating $Z^T Z$ {.smaller}
+::: {.column width="48%"}
 
-\begin{align*}
-Z^T Z & = 
-\left(\begin{array}{cc}
-     1 & 0  \\
-     \ldots & \ldots\\
-     1 & 0\\
-     0 & 1\\
-     \ldots & \ldots\\
-     0 & 1
-\end{array}\right)^T
-\left(\begin{array}{cc}
-     1 & 0  \\
-     \ldots & \ldots\\
-     1 & 0\\
-     0 & 1\\
-     \ldots & \ldots\\
-     0 & 1
-\end{array}\right) \\[35pt]
-& = 
-\left(\begin{array}{cccccc}
-     1 & \ldots & 1 & 0 & \ldots & 0  \\
-     0 & \ldots & 0 & 1 & \ldots & 1  \\
-\end{array}\right)
-\left(\begin{array}{cc}
-     1 & 0  \\
-     \ldots & \ldots\\
-     1 & 0\\
-     0 & 1\\
-     \ldots & \ldots\\
-     0 & 1
-\end{array}\right)
-= \left(\begin{array}{cc}
-   n_A  & 0  \\
-    0 & n_B
-\end{array}\right)
-\end{align*}
+- Find $X_j$ for which $p < 0.05$
+    * For $X_j$ we reject $H_0$
+    * Therefore $\beta_j \neq 0$
+    * Hence $X_j$ influences $Y$ 
+    * $X_j$ is statistically significant
+
+:::
+
+::: {.column width="48%"}
+
+- In dissertations $p < 0.1$ is OK
+    * Weak evidence against $H_0$
+    * $X_j$ has some weak effect on $Y$
+
+:::
 
 
-## Calculating $\hat \beta$ {.smaller}
 
-- As $Z^T Z$ is diagonal, the inverse is
+
+
+
+##  {.smaller}
+
+::: {.column width="100%"}
+![](images/longley_output_3.png){width=83%}
+:::
+
+<br>
+
+**Stars in output help you find the significant p-values**
+
+<br>
+
+| Significance code       | p-value               |  Coefficient        |
+|:------------------    |:----------              |:-----------------   |
+|  No stars             |  $0.1 \leq p \leq 1$    |  $\beta_j = 0$      |
+|  $\texttt{.}$         |  $0.05 \leq p < 0.1$    |  $\beta_j = 0$      |
+|  $\texttt{*}$         |  $0.1 \leq p < 0.05$    |  $\beta_j \neq 0$   |
+|  $\texttt{**}$        |  $0.001 \leq p < 0.01$  |  $\beta_j \neq 0$   |
+|  $\texttt{***}$       |  $p < 0.001$            |  $\beta_j \neq 0$   |
+: {tbl-colwidths="[35,40,25]"}
+
+
+
+##  {.smaller}
+
+::: {.column width="100%"}
+![](images/longley_output_2.png){width=68%}
+:::
+
+**Interpretation:** Not all variables are statistically significant
+
+- This is because some variables have no stars 
+- Significant variables have at least one star
+
+
+
+
+## {.smaller}
+
+::: {.column width="100%"}
+![](images/longley_output_2.png){width=68%}
+:::
+
+1. Intercept has two stars $\, \texttt{**}$ and hence is significant
+    * The p-value is $p = 0.00356$
+    * Since $p < 0.05$, we conclude that the real intercept is $\beta_1 \neq 0$
+    * Estimated intercept is $\hat \beta_1 = -3.482 \times 10^{3}$
+
+
+
+
+## {.smaller}
+
+::: {.column width="100%"}
+![](images/longley_output_2.png){width=68%}
+:::
+
+
+2. $X_2, X_3, X_6$ have no stars
+    * p-values are $p \geq 0.1$ and therefore the real $\beta_2 = \beta_3 = \beta_6 = 0$
+    * Notice that the ML Estimators $\hat{\beta}_2, \hat{\beta}_3, \hat{\beta}_6$ are not zero
+    * However, these estimates have to be ignored as t-test is not significant
+    * $X_2, X_3, X_6$ have no effect on $Y$
+    * Hence *GNP Deflator, GNP* and *Population* do not affect *Number of Employed*
+
+
+
+
+##  {.smaller}
+
+::: {.column width="100%"}
+![](images/longley_output_2.png){width=68%}
+:::
+
+
+3. $X_4$ has two stars $\, \texttt{**}$, and hence is significant
+    * Since $p<0.05$ we have that $\beta_4 \neq 0$
+    * Estimated coefficient is $\hat \beta_4 < 0$
+    * Since $\hat \beta_4 < 0$, we have that $X_4$ negatively affects $Y$
+    * As the *Number of Unemployed* increases, the *Number of Employed* decreases
+
+
+
+
+##  {.smaller}
+
+::: {.column width="100%"}
+![](images/longley_output_2.png){width=68%}
+:::
+
+
+4. $X_5$ has three stars $\, \texttt{***}$, and hence is significant
+    * Since $p<0.05$, we have that $\beta_5 \neq 0$
+    * Estimated coefficient is $\hat \beta_5 < 0$
+    * Therefore $X_5$ negatively affects $Y$
+    * As the size of *Armed Forces* increases, the *Number of Employed* decreases
+
+
+
+##  {.smaller}
+
+::: {.column width="100%"}
+![](images/longley_output_2.png){width=68%}
+:::
+
+
+5. $X_7$ has two stars $\, \texttt{**}$, and hence is significant
+    * Since $p<0.05$ we have that $\beta_7 \neq 0$
+    * Estimated coefficient is $\hat \beta_7 > 0$
+    * Therefore $X_7$ positively affects $Y$
+    * Remember that $X_7$ is the *Year*
+    * The *Number of Employed* is generally increasing from 1947 to 1962
+
+
+
+
+## 3. F-statistic to assess Overall Significance {.smaller}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+![](images/longley_output_1.png){width=85%}
+:::
+
+::::
+
+- The F-statistic is $F = 330.3$, with distribution $F_{6, 9}$
+
+- The p-value for F-test is $p = 4.984 \times 10^{-10} < 0.05$
+
+- Recall: F-statistic and p-value refer to the F-test for
 
 $$
-(Z^T Z)^{-1} =
-\left(\begin{array}{cc}
-   n_A  & 0  \\
-    0  & n_B
-\end{array}\right)^{-1}
-=\left(\begin{array}{cc}
-    \frac{1}{n_A} & 0 \\
-    0 & \frac{1}{n_B}
-\end{array}\right)
+H_0 \colon \, \beta_2 =  \ldots = \beta_6 = 0  \,, \qquad 
+H_1 \colon \, \text{At least one } \beta_j \neq 0
 $$
 
+- Since $p < 0.05$, we reject $H_0$
 
-- The MLE is therefore
+- There is evidence that at least one of the $X$-variables affects $Y$
 
-$$
-\hat \beta = (Z^T Z)^{-1} Z^Ty = 
-\left(\begin{array}{cc}
-    \frac{1}{n_A} & 0 \\
-    0 & \frac{1}{n_B}
-\end{array}\right)
-\left(\begin{array}{c}
-     n_A \ \overline{a}  \\
-      n_B \ \overline{b}
-\end{array}\right)
-=
-\left(\begin{array}{c}
-     \overline{a}  \\
-     \overline{b} 
-\end{array}\right)
-$$
 
 
 ## Conclusions {.smaller}
 
-- The MLE is
+- From F-test: There is evidence that at least one of the $X$-variables affects $Y$
+
+- From individual t-tests, we have:
+    * $X_2, X_3, X_6$ do not affect $Y$
+    * $X_4$ and $X_5$ negatively affect $Y$
+    * $X_7$ positively affects $Y$
+
+- Coefficient of determination $R^2$ is really high:
+    * The model explains around 99.6% of the variability in the data
+
+
+**Warning:** The extremely high $R^2$ looks very suspicious
+
+- Indeed, this is too good to be true, and it happens for 2 reasons
+
+
+## Reason 1: Overfitting {.smaller}
+
+- There are 16 sample points (16 years observed)
+
+- There are 6 variables
+
+- Sample is small and variables too many: the model can easily **overfit**
+
+- Generally, adding more variables to the model improves predictions
+
+- In turn, this can artificially inflate $R^2$
 
 $$
-\hat \beta = 
-\left(\begin{array}{c}
-     \overline{a}  \\
-     \overline{b} 
-\end{array}\right)
+\hat{y}_i \approx y_i \quad \implies \quad \RSS \approx 0 \quad \implies \quad R^2 = 1 - \frac{\RSS}{\TSS} \approx 1
+$$ 
+
+- Despite higher $R^2$, the model might not make good predictions
+
+
+##  {.smaller}
+
+**Overfitting Example:** Think of a polynomial passing through all the data points
+
+- Polynomial explains data perfectly 
+$$
+\hat{y}_i = y_i \quad \implies \quad \RSS = 0 \quad \implies \quad R^2 = 1 - \frac{\RSS}{\TSS} = 1
 $$
 
-- The regression function is hence
+- However, the trend is clearly linear
 
-\begin{align*}
-\Expect[Y | 1_A = z_1 , 1_B = z_2] & = \hat\beta_1 \ z_1 + \hat\beta_2 \ z_2 \\[20pt]
-& = \overline{a} \ z_1 + \overline{b} \ z_2 
-\end{align*}
+- Polynomial model artificially increases $R^2$, but predictions are not better
 
 
-## Conclusions {.smaller}
+```{r}
+# Set seed for reproducibility
+set.seed(42)
 
-- This is a very intuitive result:
-  * The expected value for $Y$ when data is observed from population $A$ is
-  $$
-  \Expect[Y | 1_A = 1 , 1_B = 0] = \overline{a}
-  $$
-  * The expected value for $Y$ when data is observed from population $B$ is
-  $$
-  \Expect[Y | 1_A = 0 , 1_B = 1] = \overline{b}
-  $$
+# Define 7 points with more randomness (less perfectly linear)
+x <- c(1, 2, 3, 4, 5, 6, 7)
+y <- c(2, 5, 4, 9, 7, 13, 10)  # More irregular, less aligned
+
+# Fit a linear model
+linear_model <- lm(y ~ x)
+
+# Fit a 6th-degree polynomial (overfitting)
+poly_model <- lm(y ~ poly(x, 6, raw = TRUE))
+
+# Generate smooth x values for predictions
+x_pred <- seq(min(x), max(x), length.out = 100)
+y_linear_pred <- predict(linear_model, newdata = data.frame(x = x_pred))
+y_poly_pred <- predict(poly_model, newdata = data.frame(x = x_pred))
+
+# Plot the data points
+plot(x, y, pch = 19, col = "black", xlab = "X", ylab = "Y")
+
+# Add the linear regression line (blue)
+lines(x_pred, y_linear_pred, col = "blue", lwd = 2)
+
+# Add the overfitting polynomial line (red, dashed)
+lines(x_pred, y_poly_pred, col = "red", lwd = 2, lty = 2)
+
+# Add a legend
+legend("topleft", legend = c("Linear Model", "Overfitting Polynomial"), 
+       col = c("blue", "red"), lty = c(1, 2), lwd = 2)
+```
 
 
-- Therefore, under this simple model
-  * The best estimate for population A is the sample mean $\overline{a}$
-  * The best estimate for population B is the sample mean $\overline{b}$
+
+## Reason 2: Multicollinearity {.smaller}
+
+::: {style="font-size: 0.95em"}
+
+- An assumption of regression is independence of the variables $X_i$
+
+- In particular, this implies the $X_i$ are uncorrelated
+
+- However, the Longley dataset contains several correlated variables
+
+- **Example:** *GNP*, *Population* and *GNP Deflator* are highly correlated
+    * Growing economy (higher Population and GNP) increases inflation (GNP Deflator)
+
+- Multicollinearity leads to a strange phenomenon:
+    * We have seen that *GNP*, *Population* and *GNP Deflator* do not affect *Employed*
+    * However, common sense says they should
+    * At the same time, high $R^2$ suggests a good model
+    * What is going on?
+
+- **Multicollinearity breaks the model: t-tests for individual coefficients are unreliable**
+
+:::
+
+
+
+::: {.content-hidden}
+
+**Question:** Do you think the high $R^2$ statistic is suspicious?
+
+## Observations {.smaller}
+
+- $X_3$ and $X_4$ are *Unemployment Rate* and *Number of Unemployed*
+    * These quantities are clearly equivalent 
+    * Do we need to include both in the model? 
+
+- $X_3$ and $X_4$ negatively affect the *Number of Employed*
+    * Number of Employed and Unemployed are clearly inversely proportional
+    * No wonder $X_3, X_4$ and $Y$ are negatively correlated!
+    * $X_3$ and $X_4$ provide no meaningful explanation for $Y$!
+
+- $X_6$ is the yearly trend
+    * We saw that $X_6$ positively affects the *Number of Employed*
+    * This just means the *Number of Employed* is increasing between 1947 and 1962
+
+
+## Answer {.smaller}
+
+The model does really well because it is **trivial**
+
+- It tells us that the *Number of Employed* is increasing between 1947 and 1962
+    * This is clear just by looking at data for $Y$
+
+- It tells us that *Employment* and *Unemployment* are inversely proportional
+    * Thanks a lot!
+
+:::
+
+
+
+
+
+## References
