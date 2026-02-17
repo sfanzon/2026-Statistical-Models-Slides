@@ -405,67 +405,15 @@
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-  .Definition {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
-  }
-  .Important {
+  .Theorem {
     --color1: #f4cce0;
     --color2: #db4d92;
-  }
-  .TODO {
-    --color1: #e7b1b4;
-    --color2: #8c3236;
-  }
-  .Conjecture {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Notation {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
-  }
-  .DONE {
-    --color1: #cce7b1;
-    --color2: #86b754;
-  }
-  .Question {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Proposition {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Remark {
-    --color1: #bce5de;
-    --color2: #21aa93;
-  }
-  .Lemma {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Corollary {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Warning {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Proof {
-    --color1: #f1f1f2;
-    --color2: #c0c0c1;
   }
   .Example {
     --color1: #bce5de;
     --color2: #21aa93;
   }
-  .Problem {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Theorem {
+  .Proposition {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -473,9 +421,61 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
+  .DONE {
+    --color1: #cce7b1;
+    --color2: #86b754;
+  }
+  .TODO {
+    --color1: #e7b1b4;
+    --color2: #8c3236;
+  }
+  .Warning {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
   .Axiom {
     --color1: #f4cce0;
     --color2: #db4d92;
+  }
+  .Notation {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
+  .Important {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Conjecture {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Corollary {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Problem {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Proof {
+    --color1: #f1f1f2;
+    --color2: #c0c0c1;
+  }
+  .Definition {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
+  .Question {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Lemma {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Remark {
+    --color1: #bce5de;
+    --color2: #21aa93;
   }
   </style>
 </head>
@@ -1250,7 +1250,7 @@ s^2_X &amp; =  \frac{29435-10(53.5)^2}{9} = 90.2778
 <li><p><strong>Variance:</strong> <span class="math display">\begin{align*}
 s^2_Y &amp; = \frac{\sum_{i=1}^m y_i^2 - m \bar{y}^2}{m - 1} \\
 \sum_{i=1}^m y_i^2 &amp; = 37^2+37^2+42^2+ \ldots +64^2+64^2 = 35783  \\
-s^2_Y &amp; =  \frac{35783-13(51.6154)^2}{12} = 95.7547
+s^2_Y &amp; =  \frac{35783-13(51.6154)^2}{12} = 95.7564
 \end{align*}</span></p></li>
 </ul>
 </section>
@@ -1259,11 +1259,11 @@ s^2_Y &amp; =  \frac{35783-13(51.6154)^2}{12} = 95.7547
 <ul>
 <li><p><strong>Pooled variance:</strong> <span class="math display">\begin{align*}
 s_p^2 &amp; = \frac{(n-1) s_X^2 + (m-1) s_Y^2}{ n + m - 2}  \\
-    &amp; = \frac{(9) 90.2778 + (12) 95.7547 }{ 10 + 13 - 2} \\
-    &amp; = 93.40746
+    &amp; = \frac{(9) 90.2778 + (12) 95.7564 }{ 10 + 13 - 2} \\
+    &amp; = 93.40843
 \end{align*}</span></p></li>
 <li><p><strong>Pooled standard deviation:</strong> <span class="math display">
-s_p = \sqrt{93.40746} = 9.6648
+s_p = \sqrt{93.40843} = 9.6648
 </span></p></li>
 </ul>
 </section>
@@ -1812,8 +1812,8 @@ mean of x mean of y
 <td>0.6</td>
 <td>-5</td>
 <td>-2.4</td>
-<td>1.5</td>
-<td>-2.3</td>
+<td>-1.5</td>
+<td>2.3</td>
 <td>-2.8</td>
 <td>2.1</td>
 </tr>
