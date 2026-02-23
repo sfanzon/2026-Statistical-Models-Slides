@@ -78,7 +78,7 @@ $
 
 The chi-squared distribution with $p$ degrees of freedom is
 $$
-\chi_p^2 = Z_1^2 + \ldots + Z_p^2  \qquad \text{where} \qquad  Z_1, \ldots, Z_n \,\,\, \text{iid} \,\,\, N(0, 1)
+\chi_p^2 = Z_1^2 + \ldots + Z_p^2  \qquad \text{where} \qquad  Z_1, \ldots, Z_p \,\,\, \text{iid} \,\,\, N(0, 1)
 $$
 
 Chi-squared distribution was used to:
@@ -307,7 +307,7 @@ $$
 
 
 
-## ## Proof of Theorem {.smaller} {.smaller}
+## Proof of Theorem {.smaller}
 
 3. Suppose $X \sim t_q$. The Theorem in Slide 118 of Lecture 2, guarantees that
 $$
@@ -320,7 +320,7 @@ $$
 
 
 
-## ## Proof of Theorem {.smaller} {.smaller}
+## Proof of Theorem {.smaller}
 
 - Since $U \sim N(0,1)$, by definition $U^2 \sim \chi_1^2$. 
 - Moreover $U^2$ and $V$ are independet, since $U$ and $V$ are independent
