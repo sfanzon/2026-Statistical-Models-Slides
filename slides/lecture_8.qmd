@@ -21,7 +21,7 @@ $
 
 
 
-# Lecture 8: <br> Practical regression {background-color="#cc0164" visibility="uncounted"}
+# Lecture 8: <br> Practical Regression {background-color="#cc0164" visibility="uncounted"}
 
 ::: footer
 
