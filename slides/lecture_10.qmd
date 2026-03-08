@@ -426,13 +426,13 @@ Check to see if any evidence of a systematic pattern exists:
 
 - Code for this example is available here [autocorrelation.R](codes/autocorrelation.R)
 
-- Stock Vs Gold prices data is available here [stock_gold.txt](datasets/stock_gold.txt)
+- Stock Vs Gold prices data is available here [gold_stock.txt](datasets/gold_stock.txt)
 
 - Read data into R and fit simple regression
 
 ```r
 # Load dataset
-prices <- read.table(file = "stock_gold.txt",
+prices <- read.table(file = "gold_stock.txt",
                     header = TRUE)
 
 # Store data-frame into 2 vectors
@@ -486,7 +486,7 @@ abline(0, 0, col = "red", lwd = 4)
 #| fig-asp: 1
 
 # Read the data
-prices <- read.table(file = "datasets/stock_gold.txt",
+prices <- read.table(file = "datasets/gold_stock.txt",
                    header = TRUE
                   )
 
@@ -567,7 +567,7 @@ length(residuals)
 ```
 ```{r}
 # Read the data
-prices <- read.table(file = "datasets/stock_gold.txt",
+prices <- read.table(file = "datasets/gold_stock.txt",
                    header = TRUE
                   )
 
@@ -645,7 +645,7 @@ plot(residuals.lag.1,
 #| fig-asp: 1
 
 # Read the data
-prices <- read.table(file = "datasets/stock_gold.txt",
+prices <- read.table(file = "datasets/gold_stock.txt",
                    header = TRUE
                   )
 
@@ -816,9 +816,9 @@ arima(y, xreg = cbind(z1, z2, ..., zn), order = c(p, d, q))
 
 ## Example: ARIMA for Stock Vs Gold prices {.smaller}
 
-- Code for this example is available here [arima.R](codes/autocorrelation.R)
+- Code for this example is available here [arima.R](codes/arima.R)
 
-- Stock Vs Gold prices data is available here [stock_gold.txt](datasets/stock_gold.txt)
+- Stock Vs Gold prices data is available here [gold_stock.txt](datasets/gold_stock.txt)
 
 - We want to fit the regression model
 
@@ -832,7 +832,7 @@ $$
 
 ```r
 # Load and save data
-prices <- read.table(file = "stock_gold.txt", header = TRUE)
+prices <- read.table(file = "gold_stock.txt", header = TRUE)
 stock.price <- prices$stock_price
 gold.price <- prices$gold_price
 
@@ -956,7 +956,7 @@ length(gold.price)
 
 ```{r}
 # Load and save data
-prices <- read.table(file = "datasets/stock_gold.txt", header = TRUE)
+prices <- read.table(file = "datasets/gold_stock.txt", header = TRUE)
 stock.price <- prices$stock_price
 gold.price <- prices$gold_price
 
@@ -1282,7 +1282,7 @@ plot(mod$resid)
 #| fig-asp: 0.7
 
 # Load and save data
-prices <- read.table(file = "datasets/stock_gold.txt", header = TRUE)
+prices <- read.table(file = "datasets/gold_stock.txt", header = TRUE)
 stock.price <- prices$stock_price
 gold.price <- prices$gold_price
 
@@ -1343,7 +1343,7 @@ plot(mod$resid)
 #| fig-asp: 0.7
 
 # Load and save data
-prices <- read.table(file = "datasets/stock_gold.txt", header = TRUE)
+prices <- read.table(file = "datasets/gold_stock.txt", header = TRUE)
 stock.price <- prices$stock_price
 gold.price <- prices$gold_price
 

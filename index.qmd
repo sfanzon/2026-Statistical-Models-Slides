@@ -101,7 +101,7 @@ There are 11 Lectures in this module and 3 optional Appendices. Links to the Sli
 | Lecture 7   | [Multiple Regression](slides/codes/multiple_regression.R) <br> [R2 multiple regression](slides/codes/R2_multiple_regression.R)  |
 | Lecture 8   | [Simple Regression](slides/codes/simple_regression.R)  <br> [Longley regression](slides/codes/longley_regression.R)             |
 | Lecture 9   | [Longley selection](slides/codes/longley_selection.R) <br> [Galileo](slides/codes/galileo.R) <br> [Divorces](slides/codes/divorces.R) <br> [Heteroscedasticity](slides/codes/heteroscedasticity.R)   |
-| Lecture 10  | [Autocorrelation](slides/codes/autocorrelation.R) <br> [Multicollinearity](slides/codes/multicollinearity.R) <br> [Stepwise regression: Longley](slides/codes/longley_stepwise.R) <br> [Stepwise regression: Divorces](slides/codes/divorces_stepwise.R)  |
+| Lecture 10  | [Autocorrelation](slides/codes/autocorrelation.R) <br> [Arima](slides/codes/arima.R) <br> [Multicollinearity](slides/codes/multicollinearity.R) <br> [Stepwise regression: Longley](slides/codes/longley_stepwise.R) <br> [Stepwise regression: Divorces](slides/codes/divorces_stepwise.R)  |
 | Lecture 11  | [Anova](slides/codes/anova.R) <br> [Ancova](slides/codes/ancova.R)           |
 | Appendix C  | [Monte Carlo $\pi$](slides/codes/monte_carlo_pi.R) <br> [Bootstrap CI](slides/codes/bootstrap_CI.R) <br> [Bootstrap t-test](slides/codes/bootstrap_t_test.R) <br> [Bootstrap F-test](slides/codes/bootstrap_F_test.R)   |
 : {tbl-colwidths="[30,70]"}
@@ -110,7 +110,7 @@ There are 11 Lectures in this module and 3 optional Appendices. Links to the Sli
 
 # Datsets
 
-- [Stock-Gold prices](slides/datasets/stock_gold.txt) 
+- [Gold-Stock prices](slides/datasets/gold_stock.txt) 
 - [Longley](slides/datasets/longley.txt)
 - [Fridge Sales](slides/datasets/fridge_sales.txt)
 - [2008 Crisis](slides/datasets/2008_crisis.txt)

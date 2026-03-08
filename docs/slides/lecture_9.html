@@ -425,19 +425,27 @@
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-  .Proof {
-    --color1: #f1f1f2;
-    --color2: #c0c0c1;
+  .Remark {
+    --color1: #bce5de;
+    --color2: #21aa93;
+  }
+  .Conjecture {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Notation {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
+  .Question {
+    --color1: #f4cce0;
+    --color2: #db4d92;
   }
   .Lemma {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .DONE {
-    --color1: #cce7b1;
-    --color2: #86b754;
-  }
-  .Idea {
+  .Problem {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -445,41 +453,9 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Question {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Important {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Conjecture {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Proposition {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Axiom {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Example {
-    --color1: #bce5de;
-    --color2: #21aa93;
-  }
-  .Notation {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
-  }
-  .Problem {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Remark {
-    --color1: #bce5de;
-    --color2: #21aa93;
+  .Proof {
+    --color1: #f1f1f2;
+    --color2: #c0c0c1;
   }
   .TODO {
     --color1: #e7b1b4;
@@ -489,13 +465,37 @@
     --color1: #c6e6ed;
     --color2: #1995ad;
   }
+  .Axiom {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Important {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
   .Corollary {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
+  .Proposition {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .DONE {
+    --color1: #cce7b1;
+    --color2: #86b754;
+  }
   .Theorem {
     --color1: #f4cce0;
     --color2: #db4d92;
+  }
+  .Idea {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Example {
+    --color1: #bce5de;
+    --color2: #21aa93;
   }
   </style>
 </head>
@@ -2970,16 +2970,16 @@ Y_i = \beta_1 + \beta_2 X_{i} + \varepsilon_i
 <h2>Example: Stock Vs Gold prices</h2>
 <ul>
 <li><p>The full code for the example is available here <a href="codes/heteroscedasticity.R">heteroscedasticity.R</a></p></li>
-<li><p>Stock Vs Gold prices data is available here <a href="datasets/stock_gold.txt">stock_gold.txt</a></p></li>
+<li><p>Stock Vs Gold prices data is available here <a href="datasets/gold_stock.txt">gold_stock.txt</a></p></li>
 <li><p>Read data into R and fit simple regression</p></li>
 </ul>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Load dataset on Stock Vs Gold prices</span></span>
-<span id="cb50-2"><a aria-hidden="true" tabindex="-1"></a>prices <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="at">file =</span> <span class="st">"stock_gold.txt"</span>,</span>
+<span id="cb50-2"><a aria-hidden="true" tabindex="-1"></a>prices <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="at">file =</span> <span class="st">"gold_stock.txt"</span>,</span>
 <span id="cb50-3"><a aria-hidden="true" tabindex="-1"></a>                    <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb50-4"><a aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb50-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Store data-frame into 2 vectors</span></span>
-<span id="cb50-6"><a aria-hidden="true" tabindex="-1"></a>stock.price <span class="ot">&lt;-</span> prices[ , <span class="dv">1</span>]</span>
-<span id="cb50-7"><a aria-hidden="true" tabindex="-1"></a>gold.price <span class="ot">&lt;-</span> prices[ , <span class="dv">2</span>]</span>
+<span id="cb50-6"><a aria-hidden="true" tabindex="-1"></a>stock.price <span class="ot">&lt;-</span> prices<span class="sc">$</span>stock_price</span>
+<span id="cb50-7"><a aria-hidden="true" tabindex="-1"></a>gold.price <span class="ot">&lt;-</span> prices<span class="sc">$</span>gold_price</span>
 <span id="cb50-8"><a aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb50-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit regression model</span></span>
 <span id="cb50-10"><a aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(gold.price <span class="sc">~</span> stock.price)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3114,8 +3114,8 @@ Y_i = \beta_1 + \beta_2 X_{i} + \varepsilon_i
 <h1></h1>
 <p>Heteroscedasticity has definitely reduced</p>
 <ul>
-<li>Left: Residual plot for original model</li>
-<li>Right: Residual plot for <span class="math inline">\log y</span> data model</li>
+<li>Left: Residual plot for original model: <span class="math inline">\qquad y = \alpha + \beta x + \varepsilon</span></li>
+<li>Right: Residual plot for <span class="math inline">\log</span> model: <span class="math inline">\, \qquad \quad \log y = \alpha + \beta x + \varepsilon</span></li>
 </ul>
 <div class="columns" style="display: flex !important; height: 50%;">
 <div class="column" style="display: flex; justify-content: center; align-items: center;">
@@ -3146,8 +3146,8 @@ Y_i = \beta_1 + \beta_2 X_{i} + \varepsilon_i
 <h1></h1>
 <p>Heteroscedasticity has definitely reduced</p>
 <ul>
-<li>Left: Histogram of residuals for original model</li>
-<li>Right: Histogram of residuals for <span class="math inline">\log y</span> data model</li>
+<li>Left: Histogram of residuals for original model: <span class="math inline">\qquad y = \alpha + \beta x + \varepsilon</span></li>
+<li>Right: Histogram of residuals for <span class="math inline">\log</span> model: <span class="math inline">\, \qquad \quad \log y = \alpha + \beta x + \varepsilon</span></li>
 </ul>
 <div class="columns" style="display: flex !important; height: 50%;">
 <div class="column" style="display: flex; justify-content: center; align-items: center;">
@@ -3264,11 +3264,11 @@ y = e^{\widetilde{y}}
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>       fit       lwr      upr
-1 3.396117 2.4684428 4.323791
-2 3.132980 2.2263949 4.039564
-3 2.771166 1.8732920 3.669039
-4 2.475136 1.5665173 3.383755
-5 1.817292 0.8310317 2.803553</code></pre>
+1 1.430837 0.9131703 1.948504
+2 1.413050 0.8969932 1.929106
+3 1.388592 0.8746413 1.902542
+4 1.368581 0.8562590 1.880903
+5 1.324112 0.8151010 1.833124</code></pre>
 </div>
 </div>
 <ul>
@@ -3288,18 +3288,18 @@ y = e^{\widetilde{y}}
 <span id="cb57-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(predictions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>       fit       lwr      upr
-1 29.84797 11.804051 75.47422
-2 22.94223  9.266399 56.80158
-3 15.97725  6.509691 39.21421
-4 11.88332  4.789937 29.48125
-5  6.15517  2.295686 16.50318</code></pre>
+<pre><code>       fit      lwr      upr
+1 4.182198 2.492211 7.018178
+2 4.108465 2.452219 6.883352
+3 4.009200 2.398015 6.702913
+4 3.929770 2.354337 6.559424
+5 3.758847 2.259404 6.253389</code></pre>
 </div>
 </div>
 <p><strong>Reading the output:</strong> For example, the first line says that:</p>
 <ul>
-<li>For Stock Price of <span class="math inline">1.2</span>, the model predicts Gold Price of <span class="math inline">29.84797</span></li>
-<li><span class="math inline">95\%</span> confidence interval for the predicted Gold Price is <span class="math inline">[11.804051, 75.47422]</span></li>
+<li>For Stock Price of <span class="math inline">1.2</span>, the model predicts Gold Price of <span class="math inline">4.182198</span></li>
+<li><span class="math inline">95\%</span> confidence interval for the predicted Gold Price is <span class="math inline">[2.492211, 7.018178]</span></li>
 <li>When Stock Price is <span class="math inline">1.2</span>, the interval contains the true Gold Price <span class="math inline">95\%</span> of the times</li>
 </ul>
 </div>

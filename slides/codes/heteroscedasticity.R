@@ -7,13 +7,13 @@
 # In Windows type
 # setwd("C:/Users/YourUsername/Desktop")
 
-# Load dataset on Stock Vs Gold prices
-prices <- read.table(file = "stock_gold.txt",
+# Load dataset on Gold Vs Stock prices
+prices <- read.table(file = "gold_stock.txt",
                     header = TRUE)
 
 # Store data-frame into 2 vectors
-stock.price <- prices[ , 1]
-gold.price <- prices[ , 2]
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
 
 # Fit regression model
 model <- lm(gold.price ~ stock.price)

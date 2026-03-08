@@ -8,7 +8,7 @@
 # setwd("C:/Users/YourUsername/Desktop")
 
 # Read the data
-prices <- read.table(file = "stock_gold.txt",
+prices <- read.table(file = "gold_stock.txt",
                      header = TRUE
                      )
 

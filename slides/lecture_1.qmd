@@ -595,7 +595,7 @@ abline(
 ### How does real data look like?
 
 ::: {style="font-size: 0.75em"}
-Dataset with $33$ entries for Stock and Gold price pairs
+Dataset with $33$ entries for Gold and Stock price pairs
 :::
 
 
@@ -604,10 +604,10 @@ Dataset with $33$ entries for Stock and Gold price pairs
 #| echo: false
 #| layout-ncol: 1
 
-data <- read.table("datasets/L3eg1data.txt")
+data <- read.table("datasets/gold_stock.txt", header = T)
 
 #Add column labels to data
-colnames(data) <- c("Stock Price","Gold Price")
+colnames(data) <- c("Gold Price","Stock Price")
 
 # Output markdown table from data
 knitr::kable(
@@ -638,9 +638,9 @@ knitr::kable(
     * As Stock price decreases, Gold price increases
 
 - Why? This might be because:
-    * Stock price decreases
-    * People invest in secure assets (Gold)
-    * Gold demand increases
+    * As Stock price decreases,
+    * People invest in secure assets (Gold),
+    * Gold demand increases,
     * Gold price increases
 :::
 
@@ -651,11 +651,11 @@ knitr::kable(
 #| echo: false
 #| fig-asp: 1
 
-data1 <- read.table("datasets/L3eg1data.txt")
-realgoldprice<-data1[,1]
-realstockprice<-data1[,2]
-plot(realgoldprice,
-  realstockprice, 
+data <- read.table("datasets/gold_stock.txt", header = T)
+gold.price <- data[ , 1]
+stock.price <- data[ , 2]
+plot(stock.price,
+  gold.price, 
   xlab="", 
   ylab="")
 
@@ -697,11 +697,11 @@ mtext("Gold Price", side=2, line=2.5, cex=2)
 #| echo: false
 #| fig-asp: 1
 
-data1 <- read.table("datasets/L3eg1data.txt")
-realgoldprice<-data1[,1]
-realstockprice<-data1[,2]
-plot(realgoldprice,
-  realstockprice, 
+data <- read.table("datasets/gold_stock.txt", header = T)
+gold.price <- data[ , 1]
+stock.price <- data[ , 2]
+plot(stock.price,
+  gold.price, 
   xlab="", 
   ylab="")
 
@@ -2981,7 +2981,7 @@ $$
 ### How does real data look like?
 
 ::: {style="font-size: 0.8em"}
-Dataset with $33$ entries for Stock and Gold price pairs
+Dataset with $33$ entries for Gold and Stock price pairs
 :::
 
 ::: {style="font-size: 0.6em"}
@@ -2992,10 +2992,10 @@ Dataset with $33$ entries for Stock and Gold price pairs
 #| tbl-cap: "Dataset with 33 entries for Stock and Gold price pairs"
 
 # Read dataset
-data <- read.table("datasets/L3eg1data.txt")
+data <- read.table("datasets/gold_stock.txt")
 
 #Add column labels to data
-colnames(data) <- c("Stock Price","Gold Price")
+colnames(data) <- c("Gold Price","Stock Price")
 
 # Output markdown table from data
 

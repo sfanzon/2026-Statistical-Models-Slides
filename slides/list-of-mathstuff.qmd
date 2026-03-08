@@ -1,4 +1,18 @@
 \providecommand{\Pageref}[1]{\hfill p.\pageref{#1}}
- [**Important**](#Important*-4.1)\Pageref{Important*-4.1}
+ [**Important**](#Important*-3.1)\Pageref{Important*-3.1}
+
+ [**Warning**](#Warning*-3.2)\Pageref{Warning*-3.2}
+
+ [**Important**](#Important*-3.3)\Pageref{Important*-3.3}
+
+ [**Theorem**](#Theorem*-4.1)\Pageref{Theorem*-4.1}
+
+ [**Theorem**](#Theorem*-4.2)\Pageref{Theorem*-4.2}
+
+ [**Theorem**](#Theorem*-5.1)\Pageref{Theorem*-5.1}
 
  [**Definition**](#Definition*-6.1)\Pageref{Definition*-6.1}
+
+ [**Proposition**](#Proposition*-6.2)\Pageref{Proposition*-6.2}
+
+ [**Proposition**](#Proposition*-6.3)\Pageref{Proposition*-6.3}

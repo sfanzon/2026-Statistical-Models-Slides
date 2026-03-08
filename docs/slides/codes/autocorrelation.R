@@ -8,7 +8,7 @@
 # setwd("C:/Users/YourUsername/Desktop")
 
 # Load dataset
-prices <- read.table(file = "stock_gold.txt",
+prices <- read.table(file = "gold_stock.txt",
                     header = TRUE)
 
 # Store data-frame into 2 vectors

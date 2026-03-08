@@ -3236,18 +3236,18 @@ residuals <- model$resid
 
 - The full code for the example is available here [heteroscedasticity.R](codes/heteroscedasticity.R)
 
-- Stock Vs Gold prices data is available here [stock_gold.txt](datasets/stock_gold.txt)
+- Stock Vs Gold prices data is available here [gold_stock.txt](datasets/gold_stock.txt)
 
 - Read data into R and fit simple regression
 
 ```r
 # Load dataset on Stock Vs Gold prices
-prices <- read.table(file = "stock_gold.txt",
+prices <- read.table(file = "gold_stock.txt",
                     header = TRUE)
 
 # Store data-frame into 2 vectors
-stock.price <- prices[ , 1]
-gold.price <- prices[ , 2]
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
 
 # Fit regression model
 model <- lm(gold.price ~ stock.price)
@@ -3295,7 +3295,7 @@ abline(model,
 #| fig-asp: 1
 
 # Read the data
-prices <- read.table(file = "datasets/stock_gold.txt",
+prices <- read.table(file = "datasets/gold_stock.txt",
                    header = TRUE
                   )
 
@@ -3361,7 +3361,7 @@ col = "skyblue")
 #| fig-asp: 1
 
 # Read the data
-prices <- read.table(file = "datasets/stock_gold.txt",
+prices <- read.table(file = "datasets/gold_stock.txt",
                    header = TRUE
                   )
 
@@ -3430,7 +3430,7 @@ abline(0, 0, col = "red", lwd = 4)
 #| fig-asp: 1
 
 # Read the data
-prices <- read.table(file = "datasets/stock_gold.txt",
+prices <- read.table(file = "datasets/gold_stock.txt",
                    header = TRUE
                   )
 
@@ -3499,8 +3499,8 @@ log.fitted <- log.model$fitted
 
 Heteroscedasticity has definitely reduced
 
-- Left: Residual plot for original model
-- Right: Residual plot for $\log y$ data model
+- Left: Residual plot for original model: $\qquad y = \alpha + \beta x + \e$
+- Right: Residual plot for $\log$ model: $\, \qquad \quad \log y = \alpha + \beta x + \e$
 
 
 
@@ -3508,12 +3508,13 @@ Heteroscedasticity has definitely reduced
 
 ::: {.column width="47%" style='display: flex; justify-content: center; align-items: center;'}
 
+
 ```{r}
 #| echo: false
 #| fig-asp: 1
 
 # Read the data
-prices <- read.table(file = "datasets/stock_gold.txt",
+prices <- read.table(file = "datasets/gold_stock.txt",
                    header = TRUE
                   )
 
@@ -3553,7 +3554,7 @@ abline(0, 0, col = "red", lwd = 3)
 #| fig-asp: 1
 
 # Read the data
-prices <- read.table(file = "datasets/stock_gold.txt",
+prices <- read.table(file = "datasets/gold_stock.txt",
                    header = TRUE
                   )
 
@@ -3596,8 +3597,8 @@ abline(0, 0, col = "red", lwd = 3)
 
 Heteroscedasticity has definitely reduced
 
-- Left: Histogram of residuals for original model
-- Right: Histogram of residuals for $\log y$ data model
+- Left: Histogram of residuals for original model: $\qquad y = \alpha + \beta x + \e$
+- Right: Histogram of residuals for $\log$ model: $\, \qquad \quad \log y = \alpha + \beta x + \e$
 
 
 
@@ -3610,7 +3611,7 @@ Heteroscedasticity has definitely reduced
 #| fig-asp: 1
 
 # Read the data
-prices <- read.table(file = "datasets/stock_gold.txt",
+prices <- read.table(file = "datasets/gold_stock.txt",
                    header = TRUE
                   )
 
@@ -3646,7 +3647,7 @@ mtext("Frequency", side = 2, line = 2.5, cex = 2.5)
 #| fig-asp: 1
 
 # Read the data
-prices <- read.table(file = "datasets/stock_gold.txt",
+prices <- read.table(file = "datasets/gold_stock.txt",
                    header = TRUE
                   )
 
@@ -3771,7 +3772,7 @@ print(log.predictions)
 
 
 ```{r}
-prices <- read.table(file = "datasets/stock_gold.txt",
+prices <- read.table(file = "datasets/gold_stock.txt",
                    header = TRUE
                   )
 
@@ -3821,7 +3822,7 @@ print(predictions)
 
 
 ```{r}
-prices <- read.table(file = "datasets/stock_gold.txt",
+prices <- read.table(file = "datasets/gold_stock.txt",
                    header = TRUE
                   )
 
@@ -3850,8 +3851,8 @@ print(predictions)
 
 **Reading the output:** For example, the first line says that:
 
-- For Stock Price of $1.2$, the model predicts Gold Price of $29.84797$
-- $95\%$ confidence interval for the predicted Gold Price is $[11.804051, 75.47422]$
+- For Stock Price of $1.2$, the model predicts Gold Price of $4.182198$
+- $95\%$ confidence interval for the predicted Gold Price is $[2.492211, 7.018178]$
 - When Stock Price is $1.2$, the interval contains the true Gold Price $95\%$ of the times
 
 
