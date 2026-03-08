@@ -436,8 +436,8 @@ prices <- read.table(file = "stock_gold.txt",
                     header = TRUE)
 
 # Store data-frame into 2 vectors
-stock.price <- prices[ , 1]
-gold.price <- prices[ , 2]
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
 
 # Fit regression model
 model <- lm(gold.price ~ stock.price)
@@ -706,9 +706,9 @@ mtext("Residuals Lag 0", side=2, line=2.5, cex=2.1)
     * Test to see if residuals are AR(1) - Auto-regressive of order 1
     * This means testing if there exists a linear relation of the form
     $$
-    \hat{\e}_t = a + b \hat{\e}_{t-1} + \delta_t
+    \hat{\e}_t = a + b \hat{\e}_{t-1} + u_t
     $$
-    where $\delta_t \sim N(0,\sigma^2)$ is an error term
+    where $u_t \sim N(0,\sigma^2)$ is an error term
  
 
 **We do not cover these tests**
@@ -734,8 +734,8 @@ $$
 - Also, suppose that autocorrelation is Auto-Regressive of Order 1
 
 $$
-\hat{\e}_t = a + b \, \hat{\e}_{t-1} + \delta_t \,, \qquad
-\delta_t \,\, \text{ iid } \,\, N(0,\sigma^2)
+\hat{\e}_t = a + b \, \hat{\e}_{t-1} + u_t \,, \qquad
+u_t \,\, \text{ iid } \,\, N(0,\sigma^2)
 $$
 
 - Example: This is the case for dataset *Stock prices* Vs *Gold prices*
@@ -750,13 +750,13 @@ Y_i = \alpha + \beta x_i + \e_i
 $$
 
 
-- Instead, substitute into the model the relation $\hat{\e}_t = a + b \, \hat{\e}_{t-1} + \delta_t$
+- Instead, substitute into the model the relation $\hat{\e}_t = a + b \, \hat{\e}_{t-1} + u_t$
 
 - We obtain the new linear model (up to relabelling coefficients)
 
 $$
-Y_t = \alpha + \beta x_t + \rho \hat{\e}_{t-1} + \delta_t  \,, \qquad
-\delta_t \,\, \text{ iid } \,\, N(0,\sigma^2)
+Y_t = \alpha + \beta x_t + \phi \hat{\e}_{t-1} + u_t  \,, \qquad
+u_t \,\, \text{ iid } \,\, N(0,\sigma^2)
 $$
 
 - The above is an **Autoregressive linear Model** of order 1  
@@ -764,7 +764,701 @@ $$
     * These models couple regression with time-series analysis (ARIMA models)
     * Good reference is book by Shumway and Stoffer [@shumway]
 
-**You will see ARIMA models next year**
+
+
+
+
+## ARIMA Model in R {.smaller}
+
+- Suppose we want to fit the model
+
+$$
+Y = \beta_1 z_1 + \beta_2 z_2 + \ldots +  \beta_n z_n + \e_i
+$$
+
+- However, suppose the residuals exhibit autocorrelation 
+
+- In this case, ordinary least squares assumptions are violated
+
+- In this case, instead of regression, we need to use ARIMA models:
+    * ARIMA combines regression with a time series structure in the residuals
+
+
+
+## ARIMA Model in R {.smaller}
+
+- Suppose we want to fit the model
+
+$$
+Y = \beta_1 z_1 + \beta_2 z_2 + \ldots +  \beta_n z_n + \e_i
+$$
+
+- This is fitted in R as follows:
+
+```r
+arima(y, xreg = cbind(z1, z2, ..., zn), order = c(p, d, q))
+```
+
+::: {style="font-size: 0.5em"}
+
+<br>
+
+:::
+
+- ``y`` is the given data vector; `z1, ..., zn` the given predictors
+- `xreg` specifies the regressors included in the model
+- `order` specifies the ARIMA$(p, d, q)$ component
+- In our case we will use
+`order = c(1, 0, 0)` 
+- This corresponds to an Autoregressive Model of order 1 -- abbreviated **AR(1)**
+
+
+
+## Example: ARIMA for Stock Vs Gold prices {.smaller}
+
+- Code for this example is available here [arima.R](codes/autocorrelation.R)
+
+- Stock Vs Gold prices data is available here [stock_gold.txt](datasets/stock_gold.txt)
+
+- We want to fit the regression model
+
+$$
+\texttt{gold.price} =  \alpha + \beta \times (\texttt{stock.price}) + \e
+$$
+
+- We already saw that residuals are autocorrelated
+
+- Therefore we fit ARIMA model of order 1 -- Abbreviated in **AR(1)**
+
+```r
+# Load and save data
+prices <- read.table(file = "stock_gold.txt", header = TRUE)
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Fit AR(1) model
+arima(gold.price, xreg = stock.price, order = c(1,0,0))
+```
+
+
+
+
+## {.smaller}
+
+::: {style="font-size: 0.9em"}
+
+**Output:**
+
+```verbatim
+Coefficients:
+         ar1  intercept  stock.price
+      0.5578     3.9406      -0.0487
+s.e.  0.1545     0.5675       0.0247
+```
+
+
+::: {style="font-size: 0.5em"}
+
+<br>
+
+:::
+
+
+- The fitted AR(1) model is
+
+\begin{align*}
+(\texttt{gold.price})_t & = \alpha + \beta \times (\texttt{stock.price})_t + \e_t \\[1.0em]
+\e_t & = \phi \e_{t-1} + u_t \,, \qquad
+u_t \,\, \text{ iid } \,\, N(0,\sigma^2)
+\end{align*}
+
+- The output gives us estimates and $\ese$ for the 3 parameters:
+
+| Variable       | Parameter  | Value   |  $\ese$ |
+|----------------|-----------:|---------:|-----------:|      
+| `ar1`          | $\phi$       | 0.5578  |0.1545  |
+| `intercept`    | $\alpha$       | 3.9406  | 0.5675 |  
+| `stock.price`  | $\beta$      | -0.0487 | 0.0247 |
+
+
+
+:::
+
+
+
+
+
+## {.smaller}
+
+::: {style="font-size: 0.9em"}
+
+**Output:**
+
+```verbatim
+Coefficients:
+         ar1  intercept  stock.price
+      0.5578     3.9406      -0.0487
+s.e.  0.1545     0.5675       0.0247
+```
+
+
+::: {style="font-size: 0.5em"}
+
+<br>
+
+:::
+
+- We need to check if the 3 parameters $\phi,\alpha,\beta$ are significant
+
+- In order to do that, we need to compute the three t-statistics:
+
+$$
+t = \frac{\text{parameter}}{\ese}  \sim  t_{\rm df}
+$$
+
+- From these we can compute the corresponding p-values
+
+$$
+p = 2 P(t_{\rm df} > |t|)
+$$
+
+:::
+
+
+
+
+## {.smaller}
+
+::: {style="font-size: 0.9em"}
+
+**Output:**
+
+```verbatim
+Coefficients:
+         ar1  intercept  stock.price
+      0.5578     3.9406      -0.0487
+s.e.  0.1545     0.5675       0.0247
+```
+
+
+::: {style="font-size: 0.5em"}
+
+<br>
+
+:::
+
+
+- The dataset contains $33$ data points, as seen by using:
+
+```r
+length(gold.price)
+```
+
+```{r}
+# Load and save data
+prices <- read.table(file = "datasets/stock_gold.txt", header = TRUE)
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+length(gold.price)
+```
+
+- There are 3 estimated parameters ($\phi,\alpha,\beta$)
+
+
+- Therefore, the degrees of freedom are 
+
+$$
+{\rm df} = 33-3 = 30
+$$
+
+:::
+
+
+
+## {.smaller}
+
+::: {style="font-size: 0.9em"}
+
+**Output:**
+
+```verbatim
+Coefficients:
+         ar1  intercept  stock.price
+      0.5578     3.9406      -0.0487
+s.e.  0.1545     0.5675       0.0247
+```
+
+
+::: {style="font-size: 0.5em"}
+
+<br>
+
+:::
+
+
+- The coefficients and the corresponding $\ese$ are given in the output:
+
+```r
+coeff <- c(0.5578, 3.9406, -0.0487)
+ese <- c(0.1545, 0.5675, 0.0247)
+```
+
+::: {style="font-size: 0.5em"}
+
+<br>
+
+:::
+
+- Therefore, the three t-statistics can be computed by
+
+
+```r
+t <- coeff / ese
+```
+
+```{r}
+coeff <- c(0.5578, 3.9406, -0.0487)
+ese <-c (0.1545, 0.5675, 0.0247)
+
+t <- coeff / ese
+cat(t)
+```
+
+::: {style="font-size: 0.5em"}
+
+<br>
+
+:::
+
+- Then, the p-values are:
+
+```r
+p.value <- 2 * (1 - pt(abs(t), df))
+```
+
+```{r}
+coeff <- c(0.5578, 3.9406, -0.0487)
+ese <-c (0.1545, 0.5675, 0.0247)
+
+t <- coeff / ese
+p.value <- 2 * (1 - pt(abs(t), 30))
+cat(p.value)
+```
+
+
+:::
+
+
+
+## {.smaller}
+
+::: {style="font-size: 0.9em"}
+
+**Conclusion:** We fitted the AR(1) model:
+
+\begin{align*}
+(\texttt{gold.price})_t & = \alpha + \beta \times (\texttt{stock.price})_t + \e_t \\[1.0em]
+\e_t & = \phi \e_{t-1} + u_t \,, \qquad
+u_t \,\, \text{ iid } \,\, N(0,\sigma^2)
+\end{align*}
+
+- The estimates and p-values for the 3 parameters are:
+
+| Parameter | $\phi$  | $\alpha$| $\beta$ |
+|:---------|---------:|---------:|---------:|
+|Estimate  |0.5578   |  3.9406    |  -0.0487 |
+| p-value   |   0.001100235  |  1.032974e-07 | 0.05793185 |
+
+::: {style="font-size: 0.5em"}
+
+<br>
+
+:::
+
+- The p-value for $\phi$ is significant: $\,\, p=0.001100235 < 0.05$
+
+- This shows the residuals are actually autocorrelated, with relationship
+
+$$
+\e_t = (0.001100235) \times  \e_{t-1} + u_t 
+$$
+
+- Autocorrelation makes the link between real gold and stock prices harder to establish
+
+:::
+
+
+
+
+
+## {.smaller}
+
+::: {style="font-size: 0.9em"}
+
+**Conclusion:** We fitted the AR(1) model:
+
+\begin{align*}
+(\texttt{gold.price})_t & = \alpha + \beta \times (\texttt{stock.price})_t + \e_t \\[1.0em]
+\e_t & = \phi \e_{t-1} + u_t \,, \qquad
+u_t \,\, \text{ iid } \,\, N(0,\sigma^2)
+\end{align*}
+
+- The estimates and p-values for the 3 parameters are:
+
+| Parameter | $\phi$  | $\alpha$| $\beta$ |
+|:---------|---------:|---------:|---------:|
+|Estimate  |0.5578   |  3.9406    |  -0.0487 |
+| p-value   |   0.001100235  |  1.032974e-07 | 0.05793185 |
+
+::: {style="font-size: 0.5em"}
+
+<br>
+
+:::
+
+
+- The p-value for $\beta$ is not significant: $\,\, p=0.05793185 > 0.05$
+
+- However $p<0.01$, giving weak evidence of a relationship between stock and gold price
+
+- This means we can make predictions using the linear model
+
+$$
+\texttt{gold.price}  = 3.9406 - 0.0487  \times (\texttt{stock.price}) 
+$$
+
+:::
+
+
+
+## {.smaller}
+
+::: {style="font-size: 0.9em"}
+
+**Conclusion:** Fitting the AR(1) model gives the relationship
+
+\begin{equation}
+\texttt{gold.price}  = 3.9406 - 0.0487  \times (\texttt{stock.price}) 
+\end{equation}
+
+::: {style="font-size: 0.5em"}
+
+<br>
+
+:::
+
+- Using ordinary least squares, we instead would obtain the estimates:
+
+```r
+lm(gold.price ~ stock.price)
+```
+
+```verbatim
+Coefficients:
+(Intercept)  stock.price  
+    4.21285     -0.06409 
+```
+
+::: {style="font-size: 0.5em"}
+
+<br>
+
+:::
+
+- This gives the regression line
+
+$$
+\texttt{gold.price}  = 4.21285 - 0.06409  \times (\texttt{stock.price}) 
+$$
+
+- However, OLS ignores autocorrelation in the residuals
+
+**Therefore the AR(1) estimate in (1) is preferred**
+
+:::
+
+
+
+
+## Warning {.smaller}
+
+
+- Consider again the linear model
+
+$$
+y_t = \alpha + \beta x_t + \e_t
+$$
+
+- The AR(1) model assumes the residuals form a **stationary** time series
+
+- A time series is stationary if its behavior is consistent over time
+
+- Specifically, two properties should remain roughly constant:
+	1.	Mean – the average level does not drift
+	2.	Variance – the amount of fluctuation remains stable
+
+
+
+
+
+
+## Example {.smaller}
+
+```{r}
+# Set seed for reproducibility
+set.seed(123)
+
+# -------------------------
+# 1. Stationary Time Series
+# -------------------------
+# Generate stationary series: mean 0, constant variance
+stationary_ts <- rnorm(300, mean = 0, sd = 5)
+
+# Plot
+par(mfrow = c(3,1))  # 3 plots stacked vertically
+
+plot(stationary_ts, type = "l", col = "black",
+     main = "Stationary Time Series",
+     xlab = "Index", ylab = "Observation")
+
+# ------------------------------------------
+# 2. Non-Stationary Time Series (Time-Dependent Mean)
+# ------------------------------------------
+# Generate non-stationary series: random walk (mean changes over time)
+nonstationary_mean_ts <- cumsum(rnorm(300, mean = 1, sd = 5))
+
+plot(nonstationary_mean_ts, type = "l", col = "black",
+     main = "Non–Stationary Time Series (Time–Dependent Mean)",
+     xlab = "Index", ylab = "Observation")
+
+# ------------------------------------------
+# 3. Non-Stationary Time Series (Time-Dependent Variance)
+# ------------------------------------------
+# Generate non-stationary series: variance increases over time
+t <- 1:300
+nonstationary_var_ts <- rnorm(300, mean = 0, sd = t*0.1)  # variance increases
+
+plot(nonstationary_var_ts, type = "l", col = "black",
+     main = "Non–Stationary Time Series (Time–Dependent Variance)",
+     xlab = "Index", ylab = "Observation")
+```
+
+
+
+
+## Example: Gold vs Stock prices {.smaller}
+
+::: {style="font-size: 0.94em"}
+
+For example, let us examine the residuals $\e_t$ from the ordinary linear model:
+
+$$
+\texttt{gold.price} = \alpha + \beta \times \texttt{stock.price} + \e_t
+$$
+
+    
+:::
+
+::::: {.columns style='display: flex !important; height: 55%;'}
+
+::: {.column width="38%" style='display: flex; justify-content: center; align-items: center;'}
+
+```r
+# Fit linear model
+mod <- lm(gold.price ~ stock.price)
+
+# Plot the residuals
+plot(mod$resid)
+```
+
+
+:::
+
+::: {.column width="50%" style='display: flex; justify-content: center; align-items: center;'}
+
+```{r}
+#| echo: false
+#| fig-asp: 0.7
+
+# Load and save data
+prices <- read.table(file = "datasets/stock_gold.txt", header = TRUE)
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Fit regression model
+model <- lm(gold.price ~ stock.price)
+
+plot(model$resid, 
+     pch = 16,
+     cex = 2)
+```
+
+:::
+
+:::::
+
+::: {style="font-size: 0.94em"}
+- The residuals form a time series that looks stationary
+
+- That makes sense -- We were able to fit the AR(1) model without issues
+:::
+
+
+
+
+
+## Example: Gold vs Stock prices {.smaller}
+
+::: {style="font-size: 0.94em"}
+
+Now, let us examine the residuals $\e_t$ from the OLS regression with the variables swapped:
+
+$$
+\texttt{stock.price} = \alpha + \beta \times \texttt{gold.price} + \e_t
+$$
+
+    
+:::
+
+::::: {.columns style='display: flex !important; height: 55%;'}
+
+::: {.column width="38%" style='display: flex; justify-content: center; align-items: center;'}
+
+```r
+# Fit linear model
+mod <- lm(stock.price ~ gold.price)
+
+# Plot the residuals
+plot(mod$resid)
+```
+
+
+:::
+
+::: {.column width="50%" style='display: flex; justify-content: center; align-items: center;'}
+
+```{r}
+#| echo: false
+#| fig-asp: 0.7
+
+# Load and save data
+prices <- read.table(file = "datasets/stock_gold.txt", header = TRUE)
+stock.price <- prices$stock_price
+gold.price <- prices$gold_price
+
+# Fit regression model
+model <- lm(stock.price ~ gold.price)
+
+plot(model$resid, 
+     pch = 16,
+     cex = 2)
+```
+
+:::
+
+:::::
+
+::: {style="font-size: 0.94em"}
+- The residuals show an upward trend: the series is not stationary
+
+- Consequently, fitting an AR(1) model will likely encounter problems
+:::
+
+
+
+
+
+
+## Example: Gold vs Stock prices {.smaller}
+
+::: {style="font-size: 0.94em"}
+
+- To investigate, we attempt to fit an AR(1) model to the linear regression:
+
+$$
+\texttt{stock.price} = \alpha + \beta \times \texttt{gold.price} + \e_t
+$$
+
+
+- In R, we try to fit AR(1) with the command:
+
+::: {style="font-size: 0.5em"}
+
+<br>
+
+:::
+
+```r
+arima(stock.price, xreg = gold.price, order = c(1,0,0))
+```
+
+```verbatim
+Error in arima(stock.price, xreg = gold.price, order = c(1, 0, 0)) : 
+  non-stationary AR part from CSS
+```
+
+::: {style="font-size: 0.5em"}
+
+<br>
+
+:::
+
+- As expected, we get an error because the residuals $\e_t$ are not stationary
+
+- This happens because the residuals $\e_t$ are not **stationary**
+
+:::
+
+
+
+
+
+## Possible Remedy for Non-Stationarity {.smaller}
+
+::: {style="font-size: 0.90em"}
+
+**Differencing:** common technique to make a time series stationary by eliminating trends
+
+- The R command `diff(x)` computes the difference between consecutive observations:  
+
+$$
+\text{diff}(x)_t = x_t - x_{t-1}
+$$
+
+- This transforms a non-stationary series into a stationary one, to which we can apply AR(1)
+
+::: {style="font-size: 0.5em"}
+
+<br>
+
+:::
+
+```r
+# Fit AR(1) on differenced series
+arima(diff(stock.price), xreg = diff(gold.price), order = c(1, 0, 0))
+```
+
+```verbatim
+Coefficients:
+         ar1  intercept  diff(gold.price)
+      0.5141     1.0442            0.1632
+s.e.  0.1510     0.7342            0.3879
+```
+
+::: {style="font-size: 0.5em"}
+
+<br>
+
+:::
+
+**Warning:** AR(1) is fitted on differences $\implies$ coefficients not valid for original series
+
+
+:::
+
+
+
 
 
 
@@ -777,35 +1471,9 @@ both Runs test and Durbin Watson. It is not clear what d_L is in Durbin Watson: 
 
 - This is Lecture 9 John Fry slides Section 4 onwards
 
-- Do also ARIMA for time series (good reference is Shumway, Stoffer - Time Series Analysis and Its Applications 4th edition)
-
-- You can just fit arima to the example following John Fry. I don't understand the output, and for some reason the command
-
-arima(gold.price , xreg = stock.price, order = c(1, 0, 0))
-
-saying non-stationary AR part from CSS
-
-gives error 
-
-
-- Below is Rcode for Lecture 9 of John Fry
-
-#R example Section 4
-#need to load the tseries package
-residsign<-1*(resid01>0)
-residsign<-factor(residsign)
-runs.test(residsign)
-#durbin-watson example
-#need to load the lmtest package
-dwtest(a.lm)
-#R example Section 5
-arima(realgoldprice, xreg=realstockprice, order=c(1, 0, 0))
-coeff<-c(0.5578,     3.9406,         -0.0487)
-ese<-c(0.1545,     0.5675,          0.0247)
-t<-abs(coeff)/ese
-2*(1-pt(t, 30))
-
 :::
+
+
 
 
 

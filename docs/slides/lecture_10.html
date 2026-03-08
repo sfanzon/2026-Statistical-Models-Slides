@@ -425,49 +425,17 @@
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-  .Theorem {
+  .Conjecture {
     --color1: #f4cce0;
     --color2: #db4d92;
-  }
-  .Notation {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
-  }
-  .Definition {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
-  }
-  .Proof {
-    --color1: #f1f1f2;
-    --color2: #c0c0c1;
   }
   .Proposition {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Important {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Axiom {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Warning {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
   .Example {
     --color1: #bce5de;
     --color2: #21aa93;
-  }
-  .Question {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .DONE {
-    --color1: #cce7b1;
-    --color2: #86b754;
   }
   .Idea {
     --color1: #f4cce0;
@@ -477,11 +445,47 @@
     --color1: #e7b1b4;
     --color2: #8c3236;
   }
+  .DONE {
+    --color1: #cce7b1;
+    --color2: #86b754;
+  }
+  .Notation {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
+  .Corollary {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Theorem {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Warning {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Problem {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Question {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Axiom {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Proof {
+    --color1: #f1f1f2;
+    --color2: #c0c0c1;
+  }
   .Lemma {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Conjecture {
+  .Important {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -489,13 +493,9 @@
     --color1: #bce5de;
     --color2: #21aa93;
   }
-  .Problem {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Corollary {
-    --color1: #f4cce0;
-    --color2: #db4d92;
+  .Definition {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
   }
   </style>
 </head>
@@ -894,8 +894,8 @@ L \neq \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left(   -\frac{ \mathop{\mathr
 <span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>                    <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Store data-frame into 2 vectors</span></span>
-<span id="cb1-6"><a aria-hidden="true" tabindex="-1"></a>stock.price <span class="ot">&lt;-</span> prices[ , <span class="dv">1</span>]</span>
-<span id="cb1-7"><a aria-hidden="true" tabindex="-1"></a>gold.price <span class="ot">&lt;-</span> prices[ , <span class="dv">2</span>]</span>
+<span id="cb1-6"><a aria-hidden="true" tabindex="-1"></a>stock.price <span class="ot">&lt;-</span> prices<span class="sc">$</span>stock_price</span>
+<span id="cb1-7"><a aria-hidden="true" tabindex="-1"></a>gold.price <span class="ot">&lt;-</span> prices<span class="sc">$</span>gold_price</span>
 <span id="cb1-8"><a aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit regression model</span></span>
 <span id="cb1-10"><a aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(gold.price <span class="sc">~</span> stock.price)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1048,8 +1048,8 @@ L \neq \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left(   -\frac{ \mathop{\mathr
 <ul>
 <li>Test to see if residuals are AR(1) - Auto-regressive of order 1</li>
 <li>This means testing if there exists a linear relation of the form <span class="math display">
-  \hat{\varepsilon}_t = a + b \hat{\varepsilon}_{t-1} + \delta_t
-  </span> where <span class="math inline">\delta_t \sim N(0,\sigma^2)</span> is an error term</li>
+  \hat{\varepsilon}_t = a + b \hat{\varepsilon}_{t-1} + u_t
+  </span> where <span class="math inline">u_t \sim N(0,\sigma^2)</span> is an error term</li>
 </ul></li>
 </ul>
 <p><strong>We do not cover these tests</strong></p>
@@ -1072,8 +1072,8 @@ Y_i = \alpha + \beta x_i + \varepsilon_i
 <li>Also, suppose that autocorrelation is Auto-Regressive of Order 1</li>
 </ul>
 <p><span class="math display">
-\hat{\varepsilon}_t = a + b \, \hat{\varepsilon}_{t-1} + \delta_t \,, \qquad
-\delta_t \,\, \text{ iid } \,\, N(0,\sigma^2)
+\hat{\varepsilon}_t = a + b \, \hat{\varepsilon}_{t-1} + u_t \,, \qquad
+u_t \,\, \text{ iid } \,\, N(0,\sigma^2)
 </span></p>
 <ul>
 <li>Example: This is the case for dataset <em>Stock prices</em> Vs <em>Gold prices</em></li>
@@ -1088,12 +1088,12 @@ Y_i = \alpha + \beta x_i + \varepsilon_i
 Y_i = \alpha + \beta x_i + \varepsilon_i
 </span></p>
 <ul>
-<li><p>Instead, substitute into the model the relation <span class="math inline">\hat{\varepsilon}_t = a + b \, \hat{\varepsilon}_{t-1} + \delta_t</span></p></li>
+<li><p>Instead, substitute into the model the relation <span class="math inline">\hat{\varepsilon}_t = a + b \, \hat{\varepsilon}_{t-1} + u_t</span></p></li>
 <li><p>We obtain the new linear model (up to relabelling coefficients)</p></li>
 </ul>
 <p><span class="math display">
-Y_t = \alpha + \beta x_t + \rho \hat{\varepsilon}_{t-1} + \delta_t  \,, \qquad
-\delta_t \,\, \text{ iid } \,\, N(0,\sigma^2)
+Y_t = \alpha + \beta x_t + \phi \hat{\varepsilon}_{t-1} + u_t  \,, \qquad
+u_t \,\, \text{ iid } \,\, N(0,\sigma^2)
 </span></p>
 <ul>
 <li>The above is an <strong>Autoregressive linear Model</strong> of order 1<br>
@@ -1103,7 +1103,494 @@ Y_t = \alpha + \beta x_t + \rho \hat{\varepsilon}_{t-1} + \delta_t  \,, \qquad
 <li>Good reference is book by Shumway and Stoffer <span class="citation" data-cites="shumway">[<a href="#/references" role="doc-biblioref" onclick="">1</a>]</span></li>
 </ul></li>
 </ul>
-<p><strong>You will see ARIMA models next year</strong></p>
+</section>
+<section id="arima-model-in-r" class="slide level2 smaller">
+<h2>ARIMA Model in R</h2>
+<ul>
+<li>Suppose we want to fit the model</li>
+</ul>
+<p><span class="math display">
+Y = \beta_1 z_1 + \beta_2 z_2 + \ldots +  \beta_n z_n + \varepsilon_i
+</span></p>
+<ul>
+<li><p>However, suppose the residuals exhibit autocorrelation</p></li>
+<li><p>In this case, ordinary least squares assumptions are violated</p></li>
+<li><p>In this case, instead of regression, we need to use ARIMA models:</p>
+<ul>
+<li>ARIMA combines regression with a time series structure in the residuals</li>
+</ul></li>
+</ul>
+</section>
+<section id="arima-model-in-r-1" class="slide level2 smaller">
+<h2>ARIMA Model in R</h2>
+<ul>
+<li>Suppose we want to fit the model</li>
+</ul>
+<p><span class="math display">
+Y = \beta_1 z_1 + \beta_2 z_2 + \ldots +  \beta_n z_n + \varepsilon_i
+</span></p>
+<ul>
+<li>This is fitted in R as follows:</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">arima</span>(y, <span class="at">xreg =</span> <span class="fu">cbind</span>(z1, z2, ..., zn), <span class="at">order =</span> <span class="fu">c</span>(p, d, q))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div style="font-size: 0.5em">
+<p><br></p>
+</div>
+<ul>
+<li><code>y</code> is the given data vector; <code>z1, ..., zn</code> the given predictors</li>
+<li><code>xreg</code> specifies the regressors included in the model</li>
+<li><code>order</code> specifies the ARIMA<span class="math inline">(p, d, q)</span> component</li>
+<li>In our case we will use <code>order = c(1, 0, 0)</code></li>
+<li>This corresponds to an Autoregressive Model of order 1 – abbreviated <strong>AR(1)</strong></li>
+</ul>
+</section>
+<section id="example-arima-for-stock-vs-gold-prices" class="slide level2 smaller">
+<h2>Example: ARIMA for Stock Vs Gold prices</h2>
+<ul>
+<li><p>Code for this example is available here <a href="codes/autocorrelation.R">arima.R</a></p></li>
+<li><p>Stock Vs Gold prices data is available here <a href="datasets/stock_gold.txt">stock_gold.txt</a></p></li>
+<li><p>We want to fit the regression model</p></li>
+</ul>
+<p><span class="math display">
+\texttt{gold.price} =  \alpha + \beta \times (\texttt{stock.price}) + \varepsilon
+</span></p>
+<ul>
+<li><p>We already saw that residuals are autocorrelated</p></li>
+<li><p>Therefore we fit ARIMA model of order 1 – Abbreviated in <strong>AR(1)</strong></p></li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Load and save data</span></span>
+<span id="cb9-2"><a aria-hidden="true" tabindex="-1"></a>prices <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="at">file =</span> <span class="st">"stock_gold.txt"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-3"><a aria-hidden="true" tabindex="-1"></a>stock.price <span class="ot">&lt;-</span> prices<span class="sc">$</span>stock_price</span>
+<span id="cb9-4"><a aria-hidden="true" tabindex="-1"></a>gold.price <span class="ot">&lt;-</span> prices<span class="sc">$</span>gold_price</span>
+<span id="cb9-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit AR(1) model</span></span>
+<span id="cb9-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">arima</span>(gold.price, <span class="at">xreg =</span> stock.price, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="section-7" class="slide level2 smaller">
+<h2></h2>
+<div style="font-size: 0.9em">
+<p><strong>Output:</strong></p>
+<pre class="verbatim"><code>Coefficients:
+         ar1  intercept  stock.price
+      0.5578     3.9406      -0.0487
+s.e.  0.1545     0.5675       0.0247</code></pre>
+<div style="font-size: 0.5em">
+<p><br></p>
+</div>
+<ul>
+<li>The fitted AR(1) model is</li>
+</ul>
+<p><span class="math display">\begin{align*}
+(\texttt{gold.price})_t &amp; = \alpha + \beta \times (\texttt{stock.price})_t + \varepsilon_t \\[1.0em]
+\varepsilon_t &amp; = \phi \varepsilon_{t-1} + u_t \,, \qquad
+u_t \,\, \text{ iid } \,\, N(0,\sigma^2)
+\end{align*}</span></p>
+<ul>
+<li>The output gives us estimates and <span class="math inline">\mathop{\mathrm{e.s.e.}}</span> for the 3 parameters:</li>
+</ul>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th style="text-align: right;">Parameter</th>
+<th style="text-align: right;">Value</th>
+<th style="text-align: right;"><span class="math inline">\mathop{\mathrm{e.s.e.}}</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ar1</code></td>
+<td style="text-align: right;"><span class="math inline">\phi</span></td>
+<td style="text-align: right;">0.5578</td>
+<td style="text-align: right;">0.1545</td>
+</tr>
+<tr class="even">
+<td><code>intercept</code></td>
+<td style="text-align: right;"><span class="math inline">\alpha</span></td>
+<td style="text-align: right;">3.9406</td>
+<td style="text-align: right;">0.5675</td>
+</tr>
+<tr class="odd">
+<td><code>stock.price</code></td>
+<td style="text-align: right;"><span class="math inline">\beta</span></td>
+<td style="text-align: right;">-0.0487</td>
+<td style="text-align: right;">0.0247</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="section-8" class="slide level2 smaller">
+<h2></h2>
+<div style="font-size: 0.9em">
+<p><strong>Output:</strong></p>
+<pre class="verbatim"><code>Coefficients:
+         ar1  intercept  stock.price
+      0.5578     3.9406      -0.0487
+s.e.  0.1545     0.5675       0.0247</code></pre>
+<div style="font-size: 0.5em">
+<p><br></p>
+</div>
+<ul>
+<li><p>We need to check if the 3 parameters <span class="math inline">\phi,\alpha,\beta</span> are significant</p></li>
+<li><p>In order to do that, we need to compute the three t-statistics:</p></li>
+</ul>
+<p><span class="math display">
+t = \frac{\text{parameter}}{\mathop{\mathrm{e.s.e.}}}  \sim  t_{\rm df}
+</span></p>
+<ul>
+<li>From these we can compute the corresponding p-values</li>
+</ul>
+<p><span class="math display">
+p = 2 P(t_{\rm df} &gt; |t|)
+</span></p>
+</div>
+</section>
+<section id="section-9" class="slide level2 smaller">
+<h2></h2>
+<div style="font-size: 0.9em">
+<p><strong>Output:</strong></p>
+<pre class="verbatim"><code>Coefficients:
+         ar1  intercept  stock.price
+      0.5578     3.9406      -0.0487
+s.e.  0.1545     0.5675       0.0247</code></pre>
+<div style="font-size: 0.5em">
+<p><br></p>
+</div>
+<ul>
+<li>The dataset contains <span class="math inline">33</span> data points, as seen by using:</li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(gold.price)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 33</code></pre>
+</div>
+</div>
+<ul>
+<li><p>There are 3 estimated parameters (<span class="math inline">\phi,\alpha,\beta</span>)</p></li>
+<li><p>Therefore, the degrees of freedom are</p></li>
+</ul>
+<p><span class="math display">
+{\rm df} = 33-3 = 30
+</span></p>
+</div>
+</section>
+<section id="section-10" class="slide level2 smaller">
+<h2></h2>
+<div style="font-size: 0.9em">
+<p><strong>Output:</strong></p>
+<pre class="verbatim"><code>Coefficients:
+         ar1  intercept  stock.price
+      0.5578     3.9406      -0.0487
+s.e.  0.1545     0.5675       0.0247</code></pre>
+<div style="font-size: 0.5em">
+<p><br></p>
+</div>
+<ul>
+<li>The coefficients and the corresponding <span class="math inline">\mathop{\mathrm{e.s.e.}}</span> are given in the output:</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a aria-hidden="true" tabindex="-1"></a>coeff <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.5578</span>, <span class="fl">3.9406</span>, <span class="sc">-</span><span class="fl">0.0487</span>)</span>
+<span id="cb16-2"><a aria-hidden="true" tabindex="-1"></a>ese <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.1545</span>, <span class="fl">0.5675</span>, <span class="fl">0.0247</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div style="font-size: 0.5em">
+<p><br></p>
+</div>
+<ul>
+<li>Therefore, the three t-statistics can be computed by</li>
+</ul>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> coeff <span class="sc">/</span> ese</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>3.610356 6.943789 -1.97166</code></pre>
+</div>
+</div>
+<div style="font-size: 0.5em">
+<p><br></p>
+</div>
+<ul>
+<li>Then, the p-values are:</li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-hidden="true" tabindex="-1"></a>p.value <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pt</span>(<span class="fu">abs</span>(t), df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>0.001100235 1.032974e-07 0.05793185</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="section-11" class="slide level2 smaller">
+<h2></h2>
+<div style="font-size: 0.9em">
+<p><strong>Conclusion:</strong> We fitted the AR(1) model:</p>
+<p><span class="math display">\begin{align*}
+(\texttt{gold.price})_t &amp; = \alpha + \beta \times (\texttt{stock.price})_t + \varepsilon_t \\[1.0em]
+\varepsilon_t &amp; = \phi \varepsilon_{t-1} + u_t \,, \qquad
+u_t \,\, \text{ iid } \,\, N(0,\sigma^2)
+\end{align*}</span></p>
+<ul>
+<li>The estimates and p-values for the 3 parameters are:</li>
+</ul>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: right;"><span class="math inline">\phi</span></th>
+<th style="text-align: right;"><span class="math inline">\alpha</span></th>
+<th style="text-align: right;"><span class="math inline">\beta</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Estimate</td>
+<td style="text-align: right;">0.5578</td>
+<td style="text-align: right;">3.9406</td>
+<td style="text-align: right;">-0.0487</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">p-value</td>
+<td style="text-align: right;">0.001100235</td>
+<td style="text-align: right;">1.032974e-07</td>
+<td style="text-align: right;">0.05793185</td>
+</tr>
+</tbody>
+</table>
+<div style="font-size: 0.5em">
+<p><br></p>
+</div>
+<ul>
+<li><p>The p-value for <span class="math inline">\phi</span> is significant: <span class="math inline">\,\, p=0.001100235 &lt; 0.05</span></p></li>
+<li><p>This shows the residuals are actually autocorrelated, with relationship</p></li>
+</ul>
+<p><span class="math display">
+\varepsilon_t = (0.001100235) \times  \varepsilon_{t-1} + u_t
+</span></p>
+<ul>
+<li>Autocorrelation makes the link between real gold and stock prices harder to establish</li>
+</ul>
+</div>
+</section>
+<section id="section-12" class="slide level2 smaller">
+<h2></h2>
+<div style="font-size: 0.9em">
+<p><strong>Conclusion:</strong> We fitted the AR(1) model:</p>
+<p><span class="math display">\begin{align*}
+(\texttt{gold.price})_t &amp; = \alpha + \beta \times (\texttt{stock.price})_t + \varepsilon_t \\[1.0em]
+\varepsilon_t &amp; = \phi \varepsilon_{t-1} + u_t \,, \qquad
+u_t \,\, \text{ iid } \,\, N(0,\sigma^2)
+\end{align*}</span></p>
+<ul>
+<li>The estimates and p-values for the 3 parameters are:</li>
+</ul>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: right;"><span class="math inline">\phi</span></th>
+<th style="text-align: right;"><span class="math inline">\alpha</span></th>
+<th style="text-align: right;"><span class="math inline">\beta</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Estimate</td>
+<td style="text-align: right;">0.5578</td>
+<td style="text-align: right;">3.9406</td>
+<td style="text-align: right;">-0.0487</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">p-value</td>
+<td style="text-align: right;">0.001100235</td>
+<td style="text-align: right;">1.032974e-07</td>
+<td style="text-align: right;">0.05793185</td>
+</tr>
+</tbody>
+</table>
+<div style="font-size: 0.5em">
+<p><br></p>
+</div>
+<ul>
+<li><p>The p-value for <span class="math inline">\beta</span> is not significant: <span class="math inline">\,\, p=0.05793185 &gt; 0.05</span></p></li>
+<li><p>However <span class="math inline">p&lt;0.01</span>, giving weak evidence of a relationship between stock and gold price</p></li>
+<li><p>This means we can make predictions using the linear model</p></li>
+</ul>
+<p><span class="math display">
+\texttt{gold.price}  = 3.9406 - 0.0487  \times (\texttt{stock.price})
+</span></p>
+</div>
+</section>
+<section id="section-13" class="slide level2 smaller">
+<h2></h2>
+<div style="font-size: 0.9em">
+<p><strong>Conclusion:</strong> Fitting the AR(1) model gives the relationship</p>
+<p><span class="math display">\begin{equation}
+\texttt{gold.price}  = 3.9406 - 0.0487  \times (\texttt{stock.price})
+\end{equation}</span></p>
+<div style="font-size: 0.5em">
+<p><br></p>
+</div>
+<ul>
+<li>Using ordinary least squares, we instead would obtain the estimates:</li>
+</ul>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(gold.price <span class="sc">~</span> stock.price)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="verbatim"><code>Coefficients:
+(Intercept)  stock.price  
+    4.21285     -0.06409 </code></pre>
+<div style="font-size: 0.5em">
+<p><br></p>
+</div>
+<ul>
+<li>This gives the regression line</li>
+</ul>
+<p><span class="math display">
+\texttt{gold.price}  = 4.21285 - 0.06409  \times (\texttt{stock.price})
+</span></p>
+<ul>
+<li>However, OLS ignores autocorrelation in the residuals</li>
+</ul>
+<p><strong>Therefore the AR(1) estimate in (1) is preferred</strong></p>
+</div>
+</section>
+<section id="warning" class="slide level2 smaller">
+<h2>Warning</h2>
+<ul>
+<li>Consider again the linear model</li>
+</ul>
+<p><span class="math display">
+y_t = \alpha + \beta x_t + \varepsilon_t
+</span></p>
+<ul>
+<li><p>The AR(1) model assumes the residuals form a <strong>stationary</strong> time series</p></li>
+<li><p>A time series is stationary if its behavior is consistent over time</p></li>
+<li><p>Specifically, two properties should remain roughly constant:</p>
+<ol type="1">
+<li>Mean – the average level does not drift</li>
+<li>Variance – the amount of fluctuation remains stable</li>
+</ol></li>
+</ul>
+</section>
+<section id="example" class="slide level2 smaller">
+<h2>Example</h2>
+
+<img data-src="lecture_10_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
+<section id="example-gold-vs-stock-prices" class="slide level2 smaller">
+<h2>Example: Gold vs Stock prices</h2>
+<div style="font-size: 0.94em">
+<p>For example, let us examine the residuals <span class="math inline">\varepsilon_t</span> from the ordinary linear model:</p>
+<p><span class="math display">
+\texttt{gold.price} = \alpha + \beta \times \texttt{stock.price} + \varepsilon_t
+</span></p>
+</div>
+<div class="columns" style="display: flex !important; height: 55%;">
+<div class="column" style="display: flex; justify-content: center; align-items: center;">
+<div class="sourceCode" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit linear model</span></span>
+<span id="cb23-2"><a aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(gold.price <span class="sc">~</span> stock.price)</span>
+<span id="cb23-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the residuals</span></span>
+<span id="cb23-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod<span class="sc">$</span>resid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="display: flex; justify-content: center; align-items: center;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="lecture_10_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<div style="font-size: 0.94em">
+<ul>
+<li><p>The residuals form a time series that looks stationary</p></li>
+<li><p>That makes sense – We were able to fit the AR(1) model without issues</p></li>
+</ul>
+</div>
+</section>
+<section id="example-gold-vs-stock-prices-1" class="slide level2 smaller">
+<h2>Example: Gold vs Stock prices</h2>
+<div style="font-size: 0.94em">
+<p>Now, let us examine the residuals <span class="math inline">\varepsilon_t</span> from the OLS regression with the variables swapped:</p>
+<p><span class="math display">
+\texttt{stock.price} = \alpha + \beta \times \texttt{gold.price} + \varepsilon_t
+</span></p>
+</div>
+<div class="columns" style="display: flex !important; height: 55%;">
+<div class="column" style="display: flex; justify-content: center; align-items: center;">
+<div class="sourceCode" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit linear model</span></span>
+<span id="cb24-2"><a aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(stock.price <span class="sc">~</span> gold.price)</span>
+<span id="cb24-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the residuals</span></span>
+<span id="cb24-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod<span class="sc">$</span>resid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="display: flex; justify-content: center; align-items: center;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="lecture_10_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<div style="font-size: 0.94em">
+<ul>
+<li><p>The residuals show an upward trend: the series is not stationary</p></li>
+<li><p>Consequently, fitting an AR(1) model will likely encounter problems</p></li>
+</ul>
+</div>
+</section>
+<section id="example-gold-vs-stock-prices-2" class="slide level2 smaller">
+<h2>Example: Gold vs Stock prices</h2>
+<div style="font-size: 0.94em">
+<ul>
+<li>To investigate, we attempt to fit an AR(1) model to the linear regression:</li>
+</ul>
+<p><span class="math display">
+\texttt{stock.price} = \alpha + \beta \times \texttt{gold.price} + \varepsilon_t
+</span></p>
+<ul>
+<li>In R, we try to fit AR(1) with the command:</li>
+</ul>
+<div style="font-size: 0.5em">
+<p><br></p>
+</div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">arima</span>(stock.price, <span class="at">xreg =</span> gold.price, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="verbatim"><code>Error in arima(stock.price, xreg = gold.price, order = c(1, 0, 0)) : 
+  non-stationary AR part from CSS</code></pre>
+<div style="font-size: 0.5em">
+<p><br></p>
+</div>
+<ul>
+<li><p>As expected, we get an error because the residuals <span class="math inline">\varepsilon_t</span> are not stationary</p></li>
+<li><p>This happens because the residuals <span class="math inline">\varepsilon_t</span> are not <strong>stationary</strong></p></li>
+</ul>
+</div>
+</section>
+<section id="possible-remedy-for-non-stationarity" class="slide level2 smaller">
+<h2>Possible Remedy for Non-Stationarity</h2>
+<div style="font-size: 0.90em">
+<p><strong>Differencing:</strong> common technique to make a time series stationary by eliminating trends</p>
+<ul>
+<li>The R command <code>diff(x)</code> computes the difference between consecutive observations:</li>
+</ul>
+<p><span class="math display">
+\text{diff}(x)_t = x_t - x_{t-1}
+</span></p>
+<ul>
+<li>This transforms a non-stationary series into a stationary one, to which we can apply AR(1)</li>
+</ul>
+<div style="font-size: 0.5em">
+<p><br></p>
+</div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit AR(1) on differenced series</span></span>
+<span id="cb27-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">arima</span>(<span class="fu">diff</span>(stock.price), <span class="at">xreg =</span> <span class="fu">diff</span>(gold.price), <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="verbatim"><code>Coefficients:
+         ar1  intercept  diff(gold.price)
+      0.5141     1.0442            0.1632
+s.e.  0.1510     0.7342            0.3879</code></pre>
+<div style="font-size: 0.5em">
+<p><br></p>
+</div>
+<p><strong>Warning:</strong> AR(1) is fitted on differences <span class="math inline">\implies</span> coefficients not valid for original series</p>
+</div>
 </section></section>
 <section>
 <section id="part-3-multicollinearity" class="title-slide slide level1 center" data-background-color="#cc0164" data-visibility="uncounted">
@@ -1269,23 +1756,23 @@ Y_i = \beta_1 z_{i1} + \beta_2 z_{i2} + \ldots + \beta_p z_{ip} + \varepsilon_i
 <li>Since these relations are present, correlation is high</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter the data</span></span>
-<span id="cb8-2"><a aria-hidden="true" tabindex="-1"></a>Z1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">18</span>, <span class="dv">24</span>, <span class="dv">30</span>)</span>
-<span id="cb8-3"><a aria-hidden="true" tabindex="-1"></a>Z2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">90</span>, <span class="dv">120</span>, <span class="dv">150</span>)</span>
-<span id="cb8-4"><a aria-hidden="true" tabindex="-1"></a>Z3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">52</span>, <span class="dv">75</span>, <span class="dv">97</span>, <span class="dv">129</span>, <span class="dv">152</span>)</span>
-<span id="cb8-5"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Z1 and Z3 are approx correlated</span></span>
-<span id="cb8-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(Z1, Z3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter the data</span></span>
+<span id="cb29-2"><a aria-hidden="true" tabindex="-1"></a>Z1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">18</span>, <span class="dv">24</span>, <span class="dv">30</span>)</span>
+<span id="cb29-3"><a aria-hidden="true" tabindex="-1"></a>Z2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">90</span>, <span class="dv">120</span>, <span class="dv">150</span>)</span>
+<span id="cb29-4"><a aria-hidden="true" tabindex="-1"></a>Z3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">52</span>, <span class="dv">75</span>, <span class="dv">97</span>, <span class="dv">129</span>, <span class="dv">152</span>)</span>
+<span id="cb29-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Z1 and Z3 are approx correlated</span></span>
+<span id="cb29-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(Z1, Z3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.9958817</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Z1 and Z2 are exactly correlated</span></span>
-<span id="cb10-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(Z1, Z2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Z1 and Z2 are exactly correlated</span></span>
+<span id="cb31-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(Z1, Z2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Z2 and Z3 are approx correlated</span></span>
-<span id="cb12-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(Z2, Z3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Z2 and Z3 are approx correlated</span></span>
+<span id="cb33-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(Z2, Z3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.9958817</code></pre>
 </div>
@@ -1361,7 +1848,7 @@ z_{n1}  &amp; z_{n2} &amp; \ldots &amp; z_{np} \\
 </span></p>
 </div>
 </section>
-<section id="section-7" class="slide level2 smaller">
+<section id="section-14" class="slide level2 smaller">
 <h2></h2>
 <div style="font-size: 0.95em">
 <ul>
@@ -1443,16 +1930,16 @@ Z_2 = 5 Z_1
 <div class="columns" style="display: flex !important; height: 90%;">
 <div class="column" style="display: flex; justify-content: center; align-items: center;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter the data</span></span>
-<span id="cb14-2"><a aria-hidden="true" tabindex="-1"></a>Z1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">18</span>, <span class="dv">24</span>, <span class="dv">30</span>)</span>
-<span id="cb14-3"><a aria-hidden="true" tabindex="-1"></a>Z2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">90</span>, <span class="dv">120</span>, <span class="dv">150</span>)</span>
-<span id="cb14-4"><a aria-hidden="true" tabindex="-1"></a>Z3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">52</span>, <span class="dv">75</span>, <span class="dv">97</span>, <span class="dv">129</span>, <span class="dv">152</span>)</span>
-<span id="cb14-5"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Assemble design matrix</span></span>
-<span id="cb14-7"><a aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(Z1, Z2, Z3), <span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb14-8"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute determinant of Z^T Z</span></span>
-<span id="cb14-10"><a aria-hidden="true" tabindex="-1"></a><span class="fu">det</span> ( <span class="fu">t</span>(Z) <span class="sc">%*%</span> Z )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter the data</span></span>
+<span id="cb35-2"><a aria-hidden="true" tabindex="-1"></a>Z1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">18</span>, <span class="dv">24</span>, <span class="dv">30</span>)</span>
+<span id="cb35-3"><a aria-hidden="true" tabindex="-1"></a>Z2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">90</span>, <span class="dv">120</span>, <span class="dv">150</span>)</span>
+<span id="cb35-4"><a aria-hidden="true" tabindex="-1"></a>Z3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">52</span>, <span class="dv">75</span>, <span class="dv">97</span>, <span class="dv">129</span>, <span class="dv">152</span>)</span>
+<span id="cb35-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Assemble design matrix</span></span>
+<span id="cb35-7"><a aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(Z1, Z2, Z3), <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb35-8"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute determinant of Z^T Z</span></span>
+<span id="cb35-10"><a aria-hidden="true" tabindex="-1"></a><span class="fu">det</span> ( <span class="fu">t</span>(Z) <span class="sc">%*%</span> Z )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -3.531172e-07</code></pre>
 </div>
@@ -1496,7 +1983,7 @@ Z_2 = 5 Z_1
 </table>
 </div></div>
 </section>
-<section id="section-8" class="slide level2 smaller">
+<section id="section-15" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li><p>R computed that <span class="math inline">\,\, {\rm det} ( Z^T Z) = -3.531172 \times 10^{-7}</span></p></li>
@@ -1508,8 +1995,8 @@ Z^T Z \text{ is not invertible!}
 <ul>
 <li>If we try to invert <span class="math inline">Z^T Z</span> in R we get an error</li>
 </ul>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute inverse of Z^T Z</span></span>
-<span id="cb16-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span> ( <span class="fu">t</span>(Z) <span class="sc">%*%</span> Z )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute inverse of Z^T Z</span></span>
+<span id="cb37-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span> ( <span class="fu">t</span>(Z) <span class="sc">%*%</span> Z )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="verbatim"><code>
 Error in solve.default(t(Z) %*% Z) : 
   system is computationally singular: reciprocal condition number = 8.25801e-19
@@ -1557,7 +2044,7 @@ Error in solve.default(t(Z) %*% Z) :
 <li>In particular, this might lead to larger than usual values <span class="math inline">\xi_{ij}</span></li>
 </ul>
 </section>
-<section id="section-9" class="slide level2 smaller">
+<section id="section-16" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li>Recall formula of estimated standard error for <span class="math inline">\beta_j</span></li>
@@ -1574,7 +2061,7 @@ Error in solve.default(t(Z) %*% Z) :
 &amp; \quad \implies \quad \text{potentially larger } \mathop{\mathrm{e.s.e.}}(\beta_j)
 \end{align*}</span></p>
 </section>
-<section id="section-10" class="slide level2 smaller">
+<section id="section-17" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li>To test the null hypothesis that <span class="math inline">\beta_j = 0</span>, we use <span class="math inline">t</span>-statistic</li>
@@ -1746,7 +2233,7 @@ Z = (Z_1 + 0.01 | Z_2 | Z_3)
 </table>
 </div></div>
 </section>
-<section id="section-11" class="slide level2 smaller">
+<section id="section-18" class="slide level2 smaller">
 <h2></h2>
 <div style="font-size: 0.92em">
 <ul>
@@ -1755,14 +2242,14 @@ Z = (Z_1 + 0.01 | Z_2 | Z_3)
 <p><span class="math display">
 Z = (Z_1 + 0.01 | Z_2 | Z_3)
 </span></p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Consider perturbation Z1 + 0.01</span></span>
-<span id="cb18-2"><a aria-hidden="true" tabindex="-1"></a>PZ1 <span class="ot">&lt;-</span> Z1 <span class="sc">+</span> <span class="fl">0.01</span></span>
-<span id="cb18-3"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Assemble perturbed design matrix</span></span>
-<span id="cb18-5"><a aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(PZ1, Z2, Z3), <span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb18-6"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the inverse of Z^T Z</span></span>
-<span id="cb18-8"><a aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span> ( <span class="fu">t</span>(Z) <span class="sc">%*%</span> Z )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Consider perturbation Z1 + 0.01</span></span>
+<span id="cb39-2"><a aria-hidden="true" tabindex="-1"></a>PZ1 <span class="ot">&lt;-</span> Z1 <span class="sc">+</span> <span class="fl">0.01</span></span>
+<span id="cb39-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Assemble perturbed design matrix</span></span>
+<span id="cb39-5"><a aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(PZ1, Z2, Z3), <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb39-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the inverse of Z^T Z</span></span>
+<span id="cb39-8"><a aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span> ( <span class="fu">t</span>(Z) <span class="sc">%*%</span> Z )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>             [,1]          [,2]       [,3]
@@ -1779,7 +2266,7 @@ Z = (Z_1 + 0.01 | Z_2 | Z_3)
 </ul>
 </div>
 </section>
-<section id="section-12" class="slide level2 smaller">
+<section id="section-19" class="slide level2 smaller">
 <h2></h2>
 <div style="font-size: 0.92em">
 <ul>
@@ -1791,14 +2278,14 @@ Z = (Z_1 + 0.01 | Z_2 | Z_3)
 <ul>
 <li>Invert the new design matrix <span class="math inline">\,\, Z = (Z_1 + 0.02 | Z_2 | Z_3)</span></li>
 </ul>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Consider perturbation Z1 + 0.02</span></span>
-<span id="cb20-2"><a aria-hidden="true" tabindex="-1"></a>PZ1 <span class="ot">&lt;-</span> Z1 <span class="sc">+</span> <span class="fl">0.02</span></span>
-<span id="cb20-3"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Assemble perturbed design matrix</span></span>
-<span id="cb20-5"><a aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(PZ1, Z2, Z3), <span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb20-6"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the inverse of Z^T Z</span></span>
-<span id="cb20-8"><a aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span> ( <span class="fu">t</span>(Z) <span class="sc">%*%</span> Z )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Consider perturbation Z1 + 0.02</span></span>
+<span id="cb41-2"><a aria-hidden="true" tabindex="-1"></a>PZ1 <span class="ot">&lt;-</span> Z1 <span class="sc">+</span> <span class="fl">0.02</span></span>
+<span id="cb41-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Assemble perturbed design matrix</span></span>
+<span id="cb41-5"><a aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(PZ1, Z2, Z3), <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb41-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the inverse of Z^T Z</span></span>
+<span id="cb41-8"><a aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span> ( <span class="fu">t</span>(Z) <span class="sc">%*%</span> Z )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>            [,1]         [,2]       [,3]
@@ -1815,7 +2302,7 @@ Z = (Z_1 + 0.01 | Z_2 | Z_3)
 </ul>
 </div>
 </section>
-<section id="section-13" class="slide level2 smaller">
+<section id="section-20" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li><strong>Summary:</strong>
@@ -1834,14 +2321,14 @@ Z = (Z_1 + 0.01 | Z_2 | Z_3)
 <ul>
 <li>The average entry in <span class="math inline">Z_1</span> is</li>
 </ul>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(Z1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(Z1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 19.4</code></pre>
 </div>
 </div>
 </section>
-<section id="section-14" class="slide level2 smaller">
+<section id="section-21" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li>Therefore, the average percentage change in the data <span class="math inline">Z_1</span> is</li>
@@ -1857,7 +2344,7 @@ Z = (Z_1 + 0.01 | Z_2 | Z_3)
 \text{Percentage Change in } \, \xi_{11} = \frac{4446 - 17786}{17786} \times 100 \% \ \approx \ −75 \%
 </span></p>
 </section>
-<section id="section-15" class="slide level2 smaller">
+<section id="section-22" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li><strong>Conclusion:</strong> We have shown that</li>
@@ -1900,7 +2387,7 @@ Z = (Z_1 + 0.01 | Z_2 | Z_3)
 </ul></li>
 </ol>
 </section>
-<section id="section-16" class="slide level2 smaller">
+<section id="section-23" class="slide level2 smaller">
 <h2></h2>
 <ol start="4" type="1">
 <li><strong>An over-determined model</strong>
@@ -2114,22 +2601,22 @@ Z = (Z_1 + 0.01 | Z_2 | Z_3)
 <ul>
 <li>Code for this example is available here <a href="codes/multicollinearity.R">multicollinearity.R</a></li>
 </ul>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter data</span></span>
-<span id="cb24-2"><a aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">70</span>, <span class="dv">65</span>, <span class="dv">90</span>, <span class="dv">95</span>, <span class="dv">110</span>, <span class="dv">115</span>, <span class="dv">120</span>, <span class="dv">140</span>, <span class="dv">155</span>, <span class="dv">150</span>)</span>
-<span id="cb24-3"><a aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">80</span>, <span class="dv">100</span>, <span class="dv">120</span>, <span class="dv">140</span>, <span class="dv">160</span>, <span class="dv">180</span>, <span class="dv">200</span>, <span class="dv">220</span>, <span class="dv">240</span>, <span class="dv">260</span>)</span>
-<span id="cb24-4"><a aria-hidden="true" tabindex="-1"></a>x3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">810</span>, <span class="dv">1009</span>, <span class="dv">1273</span>, <span class="dv">1425</span>, <span class="dv">1633</span>, <span class="dv">1876</span>, <span class="dv">2052</span>, <span class="dv">2201</span>, <span class="dv">2435</span>, <span class="dv">2686</span>)</span>
-<span id="cb24-5"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit model</span></span>
-<span id="cb24-7"><a aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x2 <span class="sc">+</span> x3)</span>
-<span id="cb24-8"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># We want to display only part of summary</span></span>
-<span id="cb24-10"><a aria-hidden="true" tabindex="-1"></a><span class="co"># First capture the output into a vector</span></span>
-<span id="cb24-11"><a aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(<span class="fu">summary</span>(model))</span>
-<span id="cb24-12"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-13"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Then print only the lines of interest</span></span>
-<span id="cb24-14"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">paste</span>(temp[<span class="dv">9</span><span class="sc">:</span><span class="dv">20</span>], <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Enter data</span></span>
+<span id="cb45-2"><a aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">70</span>, <span class="dv">65</span>, <span class="dv">90</span>, <span class="dv">95</span>, <span class="dv">110</span>, <span class="dv">115</span>, <span class="dv">120</span>, <span class="dv">140</span>, <span class="dv">155</span>, <span class="dv">150</span>)</span>
+<span id="cb45-3"><a aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">80</span>, <span class="dv">100</span>, <span class="dv">120</span>, <span class="dv">140</span>, <span class="dv">160</span>, <span class="dv">180</span>, <span class="dv">200</span>, <span class="dv">220</span>, <span class="dv">240</span>, <span class="dv">260</span>)</span>
+<span id="cb45-4"><a aria-hidden="true" tabindex="-1"></a>x3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">810</span>, <span class="dv">1009</span>, <span class="dv">1273</span>, <span class="dv">1425</span>, <span class="dv">1633</span>, <span class="dv">1876</span>, <span class="dv">2052</span>, <span class="dv">2201</span>, <span class="dv">2435</span>, <span class="dv">2686</span>)</span>
+<span id="cb45-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit model</span></span>
+<span id="cb45-7"><a aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x2 <span class="sc">+</span> x3)</span>
+<span id="cb45-8"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># We want to display only part of summary</span></span>
+<span id="cb45-10"><a aria-hidden="true" tabindex="-1"></a><span class="co"># First capture the output into a vector</span></span>
+<span id="cb45-11"><a aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(<span class="fu">summary</span>(model))</span>
+<span id="cb45-12"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-13"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Then print only the lines of interest</span></span>
+<span id="cb45-14"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">paste</span>(temp[<span class="dv">9</span><span class="sc">:</span><span class="dv">20</span>], <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="section-17" class="slide level2 smaller">
+<section id="section-24" class="slide level2 smaller">
 <h2></h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -2154,7 +2641,7 @@ F-statistic:  92.4 on 2 and 7 DF,  p-value: 9.286e-06</code></pre>
 <li>F-statistic and related p-value</li>
 </ul>
 </section>
-<section id="section-18" class="slide level2 smaller">
+<section id="section-25" class="slide level2 smaller">
 <h2></h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -2179,7 +2666,7 @@ F-statistic:  92.4 on 2 and 7 DF,  p-value: 9.286e-06</code></pre>
 </ul></li>
 </ol>
 </section>
-<section id="section-19" class="slide level2 smaller">
+<section id="section-26" class="slide level2 smaller">
 <h2></h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -2205,7 +2692,7 @@ F-statistic:  92.4 on 2 and 7 DF,  p-value: 9.286e-06</code></pre>
 </ul></li>
 </ol>
 </section>
-<section id="section-20" class="slide level2 smaller">
+<section id="section-27" class="slide level2 smaller">
 <h2></h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -2260,7 +2747,7 @@ F-statistic:  92.4 on 2 and 7 DF,  p-value: 9.286e-06</code></pre>
 <ul>
 <li>Compute correlation of <span class="math inline">X_2</span> and <span class="math inline">X_3</span></li>
 </ul>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(x2, x3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(x2, x3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.9989624</code></pre>
@@ -2278,7 +2765,7 @@ F-statistic:  92.4 on 2 and 7 DF,  p-value: 9.286e-06</code></pre>
 <li>Impossible to isolate individual impact of either <em>Income</em> or <em>Wealth</em> upon <em>Expenditure</em></li>
 </ul>
 </section>
-<section id="section-21" class="slide level2 smaller">
+<section id="section-28" class="slide level2 smaller">
 <h2></h2>
 <p><strong>Method 2: Klein’s rule of thumb:</strong> Multicollinearity will be a serious problem if:</p>
 <ul>
@@ -2289,11 +2776,11 @@ F-statistic:  92.4 on 2 and 7 DF,  p-value: 9.286e-06</code></pre>
 <li><p>Regressing <span class="math inline">Y</span> against <span class="math inline">X_2</span> and <span class="math inline">X_3</span> gives <span class="math inline">R^2=0.9635</span></p></li>
 <li><p>Regressing <span class="math inline">X_2</span> against <span class="math inline">X_3</span> gives <span class="math inline">R^2 = 0.9979</span></p></li>
 </ul>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit model</span></span>
-<span id="cb31-2"><a aria-hidden="true" tabindex="-1"></a>klein <span class="ot">&lt;-</span> <span class="fu">lm</span>(x2 <span class="sc">~</span> x3)</span>
-<span id="cb31-3"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Read R^2 in summary</span></span>
-<span id="cb31-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(klein)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit model</span></span>
+<span id="cb52-2"><a aria-hidden="true" tabindex="-1"></a>klein <span class="ot">&lt;-</span> <span class="fu">lm</span>(x2 <span class="sc">~</span> x3)</span>
+<span id="cb52-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Read R^2 in summary</span></span>
+<span id="cb52-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(klein)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>Klein’s rule of thumb suggests that Multicollinearity will be a serious problem</strong></p>
 </section>
 <section id="addressing-multicollinearity" class="slide level2 smaller">
@@ -2306,14 +2793,14 @@ F-statistic:  92.4 on 2 and 7 DF,  p-value: 9.286e-06</code></pre>
 <li>We can then fit 2 separate models</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit expenditure as function of income</span></span>
-<span id="cb32-2"><a aria-hidden="true" tabindex="-1"></a>model<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x2)</span>
-<span id="cb32-3"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit expenditure as function of wealth</span></span>
-<span id="cb32-5"><a aria-hidden="true" tabindex="-1"></a>model<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x3)</span>
-<span id="cb32-6"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model<span class="fl">.1</span>)</span>
-<span id="cb32-8"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model<span class="fl">.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit expenditure as function of income</span></span>
+<span id="cb53-2"><a aria-hidden="true" tabindex="-1"></a>model<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x2)</span>
+<span id="cb53-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit expenditure as function of wealth</span></span>
+<span id="cb53-5"><a aria-hidden="true" tabindex="-1"></a>model<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x3)</span>
+<span id="cb53-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model<span class="fl">.1</span>)</span>
+<span id="cb53-8"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model<span class="fl">.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="expenditure-vs-income" class="slide level2 smaller">
 <h2>Expenditure Vs Income</h2>
@@ -2438,7 +2925,7 @@ Y = \beta_1 + \varepsilon
 <li>We will give details about AIC later</li>
 </ul>
 </section>
-<section id="section-22" class="slide level2 smaller">
+<section id="section-29" class="slide level2 smaller">
 <h2></h2>
 <ol start="2" type="1">
 <li><strong>Backward Selection:</strong> Start with the <strong>full model</strong> <span class="math display">
@@ -2474,33 +2961,33 @@ Y = \beta_1 + \varepsilon
 </ul></li>
 <li>Begin by fitting the null and full regression models</li>
 </ul>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the null model</span></span>
-<span id="cb35-2"><a aria-hidden="true" tabindex="-1"></a>null.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">1</span>)</span>
-<span id="cb35-3"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the full model</span></span>
-<span id="cb35-5"><a aria-hidden="true" tabindex="-1"></a>full.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> ... <span class="sc">+</span> xp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the null model</span></span>
+<span id="cb56-2"><a aria-hidden="true" tabindex="-1"></a>null.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">1</span>)</span>
+<span id="cb56-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the full model</span></span>
+<span id="cb56-5"><a aria-hidden="true" tabindex="-1"></a>full.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> ... <span class="sc">+</span> xp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><p>Forward selection or Stepwise selection: Start with <strong>null model</strong></p></li>
 <li><p>Backward selection: Start with <strong>full model</strong></p></li>
 </ul>
 </section>
-<section id="section-23" class="slide level2 smaller">
+<section id="section-30" class="slide level2 smaller">
 <h2></h2>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Stepwise selection</span></span>
-<span id="cb36-2"><a aria-hidden="true" tabindex="-1"></a>best.model <span class="ot">&lt;-</span> <span class="fu">step</span>(null.model, </span>
-<span id="cb36-3"><a aria-hidden="true" tabindex="-1"></a>                   <span class="at">direction =</span> <span class="st">"both"</span>, </span>
-<span id="cb36-4"><a aria-hidden="true" tabindex="-1"></a>                   <span class="at">scope =</span> <span class="fu">formula</span>(full.model))</span>
-<span id="cb36-5"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-6"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Forward selection</span></span>
-<span id="cb36-8"><a aria-hidden="true" tabindex="-1"></a>best.model <span class="ot">&lt;-</span> <span class="fu">step</span>(null.model, </span>
-<span id="cb36-9"><a aria-hidden="true" tabindex="-1"></a>                   <span class="at">direction =</span> <span class="st">"forward"</span>, </span>
-<span id="cb36-10"><a aria-hidden="true" tabindex="-1"></a>                   <span class="at">scope =</span> <span class="fu">formula</span>(full.model))</span>
-<span id="cb36-11"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-12"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-13"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Backward selection</span></span>
-<span id="cb36-14"><a aria-hidden="true" tabindex="-1"></a>best.model <span class="ot">&lt;-</span> <span class="fu">step</span>(full.model, </span>
-<span id="cb36-15"><a aria-hidden="true" tabindex="-1"></a>                   <span class="at">direction =</span> <span class="st">"backward"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Stepwise selection</span></span>
+<span id="cb57-2"><a aria-hidden="true" tabindex="-1"></a>best.model <span class="ot">&lt;-</span> <span class="fu">step</span>(null.model, </span>
+<span id="cb57-3"><a aria-hidden="true" tabindex="-1"></a>                   <span class="at">direction =</span> <span class="st">"both"</span>, </span>
+<span id="cb57-4"><a aria-hidden="true" tabindex="-1"></a>                   <span class="at">scope =</span> <span class="fu">formula</span>(full.model))</span>
+<span id="cb57-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Forward selection</span></span>
+<span id="cb57-8"><a aria-hidden="true" tabindex="-1"></a>best.model <span class="ot">&lt;-</span> <span class="fu">step</span>(null.model, </span>
+<span id="cb57-9"><a aria-hidden="true" tabindex="-1"></a>                   <span class="at">direction =</span> <span class="st">"forward"</span>, </span>
+<span id="cb57-10"><a aria-hidden="true" tabindex="-1"></a>                   <span class="at">scope =</span> <span class="fu">formula</span>(full.model))</span>
+<span id="cb57-11"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-12"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-13"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Backward selection</span></span>
+<span id="cb57-14"><a aria-hidden="true" tabindex="-1"></a>best.model <span class="ot">&lt;-</span> <span class="fu">step</span>(full.model, </span>
+<span id="cb57-15"><a aria-hidden="true" tabindex="-1"></a>                   <span class="at">direction =</span> <span class="st">"backward"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>The model selected by <em>Stepwise regression</em> is saved in
 <ul>
@@ -2508,7 +2995,7 @@ Y = \beta_1 + \varepsilon
 </ul></li>
 <li>To find out which model was selected, print the summary and read first 2 lines</li>
 </ul>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(best.model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(best.model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="example-longley-dataset" class="slide level2 smaller">
 <h2>Example: Longley dataset</h2>
@@ -2540,17 +3027,17 @@ Y = \beta_1 + \varepsilon
 <li><p>Longley dataset available here <a href="datasets/longley.txt">longley.txt</a></p></li>
 <li><p>Download the data file and place it in current working directory</p></li>
 </ul>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Read data file</span></span>
-<span id="cb39-2"><a aria-hidden="true" tabindex="-1"></a>longley <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="at">file =</span> <span class="st">"longley.txt"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb39-3"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Store columns in vectors</span></span>
-<span id="cb39-5"><a aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> longley[ , <span class="dv">1</span>]        <span class="co"># GNP Deflator</span></span>
-<span id="cb39-6"><a aria-hidden="true" tabindex="-1"></a>x3 <span class="ot">&lt;-</span> longley[ , <span class="dv">2</span>]        <span class="co"># GNP</span></span>
-<span id="cb39-7"><a aria-hidden="true" tabindex="-1"></a>x4 <span class="ot">&lt;-</span> longley[ , <span class="dv">3</span>]        <span class="co"># Unemployed</span></span>
-<span id="cb39-8"><a aria-hidden="true" tabindex="-1"></a>x5 <span class="ot">&lt;-</span> longley[ , <span class="dv">4</span>]        <span class="co"># Armed Forces</span></span>
-<span id="cb39-9"><a aria-hidden="true" tabindex="-1"></a>x6 <span class="ot">&lt;-</span> longley[ , <span class="dv">5</span>]        <span class="co"># Population</span></span>
-<span id="cb39-10"><a aria-hidden="true" tabindex="-1"></a>x7 <span class="ot">&lt;-</span> longley[ , <span class="dv">6</span>]        <span class="co"># Year</span></span>
-<span id="cb39-11"><a aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> longley[ , <span class="dv">7</span>]         <span class="co"># Employed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Read data file</span></span>
+<span id="cb60-2"><a aria-hidden="true" tabindex="-1"></a>longley <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="at">file =</span> <span class="st">"longley.txt"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb60-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Store columns in vectors</span></span>
+<span id="cb60-5"><a aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> longley[ , <span class="dv">1</span>]        <span class="co"># GNP Deflator</span></span>
+<span id="cb60-6"><a aria-hidden="true" tabindex="-1"></a>x3 <span class="ot">&lt;-</span> longley[ , <span class="dv">2</span>]        <span class="co"># GNP</span></span>
+<span id="cb60-7"><a aria-hidden="true" tabindex="-1"></a>x4 <span class="ot">&lt;-</span> longley[ , <span class="dv">3</span>]        <span class="co"># Unemployed</span></span>
+<span id="cb60-8"><a aria-hidden="true" tabindex="-1"></a>x5 <span class="ot">&lt;-</span> longley[ , <span class="dv">4</span>]        <span class="co"># Armed Forces</span></span>
+<span id="cb60-9"><a aria-hidden="true" tabindex="-1"></a>x6 <span class="ot">&lt;-</span> longley[ , <span class="dv">5</span>]        <span class="co"># Population</span></span>
+<span id="cb60-10"><a aria-hidden="true" tabindex="-1"></a>x7 <span class="ot">&lt;-</span> longley[ , <span class="dv">6</span>]        <span class="co"># Year</span></span>
+<span id="cb60-11"><a aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> longley[ , <span class="dv">7</span>]         <span class="co"># Employed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="fitting-the-full-model" class="slide level2 smaller">
 <h2>Fitting the Full Model</h2>
@@ -2560,13 +3047,13 @@ Y = \beta_1 + \beta_2 \, X_2 + \beta_3 \, X_3 + \beta_4 \, X_4 + \beta_5 \, X_5
     + \beta_6 \, X_6 + \beta_7 \, X_7 + \varepsilon
 </span></p>
 <p><br></p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit multiple regression model</span></span>
-<span id="cb40-2"><a aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> x4 <span class="sc">+</span> x5 <span class="sc">+</span> x6 <span class="sc">+</span> x7)</span>
-<span id="cb40-3"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Print summary</span></span>
-<span id="cb40-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit multiple regression model</span></span>
+<span id="cb61-2"><a aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> x4 <span class="sc">+</span> x5 <span class="sc">+</span> x6 <span class="sc">+</span> x7)</span>
+<span id="cb61-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Print summary</span></span>
+<span id="cb61-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="section-24" class="slide level2 smaller">
+<section id="section-31" class="slide level2 smaller">
 <h2></h2>
 <div class="columns">
 <div class="column" style="width:100%;">
@@ -2583,7 +3070,7 @@ Y = \beta_1 + \beta_2 \, X_2 + \beta_3 \, X_3 + \beta_4 \, X_4 + \beta_5 \, X_5
 </ul>
 </div>
 </section>
-<section id="section-25" class="slide level2 smaller">
+<section id="section-32" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li>To further confirm Multicollinearity, we can look at the correlation matrix
@@ -2592,8 +3079,8 @@ Y = \beta_1 + \beta_2 \, X_2 + \beta_3 \, X_3 + \beta_4 \, X_4 + \beta_5 \, X_5
 <li>We look only at correlations larger than <span class="math inline">0.9</span></li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Return correlations larger than 0.9</span></span>
-<span id="cb41-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(longley[ , <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]) <span class="sc">&gt;</span> <span class="fl">0.9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Return correlations larger than 0.9</span></span>
+<span id="cb62-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(longley[ , <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]) <span class="sc">&gt;</span> <span class="fl">0.9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>             GNP.deflator   GNP Unemployed Armed.Forces Population  Year
@@ -2633,13 +3120,13 @@ Year                 TRUE  TRUE      FALSE        FALSE       TRUE  TRUE</code><
 <ul>
 <li>Start by by fitting the null and full regression models</li>
 </ul>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the null model</span></span>
-<span id="cb43-2"><a aria-hidden="true" tabindex="-1"></a>null.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">1</span>)</span>
-<span id="cb43-3"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the full model</span></span>
-<span id="cb43-5"><a aria-hidden="true" tabindex="-1"></a>full.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> x4 <span class="sc">+</span> x5 <span class="sc">+</span> x6 <span class="sc">+</span> x7)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the null model</span></span>
+<span id="cb64-2"><a aria-hidden="true" tabindex="-1"></a>null.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">1</span>)</span>
+<span id="cb64-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the full model</span></span>
+<span id="cb64-5"><a aria-hidden="true" tabindex="-1"></a>full.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> x4 <span class="sc">+</span> x5 <span class="sc">+</span> x6 <span class="sc">+</span> x7)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="section-26" class="slide level2 smaller">
+<section id="section-33" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li>Perform Stepwise regression by
@@ -2649,21 +3136,21 @@ Year                 TRUE  TRUE      FALSE        FALSE       TRUE  TRUE</code><
 <li>Stepwise selection</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Forward selection</span></span>
-<span id="cb44-2"><a aria-hidden="true" tabindex="-1"></a>best.model<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">step</span>(null.model, </span>
-<span id="cb44-3"><a aria-hidden="true" tabindex="-1"></a>                    <span class="at">direction =</span> <span class="st">"forward"</span>, </span>
-<span id="cb44-4"><a aria-hidden="true" tabindex="-1"></a>                    <span class="at">scope =</span> <span class="fu">formula</span>(full.model))</span>
-<span id="cb44-5"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Backward selection</span></span>
-<span id="cb44-7"><a aria-hidden="true" tabindex="-1"></a>best.model<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">step</span>(full.model, </span>
-<span id="cb44-8"><a aria-hidden="true" tabindex="-1"></a>                    <span class="at">direction =</span> <span class="st">"backward"</span>)</span>
-<span id="cb44-9"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-10"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Stepwise selection</span></span>
-<span id="cb44-11"><a aria-hidden="true" tabindex="-1"></a>best.model<span class="fl">.3</span> <span class="ot">&lt;-</span> <span class="fu">step</span>(null.model, </span>
-<span id="cb44-12"><a aria-hidden="true" tabindex="-1"></a>                    <span class="at">direction =</span> <span class="st">"both"</span>,</span>
-<span id="cb44-13"><a aria-hidden="true" tabindex="-1"></a>                    <span class="at">scope =</span> <span class="fu">formula</span>(full.model))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Forward selection</span></span>
+<span id="cb65-2"><a aria-hidden="true" tabindex="-1"></a>best.model<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">step</span>(null.model, </span>
+<span id="cb65-3"><a aria-hidden="true" tabindex="-1"></a>                    <span class="at">direction =</span> <span class="st">"forward"</span>, </span>
+<span id="cb65-4"><a aria-hidden="true" tabindex="-1"></a>                    <span class="at">scope =</span> <span class="fu">formula</span>(full.model))</span>
+<span id="cb65-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Backward selection</span></span>
+<span id="cb65-7"><a aria-hidden="true" tabindex="-1"></a>best.model<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">step</span>(full.model, </span>
+<span id="cb65-8"><a aria-hidden="true" tabindex="-1"></a>                    <span class="at">direction =</span> <span class="st">"backward"</span>)</span>
+<span id="cb65-9"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-10"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Stepwise selection</span></span>
+<span id="cb65-11"><a aria-hidden="true" tabindex="-1"></a>best.model<span class="fl">.3</span> <span class="ot">&lt;-</span> <span class="fu">step</span>(null.model, </span>
+<span id="cb65-12"><a aria-hidden="true" tabindex="-1"></a>                    <span class="at">direction =</span> <span class="st">"both"</span>,</span>
+<span id="cb65-13"><a aria-hidden="true" tabindex="-1"></a>                    <span class="at">scope =</span> <span class="fu">formula</span>(full.model))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="section-27" class="slide level2 smaller">
+<section id="section-34" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li>Models obtained by Stepwise regression are stored in
@@ -2677,16 +3164,16 @@ Year                 TRUE  TRUE      FALSE        FALSE       TRUE  TRUE</code><
 <ul>
 <li>Print the summary for each model obtained</li>
 </ul>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Print summary of each model</span></span>
-<span id="cb45-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(best.model.x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Print summary of each model</span></span>
+<span id="cb66-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(best.model.x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div style="font-size: 0.2em">
 <p><br></p>
 </div>
 <ul>
 <li><strong>Output:</strong> The 3 methods all yield the same model</li>
 </ul>
-<div class="sourceCode" id="cb46"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb46-1"><a aria-hidden="true" tabindex="-1"></a>Call:</span>
-<span id="cb46-2"><a aria-hidden="true" tabindex="-1"></a>lm(formula = y ~ x3 + x4 + x5 + x7)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb67-1"><a aria-hidden="true" tabindex="-1"></a>Call:</span>
+<span id="cb67-2"><a aria-hidden="true" tabindex="-1"></a>lm(formula = y ~ x3 + x4 + x5 + x7)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="interpretation" class="slide level2 smaller">
 <h2>Interpretation</h2>
@@ -2718,8 +3205,8 @@ Year                 TRUE  TRUE      FALSE        FALSE       TRUE  TRUE</code><
 <section id="re-fitting-the-model-without-x_2-and-x_6" class="slide level2 smaller">
 <h2>Re-fitting the model without <span class="math inline">X_2</span> and <span class="math inline">X_6</span></h2>
 <div style="font-size: 0.9em">
-<div class="sourceCode" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a aria-hidden="true" tabindex="-1"></a>best.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x3 <span class="sc">+</span> x4 <span class="sc">+</span> x5 <span class="sc">+</span> x7)</span>
-<span id="cb47-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(best.model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a aria-hidden="true" tabindex="-1"></a>best.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x3 <span class="sc">+</span> x4 <span class="sc">+</span> x5 <span class="sc">+</span> x7)</span>
+<span id="cb68-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(best.model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="verbatim"><code>Coefficients:
               Estimate Std. Error t value Pr(&gt;|t|)    
 (Intercept) -3.599e+03  7.406e+02  -4.859 0.000503 ***
@@ -2743,8 +3230,8 @@ F-statistic: 589.8 on 4 and 11 DF,  p-value: 9.5e-13</code></pre>
 <section id="re-fitting-the-model-without-x_2-and-x_6-1" class="slide level2 smaller">
 <h2>Re-fitting the model without <span class="math inline">X_2</span> and <span class="math inline">X_6</span></h2>
 <div style="font-size: 0.9em">
-<div class="sourceCode" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a aria-hidden="true" tabindex="-1"></a>best.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x3 <span class="sc">+</span> x4 <span class="sc">+</span> x5 <span class="sc">+</span> x7)</span>
-<span id="cb49-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(best.model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a aria-hidden="true" tabindex="-1"></a>best.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x3 <span class="sc">+</span> x4 <span class="sc">+</span> x5 <span class="sc">+</span> x7)</span>
+<span id="cb70-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(best.model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="verbatim"><code>Coefficients:
               Estimate Std. Error t value Pr(&gt;|t|)    
 (Intercept) -3.599e+03  7.406e+02  -4.859 0.000503 ***
@@ -2773,8 +3260,8 @@ F-statistic: 589.8 on 4 and 11 DF,  p-value: 9.5e-13</code></pre>
 <section id="re-fitting-the-model-without-x_2-and-x_6-2" class="slide level2 smaller">
 <h2>Re-fitting the model without <span class="math inline">X_2</span> and <span class="math inline">X_6</span></h2>
 <div style="font-size: 0.9em">
-<div class="sourceCode" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a aria-hidden="true" tabindex="-1"></a>best.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x3 <span class="sc">+</span> x4 <span class="sc">+</span> x5 <span class="sc">+</span> x7)</span>
-<span id="cb51-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(best.model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a aria-hidden="true" tabindex="-1"></a>best.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x3 <span class="sc">+</span> x4 <span class="sc">+</span> x5 <span class="sc">+</span> x7)</span>
+<span id="cb72-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(best.model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="verbatim"><code>Coefficients:
               Estimate Std. Error t value Pr(&gt;|t|)    
 (Intercept) -3.599e+03  7.406e+02  -4.859 0.000503 ***
@@ -2803,8 +3290,8 @@ F-statistic: 589.8 on 4 and 11 DF,  p-value: 9.5e-13</code></pre>
 <section id="re-fitting-the-model-without-x_2-and-x_6-3" class="slide level2 smaller">
 <h2>Re-fitting the model without <span class="math inline">X_2</span> and <span class="math inline">X_6</span></h2>
 <div style="font-size: 0.9em">
-<div class="sourceCode" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a aria-hidden="true" tabindex="-1"></a>best.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x3 <span class="sc">+</span> x4 <span class="sc">+</span> x5 <span class="sc">+</span> x7)</span>
-<span id="cb53-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(best.model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a aria-hidden="true" tabindex="-1"></a>best.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x3 <span class="sc">+</span> x4 <span class="sc">+</span> x5 <span class="sc">+</span> x7)</span>
+<span id="cb74-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(best.model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="verbatim"><code>Coefficients:
               Estimate Std. Error t value Pr(&gt;|t|)    
 (Intercept) -3.599e+03  7.406e+02  -4.859 0.000503 ***
@@ -2873,7 +3360,7 @@ R^2 = 0.9998
 <li><p>Fitting a higher degree polynomial gives higher <span class="math inline">R^2</span></p></li>
 </ul>
 </section>
-<section id="section-28" class="slide level2 smaller">
+<section id="section-35" class="slide level2 smaller">
 <h2></h2>
 <p><strong>Conclusion:</strong> If the degree of the polynomial is sufficiently high, we can get <span class="math inline">R^2 = 1</span></p>
 <ul>
@@ -2923,40 +3410,40 @@ R^2 = 0.9998
 <div class="cell">
 <details class="code-fold">
 <summary>Click here to show the full code</summary>
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Divorces data</span></span>
-<span id="cb55-2"><a aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>,<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>)</span>
-<span id="cb55-3"><a aria-hidden="true" tabindex="-1"></a>percent <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.51</span>, <span class="fl">9.5</span>, <span class="fl">8.91</span>, <span class="fl">9.35</span>, <span class="fl">8.18</span>, <span class="fl">6.43</span>, <span class="fl">5.31</span>, </span>
-<span id="cb55-4"><a aria-hidden="true" tabindex="-1"></a>             <span class="fl">5.07</span>, <span class="fl">3.65</span>, <span class="fl">3.8</span>, <span class="fl">2.83</span>, <span class="fl">1.51</span>, <span class="fl">1.27</span>, <span class="fl">0.49</span>)</span>
-<span id="cb55-5"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit linear model</span></span>
-<span id="cb55-7"><a aria-hidden="true" tabindex="-1"></a>linear <span class="ot">&lt;-</span> <span class="fu">lm</span>(percent <span class="sc">~</span> year)</span>
-<span id="cb55-8"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit order 6 model</span></span>
-<span id="cb55-10"><a aria-hidden="true" tabindex="-1"></a>order_6 <span class="ot">&lt;-</span> <span class="fu">lm</span>(percent <span class="sc">~</span> year  <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">2</span> ) <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">3</span> ) <span class="sc">+</span> </span>
-<span id="cb55-11"><a aria-hidden="true" tabindex="-1"></a>                                <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">4</span> ) <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">5</span> ) <span class="sc">+</span></span>
-<span id="cb55-12"><a aria-hidden="true" tabindex="-1"></a>                                <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">6</span> ))</span>
-<span id="cb55-13"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-14"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot of data</span></span>
-<span id="cb55-15"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(year, percent, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="dv">2</span>)</span>
-<span id="cb55-16"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-17"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Add labels</span></span>
-<span id="cb55-18"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Years of marriage"</span>, <span class="at">side =</span> <span class="dv">1</span>, <span class="at">line =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">2.1</span>)</span>
-<span id="cb55-19"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Risk of divorce"</span>, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">line =</span> <span class="fl">2.5</span>, <span class="at">cex =</span> <span class="fl">2.1</span>)</span>
-<span id="cb55-20"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-21"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Linear Vs Quadratic</span></span>
-<span id="cb55-22"><a aria-hidden="true" tabindex="-1"></a>polynomial <span class="ot">&lt;-</span> <span class="fu">Vectorize</span>(<span class="cf">function</span>(x, ps) {</span>
-<span id="cb55-23"><a aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(ps)</span>
-<span id="cb55-24"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(ps<span class="sc">*</span>x<span class="sc">^</span>(<span class="dv">1</span><span class="sc">:</span>n<span class="dv">-1</span>))</span>
-<span id="cb55-25"><a aria-hidden="true" tabindex="-1"></a>}, <span class="st">"x"</span>)</span>
-<span id="cb55-26"><a aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">polynomial</span>(x, <span class="fu">coef</span>(linear)), <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb55-27"><a aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">polynomial</span>(x, <span class="fu">coef</span>(order_6)), <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
-<span id="cb55-28"><a aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Linear"</span>, <span class="st">"Order 6"</span>), </span>
-<span id="cb55-29"><a aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">cex =</span> <span class="dv">3</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Divorces data</span></span>
+<span id="cb76-2"><a aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>,<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>)</span>
+<span id="cb76-3"><a aria-hidden="true" tabindex="-1"></a>percent <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.51</span>, <span class="fl">9.5</span>, <span class="fl">8.91</span>, <span class="fl">9.35</span>, <span class="fl">8.18</span>, <span class="fl">6.43</span>, <span class="fl">5.31</span>, </span>
+<span id="cb76-4"><a aria-hidden="true" tabindex="-1"></a>             <span class="fl">5.07</span>, <span class="fl">3.65</span>, <span class="fl">3.8</span>, <span class="fl">2.83</span>, <span class="fl">1.51</span>, <span class="fl">1.27</span>, <span class="fl">0.49</span>)</span>
+<span id="cb76-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit linear model</span></span>
+<span id="cb76-7"><a aria-hidden="true" tabindex="-1"></a>linear <span class="ot">&lt;-</span> <span class="fu">lm</span>(percent <span class="sc">~</span> year)</span>
+<span id="cb76-8"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit order 6 model</span></span>
+<span id="cb76-10"><a aria-hidden="true" tabindex="-1"></a>order_6 <span class="ot">&lt;-</span> <span class="fu">lm</span>(percent <span class="sc">~</span> year  <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">2</span> ) <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">3</span> ) <span class="sc">+</span> </span>
+<span id="cb76-11"><a aria-hidden="true" tabindex="-1"></a>                                <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">4</span> ) <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">5</span> ) <span class="sc">+</span></span>
+<span id="cb76-12"><a aria-hidden="true" tabindex="-1"></a>                                <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">6</span> ))</span>
+<span id="cb76-13"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-14"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot of data</span></span>
+<span id="cb76-15"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(year, percent, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="dv">2</span>)</span>
+<span id="cb76-16"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-17"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Add labels</span></span>
+<span id="cb76-18"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Years of marriage"</span>, <span class="at">side =</span> <span class="dv">1</span>, <span class="at">line =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">2.1</span>)</span>
+<span id="cb76-19"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Risk of divorce"</span>, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">line =</span> <span class="fl">2.5</span>, <span class="at">cex =</span> <span class="fl">2.1</span>)</span>
+<span id="cb76-20"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-21"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Linear Vs Quadratic</span></span>
+<span id="cb76-22"><a aria-hidden="true" tabindex="-1"></a>polynomial <span class="ot">&lt;-</span> <span class="fu">Vectorize</span>(<span class="cf">function</span>(x, ps) {</span>
+<span id="cb76-23"><a aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(ps)</span>
+<span id="cb76-24"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(ps<span class="sc">*</span>x<span class="sc">^</span>(<span class="dv">1</span><span class="sc">:</span>n<span class="dv">-1</span>))</span>
+<span id="cb76-25"><a aria-hidden="true" tabindex="-1"></a>}, <span class="st">"x"</span>)</span>
+<span id="cb76-26"><a aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">polynomial</span>(x, <span class="fu">coef</span>(linear)), <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb76-27"><a aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">polynomial</span>(x, <span class="fu">coef</span>(order_6)), <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb76-28"><a aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Linear"</span>, <span class="st">"Order 6"</span>), </span>
+<span id="cb76-29"><a aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">cex =</span> <span class="dv">3</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="lecture_10_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
+<p><img data-src="lecture_10_files/figure-revealjs/unnamed-chunk-25-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -2980,40 +3467,40 @@ y = \beta_1 + \beta_2 x + \varepsilon
 <div class="cell">
 <details class="code-fold">
 <summary>Click here to show the full code</summary>
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Divorces data</span></span>
-<span id="cb56-2"><a aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>,<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>)</span>
-<span id="cb56-3"><a aria-hidden="true" tabindex="-1"></a>percent <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.51</span>, <span class="fl">9.5</span>, <span class="fl">8.91</span>, <span class="fl">9.35</span>, <span class="fl">8.18</span>, <span class="fl">6.43</span>, <span class="fl">5.31</span>, </span>
-<span id="cb56-4"><a aria-hidden="true" tabindex="-1"></a>             <span class="fl">5.07</span>, <span class="fl">3.65</span>, <span class="fl">3.8</span>, <span class="fl">2.83</span>, <span class="fl">1.51</span>, <span class="fl">1.27</span>, <span class="fl">0.49</span>)</span>
-<span id="cb56-5"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit linear model</span></span>
-<span id="cb56-7"><a aria-hidden="true" tabindex="-1"></a>linear <span class="ot">&lt;-</span> <span class="fu">lm</span>(percent <span class="sc">~</span> year)</span>
-<span id="cb56-8"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit order 6 model</span></span>
-<span id="cb56-10"><a aria-hidden="true" tabindex="-1"></a>order_6 <span class="ot">&lt;-</span> <span class="fu">lm</span>(percent <span class="sc">~</span> year  <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">2</span> ) <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">3</span> ) <span class="sc">+</span> </span>
-<span id="cb56-11"><a aria-hidden="true" tabindex="-1"></a>                                <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">4</span> ) <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">5</span> ) <span class="sc">+</span></span>
-<span id="cb56-12"><a aria-hidden="true" tabindex="-1"></a>                                <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">6</span> ))</span>
-<span id="cb56-13"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-14"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot of data</span></span>
-<span id="cb56-15"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(year, percent, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="dv">2</span>)</span>
-<span id="cb56-16"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-17"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Add labels</span></span>
-<span id="cb56-18"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Years of marriage"</span>, <span class="at">side =</span> <span class="dv">1</span>, <span class="at">line =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">2.1</span>)</span>
-<span id="cb56-19"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Risk of divorce"</span>, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">line =</span> <span class="fl">2.5</span>, <span class="at">cex =</span> <span class="fl">2.1</span>)</span>
-<span id="cb56-20"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-21"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Linear Vs Quadratic</span></span>
-<span id="cb56-22"><a aria-hidden="true" tabindex="-1"></a>polynomial <span class="ot">&lt;-</span> <span class="fu">Vectorize</span>(<span class="cf">function</span>(x, ps) {</span>
-<span id="cb56-23"><a aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(ps)</span>
-<span id="cb56-24"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(ps<span class="sc">*</span>x<span class="sc">^</span>(<span class="dv">1</span><span class="sc">:</span>n<span class="dv">-1</span>))</span>
-<span id="cb56-25"><a aria-hidden="true" tabindex="-1"></a>}, <span class="st">"x"</span>)</span>
-<span id="cb56-26"><a aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">polynomial</span>(x, <span class="fu">coef</span>(linear)), <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb56-27"><a aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">polynomial</span>(x, <span class="fu">coef</span>(order_6)), <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
-<span id="cb56-28"><a aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Linear"</span>, <span class="st">"Order 6"</span>), </span>
-<span id="cb56-29"><a aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">cex =</span> <span class="dv">3</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Divorces data</span></span>
+<span id="cb77-2"><a aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>,<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>)</span>
+<span id="cb77-3"><a aria-hidden="true" tabindex="-1"></a>percent <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.51</span>, <span class="fl">9.5</span>, <span class="fl">8.91</span>, <span class="fl">9.35</span>, <span class="fl">8.18</span>, <span class="fl">6.43</span>, <span class="fl">5.31</span>, </span>
+<span id="cb77-4"><a aria-hidden="true" tabindex="-1"></a>             <span class="fl">5.07</span>, <span class="fl">3.65</span>, <span class="fl">3.8</span>, <span class="fl">2.83</span>, <span class="fl">1.51</span>, <span class="fl">1.27</span>, <span class="fl">0.49</span>)</span>
+<span id="cb77-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit linear model</span></span>
+<span id="cb77-7"><a aria-hidden="true" tabindex="-1"></a>linear <span class="ot">&lt;-</span> <span class="fu">lm</span>(percent <span class="sc">~</span> year)</span>
+<span id="cb77-8"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit order 6 model</span></span>
+<span id="cb77-10"><a aria-hidden="true" tabindex="-1"></a>order_6 <span class="ot">&lt;-</span> <span class="fu">lm</span>(percent <span class="sc">~</span> year  <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">2</span> ) <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">3</span> ) <span class="sc">+</span> </span>
+<span id="cb77-11"><a aria-hidden="true" tabindex="-1"></a>                                <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">4</span> ) <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">5</span> ) <span class="sc">+</span></span>
+<span id="cb77-12"><a aria-hidden="true" tabindex="-1"></a>                                <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">6</span> ))</span>
+<span id="cb77-13"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-14"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot of data</span></span>
+<span id="cb77-15"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(year, percent, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="dv">2</span>)</span>
+<span id="cb77-16"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-17"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Add labels</span></span>
+<span id="cb77-18"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Years of marriage"</span>, <span class="at">side =</span> <span class="dv">1</span>, <span class="at">line =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">2.1</span>)</span>
+<span id="cb77-19"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Risk of divorce"</span>, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">line =</span> <span class="fl">2.5</span>, <span class="at">cex =</span> <span class="fl">2.1</span>)</span>
+<span id="cb77-20"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-21"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Linear Vs Quadratic</span></span>
+<span id="cb77-22"><a aria-hidden="true" tabindex="-1"></a>polynomial <span class="ot">&lt;-</span> <span class="fu">Vectorize</span>(<span class="cf">function</span>(x, ps) {</span>
+<span id="cb77-23"><a aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(ps)</span>
+<span id="cb77-24"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(ps<span class="sc">*</span>x<span class="sc">^</span>(<span class="dv">1</span><span class="sc">:</span>n<span class="dv">-1</span>))</span>
+<span id="cb77-25"><a aria-hidden="true" tabindex="-1"></a>}, <span class="st">"x"</span>)</span>
+<span id="cb77-26"><a aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">polynomial</span>(x, <span class="fu">coef</span>(linear)), <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb77-27"><a aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">polynomial</span>(x, <span class="fu">coef</span>(order_6)), <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb77-28"><a aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Linear"</span>, <span class="st">"Order 6"</span>), </span>
+<span id="cb77-29"><a aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">cex =</span> <span class="dv">3</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="lecture_10_files/figure-revealjs/unnamed-chunk-20-1.png" width="960"></p>
+<p><img data-src="lecture_10_files/figure-revealjs/unnamed-chunk-26-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -3038,40 +3525,40 @@ y = \beta_1 + \beta_2 x + \varepsilon
 <div class="cell">
 <details class="code-fold">
 <summary>Click here to show the full code</summary>
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Divorces data</span></span>
-<span id="cb57-2"><a aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>,<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>)</span>
-<span id="cb57-3"><a aria-hidden="true" tabindex="-1"></a>percent <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.51</span>, <span class="fl">9.5</span>, <span class="fl">8.91</span>, <span class="fl">9.35</span>, <span class="fl">8.18</span>, <span class="fl">6.43</span>, <span class="fl">5.31</span>, </span>
-<span id="cb57-4"><a aria-hidden="true" tabindex="-1"></a>             <span class="fl">5.07</span>, <span class="fl">3.65</span>, <span class="fl">3.8</span>, <span class="fl">2.83</span>, <span class="fl">1.51</span>, <span class="fl">1.27</span>, <span class="fl">0.49</span>)</span>
-<span id="cb57-5"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit linear model</span></span>
-<span id="cb57-7"><a aria-hidden="true" tabindex="-1"></a>linear <span class="ot">&lt;-</span> <span class="fu">lm</span>(percent <span class="sc">~</span> year)</span>
-<span id="cb57-8"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit order 6 model</span></span>
-<span id="cb57-10"><a aria-hidden="true" tabindex="-1"></a>order_6 <span class="ot">&lt;-</span> <span class="fu">lm</span>(percent <span class="sc">~</span> year  <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">2</span> ) <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">3</span> ) <span class="sc">+</span> </span>
-<span id="cb57-11"><a aria-hidden="true" tabindex="-1"></a>                                <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">4</span> ) <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">5</span> ) <span class="sc">+</span></span>
-<span id="cb57-12"><a aria-hidden="true" tabindex="-1"></a>                                <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">6</span> ))</span>
-<span id="cb57-13"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-14"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot of data</span></span>
-<span id="cb57-15"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(year, percent, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="dv">2</span>)</span>
-<span id="cb57-16"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-17"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Add labels</span></span>
-<span id="cb57-18"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Years of marriage"</span>, <span class="at">side =</span> <span class="dv">1</span>, <span class="at">line =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">2.1</span>)</span>
-<span id="cb57-19"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Risk of divorce"</span>, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">line =</span> <span class="fl">2.5</span>, <span class="at">cex =</span> <span class="fl">2.1</span>)</span>
-<span id="cb57-20"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-21"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Linear Vs Quadratic</span></span>
-<span id="cb57-22"><a aria-hidden="true" tabindex="-1"></a>polynomial <span class="ot">&lt;-</span> <span class="fu">Vectorize</span>(<span class="cf">function</span>(x, ps) {</span>
-<span id="cb57-23"><a aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(ps)</span>
-<span id="cb57-24"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(ps<span class="sc">*</span>x<span class="sc">^</span>(<span class="dv">1</span><span class="sc">:</span>n<span class="dv">-1</span>))</span>
-<span id="cb57-25"><a aria-hidden="true" tabindex="-1"></a>}, <span class="st">"x"</span>)</span>
-<span id="cb57-26"><a aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">polynomial</span>(x, <span class="fu">coef</span>(linear)), <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb57-27"><a aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">polynomial</span>(x, <span class="fu">coef</span>(order_6)), <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
-<span id="cb57-28"><a aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Linear"</span>, <span class="st">"Order 6"</span>), </span>
-<span id="cb57-29"><a aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">cex =</span> <span class="dv">3</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Divorces data</span></span>
+<span id="cb78-2"><a aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>,<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>)</span>
+<span id="cb78-3"><a aria-hidden="true" tabindex="-1"></a>percent <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.51</span>, <span class="fl">9.5</span>, <span class="fl">8.91</span>, <span class="fl">9.35</span>, <span class="fl">8.18</span>, <span class="fl">6.43</span>, <span class="fl">5.31</span>, </span>
+<span id="cb78-4"><a aria-hidden="true" tabindex="-1"></a>             <span class="fl">5.07</span>, <span class="fl">3.65</span>, <span class="fl">3.8</span>, <span class="fl">2.83</span>, <span class="fl">1.51</span>, <span class="fl">1.27</span>, <span class="fl">0.49</span>)</span>
+<span id="cb78-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit linear model</span></span>
+<span id="cb78-7"><a aria-hidden="true" tabindex="-1"></a>linear <span class="ot">&lt;-</span> <span class="fu">lm</span>(percent <span class="sc">~</span> year)</span>
+<span id="cb78-8"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit order 6 model</span></span>
+<span id="cb78-10"><a aria-hidden="true" tabindex="-1"></a>order_6 <span class="ot">&lt;-</span> <span class="fu">lm</span>(percent <span class="sc">~</span> year  <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">2</span> ) <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">3</span> ) <span class="sc">+</span> </span>
+<span id="cb78-11"><a aria-hidden="true" tabindex="-1"></a>                                <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">4</span> ) <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">5</span> ) <span class="sc">+</span></span>
+<span id="cb78-12"><a aria-hidden="true" tabindex="-1"></a>                                <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">6</span> ))</span>
+<span id="cb78-13"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-14"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot of data</span></span>
+<span id="cb78-15"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(year, percent, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="dv">2</span>)</span>
+<span id="cb78-16"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-17"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Add labels</span></span>
+<span id="cb78-18"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Years of marriage"</span>, <span class="at">side =</span> <span class="dv">1</span>, <span class="at">line =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">2.1</span>)</span>
+<span id="cb78-19"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Risk of divorce"</span>, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">line =</span> <span class="fl">2.5</span>, <span class="at">cex =</span> <span class="fl">2.1</span>)</span>
+<span id="cb78-20"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-21"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Linear Vs Quadratic</span></span>
+<span id="cb78-22"><a aria-hidden="true" tabindex="-1"></a>polynomial <span class="ot">&lt;-</span> <span class="fu">Vectorize</span>(<span class="cf">function</span>(x, ps) {</span>
+<span id="cb78-23"><a aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(ps)</span>
+<span id="cb78-24"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(ps<span class="sc">*</span>x<span class="sc">^</span>(<span class="dv">1</span><span class="sc">:</span>n<span class="dv">-1</span>))</span>
+<span id="cb78-25"><a aria-hidden="true" tabindex="-1"></a>}, <span class="st">"x"</span>)</span>
+<span id="cb78-26"><a aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">polynomial</span>(x, <span class="fu">coef</span>(linear)), <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb78-27"><a aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">polynomial</span>(x, <span class="fu">coef</span>(order_6)), <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb78-28"><a aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Linear"</span>, <span class="st">"Order 6"</span>), </span>
+<span id="cb78-29"><a aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">cex =</span> <span class="dv">3</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="lecture_10_files/figure-revealjs/unnamed-chunk-21-1.png" width="960"></p>
+<p><img data-src="lecture_10_files/figure-revealjs/unnamed-chunk-27-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -3181,22 +3668,22 @@ y = \beta_1 + \beta_2 x + \varepsilon
 <div class="cell">
 <details class="code-fold">
 <summary>Click here to show the full code</summary>
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Divorces data</span></span>
-<span id="cb58-2"><a aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>,<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>)</span>
-<span id="cb58-3"><a aria-hidden="true" tabindex="-1"></a>percent <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.51</span>, <span class="fl">9.5</span>, <span class="fl">8.91</span>, <span class="fl">9.35</span>, <span class="fl">8.18</span>, <span class="fl">6.43</span>, <span class="fl">5.31</span>, </span>
-<span id="cb58-4"><a aria-hidden="true" tabindex="-1"></a>             <span class="fl">5.07</span>, <span class="fl">3.65</span>, <span class="fl">3.8</span>, <span class="fl">2.83</span>, <span class="fl">1.51</span>, <span class="fl">1.27</span>, <span class="fl">0.49</span>)</span>
-<span id="cb58-5"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot of data</span></span>
-<span id="cb58-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(year, percent, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="dv">2</span>)</span>
-<span id="cb58-8"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Add labels</span></span>
-<span id="cb58-10"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Years of marriage"</span>, <span class="at">side =</span> <span class="dv">1</span>, <span class="at">line =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">2.1</span>)</span>
-<span id="cb58-11"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Risk of divorce"</span>, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">line =</span> <span class="fl">2.5</span>, <span class="at">cex =</span> <span class="fl">2.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Divorces data</span></span>
+<span id="cb79-2"><a aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>,<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>)</span>
+<span id="cb79-3"><a aria-hidden="true" tabindex="-1"></a>percent <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.51</span>, <span class="fl">9.5</span>, <span class="fl">8.91</span>, <span class="fl">9.35</span>, <span class="fl">8.18</span>, <span class="fl">6.43</span>, <span class="fl">5.31</span>, </span>
+<span id="cb79-4"><a aria-hidden="true" tabindex="-1"></a>             <span class="fl">5.07</span>, <span class="fl">3.65</span>, <span class="fl">3.8</span>, <span class="fl">2.83</span>, <span class="fl">1.51</span>, <span class="fl">1.27</span>, <span class="fl">0.49</span>)</span>
+<span id="cb79-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot of data</span></span>
+<span id="cb79-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(year, percent, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="dv">2</span>)</span>
+<span id="cb79-8"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Add labels</span></span>
+<span id="cb79-10"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Years of marriage"</span>, <span class="at">side =</span> <span class="dv">1</span>, <span class="at">line =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">2.1</span>)</span>
+<span id="cb79-11"><a aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Risk of divorce"</span>, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">line =</span> <span class="fl">2.5</span>, <span class="at">cex =</span> <span class="fl">2.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="lecture_10_files/figure-revealjs/unnamed-chunk-22-1.png" width="960"></p>
+<p><img data-src="lecture_10_files/figure-revealjs/unnamed-chunk-28-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -3281,10 +3768,10 @@ y = \beta_1 + \beta_2 x + \varepsilon
 <li><p>Code for this example available here <a href="codes/divorces_stepwise.R">divorces_stepwise.R</a></p></li>
 <li><p>First we import the data into R</p></li>
 </ul>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Divorces data</span></span>
-<span id="cb59-2"><a aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>,<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>)</span>
-<span id="cb59-3"><a aria-hidden="true" tabindex="-1"></a>percent <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.51</span>, <span class="fl">9.5</span>, <span class="fl">8.91</span>, <span class="fl">9.35</span>, <span class="fl">8.18</span>, <span class="fl">6.43</span>, <span class="fl">5.31</span>, </span>
-<span id="cb59-4"><a aria-hidden="true" tabindex="-1"></a>             <span class="fl">5.07</span>, <span class="fl">3.65</span>, <span class="fl">3.8</span>, <span class="fl">2.83</span>, <span class="fl">1.51</span>, <span class="fl">1.27</span>, <span class="fl">0.49</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Divorces data</span></span>
+<span id="cb80-2"><a aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>,<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>)</span>
+<span id="cb80-3"><a aria-hidden="true" tabindex="-1"></a>percent <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.51</span>, <span class="fl">9.5</span>, <span class="fl">8.91</span>, <span class="fl">9.35</span>, <span class="fl">8.18</span>, <span class="fl">6.43</span>, <span class="fl">5.31</span>, </span>
+<span id="cb80-4"><a aria-hidden="true" tabindex="-1"></a>             <span class="fl">5.07</span>, <span class="fl">3.65</span>, <span class="fl">3.8</span>, <span class="fl">2.83</span>, <span class="fl">1.51</span>, <span class="fl">1.27</span>, <span class="fl">0.49</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>The null model is</li>
 </ul>
@@ -3294,7 +3781,7 @@ y = \beta_1 + \beta_2 x + \varepsilon
 <ul>
 <li>Fit the null model with</li>
 </ul>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a aria-hidden="true" tabindex="-1"></a>null.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(percent <span class="sc">~</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a aria-hidden="true" tabindex="-1"></a>null.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(percent <span class="sc">~</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="fitting-the-full-model-1" class="slide level2 smaller">
 <h2>Fitting the full model</h2>
@@ -3308,21 +3795,21 @@ y = \beta_1 + \beta_2 x + \varepsilon
 <ul>
 <li>Fit the full model with</li>
 </ul>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a aria-hidden="true" tabindex="-1"></a>full.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(percent <span class="sc">~</span> year  <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">2</span> ) <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">3</span> ) <span class="sc">+</span> </span>
-<span id="cb61-2"><a aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">4</span> ) <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">5</span> ) <span class="sc">+</span></span>
-<span id="cb61-3"><a aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">6</span> ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a aria-hidden="true" tabindex="-1"></a>full.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(percent <span class="sc">~</span> year  <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">2</span> ) <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">3</span> ) <span class="sc">+</span> </span>
+<span id="cb82-2"><a aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">4</span> ) <span class="sc">+</span> <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">5</span> ) <span class="sc">+</span></span>
+<span id="cb82-3"><a aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">I</span>( year<span class="sc">^</span><span class="dv">6</span> ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="stepwise-regression-1" class="slide level2 smaller">
 <h2>Stepwise regression</h2>
 <p>We run stepwise regression and save the best model:</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a aria-hidden="true" tabindex="-1"></a>best.model <span class="ot">&lt;-</span> <span class="fu">step</span>(null.model, </span>
-<span id="cb62-2"><a aria-hidden="true" tabindex="-1"></a>                  <span class="at">direction =</span> <span class="st">"both"</span>, </span>
-<span id="cb62-3"><a aria-hidden="true" tabindex="-1"></a>                  <span class="at">scope =</span> <span class="fu">formula</span>(full.model)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a aria-hidden="true" tabindex="-1"></a>best.model <span class="ot">&lt;-</span> <span class="fu">step</span>(null.model, </span>
+<span id="cb83-2"><a aria-hidden="true" tabindex="-1"></a>                  <span class="at">direction =</span> <span class="st">"both"</span>, </span>
+<span id="cb83-3"><a aria-hidden="true" tabindex="-1"></a>                  <span class="at">scope =</span> <span class="fu">formula</span>(full.model)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><br></p>
 <ul>
 <li>The selected model is <em>linear</em>, not the <em>Order 6</em> polynomial!</li>
 </ul>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(best.model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(best.model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="verbatim"><code>
 Call:
 lm(formula = percent ~ year)
@@ -3333,7 +3820,7 @@ lm(formula = percent ~ year)
 <li>To understand how <code>step</code> made this choice, let us examine its output</li>
 </ul>
 </section>
-<section id="section-29" class="slide level2 smaller">
+<section id="section-36" class="slide level2 smaller">
 <h2></h2>
 <div class="column" style="width:49%;">
 <div style="font-size: 0.88em">
@@ -3385,7 +3872,7 @@ percent ~ year
 </ul>
 </div>
 </section>
-<section id="section-30" class="slide level2 smaller">
+<section id="section-37" class="slide level2 smaller">
 <h2></h2>
 <div class="column" style="width:49%;">
 <div style="font-size: 0.88em">

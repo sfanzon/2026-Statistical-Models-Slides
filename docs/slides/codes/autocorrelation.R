@@ -12,8 +12,8 @@ prices <- read.table(file = "stock_gold.txt",
                     header = TRUE)
 
 # Store data-frame into 2 vectors
-stock.price <- prices[ , 1]
-gold.price <- prices[ , 2]
+gold.price <- prices$gold_price
+stock.price <- prices$stock_price
 
 # Fit regression model
 model <- lm(gold.price ~ stock.price)
