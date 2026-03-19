@@ -1954,7 +1954,7 @@ $$
 - We have shown that the estimated standard error for $\hat{\beta}_j$ is
 $$
 \ese = \xi_{jj}^{1/2} \, S \,, \qquad 
-S = \sqrt{ \frac{\RSS}{n-2} }
+S = \sqrt{ \frac{\RSS}{n-p} }
 $$
 where $\xi_{jj}$ are the diagonal entries of the matrix
 $$

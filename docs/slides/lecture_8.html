@@ -425,63 +425,7 @@
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-  .Important {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Example {
-    --color1: #bce5de;
-    --color2: #21aa93;
-  }
-  .Conjecture {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Definition {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
-  }
-  .Theorem {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Warning {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .TODO {
-    --color1: #e7b1b4;
-    --color2: #8c3236;
-  }
-  .Notation {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
-  }
-  .Lemma {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
   .Axiom {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Question {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Problem {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .DONE {
-    --color1: #cce7b1;
-    --color2: #86b754;
-  }
-  .Corollary {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Proposition {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -489,13 +433,69 @@
     --color1: #bce5de;
     --color2: #21aa93;
   }
+  .Notation {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
+  .DONE {
+    --color1: #cce7b1;
+    --color2: #86b754;
+  }
+  .Conjecture {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Example {
+    --color1: #bce5de;
+    --color2: #21aa93;
+  }
+  .Question {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Theorem {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
   .Idea {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
+  .Lemma {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Proposition {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Problem {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .TODO {
+    --color1: #e7b1b4;
+    --color2: #8c3236;
+  }
   .Proof {
     --color1: #f1f1f2;
     --color2: #c0c0c1;
+  }
+  .Warning {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Important {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Corollary {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Definition {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
   }
   </style>
 </head>
@@ -2343,7 +2343,7 @@ Y_i = \beta_1 z_{i1} + \ldots +\beta_p z_{ip} + \varepsilon_i \,, \qquad \vareps
 </span></p></li>
 <li><p>We have shown that the estimated standard error for <span class="math inline">\hat{\beta}_j</span> is <span class="math display">
 \mathop{\mathrm{e.s.e.}}= \xi_{jj}^{1/2} \, S \,, \qquad
-S = \sqrt{ \frac{\mathop{\mathrm{RSS}}}{n-2} }
+S = \sqrt{ \frac{\mathop{\mathrm{RSS}}}{n-p} }
 </span> where <span class="math inline">\xi_{jj}</span> are the diagonal entries of the matrix <span class="math display">
 (Z^T Z)^{-1} =
 \left(
