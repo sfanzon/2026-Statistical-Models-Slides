@@ -425,27 +425,7 @@
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-  .Definition {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
-  }
-  .Notation {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
-  }
-  .Corollary {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .DONE {
-    --color1: #cce7b1;
-    --color2: #86b754;
-  }
-  .Theorem {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Conjecture {
+  .Important {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -453,11 +433,35 @@
     --color1: #bce5de;
     --color2: #21aa93;
   }
-  .Axiom {
+  .Conjecture {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Definition {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
+  .Theorem {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
   .Warning {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .TODO {
+    --color1: #e7b1b4;
+    --color2: #8c3236;
+  }
+  .Notation {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
+  .Lemma {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Axiom {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -469,7 +473,15 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Lemma {
+  .DONE {
+    --color1: #cce7b1;
+    --color2: #86b754;
+  }
+  .Corollary {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Proposition {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -477,25 +489,13 @@
     --color1: #bce5de;
     --color2: #21aa93;
   }
-  .Proposition {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .TODO {
-    --color1: #e7b1b4;
-    --color2: #8c3236;
-  }
-  .Proof {
-    --color1: #f1f1f2;
-    --color2: #c0c0c1;
-  }
   .Idea {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Important {
-    --color1: #f4cce0;
-    --color2: #db4d92;
+  .Proof {
+    --color1: #f1f1f2;
+    --color2: #c0c0c1;
   }
   </style>
 </head>
@@ -1399,7 +1399,7 @@ t = \frac{\text{Estimate } - \text{ Hypothesised Value}}{\mathop{\mathrm{e.s.e.}
 <li><p>We however have an estimate for <span class="math inline">\sigma^2</span> <span class="math display">
 \hat \sigma^2 = \frac{1}{n} \mathop{\mathrm{RSS}}= \frac1n \sum_{i=1}^n (y_i - \hat y_i)^2
 </span></p></li>
-<li><p><span class="math inline">\hat \sigma^2</span> was obtained from maximization of the likelihood function (Lecture 8)</p></li>
+<li><p><span class="math inline">\hat \sigma^2</span> was obtained from maximization of the likelihood function (Lecture 7)</p></li>
 </ul>
 </section>
 <section id="section-1" class="slide level2 smaller">
@@ -1944,7 +1944,7 @@ t = \frac{\text{Estimate } - \text{ Hypothesised Value}}{\mathop{\mathrm{e.s.e.}
 <li><p>We however have an estimate for <span class="math inline">\sigma^2</span> <span class="math display">
 \hat \sigma^2 = \frac{1}{n} \mathop{\mathrm{RSS}}= \frac1n \sum_{i=1}^n (y_i - \hat y_i)^2
 </span></p></li>
-<li><p><span class="math inline">\hat \sigma^2</span> was obtained from maximization of the likelihood function (Lecture 8)</p></li>
+<li><p><span class="math inline">\hat \sigma^2</span> was obtained from maximization of the likelihood function (Lecture 7)</p></li>
 </ul>
 </section>
 <section id="section-7" class="slide level2 smaller">
@@ -1976,7 +1976,7 @@ S^2 := \frac{n}{n-p} \, \hat\sigma^2 = \frac{\mathop{\mathrm{RSS}}}{n-p}
 <li><p>This gives the <strong>estimated standard error</strong></p></li>
 </ul>
 <p><span class="math display">
-\mathop{\mathrm{e.s.e.}}=\xi_{jj}^{1/2} \,  S \,, \qquad S = \sqrt{\frac{\mathop{\mathrm{RSS}}}{n-2}}
+\mathop{\mathrm{e.s.e.}}=\xi_{jj}^{1/2} \,  S \,, \qquad S = \sqrt{\frac{\mathop{\mathrm{RSS}}}{n-p}}
 </span></p>
 </section>
 <section id="t-statistic-for-testing-beta_j" class="slide level2 smaller">
@@ -2033,7 +2033,7 @@ z_{n1} &amp; \ldots &amp; z_{np} \\
 </span> Compute the MLE <span class="math inline">\hat{\beta}</span>, predictions <span class="math inline">\hat{y}</span>, RSS and <span class="math inline">S^2</span> <span class="math display">
 \hat \beta = (Z^TZ)^{-1} Z^T y  \,, \qquad
 \hat{y} = Z \hat{\beta} \,, \qquad
-\mathop{\mathrm{RSS}}= \sum_{i=1}^n (y_i - \hat{y}_i)^2 \,, \qquad  S^2 := \frac{\mathop{\mathrm{RSS}}}{n-2}
+\mathop{\mathrm{RSS}}= \sum_{i=1}^n (y_i - \hat{y}_i)^2 \,, \qquad  S^2 := \frac{\mathop{\mathrm{RSS}}}{n-p}
 </span> Finally, compute the <span class="math inline">\mathop{\mathrm{e.s.e.}}</span> and the t-statistic <span class="math display">
 \mathop{\mathrm{e.s.e.}}= \xi_{jj}^{1/2} \, S\,, \qquad  t = \frac{\hat \beta_j - b_j }{ \mathop{\mathrm{e.s.e.}}} \ \sim \ t_{n-p}
 </span></li>

@@ -425,17 +425,13 @@
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-  .Warning {
+  .Problem {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
   .Important {
     --color1: #f4cce0;
     --color2: #db4d92;
-  }
-  .Definition {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
   }
   .Idea {
     --color1: #f4cce0;
@@ -445,11 +441,11 @@
     --color1: #e7b1b4;
     --color2: #8c3236;
   }
-  .Question {
+  .Corollary {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Conjecture {
+  .Theorem {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -457,17 +453,33 @@
     --color1: #cce7b1;
     --color2: #86b754;
   }
+  .Definition {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
   .Lemma {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Corollary {
+  .Warning {
     --color1: #f4cce0;
     --color2: #db4d92;
+  }
+  .Example {
+    --color1: #bce5de;
+    --color2: #21aa93;
   }
   .Notation {
     --color1: #c6e6ed;
     --color2: #1995ad;
+  }
+  .Proof {
+    --color1: #f1f1f2;
+    --color2: #c0c0c1;
+  }
+  .Axiom {
+    --color1: #f4cce0;
+    --color2: #db4d92;
   }
   .Remark {
     --color1: #bce5de;
@@ -477,23 +489,11 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Axiom {
+  .Question {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Example {
-    --color1: #bce5de;
-    --color2: #21aa93;
-  }
-  .Problem {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Proof {
-    --color1: #f1f1f2;
-    --color2: #c0c0c1;
-  }
-  .Theorem {
+  .Conjecture {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -813,7 +813,7 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.8784067 -0.8322672 -0.2179927 -0.4037039  0.8359170</code></pre>
+<pre><code>[1]  0.7681726 -1.2366014 -0.7236102 -0.1881667  0.3133446</code></pre>
 </div>
 </div>
 <p>The above values can be plotted by concatenating the <code>plot</code> command</p>
@@ -1948,10 +1948,10 @@ y = x^2 \,, \qquad x \in [-1, 1]
 <span id="cb93-12"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"They coincide!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Mean of x computed with my_mean is: -0.04498893</code></pre>
+<pre><code>Mean of x computed with my_mean is: 0.01519421</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Mean of x computed with R mean is: -0.04498893</code></pre>
+<pre><code>Mean of x computed with R mean is: 0.01519421</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>They coincide!</code></pre>
@@ -3232,7 +3232,7 @@ p = P(\chi_{n-1}^2 &gt; \chi^2)
 <span id="cb116-2"><a aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb116-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 167.0786 171.4755 165.4126 170.8862 162.3733</code></pre>
+<pre><code>[1] 166.4017 153.4021 166.1168 150.1644 163.7964</code></pre>
 </div>
 </div>
 </section>

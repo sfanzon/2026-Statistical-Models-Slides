@@ -908,7 +908,7 @@ $$
 \hat \sigma^2 = \frac{1}{n} \RSS = \frac1n \sum_{i=1}^n (y_i - \hat y_i)^2
 $$
 
-- $\hat \sigma^2$ was obtained from maximization of the likelihood function (Lecture 8) 
+- $\hat \sigma^2$ was obtained from maximization of the likelihood function (Lecture 7) 
 
 
 
@@ -1521,7 +1521,7 @@ $$
 \hat \sigma^2 = \frac{1}{n} \RSS = \frac1n \sum_{i=1}^n (y_i - \hat y_i)^2
 $$
 
-- $\hat \sigma^2$ was obtained from maximization of the likelihood function (Lecture 8) 
+- $\hat \sigma^2$ was obtained from maximization of the likelihood function (Lecture 7) 
 
 
 
@@ -1561,7 +1561,7 @@ $$
 - This gives the **estimated standard error**
 
 $$
-\ese =\xi_{jj}^{1/2} \,  S \,, \qquad S = \sqrt{\frac{\RSS}{n-2}}
+\ese =\xi_{jj}^{1/2} \,  S \,, \qquad S = \sqrt{\frac{\RSS}{n-p}}
 $$
 
 
@@ -1640,7 +1640,7 @@ Compute the MLE $\hat{\beta}$, predictions $\hat{y}$, RSS and $S^2$
 $$
 \hat \beta = (Z^TZ)^{-1} Z^T y  \,, \qquad 
 \hat{y} = Z \hat{\beta} \,, \qquad 
-\RSS = \sum_{i=1}^n (y_i - \hat{y}_i)^2 \,, \qquad  S^2 := \frac{\RSS}{n-2}
+\RSS = \sum_{i=1}^n (y_i - \hat{y}_i)^2 \,, \qquad  S^2 := \frac{\RSS}{n-p}
 $$
 Finally, compute the $\ese$ and the t-statistic
 $$
