@@ -1898,7 +1898,7 @@ Model 2: distance ~ height + I(height^2) + I(height^3) + I(height^4)
 
 ## Example 3: Checking the statistical analysis {.smaller}
 
-<br>
+
 
 ::: {.columns}
 
