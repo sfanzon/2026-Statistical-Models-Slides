@@ -425,38 +425,6 @@
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-  .Corollary {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Axiom {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .TODO {
-    --color1: #e7b1b4;
-    --color2: #8c3236;
-  }
-  .Lemma {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Theorem {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Definition {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
-  }
-  .Remark {
-    --color1: #bce5de;
-    --color2: #21aa93;
-  }
-  .Idea {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
   .DONE {
     --color1: #cce7b1;
     --color2: #86b754;
@@ -465,19 +433,27 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Conjecture {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Example {
-    --color1: #bce5de;
-    --color2: #21aa93;
-  }
   .Proposition {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Problem {
+  .Remark {
+    --color1: #bce5de;
+    --color2: #21aa93;
+  }
+  .Warning {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Conjecture {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Notation {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
+  .Axiom {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -485,17 +461,41 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Proof {
-    --color1: #f1f1f2;
-    --color2: #c0c0c1;
-  }
-  .Warning {
+  .Problem {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Notation {
+  .Lemma {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .TODO {
+    --color1: #e7b1b4;
+    --color2: #8c3236;
+  }
+  .Theorem {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Corollary {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Idea {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Example {
+    --color1: #bce5de;
+    --color2: #21aa93;
+  }
+  .Definition {
     --color1: #c6e6ed;
     --color2: #1995ad;
+  }
+  .Proof {
+    --color1: #f1f1f2;
+    --color2: #c0c0c1;
   }
   </style>
 </head>
@@ -813,7 +813,7 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.44907726  0.16180224  0.07968754  1.04752345  0.86603626</code></pre>
+<pre><code>[1]  0.2808169 -0.4859846 -0.7176522  0.3831113  0.6660301</code></pre>
 </div>
 </div>
 <p>The above values can be plotted by concatenating the <code>plot</code> command</p>
@@ -1948,10 +1948,10 @@ y = x^2 \,, \qquad x \in [-1, 1]
 <span id="cb93-12"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"They coincide!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Mean of x computed with my_mean is: 0.03993628</code></pre>
+<pre><code>Mean of x computed with my_mean is: 0.02192371</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Mean of x computed with R mean is: 0.03993628</code></pre>
+<pre><code>Mean of x computed with R mean is: 0.02192371</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>They coincide!</code></pre>
@@ -3232,7 +3232,7 @@ p = P(\chi_{n-1}^2 &gt; \chi^2)
 <span id="cb116-2"><a aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb116-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 162.3836 167.8326 158.0611 161.2117 168.3497</code></pre>
+<pre><code>[1] 157.8246 171.7733 174.3462 162.9604 166.2929</code></pre>
 </div>
 </div>
 </section>

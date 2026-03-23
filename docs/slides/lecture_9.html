@@ -425,7 +425,7 @@
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-  .Axiom {
+  .Problem {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -433,15 +433,19 @@
     --color1: #bce5de;
     --color2: #21aa93;
   }
-  .Conjecture {
+  .Notation {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
+  .Question {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .TODO {
-    --color1: #e7b1b4;
-    --color2: #8c3236;
+  .Axiom {
+    --color1: #f4cce0;
+    --color2: #db4d92;
   }
-  .Theorem {
+  .Proposition {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -453,19 +457,31 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Warning {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
   .Idea {
     --color1: #f4cce0;
     --color2: #db4d92;
+  }
+  .TODO {
+    --color1: #e7b1b4;
+    --color2: #8c3236;
+  }
+  .DONE {
+    --color1: #cce7b1;
+    --color2: #86b754;
+  }
+  .Definition {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
   }
   .Corollary {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Question {
+  .Proof {
+    --color1: #f1f1f2;
+    --color2: #c0c0c1;
+  }
+  .Conjecture {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -473,29 +489,13 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .DONE {
-    --color1: #cce7b1;
-    --color2: #86b754;
-  }
-  .Problem {
+  .Warning {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Proposition {
+  .Theorem {
     --color1: #f4cce0;
     --color2: #db4d92;
-  }
-  .Definition {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
-  }
-  .Notation {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
-  }
-  .Proof {
-    --color1: #f1f1f2;
-    --color2: #c0c0c1;
   }
   </style>
 </head>
@@ -1913,27 +1913,22 @@ Model 2: distance ~ height + I(height^2) + I(height^3) + I(height^4)
 </ul>
 </div>
 </section>
-<section id="example-3-debunking-fake-news" class="slide level2 smaller">
-<h2>Example 3: Debunking fake news</h2>
+<section id="example-3-checking-the-statistical-analysis" class="slide level2 smaller">
+<h2>Example 3: Checking the statistical analysis</h2>
+<p><br></p>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><img data-src="images/mirror.png" style="width:100.0%"></p>
+</div><div class="column" style="width:35%;">
+<p><br></p>
+<div style="font-size:0.85em; line-height:1.3;">
 <p>Screenshot of a Daily Mirror article <a href="https://www.mirror.co.uk/news/uk-news/second-year-of-marriage-is-peak-time-337551?int_source=amp_continue_reading&amp;int_medium=amp&amp;int_campaign=continue_reading_button#amp-readmore-target">(link)</a></p>
-
-<img data-src="images/mirror.png" style="width:100.0%" class="r-stretch"></section>
-<section id="section-28" class="slide level2 smaller">
-<h2></h2>
 <ul>
-<li><p>All the hallmarks of fake news are present</p>
-<ul>
-<li>Bold claim</li>
-<li>No precise references</li>
-<li>No actual data</li>
-</ul></li>
-<li><p>The original “study” on <a href="https://www.divorce-online.co.uk">Divorce-Online.co.uk</a> seems unavailable at present (2025)</p></li>
-<li><p>However, the Daily Mirror article <a href="https://www.mirror.co.uk/news/uk-news/second-year-of-marriage-is-peak-time-337551?int_source=amp_continue_reading&amp;int_medium=amp&amp;int_campaign=continue_reading_button#amp-readmore-target">(link)</a> states the following:</p>
-<ul>
-<li><em>The poll [from Divorce-Online.co.uk] backs Office for National Statistics figures</em></li>
-</ul></li>
-<li><p>The dataset in question can be found on the ONS Website <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/divorce/datasets/divorcesinenglandandwalesageatmarriagedurationofmarriageandcohortanalyses">(Link to the Dataset)</a></p></li>
+<li>The article suggests that the second year of marriage is when divorce risk is highest</li>
+<li>Here, we take a moment to look at the statistical evidence behind this claim</li>
 </ul>
+</div>
+</div></div>
 </section>
 <section id="the-divorces-dataset" class="slide level2 smaller">
 <h2>The divorces dataset</h2>
@@ -2134,7 +2129,7 @@ Model 2: distance ~ height + I(height^2) + I(height^3) + I(height^4)
 <span id="cb40-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Plot summary</span></span>
 <span id="cb40-10"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(linear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="section-29" class="slide level2 smaller">
+<section id="section-28" class="slide level2 smaller">
 <h2></h2>
 <div style="font-size: 0.95em">
 <pre class="verbatim"><code>Coefficients:
@@ -2170,7 +2165,7 @@ F-statistic: 22.93 on 1 and 12 DF,  p-value: 0.0004422</code></pre>
 <span id="cb42-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Print summary</span></span>
 <span id="cb42-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(quadratic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="section-30" class="slide level2 smaller">
+<section id="section-29" class="slide level2 smaller">
 <h2></h2>
 <div style="font-size: 0.95em">
 <pre class="verbatim"><code>Coefficients:
@@ -2289,7 +2284,7 @@ F-statistic: 11.65 on 2 and 11 DF,  p-value: 0.001919</code></pre>
 <span id="cb45-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># F-test for Model Selection</span></span>
 <span id="cb45-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(linear, degree<span class="fl">.6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="section-31" class="slide level2 smaller">
+<section id="section-30" class="slide level2 smaller">
 <h2></h2>
 <pre class="verbatim"><code>Model 1: percent ~ year
 Model 2: percent ~ year + I(year^2) + I(year^3) + I(year^4) + I(year^5) + 
@@ -2311,7 +2306,7 @@ Model 2: percent ~ year + I(year^2) + I(year^3) + I(year^4) + I(year^5) +
 </ul></li>
 </ul>
 </section>
-<section id="section-32" class="slide level2 smaller">
+<section id="section-31" class="slide level2 smaller">
 <h2></h2>
 <div class="column" style="width:49%;">
 <div class="cell">
@@ -2528,7 +2523,7 @@ Y_i = \beta_1 z_{i1} + \beta_2 z_{i2} + \ldots + \beta_p z_{ip} + \varepsilon_i
 <li><p>The above methods <strong>rely heavily</strong> on homoscedasticity</p></li>
 </ul>
 </section>
-<section id="section-33" class="slide level2 smaller">
+<section id="section-32" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li><p>For example, the maximum likelihood estimation relied on the calculation <span class="math display">\begin{align*}
@@ -2543,7 +2538,7 @@ Y_i = \beta_1 z_{i1} + \beta_2 z_{i2} + \ldots + \beta_p z_{ip} + \varepsilon_i
 {\rm Var}[Y_i] = \sigma^2 \qquad \forall \,\, i
 </span></p>
 </section>
-<section id="section-34" class="slide level2 smaller">
+<section id="section-33" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li>Suppose the calculation in previous slide holds</li>
@@ -2564,7 +2559,7 @@ L = \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left(   -\frac{ \mathop{\mathrm{R
 \hat \beta = (Z^T Z)^{-1} Z^T y
 </span></p>
 </section>
-<section id="section-35" class="slide level2 smaller">
+<section id="section-34" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li>Without homoscedasticity we would have</li>
@@ -2580,7 +2575,7 @@ L \neq \frac{1}{(2\pi \sigma^2)^{n/2}} \, \exp   \left(   -\frac{ \mathop{\mathr
 {\rm I\kern-.3em E}[\hat \beta ] = \beta
 </span></p>
 </section>
-<section id="section-36" class="slide level2 smaller">
+<section id="section-35" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li><p>However, the quantity <span class="math display">
@@ -2594,7 +2589,7 @@ S^2 = \frac{ \mathop{\mathrm{RSS}}(\hat \beta) }{n-p}
 <li><p>Therefore <span class="math inline">\mathop{\mathrm{e.s.e.}}</span> become <strong>unreliable</strong></p></li>
 </ul>
 </section>
-<section id="section-37" class="slide level2 smaller">
+<section id="section-36" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li><p>Then, also t-statistic for significance of <span class="math inline">\beta_j</span> becomes unreliable</p></li>
@@ -2877,7 +2872,7 @@ Y_i = \beta_1 + \beta_2 X_{i} + \varepsilon_i
 \frac{Y_i}{X_i} = \frac{\beta_1}{X_i}+\beta_2+\frac{\varepsilon_i}{X_i}
 \end{equation}</span></p>
 </section>
-<section id="section-38" class="slide level2 smaller">
+<section id="section-37" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li>Consider the substitutions</li>
@@ -2901,7 +2896,7 @@ Y_i = \beta_1 + \beta_2 X_{i} + \varepsilon_i
 <li>Thus, the model in (2) satisfies all the Regression Assumptions</li>
 </ul>
 </section>
-<section id="section-39" class="slide level2 smaller">
+<section id="section-38" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li><p>Assume we now want to make predictions for the value <span class="math inline">x</span></p></li>
@@ -2984,7 +2979,7 @@ Y_i = \beta_1 + \beta_2 X_{i} + \varepsilon_i
 <span id="cb50-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit regression model</span></span>
 <span id="cb50-10"><a aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(gold.price <span class="sc">~</span> stock.price)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="section-40" class="slide level2 smaller">
+<section id="section-39" class="slide level2 smaller">
 <h2></h2>
 <div style="font-size: 0.93em">
 <p><strong>Scatter Plot:</strong> of <span class="math inline">y</span> against <span class="math inline">x</span>, with regression line</p>
@@ -3020,7 +3015,7 @@ Y_i = \beta_1 + \beta_2 X_{i} + \varepsilon_i
 </div>
 </div></div>
 </section>
-<section id="section-41" class="slide level2 smaller">
+<section id="section-40" class="slide level2 smaller">
 <h2></h2>
 <div style="font-size: 0.93em">
 <p><strong>Histogram of residuals:</strong> Confirms initial intuition of heteroscedasticity</p>
@@ -3051,7 +3046,7 @@ Y_i = \beta_1 + \beta_2 X_{i} + \varepsilon_i
 </div>
 </div></div>
 </section>
-<section id="section-42" class="slide level2 smaller">
+<section id="section-41" class="slide level2 smaller">
 <h2></h2>
 <div style="font-size: 0.93em">
 <p><strong>Residual Graph:</strong> Plot residuals against fitted values</p>
@@ -3086,7 +3081,7 @@ Y_i = \beta_1 + \beta_2 X_{i} + \varepsilon_i
 </div>
 </div></div>
 </section>
-<section id="section-43" class="slide level2 smaller">
+<section id="section-42" class="slide level2 smaller">
 <h2></h2>
 <ul>
 <li><strong>Remedial transformation:</strong> To try and reduce heteroscedasticity take
@@ -3110,7 +3105,7 @@ Y_i = \beta_1 + \beta_2 X_{i} + \varepsilon_i
 <span id="cb54-10"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute fitted values for log model</span></span>
 <span id="cb54-11"><a aria-hidden="true" tabindex="-1"></a>log.fitted <span class="ot">&lt;-</span> log.model<span class="sc">$</span>fitted</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section></section>
-<section id="section-44" class="title-slide slide level1 smaller center">
+<section id="section-43" class="title-slide slide level1 smaller center">
 <h1></h1>
 <p>Heteroscedasticity has definitely reduced</p>
 <ul>
@@ -3142,7 +3137,7 @@ Y_i = \beta_1 + \beta_2 X_{i} + \varepsilon_i
 </section>
 
 <section>
-<section id="section-45" class="title-slide slide level1 smaller center">
+<section id="section-44" class="title-slide slide level1 smaller center">
 <h1></h1>
 <p>Heteroscedasticity has definitely reduced</p>
 <ul>
@@ -3172,7 +3167,7 @@ Y_i = \beta_1 + \beta_2 X_{i} + \varepsilon_i
 </div>
 </div></div>
 </section>
-<section id="section-46" class="slide level2 smaller">
+<section id="section-45" class="slide level2 smaller">
 <h2></h2>
 <p><strong>Conclusion:</strong> The log model seems to better satisfy the Regression Assumptions<br>
 (due to less heteroschedasticity)</p>
@@ -3248,7 +3243,7 @@ y = e^{\widetilde{y}}
 </ul></li>
 </ul>
 </section>
-<section id="section-47" class="slide level2 smaller">
+<section id="section-46" class="slide level2 smaller">
 <h2></h2>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Fit log model</span></span>
 <span id="cb55-2"><a aria-hidden="true" tabindex="-1"></a>log.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(log.gold.price <span class="sc">~</span> stock.price)</span>
@@ -3276,7 +3271,7 @@ y = e^{\widetilde{y}}
 <li><p>We need to rescale to obtain the desired predictions <span class="math inline">y = e^{\widetilde{y}}</span></p></li>
 </ul>
 </section>
-<section id="section-48" class="slide level2 smaller">
+<section id="section-47" class="slide level2 smaller">
 <h2></h2>
 <div style="font-size: 0.95em">
 <ul>
