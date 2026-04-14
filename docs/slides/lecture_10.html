@@ -425,55 +425,19 @@
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-  .TODO {
-    --color1: #e7b1b4;
-    --color2: #8c3236;
-  }
-  .Idea {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Definition {
+  .Notation {
     --color1: #c6e6ed;
     --color2: #1995ad;
-  }
-  .Lemma {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Proof {
-    --color1: #f1f1f2;
-    --color2: #c0c0c1;
   }
   .Proposition {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Notation {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
-  }
-  .Remark {
-    --color1: #bce5de;
-    --color2: #21aa93;
-  }
   .Theorem {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Corollary {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Problem {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Axiom {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Warning {
+  .Lemma {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -481,21 +445,57 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Question {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
   .DONE {
     --color1: #cce7b1;
     --color2: #86b754;
   }
+  .Warning {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Definition {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
+  }
+  .Proof {
+    --color1: #f1f1f2;
+    --color2: #c0c0c1;
+  }
+  .Idea {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Remark {
+    --color1: #bce5de;
+    --color2: #21aa93;
+  }
   .Conjecture {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .TODO {
+    --color1: #e7b1b4;
+    --color2: #8c3236;
+  }
+  .Axiom {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Question {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Corollary {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
   .Example {
     --color1: #bce5de;
     --color2: #21aa93;
+  }
+  .Problem {
+    --color1: #f4cce0;
+    --color2: #db4d92;
   }
   </style>
 </head>
@@ -676,7 +676,7 @@ Y_i = \beta_1 z_{i1} + \beta_2 z_{i2} + \ldots + \beta_p z_{ip} + \varepsilon_i
 <li><strong>Autocorrelation:</strong> The violation of Assumption 5</li>
 </ul>
 <p><span class="math display">
-{\rm Cor}(\varepsilon_i , \varepsilon_j) = 0 \qquad \text{ for some } \,\, i \neq j
+{\rm Cor}(\varepsilon_i , \varepsilon_j) \neq 0 \qquad \text{ for some } \,\, i \neq j
 </span></p>
 </section>
 <section id="why-is-independence-important" class="slide level2 smaller">
@@ -1361,7 +1361,7 @@ u_t \,\, \text{ iid } \,\, N(0,\sigma^2)
 <li><p>This shows the residuals are actually autocorrelated, with relationship</p></li>
 </ul>
 <p><span class="math display">
-\varepsilon_t = (0.001100235) \times  \varepsilon_{t-1} + u_t
+\varepsilon_t = 0.5578 \times  \varepsilon_{t-1} + u_t
 </span></p>
 <ul>
 <li>Autocorrelation makes the link between real gold and stock prices harder to establish</li>

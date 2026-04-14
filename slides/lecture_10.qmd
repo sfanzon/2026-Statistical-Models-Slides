@@ -209,7 +209,7 @@ $$
 - **Autocorrelation:** The violation of Assumption 5
 
 $$
-\Cor(\e_i , \e_j) = 0 \qquad \text{ for some } \,\, i \neq j
+\Cor(\e_i , \e_j) \neq 0 \qquad \text{ for some } \,\, i \neq j
 $$
 
 
@@ -1081,7 +1081,7 @@ u_t \,\, \text{ iid } \,\, N(0,\sigma^2)
 - This shows the residuals are actually autocorrelated, with relationship
 
 $$
-\e_t = (0.001100235) \times  \e_{t-1} + u_t 
+\e_t = 0.5578 \times  \e_{t-1} + u_t 
 $$
 
 - Autocorrelation makes the link between real gold and stock prices harder to establish
