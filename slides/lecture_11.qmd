@@ -173,23 +173,28 @@ $$
 
 ## The ANOVA F-statistic {.smaller}
 
-::: Definition
 
-The F-statistic for the one-way ANOVA test is
+- Assume $k$ independent populations with distributions $N(\mu_i,\sigma^2)$
 
-$$
-F = \frac{ \TrSS }{ k - 1  } \bigg/
-      \frac{ \ESS }{ n - k  } 
-$$
+- Assume to have $n_i$ independent samples from each population: $x_{i1}, x_{i2}, \ldots, x_{in_i}$
 
-:::
+- Define the total number of samples as $n = \sum_{i=1}^k n_i$
 
-::: Theorem 
-
-Assume to have $k$ independent, i.i.d samples from $N(\mu_i,\sigma^2)$. Then
+- Define the **Error**  and **Treatment Sum of Squares** as in the previous slides
 
 $$
-F \ \sim \ F_{k-1,n-k} 
+\TrSS = \sum_{i=1}^{k} n_i ( \overline{x}_i - \overline{x})^2 \,, \qquad
+\ESS = \sum_{i=1}^k \sum_{j=1}^{n_i} (x_{ij} - \overline{x}_i)^2
+$$
+
+
+::: Theorem
+
+The F-statistic for the one-way ANOVA test follows an $F$-distribution:
+
+$$
+F := \frac{ \TrSS }{ k - 1  } \bigg/
+      \frac{ \ESS }{ n - k  }  \ \sim \ F_{k-1,n-k} 
 $$
 
 :::
@@ -248,9 +253,9 @@ H_1 \colon & \mu_i \neq \mu_j \,\, \text{ for at least one pair } \, i \neq j
 
 ## Procedure: 3 Steps {.smaller}
 
-1. **Calculation**: Compute the samples mean and grand mean 
+1. **Calculation**: Compute total number of samples, samples mean and grand mean 
 $$
-\overline{x}_i = \frac{1}{n_i} \sum_{j=1}^{n_i} x_{ij} \,, \qquad 
+n = \sum_{i=1}^k n_i \,, \qquad \overline{x}_i = \frac{1}{n_i} \sum_{j=1}^{n_i} x_{ij} \,, \qquad 
 \overline{x} = \frac{1}{k} \sum_{i=1}^k  \overline{x}_i  
 $$
 Compute the $\TrSS$ and $\ESS$ 

@@ -433,15 +433,11 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Warning {
-    --color1: #f4cce0;
-    --color2: #db4d92;
+  .Definition {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
   }
-  .Proposition {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Theorem {
+  .Question {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -449,43 +445,47 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Lemma {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Definition {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
-  }
-  .Proof {
-    --color1: #f1f1f2;
-    --color2: #c0c0c1;
-  }
-  .DONE {
-    --color1: #cce7b1;
-    --color2: #86b754;
-  }
   .Axiom {
     --color1: #f4cce0;
     --color2: #db4d92;
-  }
-  .Remark {
-    --color1: #bce5de;
-    --color2: #21aa93;
-  }
-  .Example {
-    --color1: #bce5de;
-    --color2: #21aa93;
   }
   .Notation {
     --color1: #c6e6ed;
     --color2: #1995ad;
   }
+  .Lemma {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Idea {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Theorem {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
   .TODO {
     --color1: #e7b1b4;
     --color2: #8c3236;
   }
-  .Question {
+  .Proposition {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .DONE {
+    --color1: #cce7b1;
+    --color2: #86b754;
+  }
+  .Example {
+    --color1: #bce5de;
+    --color2: #21aa93;
+  }
+  .Remark {
+    --color1: #bce5de;
+    --color2: #21aa93;
+  }
+  .Warning {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -493,9 +493,9 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Idea {
-    --color1: #f4cce0;
-    --color2: #db4d92;
+  .Proof {
+    --color1: #f1f1f2;
+    --color2: #c0c0c1;
   }
   </style>
 </head>
@@ -813,7 +813,7 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1]  1.5014525 -0.7602170 -0.1049821 -1.6734053 -0.6472956</code></pre>
+<pre><code>[1]  0.74413890  0.12861380  0.29050685 -0.03410028 -0.44750769</code></pre>
 </div>
 </div>
 <p>The above values can be plotted by concatenating the <code>plot</code> command</p>
@@ -1948,10 +1948,10 @@ y = x^2 \,, \qquad x \in [-1, 1]
 <span id="cb93-12"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"They coincide!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Mean of x computed with my_mean is: 0.02220463</code></pre>
+<pre><code>Mean of x computed with my_mean is: -0.0343598</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Mean of x computed with R mean is: 0.02220463</code></pre>
+<pre><code>Mean of x computed with R mean is: -0.0343598</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>They coincide!</code></pre>
@@ -3232,7 +3232,7 @@ p = P(\chi_{n-1}^2 &gt; \chi^2)
 <span id="cb116-2"><a aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb116-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">163</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 177.8886 160.9311 155.2794 158.7067 170.4910</code></pre>
+<pre><code>[1] 160.5798 152.6275 172.1238 154.8886 165.6657</code></pre>
 </div>
 </div>
 </section>

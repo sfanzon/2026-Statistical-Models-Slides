@@ -405,35 +405,19 @@
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-  .Definition {
-    --color1: #c6e6ed;
-    --color2: #1995ad;
-  }
-  .Lemma {
+  .Theorem {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Proposition {
-    --color1: #f4cce0;
-    --color2: #db4d92;
+  .DONE {
+    --color1: #cce7b1;
+    --color2: #86b754;
   }
   .Corollary {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .Important {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Problem {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .TODO {
-    --color1: #e7b1b4;
-    --color2: #8c3236;
-  }
-  .Idea {
+  .Lemma {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -441,11 +425,23 @@
     --color1: #c6e6ed;
     --color2: #1995ad;
   }
-  .Proof {
-    --color1: #f1f1f2;
-    --color2: #c0c0c1;
+  .Proposition {
+    --color1: #f4cce0;
+    --color2: #db4d92;
   }
-  .Axiom {
+  .TODO {
+    --color1: #e7b1b4;
+    --color2: #8c3236;
+  }
+  .Example {
+    --color1: #bce5de;
+    --color2: #21aa93;
+  }
+  .Question {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Problem {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -453,19 +449,11 @@
     --color1: #bce5de;
     --color2: #21aa93;
   }
-  .Theorem {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Example {
-    --color1: #bce5de;
-    --color2: #21aa93;
+  .Definition {
+    --color1: #c6e6ed;
+    --color2: #1995ad;
   }
   .Conjecture {
-    --color1: #f4cce0;
-    --color2: #db4d92;
-  }
-  .Question {
     --color1: #f4cce0;
     --color2: #db4d92;
   }
@@ -473,9 +461,21 @@
     --color1: #f4cce0;
     --color2: #db4d92;
   }
-  .DONE {
-    --color1: #cce7b1;
-    --color2: #86b754;
+  .Important {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Idea {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Axiom {
+    --color1: #f4cce0;
+    --color2: #db4d92;
+  }
+  .Proof {
+    --color1: #f1f1f2;
+    --color2: #c0c0c1;
   }
   </style>
 </head>
@@ -627,18 +627,21 @@ H_1 \colon &amp; \mu_i \neq \mu_j \,\, \text{ for at least one pair } \, i \neq 
 </section>
 <section id="the-anova-f-statistic" class="slide level2 smaller">
 <h2>The ANOVA F-statistic</h2>
-<div id="Definition*-2.2" class="Definition">
-<p></p><details class="Definition fbx-simplebox fbx-default" open=""><summary><strong>Definition</strong></summary><div>The F-statistic for the one-way ANOVA test is<p></p>
+<ul>
+<li><p>Assume <span class="math inline">k</span> independent populations with distributions <span class="math inline">N(\mu_i,\sigma^2)</span></p></li>
+<li><p>Assume to have <span class="math inline">n_i</span> independent samples from each population: <span class="math inline">x_{i1}, x_{i2}, \ldots, x_{in_i}</span></p></li>
+<li><p>Define the total number of samples as <span class="math inline">n = \sum_{i=1}^k n_i</span></p></li>
+<li><p>Define the <strong>Error</strong> and <strong>Treatment Sum of Squares</strong> as in the previous slides</p></li>
+</ul>
 <p><span class="math display">
-F = \frac{ \mathop{\mathrm{TrSS}}}{ k - 1  } \bigg/
-      \frac{ \mathop{\mathrm{ESS}}}{ n - k  }
+\mathop{\mathrm{TrSS}}= \sum_{i=1}^{k} n_i ( \overline{x}_i - \overline{x})^2 \,, \qquad
+\mathop{\mathrm{ESS}}= \sum_{i=1}^k \sum_{j=1}^{n_i} (x_{ij} - \overline{x}_i)^2
 </span></p>
-</div></details>
-</div>
-<div id="Theorem*-2.3" class="Theorem">
-<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>Assume to have <span class="math inline">k</span> independent, i.i.d samples from <span class="math inline">N(\mu_i,\sigma^2)</span>. Then<p></p>
+<div id="Theorem*-2.2" class="Theorem">
+<p></p><details class="Theorem fbx-simplebox fbx-default" open=""><summary><strong>Theorem</strong></summary><div>The F-statistic for the one-way ANOVA test follows an <span class="math inline">F</span>-distribution:<p></p>
 <p><span class="math display">
-F \ \sim \ F_{k-1,n-k}
+F := \frac{ \mathop{\mathrm{TrSS}}}{ k - 1  } \bigg/
+      \frac{ \mathop{\mathrm{ESS}}}{ n - k  }  \ \sim \ F_{k-1,n-k}
 </span></p>
 </div></details>
 </div>
@@ -677,8 +680,8 @@ H_1 \colon &amp; \mu_i \neq \mu_j \,\, \text{ for at least one pair } \, i \neq 
 <section id="procedure-3-steps" class="slide level2 smaller">
 <h2>Procedure: 3 Steps</h2>
 <ol type="1">
-<li><strong>Calculation</strong>: Compute the samples mean and grand mean <span class="math display">
-\overline{x}_i = \frac{1}{n_i} \sum_{j=1}^{n_i} x_{ij} \,, \qquad
+<li><strong>Calculation</strong>: Compute total number of samples, samples mean and grand mean <span class="math display">
+n = \sum_{i=1}^k n_i \,, \qquad \overline{x}_i = \frac{1}{n_i} \sum_{j=1}^{n_i} x_{ij} \,, \qquad
 \overline{x} = \frac{1}{k} \sum_{i=1}^k  \overline{x}_i  
 </span> Compute the <span class="math inline">\mathop{\mathrm{TrSS}}</span> and <span class="math inline">\mathop{\mathrm{ESS}}</span> <span class="math display">
 \mathop{\mathrm{TrSS}}= \sum_{i=1}^{k} n_i ( \overline{x}_i - \overline{x})^2 \,, \qquad \mathop{\mathrm{ESS}}= \sum_{i=1}^k \sum_{j=1}^{n_i} (x_{ij} - \overline{x}_i)^2
